@@ -1,0 +1,49 @@
+[alias]
+        co = checkout
+        ci = commit
+        st = status
+        br = branch
+	#hist = log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cr)' --graph --date=short --all
+        hist = log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all
+        histp = log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all -p
+        type = cat-file -t
+        dump = cat-file -p
+        branchall = branch -a -vv
+[user]
+        name = Najib Ibrahim
+        email = mnajib@gmail.com
+
+#[push]
+#       default = current
+
+[core]
+        editor = vim
+        #editor = kak
+        excludesfile = ~/.gitignore
+
+[merge]
+        tool = vimdiff
+
+[color]
+        ui = auto
+        diff = auto
+        status = auto
+        branch = auto
+
+[color "branch"]
+        current = yellow reverse
+        remote = green bold
+        local = blue bold
+
+[color "diff"]
+        meta = blue bold
+        frag = magenta bold
+        old = red bold
+        new = green bold
+[bz]
+	default-tracker = bugzilla.local
+	default-product = BCIS
+	default-component = Interface
+
+#[branch "master"]
+#	mergeoptions = --ff-only

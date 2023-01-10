@@ -1,0 +1,2 @@
+#!/run/current-system/sw/bin/bash
+mimic -voice kal --setf duration_stretch=1.25 -t "$1"
