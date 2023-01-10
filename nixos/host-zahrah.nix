@@ -1,25 +1,13 @@
-# vim: set ts=4 sw=4 nowrap number:
+# vim: set ts=4 sw=4 noexpandtab nowrap number:
 
 { pkgs, config, ... }:
-#{
-#	#pkgs,
-#	#sources ? import ./nix/sources.nix,
-#	#pkgs ? import sources.nixpkgs {},
-#
-#	nixos-hardware ? import sources.nixos-hardware {},
-#
-#	config,
-#
-#	...
-#}:
-
 {
-	nix = {
-		package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
-		extraOptions = ''
-			experimental-features = nix-command flakes
-		'';
-	};
+	#nix = {
+	#	package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
+	#	extraOptions = ''
+	#		experimental-features = nix-command flakes
+	#	'';
+	#};
 
 	imports = [
 		#<nixos-hardware/lenovo/thinkpad/t410> # XXX: temporarily disabled because lazy to add nix channel
@@ -115,7 +103,7 @@
 		#	#"/dev/disk/by-id/wwn-0x5000c5002ea341bc"
 		#	#"/dev/disk/by-id/wwn-0x5000c5002ec8a164"
 		#	#"/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK0803806"
-		#    
+		#
 		#	"/dev/disk/by-id/ata-PH6-CE120-G_511190117056007159" # /dev/sda (120GB SSD)
 		#	#"/dev/disk/by-id/ata-LITEONIT_LCS-256M6S_2.5_7mm_256GB_TW0XFJWX550854255987" # /dev/sdb (256GB SSD)
 		#];

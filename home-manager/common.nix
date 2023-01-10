@@ -78,6 +78,8 @@ let
       pkgs.tmux
       pkgs.mosh
 
+      pkgs.pavucontrol
+
       pkgs.libreoffice
       pkgs.wpsoffice
       pkgs.xournal

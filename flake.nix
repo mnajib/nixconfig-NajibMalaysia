@@ -17,7 +17,13 @@
     # nix-colors.url = "github:misterio77/nix-colors";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    hardware,
+    ...
+  }@inputs:
     let
       inherit (self) outputs;
       forAllSystems = nixpkgs.lib.genAttrs [
@@ -55,7 +61,7 @@
       # Available through 'nixos-rebuild --flake .#your-hostname'
       nixosConfigurations = {
 
-	# Laptop Thinkpad X230
+        # Laptop Thinkpad X230
         khawlah = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
@@ -64,7 +70,15 @@
           ];
         };
 
-	# Laptop Thinkpad T400 (dalam bilik tidur)
+        # Laptop Dell Najib
+        khadijah = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            ./nixos/host-khadijah.nix
+          ];
+        };
+
+        # Laptop Thinkpad T400 (dalam bilik tidur)
         raudah = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
@@ -72,7 +86,23 @@
           ];
         };
 
-	# Najib's Main Desktop
+        # Laptop Thinkpad T400 (sebelah tv)
+        mahirah = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            ./nixos/host-mahirah.nix
+          ];
+        };
+
+        # Najib's Dell Desktop (formerly used as firewall/router; currently being use as TV/media player)
+        delldesktop = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            ./nixos/host-delldesktop.nix
+          ];
+        };
+
+        # Najib's Main Desktop
         customdesktop = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
@@ -80,15 +110,35 @@
           ];
         };
 
-	# Laptop Thinkpad T410 (with nvidia) Naim
+        # Laptop Thinkpad T410 (with nvidia) Naim
         zahrah = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
             ./nixos/host-zahrah.nix
+
+            # Add your model from this list:
+            # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+            hardware.nixosModules.lenovo-thinkpad-t410
           ];
         };
 
-	# Laptop Thinkpad T61/R61 (dalam bilik tidur)
+        # Laptop Thinkpad x220 Nur Nasuha
+        sakinah = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            ./nixos/host-sakinah.nix
+          ];
+        };
+
+        # Laptop Thinkpad T410 (without nvidia) Julia
+        keira = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            ./nixos/host-keira.nix
+          ];
+        };
+
+        # Laptop Thinkpad T61/R61 (dalam bilik tidur)
         maryam = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
@@ -118,11 +168,43 @@
           ];
         };
 
+        "najib@customdesktop" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/home-najib.nix
+          ];
+        };
+
         "naim@zahrah" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
             ./home-manager/home-naim.nix
+          ];
+        };
+
+        "naqib@asmak" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/home-naqib.nix
+          ];
+        };
+
+        "nurnasuha@sakinah" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/home-nurnasuha.nix
+          ];
+        };
+
+        "julia@keira" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/home-julia.nix
           ];
         };
 
