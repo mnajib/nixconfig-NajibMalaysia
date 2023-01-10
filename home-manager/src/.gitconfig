@@ -3,15 +3,19 @@
         ci = commit
         st = status
         br = branch
-	#hist = log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cr)' --graph --date=short --all
+        #hist = log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cr)' --graph --date=short --all
         hist = log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all
         histp = log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all -p
         type = cat-file -t
         dump = cat-file -p
         branchall = branch -a -vv
+        tracked = ls-tree --full-tree -r --name-only HEAD
 [user]
         name = Najib Ibrahim
         email = mnajib@gmail.com
+
+[pull]
+        rebase = true
 
 #[push]
 #       default = current
@@ -41,9 +45,9 @@
         old = red bold
         new = green bold
 [bz]
-	default-tracker = bugzilla.local
-	default-product = BCIS
-	default-component = Interface
+        default-tracker = bugzilla.local
+        default-product = BCIS
+        default-component = Interface
 
 #[branch "master"]
-#	mergeoptions = --ff-only
+        #mergeoptions = --ff-only
