@@ -2,11 +2,10 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 { config, lib, pkgs, modulesPath, ... }:
-
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+  ];
 
   boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "xhci_pci" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules =        [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" ]; #"zfs" "bcachefs"
@@ -29,73 +28,81 @@
 
     # This HDD is failing
     #luks.devices."crypt2" = {
-    #    device = "/dev/disk/by-uuid/b382a40d-a780-4eb3-835e-f064039af496"; #/dev/sda2; 2nd partition on 500GB HDD?
-    #	preLVM = true;
+    #  device = "/dev/disk/by-uuid/b382a40d-a780-4eb3-835e-f064039af496"; #/dev/sda2; 2nd partition on 500GB HDD?
+    #  preLVM = true;
     #};
   };
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/873d4891-8d71-4e7a-975d-84d8342559c2";
       fsType = "btrfs";
-      options = [ "subvol=nixos"
-	"compress=zstd" "noatime" "autodefrag"
+      options = [
+        "subvol=nixos"
+        "compress=zstd" "noatime" "autodefrag"
       ];
     };
 
   fileSystems."/root" =
     { device = "/dev/disk/by-uuid/873d4891-8d71-4e7a-975d-84d8342559c2";
       fsType = "btrfs";
-      options = [ "subvol=root"
-	"compress=zstd" "noatime" "autodefrag"
+      options = [
+        "subvol=root"
+        "compress=zstd" "noatime" "autodefrag"
       ];
     };
 
   fileSystems."/home/data" =
     { device = "/dev/disk/by-uuid/873d4891-8d71-4e7a-975d-84d8342559c2";
       fsType = "btrfs";
-      options = [ "subvol=data"
-	"compress=zstd" "noatime" "autodefrag"
+      options = [
+        "subvol=data"
+        "compress=zstd" "noatime" "autodefrag"
       ];
     };
 
   fileSystems."/home/najib" =
     { device = "/dev/disk/by-uuid/873d4891-8d71-4e7a-975d-84d8342559c2";
       fsType = "btrfs";
-      options = [ "subvol=najib"
-	"compress=zstd" "noatime" "autodefrag"
+      options = [
+        "subvol=najib"
+        "compress=zstd" "noatime" "autodefrag"
       ];
     };
 
   fileSystems."/home/julia" =
     { device = "/dev/disk/by-uuid/873d4891-8d71-4e7a-975d-84d8342559c2";
       fsType = "btrfs";
-      options = [ "subvol=julia"
-	"compress=zstd" "noatime" "autodefrag"
+      options = [
+        "subvol=julia"
+        "compress=zstd" "noatime" "autodefrag"
       ];
     };
 
   fileSystems."/home/naqib" =
     { device = "/dev/disk/by-uuid/873d4891-8d71-4e7a-975d-84d8342559c2";
       fsType = "btrfs";
-      options = [ "subvol=naqib" 
-	"compress=zstd" "noatime" "autodefrag"
+      options = [
+        "subvol=naqib"
+        "compress=zstd" "noatime" "autodefrag"
       ];
     };
 
   fileSystems."/home/nurnasuha" =
     { device = "/dev/disk/by-uuid/873d4891-8d71-4e7a-975d-84d8342559c2";
       fsType = "btrfs";
-      options = [ "subvol=nurnasuha" 
-	"compress=zstd" "noatime" "autodefrag"
+      options = [
+        "subvol=nurnasuha"
+        "compress=zstd" "noatime" "autodefrag"
       ];
     };
 
   fileSystems."/home/naim" =
-    { 
+    {
       device = "/dev/disk/by-uuid/873d4891-8d71-4e7a-975d-84d8342559c2";
       fsType = "btrfs";
-      options = [ "subvol=naim"
-	"compress=zstd" "noatime" "autodefrag"
+      options = [
+        "subvol=naim"
+        "compress=zstd" "noatime" "autodefrag"
       ];
     };
 
@@ -125,12 +132,13 @@
   #};
 
   swapDevices =
-    [ 
+    [
         # This HDD is failing
         #{ device = "/dev/disk/by-uuid/54a11355-d334-46c5-8cbb-43369d08fd8a"; } # swap on 500GB HDD
 
         { device = "/dev/disk/by-uuid/600ebd52-edd2-4c42-b3b1-b8d8a6cb5acf"; } # swap on 254GB SSD
     ];
 
+  nixpkgs.hostPlatform.system = "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
