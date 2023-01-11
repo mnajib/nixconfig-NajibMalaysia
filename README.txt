@@ -17,4 +17,5 @@ home-manager switch --flake .#najib@khawlah -b backup
 
 sudo nixos-rebuild dry-build --flake .#zahrah --target-host naim@zahrah --use-remote-sudo
 sudo nixos-rebuild build --flake .#zahrah --target-host naim@zahrah --use-remote-sudo
+sudo nixos-rebuild switch --flake .#zahrah --target-host naim@zahrah --use-remote-sudo
 
