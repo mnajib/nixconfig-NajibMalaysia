@@ -2,12 +2,12 @@
 
 { pkgs, config, ... }:
 {
-	#nix = {
-	#	package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
-	#	extraOptions = ''
-	#		experimental-features = nix-command flakes
-	#	'';
-	#};
+	nix = {
+		package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
+		extraOptions = ''
+			experimental-features = nix-command flakes
+		'';
+	};
 
 	imports = [
 		#<nixos-hardware/lenovo/thinkpad/t410> # XXX: temporarily disabled because lazy to add nix channel
