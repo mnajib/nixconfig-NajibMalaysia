@@ -264,10 +264,29 @@ let
       enable = true;
     };
 
+    programs.neovim = {
+      enable = true;
+      defaultEditor = true;
+      viAlias = true;
+      vimAlias = true;
+      vimdiffAlias = true;
+
+      # Use Nix Package search engine to find even more plugins:
+      # https://search.nixos.org/packages
+      plugins = with pkgs.vimPlugins; [
+        nvim-lspconfig
+        nvim-treesitter.withAllGrammars
+        plenary-nvim
+        gruvbox-material
+        mini-nvim
+      ];
+
+      extraConfig = builtins.readFile ./src/.config/nvim/init.vim;
+    };
+
     programs.vim = {
       enable = true;
-      #extraConfig = builtins.readFile ./src/vim/vimrc;
-      extraConfig = builtins.readFile ./src/vim/init.vim;
+      extraConfig = builtins.readFile ./src/vim/vimrc;
       settings = {
         relativenumber = true;
         number = true;

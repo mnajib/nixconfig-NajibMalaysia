@@ -58,6 +58,7 @@ set ttyfast                 " Speed up scrolling in Vim
 "set autoindent             " indent a new line the same amount as the line just typed
 "set list
 "set listchars=tab:>\ ,trail:-,nbsp:+,space:·,eol:$
+"set noexpandtab
 "------------------------------------------------------------------------------
 " NOTE:
 "     for modeline; 5 first lines in file
