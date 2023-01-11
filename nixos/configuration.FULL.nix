@@ -13,80 +13,18 @@
 #     nixos-install
 #
 
-#{ config, pkgs, ... }:
 {
   config,
-
-  #sources ? import ./nix/sources.nix,
-  #pkgs ? import sources.nixpkgs {
-  #pkgs ? import sources.nixos-21.11 {
-    #inherit (config.nixpkgs) config;  # ???
-    #inherit system configuration;    # ???
-  #},
-  #pkgs ? import sources.nixos-21.11 { overlays = []; config = {}; },
-  #pkgs ? import sources.nixos-22.05 { overlays = []; config = {}; },
-  #pkgs ? import sources.nixos-unstable { overlays = []; config = {}; },
-
-  #pkgs ? import (fetchTarball
-  #  "https://github.com/NixOS/nixpkgs/archive/1bd4bbd49bef217a3d1adea43498270d6e779d65.tar.gz" # nixos-21.11
-  #  #"https://github.com/NixOS/nixpkgs/archive/1158f3463912d54cc981d61213839ec6c02570d3.tar.gz" # nixos-21.11 2021-12-24
-  #) {},
-
-  #pkgs ? import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/de679c57ca579974f35fab5444c7892ceb16230a.tar.gz") {},
   pkgs,
-
   lib,
   ...
 }:
 
 
 #let
-  #
-  # using this, I currently belive that I have problem with nixos-version did not give correct result.
-  #
-
-  #unstableTarball = fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
-  #masterTarball = fetchTarball https://github.com/NixOS/nixpkgs/archive/6d1a044fc9ff3cc96fca5fa3ba9c158522bbf2a5.tar.gz;
-  #pkgs = fetchTarball https://github.com/NixOS/nixpkgs/archive/de679c57ca579974f35fab5444c7892ceb16230a.tar.gz;
-  #pkgs = fetchTarball https://github.com/NixOS/nixpkgs/archive/3d1a7716d7f1fccbd7d30ab3b2ed3db831f43bde.tar.gz; # https://github.com/NixOS/nixpkgs/commit/3d1a7716d7f1fccbd7d30ab3b2ed3db831f43bde
-
-  #pkgs = fetchTarball https://github.com/NixOS/nixpkgs/archive/d6f63659a7021051a46035373ed50fbea7e4e924.tar.gz; # https://github.com/NixOS/nixpkgs/commit/...
-  #
-  # XXX: This seam not effected. 'nixos-rebuild' still refer to system global 'nix-channel' setting.
-  #nixpkgs = builtins.fetchTarball {
-    # The hash can be found in github nixpkgs, it is the commit hash.
-    #url = "https://github.com/NixOS/nixpkgs/archive/d6f63659a7021051a46035373ed50fbea7e4e924.tar.gz"; # https://github.com/NixOS/nixpkgs/commit/...  # 20.09 release branch, 2021-04-07
-                #url = "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
-    #url = "https://github.com/NixOS/nixpkgs-channels/archive/nixos-20.09.tar.gz"; # Do not use 'nixpkgs-channels', use 'nixpkgs' insteed.
-    #url = "https://github.com/NixOS/nixpkgs/archive/nixos-20.09.tar.gz";
-
-    # How to get the sha256? We can use the following command to obtain the correct SHA256 hash to use if you prefer not to use trial and error:
-    #   $ nix-prefetch-url --unpack "https://github.com/NixOS/nixpkgs/archive/${REVISION}.tar.gz"
-    #sha256 = "";
-  #};
-
-  # XXX: not work here
-  #pkgs = import nixpkgs { config = {}; };
-  #pkgs = import nixpkgs { config = {
-    ##nixpkgs.config = {
-    #  allowUnfree = true;
-    #
-    #  xsane = {
-    #    libusb = true;
-    #  };
-    #};
-  #};
-
-  #sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable
-  #sudo nix-channel --update nixos-unstable
-  #unstable = import <nixos-unstable> {};
+#
 #in
 {
-  # nixos-hardware
-  #imports = [
-  #  "${builtins.fetchGit { url = "https://github.com/NixOS/nixos-hardware.git"; }}/lenovo/thinkpad/t410"
-  #];
-
   #boot.kernelModules = [ "snd-ctxfi" "snd-ca0106" "snd-hda-intel" ];
   #boot.kernelParams = [ "nomodeset" "i915.modeset=0" ];
 
@@ -204,12 +142,6 @@
   #nixpkgs.configs.packageOverrides = pkgs: {
   #  xsaneGimp = pkgs.xsane.override ( nimpSupport = true; );
   #};
-
-  #environment.systemPackages = [
-    #pkgs.mc
-    # pkgs.subversion
-    #pkgs.firefox
-  #];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
