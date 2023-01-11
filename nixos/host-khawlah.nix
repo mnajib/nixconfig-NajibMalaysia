@@ -66,7 +66,7 @@
   #services.tlp.enable = true;
   networking.networkmanager.wifi.powersave = false;
   systemd.watchdog.rebootTime = "10m";
-  
+
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
 

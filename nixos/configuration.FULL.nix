@@ -307,7 +307,7 @@
     keybase keybase-gui
 
     #gnomeExtensions.draw-on-your-screen
-    pentablet-driver
+    #pentablet-driver
     gromit-mpx  # Desktop annotation tool
     xournal    # note-taking application (supposes stylus)
     xournalpp  # handwriting notetaking software with PDF annotation support
@@ -693,7 +693,7 @@
     xbindkeys
 
     #gnomeExtensions.draw-on-your-screen
-    pentablet-driver
+    #pentablet-driver
     gromit-mpx  # Desktop annotation tool
 
     xournal     # note-taking application (supposes stylus)
