@@ -32,4 +32,5 @@
 
   #networking.enableRedistributableFirmware = true;
   hardware.enableAllFirmware = true;
+  nixpkgs.hostPlatform.system = "x86_64-linux";
 }
