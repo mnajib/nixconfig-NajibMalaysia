@@ -7,10 +7,12 @@ nix flake update
 
 nix develop
 
-nixos-rebuild dry-build --flake .#khawlah
-nixos-rebuild build --flake .#khawlah
+sudo nixos-rebuild dry-build --flake .
+sudo nixos-rebuild dry-build --flake .#khawlah
+sudo nixos-rebuild build --flake .#khawlah
 sudo nixos-rebuild switch --flake .#khawlah
 
+home-manager build --flake .
 home-manager build --flake .#najib@khawlah
 home-manager switch --flake .#najib@khawlah
 home-manager switch --flake .#najib@khawlah -b backup
