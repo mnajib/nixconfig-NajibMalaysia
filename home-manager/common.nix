@@ -60,7 +60,7 @@ let
       pkgs.dzen2              # A general purpose messaging, notification and menuing program for X11
 
       #pkgs.kakoune
-      pkgs.neovim
+      #pkgs.neovim
       #pkgs.vim
       pkgs.yi
       pkgs.vis
