@@ -12,6 +12,7 @@
   boot.initrd.kernelModules = [ "dm-snapshot" "dm-crypt" "dm-raid" "btrfs" "ext4" "xfs" "vfat" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  boot.blacklistedKernelModules = [ "intel_ips" ];
 
   boot.initrd.luks = {
     devices."crytp-sdb2" = {
