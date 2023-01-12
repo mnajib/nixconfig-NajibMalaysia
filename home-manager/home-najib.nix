@@ -68,6 +68,30 @@
     xarchiver
     #xmind-8-update8
     xournalpp
+
+    smlnj
+    waydroid
+    #kmymoney
+    #anbox
+    #pmbootstrap
+    #xwayland
+    tribler
+    webtorrent_desktop
+    duf
+    gdmap
+    ncdu
+    gdu
+
+    baobab
+    dutree
+    btdu
+    dfc
+    duc
+    dua
+    epr
+    xpra
+    bootiso
+    virt-manager
   ];
 
   # Enable home-manager and git

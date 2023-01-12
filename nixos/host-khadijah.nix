@@ -51,7 +51,7 @@
 	./hardware-printer.nix
 
 	#./hardware-tablet-wacom.nix
-	./veikk.nix
+	#./veikk.nix
 	
 	./zramSwap.nix
 
@@ -68,7 +68,7 @@
     networking.hostId = "b74534bf";
     networking.hostName = "khadijah";
 
-    nix.trustedUsers = [ "root" "najib" ];
+    nix.settings.trusted-users = [ "root" "najib" ];
 
     #networking.useDHCP = false; # Diasabled by Najib on 20220724T0740
     #networking.interfaces.eno1.useDHCP = true;
@@ -186,6 +186,7 @@
 #        #device=
 #    };
 
+    services.power-profiles-daemon.enable = false;
     #powerManagement.cpuFreqGovernor = "powersave";
     #powerManagement.enable = false; # Default is true;
     powerManagement.cpufreq.min = 2000000000; # 2000000; # 800000; # Default is 'null';
@@ -234,7 +235,7 @@
     systemd.watchdog.rebootTime = "10m";
 
     #nix.maxJobs = lib.mkDefault 4; #8;
-    nix.maxJobs = 4;
+    nix.settings.max-jobs = 4;
     #nix.daemonNiceLevel = 19; # 0 to 19, default 0
     #nix.daemonIONiceLevel = 7; # 0 to 7, default 0
 

@@ -80,7 +80,10 @@ in
     wlr.enable = true;
     # gtk portal needed to make gtk apps happy
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-    gtkUsePortal = true;
+
+    # warning: The option `xdg.portal.gtkUsePortal' defined in `/nix/store/dmydi31fvhp5pw1bg5q47166qh036db9-source/nixos/sway.nix'
+    # has been deprecated. Setting the variable globally with `environment.sessionVariables' NixOS option can have unforseen side-effects.
+    #gtkUsePortal = true;
   };
 
   # enable sway window manager

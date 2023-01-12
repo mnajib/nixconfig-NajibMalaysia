@@ -5,10 +5,16 @@
 #
 
 { config, pkgs, ... } :
-let veikk_driver = (pkgs.callPackage ./veikk_driver.nix {});
+let
+  veikk_driver = (pkgs.callPackage ./veikk_driver.nix {});
 in
 {
-  environment.systemPackages = [ veikk_driver ];
+  environment.systemPackages = [
+    veikk_driver
+  ];
+  
   # Add udev rules... otherwise you will need root to install the driver.
-  services.udev.packages = [ veikk_driver ];
+  services.udev.packages = [
+    veikk_driver
+  ];
 }
