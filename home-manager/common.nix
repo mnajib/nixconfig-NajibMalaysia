@@ -40,7 +40,7 @@ let
       #pkgs.git
       pkgs.zeal               # Offline API documentation browser for software developers
       pkgs.broot              # something like tree command
-      pkgs.exa                # can be alias to ls command
+      #pkgs.exa                # can be alias to ls command
 
       pkgs.xorg.xdpyinfo
       pkgs.xorg.xwininfo
@@ -225,6 +225,7 @@ let
         aoeu = "setxkbmap us";
         asdf = "setxkbmap dvorak";
 
+        ls = "exa";
         l = "ls -alhF";
         ll = "ls --color=tty -Filah";
         j = "jobs";
@@ -261,6 +262,10 @@ let
     };
 
     programs.htop = {
+      enable = true;
+    };
+
+    programs.exa = {
       enable = true;
     };
 
