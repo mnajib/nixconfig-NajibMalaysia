@@ -94,7 +94,7 @@ let
       pkgs.obs-studio
 
       pkgs.firefox
-      pkgs.qutebrowser
+      #pkgs.qutebrowser
       #pkgs.google-chrome
       #pkgs.chromium
       pkgs.brave #pkgs.unstable.brave # web browser
@@ -143,6 +143,10 @@ let
       enable = true;
     };
 
+    programs.qutebrowser = {
+      enable = true;
+    };
+
     programs.urxvt = {
       enable = true;
     };
@@ -182,11 +186,11 @@ let
         asdf = "setxkbmap dvorak";
 
         l = "ls -alhF";
-        ll = "ls --color=tty -Filah";
+        #ll = "ls --color=tty -Filah";
         j = "jobs";
         s = "sync";
         emacs = "emacs -nw";
-        la = "ls -Fa";
+        #la = "ls -Fa";
         p = "pwd";
         a = "alias";
 
@@ -225,12 +229,12 @@ let
         aoeu = "setxkbmap us";
         asdf = "setxkbmap dvorak";
 
-        ls = "exa";
+        #ls = "exa";
         l = "ls -alhF";
-        ll = "ls --color=tty -Filah";
+        #ll = "ls --color=tty -Filah";
         j = "jobs";
         s = "sync";
-        la = "ls -Fa";
+        #la = "ls -Fa";
         p = "pwd";
         a = "alias";
 
@@ -267,6 +271,7 @@ let
 
     programs.exa = {
       enable = true;
+      enableAliases = true;
     };
 
     programs.neovim = {
