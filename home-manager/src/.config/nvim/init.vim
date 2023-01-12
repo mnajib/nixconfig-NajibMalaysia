@@ -95,8 +95,10 @@ set list
 set listchars=trail:█,tab:>-,extends:»,precedes:«,nbsp:•
 "------------------------------------------------------------------------------
 
-
 set nowrap
+
+"set title
+"set titlestring=%{hostname()}\ \ %F\ \ %{strftime('%Y%m%dT%H:%M', getftime(expand('%')))}
 
 "call plug#begin(“~/.vim/plugged”)
 " “ Plugin Section

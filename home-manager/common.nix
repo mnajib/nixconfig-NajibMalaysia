@@ -279,6 +279,12 @@ let
         plenary-nvim
         gruvbox-material
         mini-nvim
+
+        nvim-tree-lua {
+          plugin = pkgs.vimPlugins.vim-startify;
+          config = "let g:startify_change_to_vcs_root = 0";
+        }
+        
       ];
 
       extraConfig = builtins.readFile ./src/.config/nvim/init.vim;
