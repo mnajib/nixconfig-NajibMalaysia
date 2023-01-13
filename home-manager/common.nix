@@ -398,6 +398,7 @@ let
     #};
 
     # ~/.Xresources
+    /*
     xresources.properties = {
       #"Xft.antialias" = 1;
       #"Xft.autohint" = 0;
@@ -408,16 +409,17 @@ let
       "Xcursor.theme" = "breeze_cursors";
       #"Xcursor.size" = 48;
     };
-    xresources.extraConfig = builtins.readFile ./src/.Xresources;
+    */
+    #xresources.extraConfig = builtins.readFile ./src/.Xresources;
     #xresources.extraConfig = builtins.readFile ( pkgs.fetchFromGitHub {} + "./src/.Xresources");
-    #xresources.extraConfig = builtins.readFile (
-    #  pkgs.fetchFromGitHub {
-    #    owner = "solarized";
-    #    repo = "xresources";
-    #    rev = "025ceddbddf55f2eb4ab40b05889148aab9699fc";
-    #    sha256 = "0lxv37gmh38y9d3l8nbnsm1mskcv10g3i83j0kac0a2qmypv1k9f";
-    #  } + "/Xresources.dark"
-    #);
+    xresources.extraConfig = builtins.readFile (
+      pkgs.fetchFromGitHub {
+        owner = "solarized";
+        repo = "xresources";
+        rev = "025ceddbddf55f2eb4ab40b05889148aab9699fc";
+        sha256 = "0lxv37gmh38y9d3l8nbnsm1mskcv10g3i83j0kac0a2qmypv1k9f";
+      } + "/Xresources.dark"
+    );
 
   gtk = {
     enable = true;
@@ -547,7 +549,7 @@ let
         set -ga terminal-overrides ',screen-256color:Tc'
 
         #set timeoutlen=1000 # Defalut 1000
-        set ttimeoutlen=50 # Default 50
+        #set timeoutlen=50 # Default 50
         #
         #set -g escape-time 10
         set -sg escape-time 10
