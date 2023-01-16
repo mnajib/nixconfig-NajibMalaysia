@@ -600,6 +600,7 @@
     # Programming, software development, ...
     #---------------------------------------------------------------
 
+    nix-top
     direnv      # nix-direnv # nix-shell
     elvish      # A friendly and expressive command shell
     lua         # love
