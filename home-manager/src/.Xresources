@@ -102,7 +102,9 @@ URxvt.pointerBlank:         true
 !*color0: #073642
 ! Light Black
 !*color8: #002b36
-*color8: #303030
+!*color8: #303030
+!*color8: #4c4c4c
+*color8: #575757
 
 !------------------------------------------------------------------------------
 !! red dark/light
@@ -137,7 +139,10 @@ URxvt.pointerBlank:         true
 ! #eeed202
 
 ! Yellow
-*color3: #ffff00
+!*color3: #ffff00
+!*color3: #e1e169
+!*color3: #d7d75f
+*color3: #cdcd55
 
 ! Light Yellow
 *color11: #ffff87
@@ -150,7 +155,11 @@ URxvt.pointerBlank:         true
 !*color4: #007dd6
 !*color4: #159eff
 !*color4: #448fe8
-*color4: #2c81e6
+*color4: #3f7ac6
+!*color4: #3570bc
+!*color4: #2c81e6
+!*color4: #2b66b2
+!*color4: #215ca8
 
 ! Blue
 ! #0000ff
@@ -194,7 +203,12 @@ URxvt.pointerBlank:         true
 !*color7: #f7f7f7
 !*color7: #f4f4f4
 !*color7: #f1f1f1
-*color7: #ececec
+!*color7: #ececec
+!*color7: #e1e1e1
+!*color7: #d7d7d7
+!*color7: #cdcdcd
+!*color7: #c3c3c3
+*color7: #b9b9b9
 
 ! White
 !*color7: #eee8d5
