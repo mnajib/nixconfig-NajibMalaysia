@@ -152,6 +152,7 @@
     google-chrome
 
     gptfdisk efibootmgr btrfs-progs btrbk gsmartcontrol #bcachefs-tools
+    #lizardfs                 # marked as broken?
     wget curl killall
     mtr iproute # busybox
     htop mc irssi most mosh coreutils mutt
@@ -250,8 +251,6 @@
 
     screenkey onboard xorg.xkbcomp # xorg.xkbprint
 
-    python39Full
-
     gxmessage  #xorg.xmessage # to be used with xmonad, but not support scroll? maybe yad, zenity, dialog, xdialog, gdialog, kdialog, gxmessage, hmessage
     exiftool
     wireshark
@@ -345,7 +344,7 @@
     #mrxvt
     termonad
     #termonad-with-packages
-    kitty                               # one of my favourite?
+    #kitty                               # one of my favourite?
     termite                             # alacritty replaced by alacritty?
     alacritty                           #
     enlightenment.terminology           #
@@ -563,7 +562,10 @@
     aseprite
 
     #wpsoffice
-    gimp-with-plugins #gimp
+
+    #gimp-with-plugins
+    gimp
+
     drawing drawpile
 
     vym freemind treesheets drawio dia minder
@@ -634,7 +636,7 @@
     qtox        # chat using tox protocol
     keybase keybase-gui
     pdfarranger # python38Packages.pikepdf
-    python39Full
+    python3Minimal      #python3Full #python39Full
 
     gxmessage   #xorg.xmessage # to be used with xmonad, but not support scroll? maybe yad, zenity, dialog, xdialog, gdialog, kdialog, gxmessage, hmessage
     exiftool

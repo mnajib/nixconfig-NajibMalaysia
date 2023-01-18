@@ -31,10 +31,13 @@ set modeline                " to make vim/nvim load setting in file header
 "------------------------------------------------------------------------------
 " Cursor
 "------------------------------------------------------------------------------
-set cursorline              " highlight current cursorline
-set cursorcolumn
-highlight Cursor guifg=bg guibg=fg
+"highlight Cursor guifg=bg guibg=fg
 "highlight Cursor guifg=bg guibg=#626262
+highlight Cursor guifg=Black guibg=Yellow
+
+"set cursorline              " highlight current cursorline
+"set cursorcolumn
+
 "highlight CursorLine guibg=#303030
 "highlight CursorLine cterm=NONE ctermbg=242 gui=NONE guibg=Grey40
 "highlight CursorColumn ctermbg=242 guibg=Grey40

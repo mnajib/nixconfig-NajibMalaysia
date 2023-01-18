@@ -53,7 +53,7 @@
     ./hosts2.nix
     ./configuration.FULL.nix
 
-    ./kodi.nix
+    #./kodi.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:

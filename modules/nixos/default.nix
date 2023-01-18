@@ -4,4 +4,7 @@
 {
   # List your module files here
   # my-module = import ./my-module.nix;
+
+  mySeaweedfsModule = import ./seaweedfs;
+  #mySeaweedfsModule = import ./seaweedfs/default.nix;
 }

@@ -1,9 +1,16 @@
 {
-  description = "Your new nix config";
+  description = "Najib new nix flake config";
 
   inputs = {
     # Nixpkgs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    #nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    #nixpkgs-master.url = "github:nixos/nixpkgs/master";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.11";
+
+    # Set this up as an overlay; or pull-request (PR) it to nixpkgs.
+    #nixpkgs-mitchty.url = "github:/mitchty/nixpkgs/mitchty";
+    #nixpkgs-najib.url = "github:/mnajib/nixpkgs/najib";
 
     # Home manager
     home-manager.url = "github:nix-community/home-manager";
@@ -12,16 +19,46 @@
     # TODO: Add any other flake you might need
     hardware.url = "github:nixos/nixos-hardware";
 
+    flake-utils.url = "github:numtide/flake-utils";
+
+    nur.url = "github:nix-community/NUR";
+
+    impermanence.url = "github:nix-community/impermanence";
+
     # Shameless plug: looking for a way to nixify your themes and make
     # everything match nicely? Try nix-colors!
-    # nix-colors.url = "github:misterio77/nix-colors";
+    nix-colors.url = "github:misterio77/nix-colors";
+
+    sops-nix.url = "github:mic92/sops-nix";
+
+    sile.url = "github:sile-typesetter/sile/v0.14.3";
+
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    dnsblacklist = {
+      url = "github:notracking/hosts-blocklists";
+      flake = false;
+    };
+
+    seaweedfs.url = "github:/mitchty/nixos-seaweedfs/wip";
   };
 
   outputs = {
     self,
     nixpkgs,
+    nixpkgs-stable,
+    #nixpkgs-najib,
     home-manager,
     hardware,
+    flake-utils,
+    nur,
+    sile,
+    nixos-generators,
+    dnsblacklist,
+    seaweedfs,
     ...
   }@inputs:
     let
@@ -35,12 +72,16 @@
       ];
     in
     rec {
+
       # Your custom packages
       # Acessible through 'nix build', 'nix shell', etc
+      # You can compose these into your own configuration by using my flake's overlay,
+      # or comsume them through NUR.
       packages = forAllSystems (system:
         let pkgs = nixpkgs.legacyPackages.${system};
         in import ./pkgs { inherit pkgs; }
       );
+
       # Devshell for bootstrapping
       # Acessible through 'nix develop' or 'nix-shell' (legacy)
       devShells = forAllSystems (system:
@@ -48,14 +89,38 @@
         in import ./shell.nix { inherit pkgs; }
       );
 
+      # A couple project templates for different languages.
+      # Accessible via `nix init`.
+      templates = import ./templates;
+
+      #hydraJobs = {
+      #  packages = mapAttrs ...
+      #  ...
+      #};
+
       # Your custom packages and modifications, exported as overlays
       overlays = import ./overlays;
+
       # Reusable nixos modules you might want to export
       # These are usually stuff you would upstream into nixpkgs
       nixosModules = import ./modules/nixos;
+
       # Reusable home-manager modules you might want to export
       # These are usually stuff you would upstream into home-manager
       homeManagerModules = import ./modules/home-manager;
+
+      # XXX: Me (Najib) try to include nixos-generators.
+      isoSimple = nixos-generators.nixosGenerate {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [
+          #./modules/iso/autoinstall.nix
+          #simpleAutoinstall {
+          #  autoinstall.debug = true;
+          #}
+          ./modules/iso/configuration.nix
+        ];
+        format = "install-iso";
+      };
 
       # NixOS configuration entrypoint
       # Available through 'nixos-rebuild --flake .#your-hostname'

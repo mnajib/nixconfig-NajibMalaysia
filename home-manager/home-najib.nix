@@ -55,8 +55,8 @@
     almanah
     #file-roller
     heimer
-    jrnl
-    kodi
+    #jrnl
+    #kodi
     #python3.8-notebook
     qtox
     retroarch
@@ -75,7 +75,7 @@
     #anbox
     #pmbootstrap
     #xwayland
-    tribler
+    #tribler
     webtorrent_desktop
     duf
     gdmap
