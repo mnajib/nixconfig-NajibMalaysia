@@ -392,6 +392,18 @@ in
   #};
 
 #------------------------------------------------------------------------------
+  wayland.windowManager.sway = {
+    enable = true;
+    config = {
+      input = {
+        "*" = {
+          xkb_layout = "us";
+          xkb_variant = "dvorak";
+        };
+      };
+    };
+  };
+
   #xsession = {
   #    enable = true;
   #    #...

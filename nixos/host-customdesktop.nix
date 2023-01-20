@@ -54,6 +54,8 @@
     ./configuration.FULL.nix
 
     #./kodi.nix
+
+    ./sway.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -136,6 +138,13 @@
   #services.flatpak.enable = true;
   #xdg.portal.enable = true;
   #xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # OR enable gnome desktopManager
+
+  services.xserver.resolutions = [
+    {
+      x = 1280;
+      y = 1024;
+    }
+  ];
 
   #services.xserver.displayManager.sddm.enable = true;
   #services.xserver.displayManager.defaultSession = "none+xmonad";
