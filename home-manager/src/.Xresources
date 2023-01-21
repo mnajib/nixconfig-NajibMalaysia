@@ -155,7 +155,8 @@ URxvt.pointerBlank:         true
 !*color4: #007dd6
 !*color4: #159eff
 !*color4: #448fe8
-*color4: #3f7ac6
+!*color4: #3f7ac6 <-- Commented on 2023-01-22 T01:06 by Najib Ibrahim
+*color4: #3673b5
 !*color4: #3570bc
 !*color4: #2c81e6
 !*color4: #2b66b2
