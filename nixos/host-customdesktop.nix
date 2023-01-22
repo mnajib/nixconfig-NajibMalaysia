@@ -55,7 +55,7 @@
 
     #./kodi.nix
 
-    ./sway.nix
+    #./sway.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -94,14 +94,15 @@
         #path = "/boot2";
       #}
     #];
-    #useOSProber = true;
+    useOSProber = true;
     devices = [
       #"/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1011005-part1"
       #"/dev/disk/by-id/wwn-0x5000c5001f67c049-part1"
       #"/dev/sda1"
-      "/dev/sda"
       #"3dacbf58-01"
-      #"/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1011005"
+
+      #"/dev/sda"
+      "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1011005"
     ];
   };
 
@@ -130,6 +131,8 @@
   #boot.kernelModules = [ "snd-ctxfi" "snd-ca0106" "snd-hda-intel" ];
   #boot.kernelModules = [ "snd-ctxfi" "snd-hda-intel" ];
 
+  services.xserver.enable = true;
+
   # Test: Cuba disable, sebab SweetHome3D tak dapat jalan
   #services.xserver.videoDrivers = [ "nvidiaLegacy390" ]; #"radeon" "cirrus" "vesa"  "vmware"  "modesetting" ];
   #
@@ -147,9 +150,12 @@
   ];
 
   #services.xserver.displayManager.sddm.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
   #services.xserver.displayManager.defaultSession = "none+xmonad";
+
   #services.xserver.desktopManager.plasma5.enable = true;
   #services.xserver.desktopManager.xfce.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
   #services.xserver.desktopManager.enlightenment.enable = true;
 
   services.xserver.libinput.enable = true;
@@ -171,4 +177,6 @@
   environment.systemPackages = [
     pkgs.blender
   ];
+
+  #system.stateVersion = "22.11";
 }
