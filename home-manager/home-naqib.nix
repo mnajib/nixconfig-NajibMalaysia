@@ -13,7 +13,10 @@
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
 
-    ./common.nix
+    ./common-configs.nix
+    ./common-packages.nix
+    #./roblox.nix
+    ./wesnoth.nix
   ];
 
   nixpkgs = {

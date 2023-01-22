@@ -1,7 +1,12 @@
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 
-{ inputs, outputs, lib, config, pkgs, ... }: {
+{ inputs, outputs, lib, config, pkgs, ... }:
+let
+  name = "M.Na'im Bin M.Najib";
+  #email = "";
+in
+{
   # You can import other home-manager modules here
   imports = [
     # If you want to use modules your own flake exports (from modules/home-manager):
@@ -15,7 +20,8 @@
     ./roblox.nix
     ./wesnoth.nix
 
-    ./common.nix
+    ./common-configs.nix
+    ./common-packages.nix
   ];
 
   nixpkgs = {

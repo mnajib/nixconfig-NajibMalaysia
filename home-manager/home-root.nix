@@ -20,8 +20,7 @@ in
     #./nvim.nix
 
     # Common Configs
-    #./common.nix
-    #./common-configs.nix
+    ./common-configs.nix
 
     # Common Packages
     #./common-packages.nix
