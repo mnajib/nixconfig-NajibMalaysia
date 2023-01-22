@@ -33,14 +33,14 @@
     #  preLVM = true;
     #};
 
-    luks.devices."crypt-sda2" = {
+    luks.devices."crypt-d47246ca-80af-4cef-b098-29785152ce44" = {
       device = "/dev/disk/by-uuid/d47246ca-80af-4cef-b098-29785152ce44";
     };
   };
 
   fileSystems."/" = {
     #device = "/dev/disk/by-uuid/873d4891-8d71-4e7a-975d-84d8342559c2";
-    device = "/dev/mapper/crypt-sda2";
+    device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
     fsType = "btrfs";
     options = [
       "subvol=nixos"
@@ -51,7 +51,7 @@
   fileSystems."/root" =
     {
       #device = "/dev/disk/by-uuid/873d4891-8d71-4e7a-975d-84d8342559c2";
-      device = "/dev/mapper/crypt-sda2";
+      device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
       fsType = "btrfs";
       options = [
         "subvol=root"
@@ -61,7 +61,7 @@
 
   fileSystems."/nix" =
     {
-      device = "/dev/mapper/crypt-sda2";
+      device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
       fsType = "btrfs";
       options = [
         "subvol=nix"
@@ -71,7 +71,7 @@
 
   fileSystems."/swap" =
     {
-      device = "/dev/mapper/crypt-sda2";
+      device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
       fsType = "btrfs";
       options = [
         "subvol=swap"
@@ -89,7 +89,7 @@
   #  };
 
   fileSystems."/home" = {
-      device = "/dev/mapper/crypt-sda2";
+      device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
       fsType = "btrfs";
       options = [
         "subvol=home"
@@ -100,7 +100,7 @@
   #fileSystems."/home/najib" =
   #  {
   #    #device = "/dev/disk/by-uuid/873d4891-8d71-4e7a-975d-84d8342559c2";
-  #    device = "/dev/mapper/crypt-sda2";
+  #    device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
   #    fsType = "btrfs";
   #    options = [
   #      "subvol=najib"
