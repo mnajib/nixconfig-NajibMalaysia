@@ -36,9 +36,10 @@ in
   };
 
   # XXX: TODO: Better if not import here; but import from user specific file
-  #import = [
-  #  ./packages.nix
-  #];
+  imports = [
+    ./screen.nix
+    ./tmux.nix
+  ];
   # XXX: TODO: Should be in seperate file packages.nix
   /*
   home.packages = [
@@ -88,7 +89,7 @@ in
 
     #pkgs.termite
     pkgs.termonad
-    pkgs.tmux
+    #pkgs.tmux
     pkgs.mosh
 
     pkgs.pavucontrol
@@ -182,6 +183,11 @@ in
     audibleBell = true;
     #scrollbar = [ "off" ];
   };
+
+  #programs.tmux = {
+  #  enable = true;
+  #  #packages = 
+  #};
 
   # SessionPath and sessionVariables creates a hm-session file that must be sourced:
   # Beware, it puts it in .profile, not in the .bashrc!
@@ -585,12 +591,19 @@ in
 
     #".config/termite/config".source = ./termite.config;
 
+    /*
     ".tmux.conf" = {
       text = ''
         #set-option -g default-shell /run/current-system/sw/bin/fish # bash
         set-window-option -g mode-keys vi
-        set -g default-terminal "screen-256color"
-        set -ga terminal-overrides ',screen-256color:Tc'
+
+        # Commented this two lines to fix color proble. The $TERM should be "xterm-256color" inside tmux to let it print the colors I need.
+        #set -g default-terminal "screen-256color"
+        #set -ga terminal-overrides ',screen-256color:Tc'
+        # Commented only is not enough to solve the color problem inside tmux. Lets try this
+        set -g default-terminal "xterm-256color"
+        set -ga terminal-overrides ',xterm-256color:Tc'
+        set-option -sa terminal-overrides ",xterm*:Tc"
 
         #set timeoutlen=1000 # Defalut 1000
         #set timeoutlen=50 # Default 50
@@ -602,6 +615,7 @@ in
         set -g history-limit 10000
       '';
     };
+    */
 
     #".config/fish/config.fish" = {
     #    text = ''
