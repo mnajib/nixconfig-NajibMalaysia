@@ -1,13 +1,20 @@
+
+# TODO:
+#   This file will be rename from common.nix to common-configs.nix
+#   Packages will be separated into common-packages.nix
+
 {
   config,
   pkgs,
   ...
 }:
 let
+  # XXX: TODO: Should be placed in user specific file
+
   # Personal Info
-  name = "Muhammad Najib Bin Ibrahim";
-  email = "mnajib@gmail.com";
-  githubUsername = "mnajib";
+  #name = "Muhammad Najib Bin Ibrahim";
+  #email = "mnajib@gmail.com";
+  #githubUsername = "mnajib";
 
   # Paths
   #dots = "/home/najib/Dotfiles/dotfiles";
@@ -16,9 +23,9 @@ let
 
   # Preferences
   #font = "Droid Sans Mono Slashed"; # font-size=8 #"Hack"; # monospace #Monospace
-  backgroundColor = "#102021";
-  foregroundColor = "#f0f8ff";
-  warningColor = "#fb0a66"; # "#e2313"; "#ffc0cb"
+  #backgroundColor = "#102021";
+  #foregroundColor = "#f0f8ff";
+  #warningColor = "#fb0a66"; # "#e2313"; "#ffc0cb"
   #lockCmd = "${pkgs.i3lock-fancy}/bin/i3lock-fancy -p -t";
 in
 {
@@ -28,6 +35,12 @@ in
     pulseaudio = true;
   };
 
+  # XXX: TODO: Better if not import here; but import from user specific file
+  #import = [
+  #  ./packages.nix
+  #];
+  # XXX: TODO: Should be in seperate file packages.nix
+  /*
   home.packages = [
     #pkgs.htop
     pkgs.atop
@@ -127,6 +140,7 @@ in
     #pkgs.zgrviewer
     #pkgs.kgraphviewer
   ];
+  */
 
   #home.sessionVariables = {
   #  EDITOR = "nvim";       # yi vis nvim kak vim nano rasa jak

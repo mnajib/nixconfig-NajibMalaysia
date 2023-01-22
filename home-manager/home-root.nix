@@ -1,7 +1,7 @@
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 
-{ inputs, outputs, lib, config, pkgs, ... }:
+{ inputs, outputs, lib, config, pkgs, ... }: 
 let
   name = "Najib Ibrahim";
   email = "mnajib@gmail.com";
@@ -17,11 +17,14 @@ in
     # inputs.nix-colors.homeManagerModules.default
 
     # You can also split up your configuration and import pieces of it here:
-    # ./nvim.nix
+    #./nvim.nix
 
+    # Common Configs
     #./common.nix
-    ./common-configs.nix
-    ./common-packages.nix
+    #./common-configs.nix
+
+    # Common Packages
+    #./common-packages.nix
   ];
 
   nixpkgs = {
@@ -52,39 +55,13 @@ in
 
   # TODO: Set your username
   home = {
-    username = "najib";
-    homeDirectory = "/home/najib";
+    username = "root";
+    homeDirectory = "/root";
   };
 
   # Add stuff for your user as you see fit:
   # programs.neovim.enable = true;
   home.packages = with pkgs; [
-    #steam
-    almanah
-    #file-roller
-    heimer
-    #jrnl
-    #kodi
-    #python3.8-notebook
-    qtox
-    retroarch
-    tig
-    treesheets
-    unrar
-    vue
-    vym
-    xarchiver
-    #xmind-8-update8
-    xournalpp
-
-    smlnj
-    waydroid
-    #kmymoney
-    #anbox
-    #pmbootstrap
-    #xwayland
-    #tribler
-    webtorrent_desktop
     duf
     gdmap
     ncdu
@@ -97,9 +74,6 @@ in
     duc
     dua
     epr
-    xpra
-    bootiso
-    virt-manager
   ];
 
   # Enable home-manager and git
