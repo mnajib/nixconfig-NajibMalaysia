@@ -9,11 +9,14 @@
     escapeTime = 10;
     historyLimit = 10000;
     keyMode = "vi";
-    terminal = "xterm-256color";
+    terminal = "screen-256color";
 
-    #extraConfig = "";
+    extraConfig = ''
+      set -g mouse on
+      #set -g mouse-select-pane on
+    '';
 
-    #tmuxinator.enable = true;
+    tmuxinator.enable = true;
 
     plugins = with pkgs; [
       tmuxPlugins.cpu
@@ -32,6 +35,6 @@
   };
 
   #home.file.".tmux.conf".text = ''
-  #  setenv TERM xterm-256color
+  #  setenv TERM screen-256color
   #'';
 }
