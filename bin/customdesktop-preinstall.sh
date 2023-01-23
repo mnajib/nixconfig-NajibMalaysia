@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 
+cryptOpen () {
+  cryptsetup open /dev/sdb2 crypt-d47246ca-80af-4cef-b098-29785152ce44
+  cryptsetup open /dev/sda2 crypt-cff857d2-f8f9-42ef-8dfb-b412a2c3806f
+  cryptsetup open /dev/sdc crpyt-c78abd8f-cb7c-4089-b40b-ab452eea6965
+  cryptsetup open /dev/sdd crypt-34be00ce-ed0b-47d9-a7a3-1f2488ad1f63
+}
+
+cryptClose () {
+  cryptsetup close crypt-d47246ca-80af-4cef-b098-29785152ce44
+  cryptsetup close crypt-cff857d2-f8f9-42ef-8dfb-b412a2c3806f
+  cryptsetup close crpyt-c78abd8f-cb7c-4089-b40b-ab452eea6965
+  cryptsetup close crypt-34be00ce-ed0b-47d9-a7a3-1f2488ad1f63
+}
+
 createSubvolumes () {
   mount /dev/mapper/crypt-sda2 /mnt
   btrfs subvol list /mnt
@@ -38,6 +52,13 @@ mountSubvolumes () {
   mount -o compress=zstd,subvol=nix,noatime /dev/mapper/crypt-sda2 /mnt/nix
 }
 
+unmountAll () {
+  unmountBoots
+  unmountSwaps
+  unmountSubvolumes
+  cryptClose
+}
+
 createSwapfile () {
   truncate -s 0 /mnt/swap/swapfile
   chattr +C /mnt/swap/swapfile
@@ -62,9 +83,17 @@ mountBoots () {
   mount /dev/sda1 /mnt/boot
 }
 
-#createSubvolumes
-#prepareMountPoints
-mountSubvolumes
-mountSwaps
-mountBoots
+mountAll () {
+  #createSubvolumes
+  #prepareMountPoints
+  mountSubvolumes
+  mountSwaps
+  mountBoots
+}
 
+main () {
+  mountAll
+  #unmountAll
+}
+
+main
