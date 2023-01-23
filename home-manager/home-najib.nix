@@ -102,6 +102,8 @@ in
     xpra
     bootiso
     virt-manager
+
+    kitty
   ];
 
   # Enable home-manager and git
