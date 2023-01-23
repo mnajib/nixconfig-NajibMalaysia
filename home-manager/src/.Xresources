@@ -29,7 +29,8 @@ URxvt.fading:               0
 ! URxvt.visualBell:           true
 URxvt.loginShell:           true
 !URxvt.saveLines:            50
-URxvt.internalBorder:       3
+!URxvt.internalBorder:       3
+URxvt.internalBorder:       0
 URxvt.lineSpace:            0
 
 !------------------------------------------------------------------------------
