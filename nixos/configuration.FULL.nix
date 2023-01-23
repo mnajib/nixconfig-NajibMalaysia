@@ -157,6 +157,7 @@
     mtr iproute # busybox
     htop mc irssi most mosh coreutils mutt
     bmon # Network bandwidth monitor
+    btop
 
     screen
     tmux
