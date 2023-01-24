@@ -64,7 +64,8 @@ URxvt.urlLauncher:          firefox
 !------------------------------------------------------------------------------
 URxvt.cursorBlink:          true
 !URxvt.cursorColor:          #657b83
-URxvt.cursorColor:          yellow
+!URxvt.cursorColor:          yellow
+URxvt.cursorColor:          #ff9624
 URxvt.cursorUnderline:      false
 
 !------------------------------------------------------------------------------
