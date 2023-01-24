@@ -38,5 +38,6 @@
   # networking.interfaces.enp4s0.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp5s0.useDHCP = lib.mkDefault true;
 
+  nixpkgs.hostPlatform.system = "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

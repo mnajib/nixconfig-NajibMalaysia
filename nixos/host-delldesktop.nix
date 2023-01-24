@@ -53,7 +53,7 @@
     #networking.useDHCP = false;
 
     #boot.loader.systemd-boot.enable = true;
-    nix.trustedUsers = [ "root" "najib" ];
+    nix.settings.trusted-users = [ "root" "najib" ];
 
     #boot.loader.efi.canTouchEfiVariables = true;
     boot.loader.grub = {
