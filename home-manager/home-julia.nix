@@ -67,8 +67,8 @@ in
     clamav
     audacity
     shotcut
-    calligra
-    openshot
+    #calligra        # calligra marked unsecure because using qtwebkit
+    openshot-qt
     kmymoney
     shotwell
   ];
