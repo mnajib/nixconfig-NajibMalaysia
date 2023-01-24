@@ -202,6 +202,10 @@
           specialArgs = { inherit inputs outputs; };
           modules = [
             ./nixos/host-keira.nix
+
+            # Add your model from this list:
+            # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+            hardware.nixosModules.lenovo-thinkpad-t410
           ];
         };
 

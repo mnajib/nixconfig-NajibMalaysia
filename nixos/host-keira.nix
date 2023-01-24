@@ -1,12 +1,6 @@
-# vim: ts=4 sw=4 nowrap number:
-
 {
 	pkgs, 
-	#sources ? import ./nix/sources.nix,
-	#pkgs ? import sources.nixpkgs {},
-
 	config,
-	
 	... 
 }:
 
@@ -73,9 +67,9 @@
     #    "${builtins.fetchGit { url = "https://github.com/NixOS/nixos-hardware.git"; }}/lenovo/thinkpad/t410"
     #];
 
-    nix.trustedUsers = [
+    nix.settings.trusted-users = [
     	"root" "najib"
-		"julia"
+	"julia"
     ];
 
     # For the value of 'networking.hostID', use the following command:
@@ -195,14 +189,22 @@
 		}
 	];
 
+    services.xserver.enable = true;
+
     services.xserver.libinput.enable = true;
     services.xserver.libinput.touchpad.disableWhileTyping = true;
     services.xserver.libinput.touchpad.scrollMethod = "twofinger";
     services.xserver.libinput.touchpad.tapping = true; #false;
 
     #services.xserver.displayManager.sddm.enable = true;
-    #services.xserver.displayManager.defaultSession = "none+xmonad";
     #services.xserver.desktopManager.plasma5.enable = true;
+    services.xserver.desktopManager.xfce.enable = true;
 
-    #nix.maxJobs = 4;
+    #services.xserver.displayManager.defaultSession = "none+xmonad";
+
+    nix.settings.max-jobs = 2;
+
+	#environment.systemPackages = [
+	#  pkgs.blender
+	#];
 }
