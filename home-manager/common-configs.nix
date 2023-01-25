@@ -209,7 +209,7 @@ in
       #ll = "ls --color=tty -Filah";
       j = "jobs";
       s = "sync";
-      emacs = "emacs -nw";
+      #emacs = "emacs -nw";
       #la = "ls -Fa";
       p = "pwd";
       a = "alias";
@@ -258,7 +258,7 @@ in
       p = "pwd";
       a = "alias";
 
-      emacs = "emacs -nw";
+      #emacs = "emacs -nw";
       yi = "yi -k vim";
     };
   };
