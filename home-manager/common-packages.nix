@@ -55,5 +55,7 @@
     pkgs.ngspice                        # The Next Generation Spice (Electronic Circuit Simulator)
     pkgs.fritzing
     pkgs.dt-shell-color-scripts         #
+
+    pkgs.sameboy
   ];
 }
