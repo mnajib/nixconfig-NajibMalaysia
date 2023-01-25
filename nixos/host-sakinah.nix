@@ -52,11 +52,13 @@
     networking.hostId = "6a063836";
     networking.hostName = "sakinah";
 
-    nix.trustedUsers = [
+    nix.settings.trusted-users = [
         "root"
         "najib"
         "nurnasuha"
     ];
+
+    hardware.enableAllFirmware = true;
 
     # XXX:
     networking.useDHCP = false;
