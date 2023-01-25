@@ -186,13 +186,14 @@ in
 
   #programs.tmux = {
   #  enable = true;
-  #  #packages = 
+  #  #packages =
   #};
 
   # SessionPath and sessionVariables creates a hm-session file that must be sourced:
   # Beware, it puts it in .profile, not in the .bashrc!
   programs.bash = {
     enable = true;
+    enableCompletion = true;
 
     #shellOptions = [
     #];
@@ -225,18 +226,17 @@ in
 
     # Extra commands that should be run when initializing an interactive shell.
     #initExtra = ''
-    #  umask 0002
-    #'';
-    #initExtra = ''
-    #  "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+      #umask 0002
+      #"$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
     #'';
 
     # Extra commands that should be placed in ~/.bashrc.
     # Note that these commands will be run even in non-interactive shells.
     bashrcExtra = ''
-    umask 0002
-    #. ~/.bashrc
-    #eval "$(direnv hook bash)"
+      umask 0002
+      #. ~/.bashrc
+      #eval "$(direnv hook bash)"
+      colorscript random
     '';
 
     #logoutExtra = ''
