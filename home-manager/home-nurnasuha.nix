@@ -78,6 +78,8 @@ in
     #minecraft-server
     openttd
     0ad
+    grapejuice
+    zoom-us
   ];
 
   # Enable home-manager and git
