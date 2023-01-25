@@ -74,10 +74,10 @@ in
 
     teeworlds
     minetest
-    minecraft-launcher
+    #minecraft-launcher
     #minecraft-server
     openttd
-    0ad
+    #0ad
     grapejuice
     zoom-us
   ];
