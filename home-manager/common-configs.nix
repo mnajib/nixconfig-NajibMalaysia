@@ -245,6 +245,7 @@ in
 
   programs.fish = {
     enable = true;
+
     shellAliases = {
       aoeu = "setxkbmap us";
       asdf = "setxkbmap dvorak";
@@ -261,6 +262,23 @@ in
       #emacs = "emacs -nw";
       yi = "yi -k vim";
     };
+
+    # Shell script code called during interactive fish shell initialisation.
+    interactiveShellInit = ''
+      #colorscript random
+    '';
+
+    # Shell script code called during fish shell initialisation.
+    shellInit = ''
+      colorscript random
+    '';
+
+    # Shell script code called during fish login shell initialisation.
+    loginShellInit = ''
+      #colorscript random
+    '';
+
+    #plugin.
   };
 
   programs.direnv = {
