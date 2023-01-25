@@ -94,4 +94,16 @@
 	emulateWheel = true;
     };
 
+    services.xserver = {
+      enable = true;
+      libinput.enable = true;
+      desktopManager.xfce.enable = true;
+      displayManager.defaultSession = "none+xmonad";
+    };
+
+    nix.settings.max-jobs = 2;
+
+    #environment.systemPackages = [
+    #  pkgs.blender
+    #];
 }

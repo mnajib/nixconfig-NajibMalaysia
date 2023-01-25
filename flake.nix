@@ -194,6 +194,10 @@
           specialArgs = { inherit inputs outputs; };
           modules = [
             ./nixos/host-sakinah.nix
+
+            # Add your model from this list:
+            # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+            hardware.nixosModules.lenovo-thinkpad-x220
           ];
         };
 
