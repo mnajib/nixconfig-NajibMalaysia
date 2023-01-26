@@ -101,51 +101,30 @@ URxvt.pointerBlank:         true
 !------------------------------------------------------------------------------
 ! Dark Black
 *color0: #000000
-! Black
-!*color0: #073642
 ! Light Black
-!*color8: #002b36
-!*color8: #303030
-!*color8: #4c4c4c
-*color8: #575757
+*color8: #4c4c4c
 
 !------------------------------------------------------------------------------
 !! red dark/light
 !------------------------------------------------------------------------------
 ! Dark red
-*color1: #af0000
-! Red
-*color9: #ff0000
+*color1: #cc0000
 ! Light Red
-! ...
+*color9: #ff4c4c
 
 !------------------------------------------------------------------------------
 !! green dark/light
 !------------------------------------------------------------------------------
 ! Dark Green
-!*color2: #00af00
 *color2: #009200
-
-! Green
-! ...
-
 ! Light Green
 *color10: #00d700
 
 !------------------------------------------------------------------------------
 !! yellow dark/light
 !------------------------------------------------------------------------------
-!*color3: #b58900
-!*color11: #fed75e
-
 ! Dark Yellow
-! #eeed202
-
-! Yellow
-!*color3: #ffff00
-!*color3: #e1e169
-!*color3: #d7d75f
-*color3: #cdcd55
+*color3: #b8b84c
 
 ! Light Yellow
 *color11: #ffff87
@@ -154,36 +133,15 @@ URxvt.pointerBlank:         true
 !! blue dark/light
 !------------------------------------------------------------------------------
 ! Dark Blue
-! #236a9c
-!*color4: #007dd6
-!*color4: #159eff
-!*color4: #448fe8
-!*color4: #3f7ac6 <-- Commented on 2023-01-22 T01:06 by Najib Ibrahim
-*color4: #3673b5
-!*color4: #3570bc
-!*color4: #2c81e6
-!*color4: #2b66b2
-!*color4: #215ca8
-
-! Blue
-! #0000ff
-!*color4: #268bd2
-
+*color4: #2278e6
 ! Light Blue
-! #87cefa
-!*color12: #68baf4
 *color12: #67a2ee
 
 !------------------------------------------------------------------------------
 !! magenta dark/light
 !------------------------------------------------------------------------------
 ! Dark Magenta
-!*color5: #d33682
 *color5: #8c00a0
-
-! Magenta
-! ...
-
 ! Light Magenta
 *color13: #c64ed7
 
@@ -191,11 +149,7 @@ URxvt.pointerBlank:         true
 !! cyan dark/light
 !------------------------------------------------------------------------------
 ! Dark Cyan
-*color6: #02caca
-
-! Cyan
-! ...
-
+*color6: #01b5b5
 ! Light Cyan
 *color14: #45fdfd
 
@@ -203,21 +157,6 @@ URxvt.pointerBlank:         true
 !! white dark/light
 !------------------------------------------------------------------------------
 ! Dark White
-! #d2d2d2
-!*color7: #f7f7f7
-!*color7: #f4f4f4
-!*color7: #f1f1f1
-!*color7: #ececec
-!*color7: #e1e1e1
-!*color7: #d7d7d7
-!*color7: #cdcdcd
-!*color7: #c3c3c3
 *color7: #b9b9b9
-
-! White
-!*color7: #eee8d5
-!*color7: #eeeeee
-
 ! Light White
-!*color15: #fdf6e3
 *color15: #ffffff

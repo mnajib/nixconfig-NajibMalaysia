@@ -41,107 +41,6 @@ in
     ./tmux.nix
   ];
   # XXX: TODO: Should be in seperate file packages.nix
-  /*
-  home.packages = [
-    #pkgs.htop
-    pkgs.atop
-
-    pkgs.gnome.gnome-disk-utility
-
-    pkgs.fortune
-    pkgs.mgba
-
-    #pkgs.git
-    pkgs.zeal               # Offline API documentation browser for software developers
-    pkgs.broot              # something like tree command
-    #pkgs.exa                # can be alias to ls command
-
-    pkgs.xorg.xdpyinfo
-    pkgs.xorg.xwininfo
-    pkgs.mc
-    pkgs.ncdu               # Disc space usage analyzer
-    pkgs.diskonaut          # Disk space usage analyzer
-    pkgs.bc
-    pkgs.rlwrap             # A readline wrapper
-    pkgs.unzip
-    pkgs.wget
-    pkgs.gnupg
-    pkgs.translate-shell    # CLI translator using Google Translate, Bing Translator, ...
-    pkgs.whois
-    pkgs.youtube-dl
-    pkgs.coreutils
-
-    pkgs.dzen2              # A general purpose messaging, notification and menuing program for X11
-
-    #pkgs.kakoune
-    #pkgs.neovim
-    #pkgs.vim
-    #pkgs.yi
-    pkgs.vis
-    #pkgs.emacs
-
-    # MIME related, xdg-utils
-    pkgs.handlr
-
-    pkgs.ranger
-    #pkgs.nnn
-    pkgs.broot
-
-    #pkgs.termite
-    pkgs.termonad
-    #pkgs.tmux
-    pkgs.mosh
-
-    pkgs.pavucontrol
-
-    pkgs.libreoffice
-    #pkgs.wpsoffice
-    pkgs.xournal
-    pkgs.xournalpp
-    pkgs.inkscape #pkgs.unstable.inkscape
-    #pkgs.gimp
-    pkgs.imagemagick
-    pkgs.pandoc
-    pkgs.texlive.combined.scheme-tetex
-    pkgs.ardour #pkgs.unstable.ardour
-    pkgs.simplescreenrecorder
-    pkgs.obs-studio
-
-    pkgs.firefox
-    #pkgs.qutebrowser
-    #pkgs.google-chrome
-    #pkgs.chromium
-    pkgs.brave #pkgs.unstable.brave # web browser
-    pkgs.tuir #pkgs.rtv     # Browse Reddit from terminal
-
-    #pkgs.tdesktop          # Telegram
-    pkgs.qtox
-    pkgs.zoom-us
-    #pkgs.unstable.slack    # Desktop client for Slack
-    pkgs.pass               # CLI password manager
-    #pkgs.gitsi
-    pkgs.vlc
-    pkgs.shutter            # Screenshots
-    pkgs.zathura            # Document viewer
-
-    #pkgs.webtorrent_desktop
-
-    pkgs.dropbox #pkgs.unstable.dropbox
-    pkgs.wpa_supplicant_gui
-
-    # electronic
-    pkgs.qucs               # Integrated circuit simulator
-    pkgs.ngspice            # The Next Generation Spice (Electronic Circuit Simulator)
-    #pkgs.xcircuit          # Generic drawing program tailored to circuit diagrams
-    pkgs.fritzing
-    #pkgs.kicad
-
-    #pkgs.graphviz
-    #pkgs.graphviz-nox
-    #pkgs.zgrviewer
-    #pkgs.kgraphviewer
-  ];
-  */
 
   #home.sessionVariables = {
   #  EDITOR = "nvim";       # yi vis nvim kak vim nano rasa jak
@@ -463,31 +362,27 @@ in
   #   Your terminal can display 256 different colors, but your shell can only
   #   use 16 at the same time. (Though there are ways to output those 256 colors
   #   to stdout. Vim can use them all for example).
-  /*
-  xresources.properties = {
+  #xresources.properties = {
     #"Xft.antialias" = 1;
     #"Xft.autohint" = 0;
     #"Xft.dpi" = 100; #120; #192;
     #"Xft.hinting" = 1;
     #"Xft.hintstyle" = "hintfull";
     #"Xft.lcdfilter" = "lcddefault";
-    "Xcursor.theme" = "breeze_cursors";
+    #"Xcursor.theme" = "breeze_cursors";
     #"Xcursor.size" = 48;
-  };
-  */
+  #};
   xresources.extraConfig = builtins.readFile ./src/.Xresources;
   #
   #xresources.extraConfig = builtins.readFile ( pkgs.fetchFromGitHub {} + "./src/.Xresources");
-  /*
-  xresources.extraConfig = builtins.readFile (
-    pkgs.fetchFromGitHub {
-      owner = "solarized";
-      repo = "xresources";
-      rev = "025ceddbddf55f2eb4ab40b05889148aab9699fc";
-      sha256 = "0lxv37gmh38y9d3l8nbnsm1mskcv10g3i83j0kac0a2qmypv1k9f";
-    } + "/Xresources.dark"
-  );
-  */
+  #xresources.extraConfig = builtins.readFile (
+  #  pkgs.fetchFromGitHub {
+  #    owner = "solarized";
+  #    repo = "xresources";
+  #    rev = "025ceddbddf55f2eb4ab40b05889148aab9699fc";
+  #    sha256 = "0lxv37gmh38y9d3l8nbnsm1mskcv10g3i83j0kac0a2qmypv1k9f";
+  #  } + "/Xresources.dark"
+  #);
 
   gtk = {
     enable = true;
