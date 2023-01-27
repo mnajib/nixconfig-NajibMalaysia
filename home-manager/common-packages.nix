@@ -2,6 +2,8 @@
 {
   home.packages = [
     pkgs.atop
+    pkgs.btop
+    pkgs.htop
     pkgs.gnome.gnome-disk-utility
     pkgs.fortune
     pkgs.mgba
@@ -41,7 +43,7 @@
     pkgs.simplescreenrecorder
     pkgs.obs-studio
     pkgs.firefox
-    pkgs.brave                          #pkgs.unstable.brave # web browser
+    #pkgs.brave                          #pkgs.unstable.brave # web browser
     pkgs.tuir                           #pkgs.rtv # Browse Reddit from terminal
     pkgs.qtox
     pkgs.zoom-us

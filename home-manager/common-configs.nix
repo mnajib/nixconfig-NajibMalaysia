@@ -267,13 +267,13 @@ in
   #programs.clifm = {
   #};
 
-  programs.emacs = {
-    enable = true;
-    extraPackages = epkgs: [
-      epkgs.nix-mode
-      epkgs.magit
-    ];
-  };
+  #programs.emacs = {
+  #  enable = true;
+  #  extraPackages = epkgs: [
+  #    epkgs.nix-mode
+  #    epkgs.magit
+  #  ];
+  #};
 
   programs.kakoune = {
     enable = true;

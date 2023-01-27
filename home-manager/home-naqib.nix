@@ -71,6 +71,7 @@
     xarchiver
     #xmind-8-update8
     xournalpp
+    evince
 
     smlnj
     waydroid
@@ -95,6 +96,21 @@
     xpra
     bootiso
     virt-manager
+
+    blender
+    gimp
+    inkscape
+    libreoffice
+    firefox
+    #brave
+    qutebrowser
+    ranger
+    #nnn
+    nano
+    #neovim
+    emacs
+
+    #zeroad
   ];
 
   # Enable home-manager and git
