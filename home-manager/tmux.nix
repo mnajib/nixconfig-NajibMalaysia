@@ -14,6 +14,7 @@
     extraConfig = ''
       set -g mouse on
       #set -g mouse-select-pane on
+      set -g default-terminal "screen-256color"
     '';
 
     tmuxinator.enable = true;
