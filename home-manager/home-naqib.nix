@@ -72,7 +72,7 @@
     #xmind-8-update8
     xournalpp
     evince
-
+    gnome.gnome-clocks
     smlnj
     waydroid
     #kmymoney
