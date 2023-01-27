@@ -847,6 +847,7 @@
   services.openssh.enable = true;
   services.openssh.forwardX11 = true;
   #services.openssh.ports= [ 7177 ];
+  services.sshguard.enable = true;
 
   #services.toxvpn.enable = true;
 
