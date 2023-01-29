@@ -30,7 +30,9 @@
     ./zramSwap.nix
 
     ./btrbk-mahirah.nix
-    ./gogs.nix
+
+    #./gogs.nix
+    ./gitea.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
