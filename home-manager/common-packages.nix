@@ -58,6 +58,9 @@
     pkgs.fritzing
     pkgs.dt-shell-color-scripts         #
 
-    pkgs.sameboy
+    #pkgs.sameboy                       # gameboy emulator
+
+    pkgs.links2                         # cli webbrowser
+    pkgs.lynx                           # cli webbrowser
   ];
 }
