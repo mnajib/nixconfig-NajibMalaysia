@@ -42,8 +42,6 @@
     pkgs.ardour                         #pkgs.unstable.ardour
     pkgs.simplescreenrecorder
     pkgs.obs-studio
-    pkgs.firefox
-    #pkgs.brave                          #pkgs.unstable.brave # web browser
     pkgs.tuir                           #pkgs.rtv # Browse Reddit from terminal
     pkgs.qtox
     pkgs.zoom-us
@@ -60,7 +58,29 @@
 
     #pkgs.sameboy                       # gameboy emulator
 
+    # TUI Web Browser
     pkgs.links2                         # cli webbrowser
     pkgs.lynx                           # cli webbrowser
+
+    # GUI Web Browser
+    pkgs.firefox
+    pkgs.qutebrowser
+    #pkgs.brave                          #pkgs.unstable.brave # web browser
+
+    # TUI E-mail Client
+    pkgs.neomutt
+    pkgs.mutt
+    pkgs.meli
+    #pkgs.lumail
+    pkgs.aerc
+    pkgs.himalaya
+
+    # GUI E-mail Client
+    pkgs.sylpheed
+    pkgs.thunderbird
+    pkgs.mailspring
+    pkgs.gnome.geary
+    pkgs.balsa
+    pkgs.deltachat-desktop
   ];
 }

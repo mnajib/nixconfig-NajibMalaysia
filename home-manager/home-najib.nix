@@ -110,6 +110,19 @@ in
   programs.home-manager.enable = true;
   programs.git.enable = true;
 
+  programs.ssh = {
+    enable = true;
+    matchBlocks = {
+      #"najib@gogs.mahirah" = {
+      #  hostname = "mahirah";
+      #  port = 22;
+      #  user = "najib";
+      #  #certificateFile = [ "~/.ssh/gogs.mahirah.localdomain/id_ed25519" ];
+      #  identityFile = [ "~/.ssh/gogs.mahirah.localdomain/id_ed25519" ];
+      #};
+    };
+  };
+
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
