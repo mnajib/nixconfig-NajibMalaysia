@@ -182,6 +182,10 @@ in
 
   programs.direnv = {
     enable = true;
+    nix-direnv = {
+      enable = true;
+      enableFlakes = true;
+    };
   };
 
   programs.command-not-found.enable = true;
@@ -206,10 +210,17 @@ in
     enable = true;
   };
 
+  programs.info.enable = true;
+
   programs.exa = {
     enable = true;
     enableAliases = true;
   };
+
+  programs.dircolors.enable = true;
+
+  programs.fzf.enable = true;           # fuzzy finder
+  programs.skim.enable = true;          # fuzzy finder
 
   programs.neovim = {
     enable = true;

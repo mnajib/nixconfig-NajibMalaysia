@@ -82,5 +82,7 @@
     pkgs.gnome.geary
     pkgs.balsa
     pkgs.deltachat-desktop
+
+    pkgs.fzy                            # CLI fuzzy finder
   ];
 }
