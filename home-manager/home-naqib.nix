@@ -17,6 +17,7 @@
     ./common-packages.nix
     #./roblox.nix
     ./wesnoth.nix
+    #./system-benchmark.nix
   ];
 
   nixpkgs = {
@@ -110,7 +111,9 @@
     #neovim
     emacs
 
-    #zeroad
+    zeroad
+
+    fluxbox                             # need fbsetroot to set desktop background color
   ];
 
   # Enable home-manager and git
