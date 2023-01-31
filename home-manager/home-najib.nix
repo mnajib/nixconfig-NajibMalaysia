@@ -109,6 +109,11 @@ in
   # Enable home-manager and git
   programs.home-manager.enable = true;
   programs.git.enable = true;
+  programs.git.userName = "Najib Ibrahim";
+  programs.git.userEmail = "mnajib@gmail.com";
+  programs.git.aliases = {
+    co = "checkout";
+  };
 
   programs.ssh = {
     enable = true;
