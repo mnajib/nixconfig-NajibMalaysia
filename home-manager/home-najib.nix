@@ -117,14 +117,14 @@ in
   };
 
   programs.gpg.enable = true;
-  fzf.enable = true;                    # A command-line fuzzy finder written in Go
-  #jq.enable = true;                    # ??? lightweight and flexible command-line JSON processor
-  #bat.enable = true;                   # ??? battery?
-  command-not-found.enable = true;      # Whether interactive shells should show which Nix package (if any) provides a missing command. 
-  dircolors.enable = true;
-  htop.enable = true;
-  info.enable = true;
-  exa.enable = true;
+  programs.fzf.enable = true;                    # A command-line fuzzy finder written in Go
+  #programs.jq.enable = true;                    # ??? lightweight and flexible command-line JSON processor
+  #programs.bat.enable = true;                   # ??? battery?
+  programs.command-not-found.enable = true;      # Whether interactive shells should show which Nix package (if any) provides a missing command. 
+  programs.dircolors.enable = true;
+  programs.htop.enable = true;
+  programs.info.enable = true;
+  programs.exa.enable = true;
 
   programs.ssh = {
     enable = true;
