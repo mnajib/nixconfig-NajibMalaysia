@@ -163,7 +163,8 @@ URxvt.pointerBlank:         true
 !! white dark/light
 !------------------------------------------------------------------------------
 ! Dark White
+!*color7: #8b8b8b
+*color7: #afafaf
 !*color7: #b9b9b9
-*color7: #8b8b8b
 ! Light White
 *color15: #ffffff
