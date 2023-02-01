@@ -125,10 +125,13 @@ URxvt.pointerBlank:         true
 !------------------------------------------------------------------------------
 ! Dark Yellow
 !*color3: #b8b84c
-*color3: #af871c
+!*color3: #af871c
+*color3: #a3a341
 
 ! Light Yellow
-*color11: #ffff87
+!*color11: #ffff87
+!*color11: #ffff00
+*color11: #fffc6f
 !*color11: #dfaf00
 
 !------------------------------------------------------------------------------
