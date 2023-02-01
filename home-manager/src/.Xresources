@@ -128,8 +128,8 @@ URxvt.pointerBlank:         true
 *color3: #af871c
 
 ! Light Yellow
-!*color11: #ffff87
-*color11: #dfaf00
+*color11: #ffff87
+!*color11: #dfaf00
 
 !------------------------------------------------------------------------------
 !! blue dark/light
