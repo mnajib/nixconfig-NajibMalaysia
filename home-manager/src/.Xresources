@@ -102,7 +102,6 @@ URxvt.pointerBlank:         true
 ! Dark Black
 *color0: #000000
 ! Light Black
-!*color8: #4c4c4c
 *color8: #4b4b4b
 
 !------------------------------------------------------------------------------
@@ -125,15 +124,10 @@ URxvt.pointerBlank:         true
 !! yellow dark/light
 !------------------------------------------------------------------------------
 ! Dark Yellow
-!*color3: #b8b84c
-*color3: #af871c
-!*color3: #a3a341
+*color3: #aa8800
 
 ! Light Yellow
-!*color11: #ffff87
-!*color11: #ffff00
-!*color11: #fffc6f
-*color11: #dfaf00
+*color11: #ffe680
 
 !------------------------------------------------------------------------------
 !! blue dark/light
@@ -147,7 +141,7 @@ URxvt.pointerBlank:         true
 !! magenta dark/light
 !------------------------------------------------------------------------------
 ! Dark Magenta
-*color5: #8c00a0
+*color5: #aa00d4
 ! Light Magenta
 *color13: #c64ed7
 
@@ -163,8 +157,6 @@ URxvt.pointerBlank:         true
 !! white dark/light
 !------------------------------------------------------------------------------
 ! Dark White
-!*color7: #8b8b8b
 *color7: #afafaf
-!*color7: #b9b9b9
 ! Light White
 *color15: #ffffff
