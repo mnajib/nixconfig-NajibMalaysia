@@ -405,7 +405,6 @@ in
     #"Xcursor.theme" = "breeze_cursors";
     #"Xcursor.size" = 48;
   #};
-  xresources.extraConfig = builtins.readFile ./src/.Xresources;
   #
   #xresources.extraConfig = builtins.readFile ( pkgs.fetchFromGitHub {} + "./src/.Xresources");
   #xresources.extraConfig = builtins.readFile (
@@ -416,6 +415,10 @@ in
   #    sha256 = "0lxv37gmh38y9d3l8nbnsm1mskcv10g3i83j0kac0a2qmypv1k9f";
   #  } + "/Xresources.dark"
   #);
+  #
+  xresources.extraConfig = builtins.readFile ./src/.Xresources;
+  home.file".Xresources.d/XresourcesColorScheme-NajibMalaysia.Xresources".source = src/.Xresources.d/XresourcesColorScheme-NajibMalaysia.Xresources;
+  home.file".Xresources.d/rxvt-unicode".source = src/.Xresources.d/rxvt-unicode;
 
   gtk = {
     enable = true;
@@ -533,35 +536,35 @@ in
   #}
 
   #----------------------------------------------------------------------------
-  home.file = {
+  #home.file = {
 
-    #".config/termite/config".source = ./termite.config;
+  #home.file.".config/termite/config".source = ./termite.config;
 
-    /*
-    ".tmux.conf" = {
-      text = ''
-        #set-option -g default-shell /run/current-system/sw/bin/fish # bash
-        set-window-option -g mode-keys vi
+  /*
+  home.file.".tmux.conf" = {
+    text = ''
+      #set-option -g default-shell /run/current-system/sw/bin/fish # bash
+      set-window-option -g mode-keys vi
 
-        # Commented this two lines to fix color proble. The $TERM should be "xterm-256color" inside tmux to let it print the colors I need.
-        #set -g default-terminal "screen-256color"
-        #set -ga terminal-overrides ',screen-256color:Tc'
-        # Commented only is not enough to solve the color problem inside tmux. Lets try this
-        #set-option -sa terminal-overrides ",xterm*:Tc"
+      # Commented this two lines to fix color proble. The $TERM should be "xterm-256color" inside tmux to let it print the colors I need.
+      #set -g default-terminal "screen-256color"
+      #set -ga terminal-overrides ',screen-256color:Tc'
+      # Commented only is not enough to solve the color problem inside tmux. Lets try this
+      #set-option -sa terminal-overrides ",xterm*:Tc"
 
-        #set timeoutlen=1000 # Defalut 1000
-        #set timeoutlen=50 # Default 50
-        #
-        #set -g escape-time 10
-        set -sg escape-time 10
+      #set timeoutlen=1000 # Defalut 1000
+      #set timeoutlen=50 # Default 50
+      #
+      #set -g escape-time 10
+      set -sg escape-time 10
 
-        set -g clock-mode-style 24
-        set -g history-limit 10000
-      '';
-    };
-    */
+      set -g clock-mode-style 24
+      set -g history-limit 10000
+    '';
+  };
+  */
 
-    #".config/fish/config.fish" = {
+  #home.file.".config/fish/config.fish" = {
     #    text = ''
     #    set -x GPG_TTY (tty)
     #    gpg-connect-agent updatestartuptty /bye > /dev/null
@@ -580,57 +583,57 @@ in
     #        command-not-found $argv[1]
     #    end
     #    '';
-    #};
+  #};
 
-    #".profile".source = src/.profile;
+  #home.file.".profile".source = src/.profile;
 
-    #".Xdefaults".source = src/.Xdefaults;
+  #home.file.".Xdefaults".source = src/.Xdefaults;
 
-    #".config/kak" = {
-    #    source = ./src/.config/kak;
-    #    recursive = true;
-    #};
+  #home.file.".config/kak" = {
+  #    source = ./src/.config/kak;
+  #    recursive = true;
+  #};
 
-    ".config/ranger" = {
-      source = ./src/.config/ranger;
-      recursive = true;
-    };
-
-    #".config/git" = {
-    #  source = ./src/.config/git;
-    #  recursive = true;
-    #};
-    #".gitconfig" = {
-    #    source = ./src/.gitconfig;
-    #};
-
-    #".config/awesome" = {
-    #    source = ./src/.config/awesome;
-    #    recursive = true;
-    #};
-
-    #".config/awesome/lain".source = fetchFromGitHub {
-    #    owner = "lcpz";
-    #    repo = "lain";
-    #    rev = "9477093";
-    #    sha256 = "0rfzf93b2v22iqsv84x76dy7h5rbkxqi4yy2ycmcgik4qb0crddp";
-    #};
-
-    #"./bin".source = fetchFromGitHub { #fetchGit {
-    #    owner = "mnajib";
-    #    repo = "home-manager-conf";
-    #};
-    #"./bin".source = fetchGit {
-    #    url = "ssh://najib@mahirah:22/home/najib/GitRepos/bin.git";
-    #    ...
-    #};
-
-    #".fonts" = {
-    #    source = ./src/.fonts;
-    #    recursive = true;
-    #};
-
+  home.file.".config/ranger" = {
+    source = ./src/.config/ranger;
+    recursive = true;
   };
+
+  #home.file.".config/git" = {
+  #  source = ./src/.config/git;
+  #  recursive = true;
+  #};
+  #home.file.".gitconfig" = {
+  #    source = ./src/.gitconfig;
+  #};
+
+  #home.file.".config/awesome" = {
+  #    source = ./src/.config/awesome;
+  #    recursive = true;
+  #};
+
+  #home.file.".config/awesome/lain".source = fetchFromGitHub {
+  #    owner = "lcpz";
+  #    repo = "lain";
+  #    rev = "9477093";
+  #    sha256 = "0rfzf93b2v22iqsv84x76dy7h5rbkxqi4yy2ycmcgik4qb0crddp";
+  #};
+
+  #home.file."./bin".source = fetchFromGitHub { #fetchGit {
+  #    owner = "mnajib";
+  #    repo = "home-manager-conf";
+  #};
+  #home.file."./bin".source = fetchGit {
+  #    url = "ssh://najib@mahirah:22/home/najib/GitRepos/bin.git";
+  #    ...
+  #};
+
+  #home.file.".fonts" = {
+  #    source = ./src/.fonts;
+  #    recursive = true;
+  #};
+
+  #};
 
   #------------------------------------------------------------------------------
   # This value determines the Home Manager release that your
