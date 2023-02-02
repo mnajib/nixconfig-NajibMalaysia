@@ -325,7 +325,7 @@ in
           branchall = "branch -a -vv";
           tracked = "ls-tree --full-tree -r --name-only HEAD";
       };
-      diff-so-fancy.enable = true;
+      #diff-so-fancy.enable = true;
       extraConfig = {
           pull = {
             rebase = true;
