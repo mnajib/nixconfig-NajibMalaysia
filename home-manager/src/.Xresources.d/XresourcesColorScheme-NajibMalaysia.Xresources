@@ -44,7 +44,8 @@
 !! red dark/light
 !------------------------------------------------------------------------------
 ! Dark red
-*color1: #cc0000
+!*color1: #cc0000
+*color1: #c7002e
 ! Light Red
 !*color9: #ff4c4c
 *color9: #fe5748
