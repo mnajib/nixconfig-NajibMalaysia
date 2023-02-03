@@ -9,6 +9,9 @@
 ! To print the resource from file:
 !     $ xrdb -n <file>
 !
+! To merge resource from file to current settings:
+!     $ xrdb -merge <file>
+!
 ! To load a resource from file:
 !     $ xrdb <file>
 !
