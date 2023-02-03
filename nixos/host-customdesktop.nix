@@ -110,6 +110,17 @@
   };
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = [
+    #"video=DisplayPort-2:D"
+    "video=HDMI-2:D"
+    "video=DVI-0:D"
+
+    "video=HDMI-1:D"
+    "video=DVI-1:D"
+    "video=DVI-1-1:D"
+    "video=VGA-0:1280x1024@60me"
+    "video=VGA-1:1280x1024@60me"
+  ];
   #boot.supportedFilesystems = [ "ext4" "btrfs" "xfs" "vfat" ]; # "zfs" bcachefs
   #boot.initrd.supportedFilesystems = [ "ext4" "btrfs" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" ]; # "zfs" bcachefs
   #boot.loader.grub.copyKernels = true;
@@ -125,11 +136,6 @@
 
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
-
-  # XXX
-  #environment.systemPackages = with pkgs; [
-  #    virtualboxWithExtpack
-  #];
 
   #boot.kernelModules = [ "snd-ctxfi" "snd-ca0106" "snd-hda-intel" ];
   #boot.kernelModules = [ "snd-ctxfi" "snd-hda-intel" ];
@@ -151,8 +157,8 @@
   #    y = 1024;
   #  }
   #  {
-  #    x = 1280;
-  #    y = 1024;
+  #    x = 1024;
+  #    y = 786;
   #  }
   #];
 
@@ -162,7 +168,7 @@
 
   #services.xserver.desktopManager.plasma5.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
-  #services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
   #services.xserver.desktopManager.enlightenment.enable = true;
 
   services.xserver.libinput.enable = true;
@@ -181,8 +187,14 @@
 
   #nix.maxJobs = 4;
 
+  #environment.systemPackages = with pkgs; [
   environment.systemPackages = [
     pkgs.blender
+    pkgs.virtualboxWithExtpack
+
+    # use in wayland
+    pkgs.gnome-randr
+    pkgs.foot
   ];
 
   #system.stateVersion = "22.11";
