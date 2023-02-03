@@ -71,7 +71,7 @@
   nix.settings.trusted-users = [ "root" "najib" ];
 
   networking.useDHCP = false;
-  networking.interfaces.enp7s0.useDHCP = true;
+  #networking.interfaces.enp7s0.useDHCP = true;
   #networking.interfaces.wlp3s0.useDHCP = true
   #networking.interfaces.enp7s0.ipv4.addresses = [ {
   #    address = "192.168.123.151";
@@ -145,12 +145,16 @@
   #xdg.portal.enable = true;
   #xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # OR enable gnome desktopManager
 
-  services.xserver.resolutions = [
-    {
-      x = 1280;
-      y = 1024;
-    }
-  ];
+  #services.xserver.resolutions = [
+  #  {
+  #    x = 1280;
+  #    y = 1024;
+  #  }
+  #  {
+  #    x = 1280;
+  #    y = 1024;
+  #  }
+  #];
 
   #services.xserver.displayManager.sddm.enable = true;
   #services.xserver.displayManager.gdm.enable = true;
