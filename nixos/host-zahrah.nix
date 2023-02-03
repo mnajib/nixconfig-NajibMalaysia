@@ -17,7 +17,6 @@
     #./hardware-storageSSD001.nix
     ./thinkpad.nix
 
-
     ./hosts2.nix
     #./network-dns.nix
 
@@ -157,6 +156,8 @@
     #powerManagement.cpufreq.min =  800000;
     powerManagement.cpufreq.max = 1500000;
 
+  services.power-profiles-daemon.enable = false;
+
   services.tlp = {
     enable = true;
     settings = {
@@ -231,8 +232,10 @@
   services.xserver.libinput.touchpad.tapping = true; #false;
 
   #services.xserver.displayManager.sddm.enable = true;
-  #services.xserver.displayManager.defaultSession = "none+xmonad";
+  services.xserver.displayManager.defaultSession = "none+xmonad";
   #services.xserver.desktopManager.plasma5.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.desktopManager.xfce.enable = true;
 
   #nix.maxJobs = 4;
 }
