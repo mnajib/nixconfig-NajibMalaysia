@@ -31,6 +31,8 @@
     # everything match nicely? Try nix-colors!
     nix-colors.url = "github:misterio77/nix-colors";
 
+    hyprland.url = "github:hyprwm/hyprland";
+
     sops-nix.url = "github:mic92/sops-nix";
 
     sile.url = "github:sile-typesetter/sile/v0.14.3";
@@ -57,6 +59,8 @@
     hardware,
     flake-utils,
     nur,
+    nix-colors,
+    hyprland,
     sile,
     nixos-generators,
     dnsblacklist,
@@ -186,6 +190,12 @@
             # Add your model from this list:
             # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
             hardware.nixosModules.lenovo-thinkpad-t410
+            hardware.nixosModules.common-cpu-intel
+            hardware.nixosModules.common-gpu-intel
+            #hardware.nixosModules.common-gpu-nvidia
+            #hardware.nixosModules.common-gpu-nvidia-disable.nix
+            hardware.nixosModules.common-pc-laptop
+            hardware.nixosModules.common-pc-ssd
           ];
         };
 
@@ -295,6 +305,7 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
+            #hyprland.homeManagerModules.default
             ./home-manager/home-naim.nix
           ];
         };

@@ -13,12 +13,20 @@ in
     # outputs.homeManagerModules.example
 
     # Or modules exported from other flakes (such as nix-colors):
-    # inputs.nix-colors.homeManagerModules.default
+    inputs.nix-colors.homeManagerModules.default
+    #inputs.hardware.nixosModules.common-cpu-intel
+    #inputs.hardware.nixosModules.common-gpu-intel
+    #inputs.hardware.nixosModules.common-gpu-nvidia
+    ##inputs.hardware.nixosModules.common-gpu-nvidia-disable.nix
+    #inputs.hardware.nixosModules.common-pc-laptop
+    #inputs.hardware.nixosModules.common-pc-ssd
+    inputs.hyprland.homeManagerModules.default
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
     ./roblox.nix
     ./wesnoth.nix
+    ./wayland-wm/default.nix
 
     ./common-configs.nix
     ./common-packages.nix
@@ -60,6 +68,17 @@ in
   # programs.neovim.enable = true;
   home.packages = with pkgs; [
     sameboy
+
+    # CLI task manager
+    taskell
+    ctodo
+    geek-life
+    todoman
+    # GUI task manager
+    #elementary-planner # marked broken
+    effitask
+
+    foot
   ];
 
   # Enable home-manager and git

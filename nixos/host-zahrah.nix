@@ -233,10 +233,59 @@
 
   #services.xserver.displayManager.sddm.enable = true;
   services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.startx.enable = true;
+  #services.xserver.displayManager.lightdm.enable = true;
+
   services.xserver.displayManager.defaultSession = "none+xmonad";
   #services.xserver.desktopManager.plasma5.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
+  #services.xserver.desktopManager.pantheon.enable = true;
+  services.xserver.desktopManager.enlightenment.enable = true;
+  services.xserver.desktopManager.lumina.enable = true;
+  services.xserver.desktopManager.mate.enable = true;
+  #services.xserver.desktopManager.cinnamon.enable = true;
+  services.xserver.desktopManager.lxqt.enable = true;
+
+  services.xserver.windowManager = {
+    berry.enable = true;
+    notion.enable = true;
+    pekwm.enable = true;
+    qtile.enable = true;
+    ratpoison.enable = true;
+    tinywm.enable = true;
+    smallwm.enable = true;
+    yeahwm.enable = true;
+    mlvwm.enable = true;
+    leftwm.enable = true;
+    icewm.enable = true;
+    i3.enable = true;
+    fvwm3.enable = true;
+    bspwm.enable = true;
+    openbox.enable = true;
+    #mwm.enable = true;
+    #lwm.enable = true;
+    jwm.enable = true;
+    fluxbox.enable = true;
+    windowmaker.enable = true;
+    twm.enable = true;
+    awesome.enable = true;
+    spectrwm.enable = true;
+    wmderland.enable = true;
+    herbstluftwm.enable = true;
+
+    hypr.enable = true;
+
+    clfswm.enable = true;
+    #stumpwm.enable = true;
+    sawfish.enable = true;
+    exwm.enable = true;
+
+    "2bwm".enable = true;
+  };
+
+  programs.sway.enable = true;
+  programs.xwayland.enable = true;
 
   #nix.maxJobs = 4;
 }

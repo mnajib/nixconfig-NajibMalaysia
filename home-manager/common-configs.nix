@@ -6,6 +6,9 @@
 {
   config,
   pkgs,
+  inputs,
+  lib,
+  outputs,
   ...
 }:
 let
@@ -27,6 +30,33 @@ let
   #foregroundColor = "#f0f8ff";
   #warningColor = "#fb0a66"; # "#e2313"; "#ffc0cb"
   #lockCmd = "${pkgs.i3lock-fancy}/bin/i3lock-fancy -p -t";
+
+  colorScheme = {
+    slug = "najib";
+    name = "Najib";
+    author = "Najib Ibrahim (https://github.com/mnajib)";
+    colors = {
+      base00 = "#000000";
+      base01 = "#c7002e";
+      base02 = "#009200";
+      base03 = "#aa8800";
+      base04 = "#2278e6";
+      base05 = "#aa00d4";
+      base06 = "#01b5b5";
+      base07 = "#afafaf";
+      base08 = "#4b4b4b";
+      base09 = "#fe5748";
+      base0A = "#00d700";
+      base0B = "#ffee00";
+      base0C = "#67a2ee";
+      base0D = "#c64ed7";
+      base0E = "#45fdfd";
+      base0F = "#ffffff";
+    };
+  };
+  inherit (inputs.nix-colors) colorSchemes;
+  #
+  inherit (inputs.nix-colors.lib-contrib { inherit pkgs; }) colorschemeFromPicture nixWallpaperFromScheme;
 in
 {
   nixpkgs.config = {
@@ -37,10 +67,15 @@ in
 
   # XXX: TODO: Better if not import here; but import from user specific file
   imports = [
+    inputs.nix-colors.homeManagerModule
     ./screen.nix
     ./tmux.nix
   ];
   # XXX: TODO: Should be in seperate file packages.nix
+
+  colorscheme = lib.mkDefault colorSchemes.dracula;
+  #colorscheme = lib.mkDefault colorSchemes.nord;
+  #colorscheme = lib.mkDefault colorSchemes.najib;
 
   #home.sessionVariables = {
   #  EDITOR = "nvim";       # yi vis nvim kak vim nano rasa jak
@@ -57,8 +92,34 @@ in
     enable = true;
   };
 
+  programs.kitty = {
+    enable = true;
+    settings = {
+      background = "#${config.colorScheme.colors.base00}";
+      foreground = "#${config.colorScheme.colors.base05}";
+    };
+  };
+
   programs.qutebrowser = {
     enable = true;
+    settings = {
+      colors = {
+        hints = {
+          bg = "#${config.colorScheme.colors.base00}";
+          fg = "#${config.colorScheme.colors.base0F}";
+        };
+        tabs.bar = {
+          bg = "#${config.colorScheme.colors.base00}";
+        };
+      };
+      tabs.tabs_are_windows = true;
+    };
+    #colors = {
+    #  # Becomes either 'dark' or 'light', based on your colors!
+    #  webppage.preferred_color_scheme = "${config.colorScheme.kind}";
+    #  tabs.bar.bg = "#${config.colorScheme.colors.base00}";
+    #  keyhint.fg = "#${config.colorScheme.colors.base05}";
+    #};
   };
 
   programs.urxvt = {
