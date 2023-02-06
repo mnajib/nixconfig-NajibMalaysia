@@ -112,7 +112,7 @@ in
           bg = "#${config.colorScheme.colors.base00}";
         };
       };
-      tabs.tabs_are_windows = true;
+      #tabs.tabs_are_windows = true;
     };
     #colors = {
     #  # Becomes either 'dark' or 'light', based on your colors!
