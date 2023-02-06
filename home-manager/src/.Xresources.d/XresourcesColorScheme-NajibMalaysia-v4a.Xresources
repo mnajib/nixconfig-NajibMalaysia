@@ -97,11 +97,11 @@
 !! magenta dark/light
 !------------------------------------------------------------------------------
 ! Dark Magenta
-!*color5: #aa00d4
-*color5: #a82ba4
+*color5: #aa00d4
+!*color5: #a82ba4
 ! Light Magenta
-!*color13: #c64ed7
-*color13: #fc07e8
+*color13: #c64ed7
+!*color13: #fc07e8
 
 !------------------------------------------------------------------------------
 !! cyan dark/light
