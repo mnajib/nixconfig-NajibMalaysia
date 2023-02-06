@@ -232,9 +232,9 @@
   services.xserver.libinput.touchpad.tapping = true; #false;
 
   #services.xserver.displayManager.sddm.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
+  #services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.startx.enable = true;
-  #services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.displayManager.lightdm.enable = true;
 
   services.xserver.displayManager.defaultSession = "none+xmonad";
   #services.xserver.desktopManager.plasma5.enable = true;
