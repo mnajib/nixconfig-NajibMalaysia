@@ -478,8 +478,10 @@ in
   #);
   #
   xresources.extraConfig = builtins.readFile ./src/.Xresources;
-  home.file.".Xresources.d/XresourcesColorScheme-NajibMalaysia.Xresources".source = src/.Xresources.d/XresourcesColorScheme-NajibMalaysia.Xresources;
-  home.file.".Xresources.d/xvt-unicode.Xresources".source = src/.Xresources.d/rxvt-unicode.Xresources;
+  home.file.".Xresources.d" = {
+    source = src/.Xresources.d;
+    recursive = true;
+  };
 
   gtk = {
     enable = true;
