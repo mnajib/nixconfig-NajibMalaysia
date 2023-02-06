@@ -4,7 +4,7 @@
 !
 
 ! Include Najib Xresources Color Scheme
-#include ".Xresources.d/XresourcesColorScheme-NajibMalaysia.Xresources"
+#include ".Xresources.d/XresourcesColorScheme-NajibMalaysia-v3.Xresources"
 
 #include ".Xresources.d/rxvt-unicode.Xresources"
 !#include ".Xresources.d/xterm.Xresources"

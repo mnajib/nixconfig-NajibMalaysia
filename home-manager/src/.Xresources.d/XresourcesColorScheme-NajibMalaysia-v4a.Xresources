@@ -1,0 +1,122 @@
+! Project:    Najib XResources Color Scheme
+! Repository: https://github.com/mnajib/Xresources-NajibMalaysia
+! License:    MIT
+
+!
+! To see the currently loaded resorces:
+!     $ xrdb -query -all
+!
+! To print the resource from file:
+!     $ xrdb -n <file>
+!
+! To merge resource from file to current settings:
+!     $ xrdb -merge <file>
+!
+! To load a resource from file:
+!     $ xrdb <file>
+!
+! Example how to include Najib Xresources Color Scheme from ~/.Xresources:
+!     #include ".Xresources.d/XresourcesColorScheme-NajibMalaysia"
+!
+
+*Background: #000000
+*Foreground: #ffffff
+
+!!*fading: 35
+*fadeColor: #002b36
+*cursorColor: #93a1a1
+
+!------------------------------------------------------------------------------
+!! Pointer
+!------------------------------------------------------------------------------
+!cursor vs pointer ??
+!*pointerColorBackground: #586e75
+!*pointerColorForeground: #93a1a1
+*pointerColorBackground: #feff11
+*pointerColorForeground: #000000
+
+!------------------------------------------------------------------------------
+!! black dark/light
+!------------------------------------------------------------------------------
+! Dark Black
+*color0: #000000
+! Light Black
+*color8: #4b4b4b
+
+!------------------------------------------------------------------------------
+!! red dark/light
+!------------------------------------------------------------------------------
+! Dark red
+!*color1: #c7002e
+*color1: #a82d2b
+! Light Red
+!*color9: #ff4c4c
+!*color9: #fe5748
+!*color9: #fc0707
+*color9: #ff005f
+
+!------------------------------------------------------------------------------
+!! green dark/light
+!------------------------------------------------------------------------------
+! Dark Green
+!*color2: #009200
+*color2: #2da82b
+! Light Green
+!*color10: #00d700
+*color10: #1bfc07
+
+!------------------------------------------------------------------------------
+!! yellow dark/light
+!------------------------------------------------------------------------------
+! Dark Yellow
+!*color3: #aa8800
+*color3: #a8a62b
+
+! Light Yellow
+!*color11: #ffee00
+*color11: #fcf807
+
+!------------------------------------------------------------------------------
+!! blue dark/light
+!------------------------------------------------------------------------------
+! Dark Blue
+!*color4: #2278e6
+!*color4: #2b2ba8
+!*color4: #0f07fc
+*color4: #ff5f00
+!*color4: #0000ff
+! Light Blue
+!*color12: #67a2ee
+!*color12: #0f07fc
+!*color12: #4b3cff
+!*color12: #384dd8
+!*color12: #2266e5
+*color12: #ff875f
+
+!------------------------------------------------------------------------------
+!! magenta dark/light
+!------------------------------------------------------------------------------
+! Dark Magenta
+!*color5: #aa00d4
+*color5: #a82ba4
+! Light Magenta
+!*color13: #c64ed7
+*color13: #fc07e8
+
+!------------------------------------------------------------------------------
+!! cyan dark/light
+!------------------------------------------------------------------------------
+! Dark Cyan
+!*color6: #01b5b5
+*color6: #2ba8a2
+! Light Cyan
+!*color14: #45fdfd
+*color14: #07fcfc
+
+!------------------------------------------------------------------------------
+!! white dark/light
+!------------------------------------------------------------------------------
+! Dark White
+*color7: #afafaf
+! Light White
+*color15: #ffffff
