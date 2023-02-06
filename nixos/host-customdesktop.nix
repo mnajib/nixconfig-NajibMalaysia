@@ -109,7 +109,7 @@
     ];
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages_latest; # XXX: test disable this while trying to solve monitor on build-in VGA, DVI, HDMI not detectded in Xorg, but detected in Wayland.
   boot.kernelParams = [
     #"video=DisplayPort-2:D"
     "video=HDMI-2:D"
