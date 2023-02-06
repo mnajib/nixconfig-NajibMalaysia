@@ -80,15 +80,16 @@
 !! blue dark/light
 !------------------------------------------------------------------------------
 ! Dark Blue
-!*color4: #2278e6
+*color4: #2278e6
 !*color4: #2b2ba8
-*color4: #0f07fc
+!*color4: #0f07fc
+!*color4: #0000ff
 ! Light Blue
-!*color12: #67a2ee
+*color12: #67a2ee
 !*color12: #0f07fc
 !*color12: #4b3cff
 !*color12: #384dd8
-*color12: #2266e5
+!*color12: #2266e5
 
 !------------------------------------------------------------------------------
 !! magenta dark/light
