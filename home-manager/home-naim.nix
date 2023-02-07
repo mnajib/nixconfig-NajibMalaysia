@@ -3,8 +3,11 @@
 
 { inputs, outputs, lib, config, pkgs, ... }:
 let
-  name = "M.Na'im Bin M.Najib";
-  #email = "";
+  username = "naim";
+  #name = "M.Na'im Bin M.Najib";
+  name = "Muhammad Na'im";
+  fullname = "Muhammad Na'im Bin Mohd Najib";
+  email = "muhammadnaimbinmohdnajib@gmail.com";
 in
 {
   # You can import other home-manager modules here
@@ -60,20 +63,21 @@ in
 
   # TODO: Set your username
   home = {
-    username = "naim";
-    homeDirectory = "/home/naim";
+    username = "${username}";
+    homeDirectory = "/home/${username}";
   };
 
   # Add stuff for your user as you see fit:
   # programs.neovim.enable = true;
   home.packages = with pkgs; [
-    sameboy
+    #sameboy
 
     # CLI task manager
     taskell
     ctodo
     geek-life
     todoman
+
     # GUI task manager
     #elementary-planner # marked broken
     effitask
@@ -85,8 +89,8 @@ in
   programs.home-manager.enable = true;
   programs.git = {
     enable = true;
-    userName = "Muhammad Na'im";
-    userEmail = "muhammadnaimbinmohdnajib@gmail.com";
+    userName = "${name}";
+    userEmail = "${email}";
   };
 
   # Nicely reload system units when changing configs
