@@ -8,7 +8,7 @@
     pkgs.fortune
     pkgs.mgba
     pkgs.zeal                           # Offline API documentation browser for software developers
-    pkgs.broot                          # something like tree command
+    #pkgs.broot                          # something like tree command
     pkgs.xorg.xdpyinfo
     pkgs.xorg.xwininfo
     pkgs.mc
@@ -27,7 +27,6 @@
     pkgs.vis
     pkgs.handlr
     pkgs.ranger
-    pkgs.broot
     pkgs.termonad
     pkgs.tmux
     pkgs.mosh
@@ -74,6 +73,7 @@
     #pkgs.lumail
     pkgs.aerc
     pkgs.himalaya
+    pkgs.deltachat-cursed
 
     # GUI E-mail Client
     pkgs.sylpheed
