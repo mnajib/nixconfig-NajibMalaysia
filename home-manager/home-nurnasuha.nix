@@ -19,6 +19,7 @@ in
     # ./nvim.nix
     #./roblox.nix
     #./wesnoth.nix
+    ./minecraft.nix
 
     ./common-configs.nix
     ./common-packages.nix
