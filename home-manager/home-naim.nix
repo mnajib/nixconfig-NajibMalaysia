@@ -30,6 +30,7 @@ in
     ./roblox.nix
     ./wesnoth.nix
     ./wayland-wm/default.nix
+    ./minecraft.nix
 
     ./common-configs.nix
     ./common-packages.nix
