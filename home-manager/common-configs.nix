@@ -204,7 +204,7 @@ in
       umask 0002
       #. ~/.bashrc
       #eval "$(direnv hook bash)"
-      colorscript random
+      #colorscript random
     '';
 
     #logoutExtra = ''
@@ -238,7 +238,7 @@ in
 
     # Shell script code called during fish shell initialisation.
     shellInit = ''
-      colorscript random
+      #colorscript random
     '';
 
     # Shell script code called during fish login shell initialisation.
