@@ -1102,15 +1102,26 @@
     description = "Muhammad Najib Bin Ibrahim";
     uid = 1001;
     isNormalUser = true;
-    #initialPassword = "password";
+    initialPassword = "password";
     createHome = true;
     home = "/home/najib";
     extraGroups = [
-      "wheel" "networkmanager" "istana46" "audio" "video" "cdrom"  "adbusers" "vboxusers" "scanner" "lp" "systemd-journal" "najib" "julia" "naqib" "nurnasuha" "naim" "input" "bluetooth"
+      "wheel"
+      "networkmanager" "istana46" "audio" "video" "cdrom"  "adbusers" "vboxusers" "scanner" "lp" "systemd-journal" "najib" "julia" "naqib" "nurnasuha" "naim" "input" "bluetooth"
       #"fuse"
       "dialout"
     ];
     #shell = pkgs.zsh;
+    packages = [
+      pkgs.firefox
+      pkgs.nnn
+      pkgs.git
+      pkgs.tmux
+      pkgs.neovim
+      pkgs.vim
+      pkgs.htop
+      pkgs.direnv
+    ];
   };
 
   # can also use 'xlsfonts' to see which fonts are available to X.
@@ -1196,6 +1207,8 @@
       #(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ] })
     ];
   };
+
+  #system.copySystemConfiguration = true;
 
   # The NixOS release to be compatible with for stateful data such as databases.
   #system.stateVersion = "16.09";

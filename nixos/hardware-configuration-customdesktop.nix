@@ -9,12 +9,12 @@
 
   boot.kernelModules =                 [ "kvm-intel" ];
   boot.extraModulePackages =           [ ];
-  boot.supportedFilesystems =          [ "btrfs" "ext4" "xfs" "vfat" ]; #"zfs" "bcachefs"
+  boot.supportedFilesystems =          [ "btrfs" "ext4" "xfs" "vfat" "zfs" ]; #"zfs" "bcachefs"
 
   boot.initrd = {
     availableKernelModules = [ "ehci_pci" "ahci" "xhci_pci" "ata_piix" "usbhid" "usb_storage" "sd_mod" ];
-    kernelModules =          [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" ]; #"zfs" "bcachefs"
-    supportedFilesystems =   [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" ]; #"zfs" "bcachefs"
+    kernelModules =          [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ]; #"zfs" "bcachefs"
+    supportedFilesystems =   [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ]; #"zfs" "bcachefs"
 
     # /dev/sda2 --> LUKS --> LVM --> btrfs
     # /dev/sdb2 --> LUKS --> LVM --> btrfs
@@ -33,51 +33,59 @@
     #  preLVM = true;
     #};
 
-    luks.devices."crypt-d47246ca-80af-4cef-b098-29785152ce44" = {
-      device = "/dev/disk/by-uuid/d47246ca-80af-4cef-b098-29785152ce44";
-    };
+    #luks.devices."crypt-d47246ca-80af-4cef-b098-29785152ce44" = { device = "/dev/disk/by-uuid/d47246ca-80af-4cef-b098-29785152ce44"; };
+
+    luks.devices."luks-bcd7371c-c49a-4b74-a041-9cf9728cf395" = { device = "/dev/disk/by-uuid/bcd7371c-c49a-4b74-a041-9cf9728cf395"; preLVM = true; };
+    luks.devices."luks-781bbff1-508d-4287-a748-63d45d74b5e5" = { device = "/dev/disk/by-uuid/781bbff1-508d-4287-a748-63d45d74b5e5"; preLVM = true; };
+
+    luks.devices."luks-8a53d158-ba69-47a1-9329-2d07372949d6" = { device = "/dev/disk/by-uuid/8a53d158-ba69-47a1-9329-2d07372949d6"; };
+    luks.devices."luks-8eee41a6-35ba-4a1e-ae58-b18446505fd4" = { device = "/dev/disk/by-uuid/8eee41a6-35ba-4a1e-ae58-b18446505fd4"; };
+    luks.devices."luks-912c3919-4dec-4298-bac9-e3636ef32bfd" = { device = "/dev/disk/by-uuid/912c3919-4dec-4298-bac9-e3636ef32bfd"; };
+    luks.devices."luks-9a965e58-3780-475a-8325-6f47c669cc1d" = { device = "/dev/disk/by-uuid/9a965e58-3780-475a-8325-6f47c669cc1d"; };
   };
 
   fileSystems."/" = {
-    #device = "/dev/disk/by-uuid/873d4891-8d71-4e7a-975d-84d8342559c2";
-    device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
-    fsType = "btrfs";
-    options = [
-      "subvol=nixos"
-      "compress=zstd" "noatime" "autodefrag"
-    ];
+    #device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
+    #fsType = "btrfs";
+    #options = [
+    #  "subvol=nixos"
+    #  "compress=zstd" "noatime" "autodefrag"
+    #];
+
+    device = "/dev/disk/by-uuid/a64b6850-5e88-4cc3-b106-28a724c4b2cc";
+    fsType = "xfs";
   };
 
-  fileSystems."/root" =
-    {
-      #device = "/dev/disk/by-uuid/873d4891-8d71-4e7a-975d-84d8342559c2";
-      device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
-      fsType = "btrfs";
-      options = [
-        "subvol=root"
-        "compress=zstd" "noatime" "autodefrag"
-      ];
-    };
+  fileSystems."/boot" = { device = "/dev/disk/by-uuid/bdccf3bb-061c-40d5-82c3-d04ccf603485";
+    fsType = "ext4";
+  };
 
-  fileSystems."/nix" =
-    {
-      device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
-      fsType = "btrfs";
-      options = [
-        "subvol=nix"
-        "compress=zstd" "noatime" "autodefrag"
-      ];
-    };
+  fileSystems."/home" = {
+    device = "najibzfspool1/home";
+    fsType = "zfs";
+  };
 
-  fileSystems."/swap" =
-    {
-      device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
-      fsType = "btrfs";
-      options = [
-        "subvol=swap"
-        "noatime"
-      ];
-    };
+  fileSystems."/root" = {
+    #device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
+    #fsType = "btrfs";
+    #options = [
+    #  "subvol=root"
+    #  "compress=zstd" "noatime" "autodefrag"
+    #];
+
+    device = "najibzfspool1/root";
+    fsType = "zfs";
+  };
+
+  #fileSystems."/nix" =
+  #  {
+  #    device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
+  #    fsType = "btrfs";
+  #    options = [
+  #      "subvol=nix"
+  #      "compress=zstd" "noatime" "autodefrag"
+  #    ];
+  #  };
 
   #fileSystems."/home/data" =
   #  { device = "/dev/disk/by-uuid/873d4891-8d71-4e7a-975d-84d8342559c2";
@@ -88,14 +96,14 @@
   #    ];
   #  };
 
-  fileSystems."/home" = {
-      device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
-      fsType = "btrfs";
-      options = [
-        "subvol=home"
-        "compress=zstd" "noatime" "autodefrag"
-      ];
-  };
+  #fileSystems."/home" = {
+  #    device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
+  #    fsType = "btrfs";
+  #    options = [
+  #      "subvol=home"
+  #      "compress=zstd" "noatime" "autodefrag"
+  #    ];
+  #};
 
   #fileSystems."/home/najib" =
   #  {
@@ -156,32 +164,42 @@
   #    ];
   #  };
 
-  fileSystems."/boot" =
-    {
-      #device = "/dev/disk/by-uuid/7e9237ab-5825-42b5-b105-61aad181545e";
-      #device = "/dev/disk/by-uuid/52794df2-a415-4dba-8203-949381c5c00a"; # boot partition on 254GB SSD
-      device = "/dev/disk/by-uuid/52794df2-a415-4dba-8203-949381c5c00a";
-      fsType = "ext4";
-    };
+  #fileSystems."/boot" = {
+  #  #device = "/dev/disk/by-uuid/7e9237ab-5825-42b5-b105-61aad181545e";
+  #  #device = "/dev/disk/by-uuid/52794df2-a415-4dba-8203-949381c5c00a"; # boot partition on 254GB SSD
+  #  device = "/dev/disk/by-uuid/52794df2-a415-4dba-8203-949381c5c00a";
+  #    fsType = "ext4";
+  #};
 
   # This HDD is failing
-  #fileSystems."/boot2" =
-  #{
+  #fileSystems."/boot2" = {
   #    device = "/dev/disk/by-uuid/7e9237ab-5825-42b5-b105-61aad181545e";
   #    fsType = "ext4";
   #};
 
-  swapDevices = [
+  #fileSystems."/swap" = {
+  #  device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
+  #  fsType = "btrfs";
+  #  options = [
+  #    "subvol=swap"
+  #    "noatime"
+  #  ];
+  #};
+
+  swapDevices =  [
     # This HDD is failing
     #{ device = "/dev/disk/by-uuid/54a11355-d334-46c5-8cbb-43369d08fd8a"; } # swap on 500GB HDD
 
     #{ device = "/dev/disk/by-uuid/600ebd52-edd2-4c42-b3b1-b8d8a6cb5acf"; } # swap partition on 254GB SSD
 
-    {
-      device = "/swap/swapfile";
-      #priority = 0;
-      size = (1024 * 12) * 2;
-    }
+    #{
+    #  device = "/swap/swapfile";
+    #  #priority = 0;
+    #  size = (1024 * 12) * 2;
+    #}
+
+    #{ device = "/dev/disk/by-uuid/79d45678-d31b-4b39-851b-f00559ea8cc6"; }
+    { device = "/dev/disk/by-uuid/79d45678-d31b-4b39-851b-f00559ea8cc6"; }
   ];
 
   networking.useDHCP = lib.mkDefault true;

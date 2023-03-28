@@ -80,6 +80,7 @@
   #networking.defaultGateway = "192.168.123.1";
   # Refer network-dns.nix for DNS
   #networking.enableIPv6 = false;
+  networking.networkmanager.enable = true;
 
   #boot.loader.systemd-boot.enable = true;
 
@@ -87,10 +88,10 @@
   boot.loader.grub = {
     enable = true;
     version = 2;
-    #device = "/dev/sda"; #"nodev";
-    #efiSupport = true;
+    efiSupport = false;
     enableCryptodisk = true;
     copyKernels = true;
+
     #mirroredBoots = [
       #{
         #devices = [ "/dev/disk/by-id/wwn-0x5000cca7c5e11b3c" ];
@@ -98,6 +99,8 @@
       #}
     #];
     useOSProber = true;
+
+    #device = "/dev/sda"; #"nodev";
     devices = [
       #"/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1011005-part1"
       #"/dev/disk/by-id/wwn-0x5000c5001f67c049-part1"
@@ -110,6 +113,7 @@
   };
 
   #boot.kernelPackages = pkgs.linuxPackages_latest; # XXX: test disable this while trying to solve monitor on build-in VGA, DVI, HDMI not detectded in Xorg, but detected in Wayland.
+  boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
   boot.kernelParams = [
     #"video=DisplayPort-2:D"
     "video=HDMI-2:D"
@@ -164,11 +168,12 @@
 
   #services.xserver.displayManager.sddm.enable = true;
   #services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.lightdm.enable = true;
   services.xserver.displayManager.defaultSession = "none+xmonad";
 
   #services.xserver.desktopManager.plasma5.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  #services.xserver.desktopManager.gnome.enable = true;
   #services.xserver.desktopManager.enlightenment.enable = true;
 
   services.xserver.libinput.enable = true;
