@@ -30,7 +30,10 @@
     ./typesetting.nix
 
     #./syncthing.nix
-    #./nextcloud.nix
+    ./nextcloud.nix
+
+    # Email fetch and serve
+    #./email.nix
 
     ./nfs-client.nix
 
