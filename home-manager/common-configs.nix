@@ -218,12 +218,13 @@ in
       aoeu = "setxkbmap us";
       asdf = "setxkbmap dvorak";
 
-      #ls = "exa";
+      ls = "exa -g --git --time-style long-iso";
       l = "ls -alhF";
       #ll = "ls --color=tty -Filah";
+      ll = "ls -Filah";
+      la = "ls -Fa";
       j = "jobs";
       s = "sync";
-      #la = "ls -Fa";
       p = "pwd";
       a = "alias";
 
@@ -283,7 +284,7 @@ in
 
   programs.exa = {
     enable = true;
-    enableAliases = true;
+    #enableAliases = true;
   };
 
   programs.dircolors.enable = true;
