@@ -9,7 +9,7 @@
     enable = true;
 
     home = "/home/nextcloud/homedir";
-    datadir = "/home/nextcloud/datadir";
+    #datadir = "/home/nextcloud/datadir";
 
     #package = pkgs.nextcloud25;
     #extraApps = with pkgs.nextcloud25Packages.apps; {
@@ -17,15 +17,11 @@
     #};
     #extraAppsEnable = true;
 
-    #package = pkgs.nextcloud26;
-    #extraApps = with pkgs.nextcloud26Packages.apps; {
-    #  inherit mail news contacts;
-    #};
-    #extraAppsEnable = true;
-
-    #autoUpdateApps.enable = true;
+    autoUpdateApps.enable = true;
 
     hostName = "customdesktop";
+
+    #https = true;
 
     #nginx.enable = true;
 
@@ -35,6 +31,7 @@
       #dbhost = "/run/postgresql"; # nextcloud will add /.s.PGSQL.5432 by itself
       #dbname = "nextcloud";
       #adminuser = "root";
+      adminuser = "nextcloud";
       adminpassFile = "/home/nextcloud/adminpass";
     };
   };
@@ -53,7 +50,6 @@
   #  requires = ["postgresql.service"];
   #  after = ["postgresql.service"];
   #};
-
 
   # Firewall
   networking.firewall.allowedTCPPorts = [ 80 443 ];
