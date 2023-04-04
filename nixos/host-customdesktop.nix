@@ -35,7 +35,8 @@
     # Email fetch and serve
     #./email.nix
 
-    ./nfs-client.nix
+    ./nfs-client-automount.nix
+    #./nfs-client.nix
 
     ./console-keyboard-dvorak.nix
     ./keyboard-with-msa.nix
