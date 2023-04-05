@@ -1144,14 +1144,17 @@
   # $ cd /nix/var/nix/profiles/system/sw/share/X11/fonts
   # $ fc-query DejaVuSans.ttf | grep '^\s\+family:' | cut -d'"' -f2
   #
-  #--------------------------------------------------
-  # This is working solution as tested on 2022-11-07
+  #==================================================
+  # This is working solution as tested on
+  # 2022-11-07
+  # 2023-04-05
   #--------------------------------------------------
   # fc-list -v | grep -i edward
   # ln -s ~/.fonts ~/.local/share/fonts
   # rm -vRf ~/.cache/fontconfig
   # fc-cache --really-force --verbose
   # fc-list -v | grep -i edward
+  #==================================================
   #
   fonts = {
     #enableFontDir = true;
