@@ -9,83 +9,105 @@
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sd_mod" "sdhci_pci" ];
-  boot.initrd.kernelModules = [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" ]; #"zfs" "bcachefs"
-  boot.initrd.supportedFilesystems = [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" ]; #"zfs" "bcachefs"
+  boot.initrd.kernelModules = [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ]; #"zfs" "bcachefs"
+  boot.initrd.supportedFilesystems = [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ]; #"zfs" "bcachefs"
 
   boot.kernelModules = [ "kvm-intel" "wl" "88x2bu" "8812au" ]; # "8812au"
-  boot.supportedFilesystems = [ "btrfs" "ext4" "xfs" "vfat" ]; #"zfs" "bcachefs"
+  boot.supportedFilesystems = [ "btrfs" "ext4" "xfs" "vfat" "zfs" ]; #"zfs" "bcachefs"
   boot.extraModulePackages = [
-	config.boot.kernelPackages.broadcom_sta
-	#config.boot.kernelPackages.rtl88x2bu
-	#config.boot.kernelPackages.rtl8812au
-	##config.boot.kernelPackages.rtl8811au
-	##config.boot.kernelPackages.rtl8811cu
-	##config.boot.kernelPackages.rtl88x1au
-	##config.boot.kernelPackages.rtl88x1cu
+    # Wireless Network Card
+    config.boot.kernelPackages.broadcom_sta
+
+    #config.boot.kernelPackages.rtl88x2bu
+    #config.boot.kernelPackages.rtl8812au
+    ##config.boot.kernelPackages.rtl8811au
+    ##config.boot.kernelPackages.rtl8811cu
+    ##config.boot.kernelPackages.rtl88x1au
+    ##config.boot.kernelPackages.rtl88x1cu
   ];
 
-  fileSystems."/" =
-    #{ device = "/dev/disk/by-uuid/0547c4e4-8c78-4a67-af9c-f6b80d8dfb9c";
-    #  fsType = "btrfs";
-    #  options = [ "subvol=root" "compress=zstd" "noatime" "autodefrag" ];
-    #};
-    { device = "/dev/disk/by-uuid/2f29057a-d5d1-47c4-acad-f4432fa4f369";
-      fsType = "ext4";
+  boot.initrd.luks.devices."enc".device = "/dev/disk/by-uuid/6183380f-2063-40b9-8f70-72a7becd3b14";
+  #boot.initrd.luks.devices."luks-bdcaf855-e4a5-4b7d-8661-5028ad7158f7".device = "/dev/disk/by-uuid/bdcaf855-e4a5-4b7d-8661-5028ad7158f7";
+  #boot.initrd.luks.devices."luks-6183380f-2063-40b9-8f70-72a7becd3b14".device = "/dev/disk/by-uuid/6183380f-2063-40b9-8f70-72a7becd3b14";		# /dev/sda5
+
+  fileSystems."/" = {
+    # Seagate HDD 1TB ?
+    #device = "/dev/disk/by-uuid/0547c4e4-8c78-4a67-af9c-f6b80d8dfb9c";
+    device = "/dev/mapper/enc";
+    #device = "/dev/mapper/luks-6183380f-2063-40b9-8f70-72a7becd3b14";
+    fsType = "btrfs";
+    options = [ "subvol=root" "compress=zstd" "noatime" "autodefrag" ];
+    neededForBoot = true;
+
+    # AGI SSD ?
+    #device = "/dev/mapper/luks-bdcaf855-e4a5-4b7d-8661-5028ad7158f7";
+    #device = "/dev/disk/by-uuid/2f29057a-d5d1-47c4-acad-f4432fa4f369";
+    #fsType = "ext4";
+  };
+
+  #fileSystems."/boot/efi" =
+  # { device = "/dev/disk/by-uuid/D8A3-6EFD";
+  #   fsType = "vfat";
+  # };
+
+  fileSystems."/root" =
+    { 
+      #device = "/dev/disk/by-uuid/0547c4e4-8c78-4a67-af9c-f6b80d8dfb9c";
+      device = "/dev/mapper/enc";
+      fsType = "btrfs";
+      options = [ "subvol=rootuserhomedir" "compress=zstd" "noatime" "autodefrag" ];
+      neededForBoot = true;
     };
 
-  #boot.initrd.luks.devices."enc".device = "/dev/disk/by-uuid/6183380f-2063-40b9-8f70-72a7becd3b14";
-  boot.initrd.luks.devices."luks-bdcaf855-e4a5-4b7d-8661-5028ad7158f7".device = "/dev/disk/by-uuid/bdcaf855-e4a5-4b7d-8661-5028ad7158f7";
+  fileSystems."/home" =
+    { 
+      #device = "/dev/disk/by-uuid/0547c4e4-8c78-4a67-af9c-f6b80d8dfb9c";
+      device = "/dev/mapper/enc";
+      fsType = "btrfs";
+      options = [ "subvol=home" "compress=zstd" "noatime" "autodefrag" ];
+    };
 
-  fileSystems."/boot/efi" =
-    { device = "/dev/disk/by-uuid/D8A3-6EFD";
+  fileSystems."/nix" =
+    { 
+      #device = "/dev/disk/by-uuid/0547c4e4-8c78-4a67-af9c-f6b80d8dfb9c";
+      device = "/dev/mapper/enc";
+      fsType = "btrfs";
+      options = [ "subvol=nix" "compress=zstd" "noatime" "autodefrag" ];
+      neededForBoot = true;
+    };
+
+  fileSystems."/persist" =
+    { 
+      #device = "/dev/disk/by-uuid/0547c4e4-8c78-4a67-af9c-f6b80d8dfb9c";
+      device = "/dev/mapper/enc";
+      fsType = "btrfs";
+      options = [ "subvol=persist" "compress=zstd" "noatime" "autodefrag" ];
+    };
+
+  fileSystems."/var/log" =
+    { 
+      #device = "/dev/disk/by-uuid/0547c4e4-8c78-4a67-af9c-f6b80d8dfb9c";
+      device = "/dev/mapper/enc";
+      fsType = "btrfs";
+      options = [ "subvol=log" "compress=zstd" "noatime" "autodefrag" ];
+      neededForBoot = true;
+    };
+
+  fileSystems."/boot" =
+    { 
+      device = "/dev/disk/by-uuid/EA52-5742";
       fsType = "vfat";
     };
 
-  #fileSystems."/root" =
-  #  { device = "/dev/disk/by-uuid/0547c4e4-8c78-4a67-af9c-f6b80d8dfb9c";
-  #    fsType = "btrfs";
-  #    options = [ "subvol=rootuserhomedir" "compress=zstd" "noatime" "autodefrag" ];
-  #  };
-
-  #fileSystems."/home" =
-  #  { device = "/dev/disk/by-uuid/0547c4e4-8c78-4a67-af9c-f6b80d8dfb9c";
-  #    fsType = "btrfs";
-  #    options = [ "subvol=home" "compress=zstd" "noatime" "autodefrag" ];
-  #  };
-
-  #fileSystems."/nix" =
-  #  { device = "/dev/disk/by-uuid/0547c4e4-8c78-4a67-af9c-f6b80d8dfb9c";
-  #    fsType = "btrfs";
-  #    options = [ "subvol=nix" "compress=zstd" "noatime" "autodefrag" ];
-  #  };
-
-  #fileSystems."/persist" =
-  #  { device = "/dev/disk/by-uuid/0547c4e4-8c78-4a67-af9c-f6b80d8dfb9c";
-  #    fsType = "btrfs";
-  #    options = [ "subvol=persist" "compress=zstd" "noatime" "autodefrag" ];
-  #  };
-
-  #fileSystems."/var/log" =
-  #  { device = "/dev/disk/by-uuid/0547c4e4-8c78-4a67-af9c-f6b80d8dfb9c";
-  #    fsType = "btrfs";
-  #    options = [ "subvol=log" "compress=zstd" "noatime" "autodefrag" ];
-  #    neededForBoot = true;
-  #  };
-
-  #fileSystems."/boot" =
-  #  { device = "/dev/disk/by-uuid/EA52-5742";
-  #    fsType = "vfat";
-  #  };
-
   swapDevices =
     [ 
-	# /dev/sda6
-	#{ device = "/dev/disk/by-uuid/271a21a1-fd81-4a15-9a5f-937174204363"; }
+      # /dev/sda6
+      { device = "/dev/disk/by-uuid/271a21a1-fd81-4a15-9a5f-937174204363"; }
 
-	# /dev/sdb2...
-	#...
+      # /dev/sdb2...
+      #...
 
-	{ device = "/dev/disk/by-uuid/358b666e-9c72-42c4-a0c8-33efee21e8b1"; }
+      #{ device = "/dev/disk/by-uuid/358b666e-9c72-42c4-a0c8-33efee21e8b1"; }
     ];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
@@ -101,7 +123,7 @@
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-  networking.useDHCP = lib.mkDefault true;
+  #networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.eno1.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform.system = "x86_64-linux";

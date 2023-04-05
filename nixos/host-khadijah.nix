@@ -19,30 +19,44 @@
   imports = [
     ./hardware-configuration-khadijah.nix
     ./configuration.FULL.nix
+
     #./hosts.nix
     ./hosts2.nix
+
     ./bootEFI.nix
     #./bootBIOS.nix
+    
     #./thinkpad.nix
     #./touchpad-scrollTwofinger-TapTrue.nix
     #./network-dns.nix
     ./users-anak2.nix
-    ./nfs-client.nix
+
+    ./nfs-client-automount.nix
+    #./nfs-client.nix
+    
     #./virtualbox.nix # compile fail
     #./libvirt.nix
+
     #./anbox.nix
     #./anbox2.nix
-    ./waydroid.nix
+    #./waydroid.nix
+
     ./console-keyboard-dvorak.nix       # keyboard layout for console environment
     ./keyboard-with-msa.nix             # keyboard layout for graphical environment
+
     #./audio-pulseaudio.nix
     ./audio-pipewire.nix
+    
     ./hardware-printer.nix
     #./hardware-tablet-wacom.nix
     #./veikk.nix
+    
     ./zramSwap.nix
+    
+    # Data Backup (local/remote)
     #./btrbk-khadijah.nix #./btrbk-pull.nix
-    ./sway.nix
+
+    #./sway.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -86,20 +100,35 @@
 
   services.fstrim.enable = true;
 
+  #boot.loader.grub = {
+  #  enable = true;
+  #  version = 2;
+  #  #device = "/dev/sda";
+  #  device = "/dev/disk/by-id/ata-WDC_WD10JPVX-08JC3T6_WD-WX71AB6RKVV1";
+  #
+  #  enableCryptodisk = true;
+  #  copyKernels = true;
+  #
+  #  useOSProber = true;
+  #};
+
   boot.loader.timeout = null; # XXX: Not sure how to set null value here.
   #boot.loader.systemd-boot.enable = true;      # for efi boot, not bios?
   boot.loader.grub.useOSProber = true;
 
   # Setup keyfile
-  boot.initrd.secrets = {
-    "/crypto_keyfile.bin" = null;
-  };
+  #boot.initrd.secrets = {
+  #  "/crypto_keyfile.bin" = null;
+  #};
+  #
+  # XXX: 
+  # sudo touch /crypto_keyfile.bin
 
   #boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Enable swap on luks
-  boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".device = "/dev/disk/by-uuid/a5172078-045e-4b03-abbc-32a86dfe0d06";
-  boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".keyFile = "/crypto_keyfile.bin";
+  #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".device = "/dev/disk/by-uuid/a5172078-045e-4b03-abbc-32a86dfe0d06";
+  #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".keyFile = "/crypto_keyfile.bin";
 
   #services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
   services.xserver.dpi = 96;
@@ -142,9 +171,11 @@
   #    };
 
   #services.xserver.displayManager.sddm.enable = true;
-  #services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.displayManager.lightdm.enable = true;
   #services.xserver.displayManager.startx.enable = true;
+
   services.xserver.displayManager.defaultSession = "none+xmonad";
+
   #services.xserver.desktopManager.plasma5.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
   #services.xserver.desktopManager.mate.enable = true;
