@@ -156,7 +156,8 @@
     wget curl killall
     mtr iproute # busybox
     htop mc irssi most mosh coreutils mutt
-    bmon # Network bandwidth monitor
+    zenith                    # Sort of like top or htop but with zoom-able charts, network, and disk usage
+    bmon                      # Network bandwidth monitor
     btop
 
     screen
@@ -311,8 +312,6 @@
     taskwarrior timewarrior
     taskwarrior-tui vit tasknc
 
-    qdirstat
-
     oneko xcape find-cursor #gnomeExtensions.jiggle hlcursors
     virtscreen
 
@@ -398,8 +397,25 @@
     libinput
     libinput-gestures
     alsaUtils
-    partclone # Utilities to save and restore used blocks on a partition
-    diskonaut # a terminal disk space navigator
+    partclone           # Utilities to save and restore used blocks on a partition
+
+    diskonaut           # a terminal disk space navigator
+    duf
+    diskus
+    dfc
+    btdu                # sampling disk usage profiler for btrfs
+    gdu                 # Disk usage analyzer with console interface
+    godu                #
+    ncdu                # Disk usage analyzer with an ncurses interface
+    dua                 # A tool to conveniently learn about the disk usage of directories, fast! View disk space usage and delete unwanted data, fast. 
+    dutree
+    du-dust #dust
+    duc                 # Collection of tools for inspecting and visualizing disk usage
+    gdmap
+    baobab              # Graphical application to analyse disk usage in any GNOME environment
+    k4dirstat           # A small utility program that sums up disk usage for directory trees
+    qdirstat
+    jdiskreport
 
     #---------------------------------------------------------------
     # Desktop, window manager and tools
@@ -494,7 +510,8 @@
     #---------------------------------------------------------------
 
     transmission-gtk
-    rsync grsync zsync luckybackup # remote file sync / backup
+    rsync grsync zsync luckybackup      # remote file sync / backup
+    rclone                              # Command line program to sync files and directories to and from major cloud storage
 
     #---------------------------------------------------------------
     # File Manager, File viewer/reader
@@ -681,8 +698,6 @@
     libinput
     libinput-gestures
     alsaUtils
-
-    qdirstat
 
     oneko xcape find-cursor #gnomeExtensions.jiggle hlcursors
     virtscreen
