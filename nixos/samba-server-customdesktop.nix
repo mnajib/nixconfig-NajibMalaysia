@@ -29,8 +29,8 @@
     '';
 
     shares = {
+
       public = {
-        #path = "/mnt/Shares/Public";
         path = "/home/Shares/Public";
         browseable = "yes";
         "read only" = "no";
@@ -40,8 +40,8 @@
         "force user" = "najib";
         "force group" = "users";
       };
+
       private = {
-        #path = "/mnt/Shares/Private";
         path = "/home/Shares/Private";
         browseable = "yes";
         "read only" = "no";

@@ -35,11 +35,12 @@
     # Email fetch and serve
     #./email.nix
 
-    ./samba-server-customdesktop.nix
-    ./samba-client.nix
-
+    ./nfs-server-customdesktop.nix
     ./nfs-client-automount.nix
     #./nfs-client.nix
+
+    ./samba-server-customdesktop.nix
+    ./samba-client.nix
 
     ./console-keyboard-dvorak.nix
     ./keyboard-with-msa.nix
