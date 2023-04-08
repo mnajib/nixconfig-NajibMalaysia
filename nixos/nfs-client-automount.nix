@@ -46,7 +46,7 @@
     ];
   };
 
-  fileSystems."/mnt/nfs-customdesktop/nfsshare2" = {
+  fileSystems."/mnt/nfsshare2" = {
     device = "customdesktop:/nfsshare2";
     fsType = "nfs";
     options = [
