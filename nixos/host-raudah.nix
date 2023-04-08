@@ -109,25 +109,27 @@
   #networking.firewall.enable = false;
   networking.firewall.allowedTCPPorts = [
     # Gluster
-    24007 # gluster daemon
-    24008 # management
-    #49152 # brick1
-    49153 # brick2
-    #38465-38467 # Gluster NFS
+    24007         # gluster daemon
+    24008         # management
+    #49152        # brick1
+    49153         # brick2
+    #38465-38467  # Gluster NFS
 
-    111 # portmapper
+    111           # portmapper
 
-    1110 # NFS cluster
-    4045    # NFS lock manager
+    1110          # NFS cluster
+    4045          # NFS lock manager
+
+    24800         # barrier server
   ];
   networking.firewall.allowedUDPPorts = [
     # Gluster
-    111 # portmapper
+    111           # portmapper
 
-    3450 # for minetest server
+    3450          # for minetest server
 
-    1110 # NFS client
-    4045 # NFS lock manager
+    1110          # NFS client
+    4045          # NFS lock manager
   ];
 
   powerManagement.enable = true;
