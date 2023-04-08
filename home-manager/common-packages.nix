@@ -81,7 +81,7 @@
     pkgs.mailspring
     pkgs.gnome.geary
     pkgs.balsa
-    pkgs.deltachat-desktop
+    #pkgs.deltachat-desktop             # used electron version that marked as unsecured?
 
     pkgs.fzy                            # CLI fuzzy finder
 
