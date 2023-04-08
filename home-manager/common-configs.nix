@@ -218,7 +218,7 @@ in
       aoeu = "setxkbmap us";
       asdf = "setxkbmap dvorak";
 
-      ls = "exa -g --git --time-style long-iso";
+      #ls = "exa -g --git --time-style long-iso";
       l = "ls -alhF";
       #ll = "ls --color=tty -Filah";
       ll = "ls -Filah";
