@@ -41,6 +41,7 @@
     ./configuration.FULL.nix
     #./btrbk.nix
     ./typesetting.nix
+    ./nix-garbage-collector.nix
   ];
 
   nix.settings.trusted-users = [
@@ -106,7 +107,7 @@
   #networking.interfaces.enp0s25.useDHCP = true;
   #networking.interfaces.wlp3s0.useDHCP = true;
 
-  #networking.firewall.enable = false;
+  networking.firewall.enable = false;
   networking.firewall.allowedTCPPorts = [
     # Gluster
     24007         # gluster daemon
@@ -173,7 +174,7 @@
 
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.displayManager.defaultSession = "none+xmonad";
-  services.xserver.desktopManager.plasma5.enable = true;
+  #services.xserver.desktopManager.plasma5.enable = true;
 
   #nix.maxJobs = 1;
   #nix.settings.max-jobs = 1;
