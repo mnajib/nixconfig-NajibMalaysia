@@ -33,6 +33,8 @@
 
     #./gogs.nix
     ./gitea.nix
+
+    ./nix-garbage-collector.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
