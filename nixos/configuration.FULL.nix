@@ -50,6 +50,14 @@
 
   #nix.trustedUsers = [ "root" "najib" ]; <-- moved to host-hostname.nix
 
+  # Binary Cache for Haskell.nix
+  nix.settings.trusted-public-keys = [
+    "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+  ];
+  nix.settings.substituters = [
+    "https://cache.iog.io"
+  ];
+
   #nix.daemonIONiceLevel = 7;
   nix.daemonIOSchedPriority = 7; # 0(high) (default) ... 7 (low) priority
   #nix.daemonNiceLevel = 19;
