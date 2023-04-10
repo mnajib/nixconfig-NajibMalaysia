@@ -142,6 +142,8 @@
   services.fstrim.enable = true;
   hardware.enableAllFirmware = true;
 
+  services.zfs.autoScrub.enable = true;
+
   # Needed for btrbk
   services.openssh.permitRootLogin = "prohibit-password";
 
