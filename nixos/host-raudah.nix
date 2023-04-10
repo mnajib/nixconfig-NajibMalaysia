@@ -26,7 +26,8 @@
     ./users-nurnasuha.nix
     #./users-naim-wheel.nix
     ./users-naim.nix
-    ./nfs-client.nix
+    #./nfs-client.nix
+    ./nfs-client-automount.nix
     ./console-keyboard-dvorak.nix
     ./keyboard-with-msa.nix
     #./keyboard-without-msa.nix
