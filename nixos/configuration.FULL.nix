@@ -1263,6 +1263,8 @@
   #system.stateVersion = "20.03";
   #system.stateVersion = "20.09";
   #system.stateVersion = "22.05";
-  system.stateVersion = "22.11";
+  #system.stateVersion = "22.11";
+  #
+  # XXX: Move this config into host specifix file.
 }
 # vim: nowrap:ts=8

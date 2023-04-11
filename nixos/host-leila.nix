@@ -13,4 +13,6 @@
     networking.hostName = "leila";
 
     nix.trustedUsers = [ "root" "najib" ];
+
+    system.stateVersion = "22.05";
 }

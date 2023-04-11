@@ -81,4 +81,6 @@
 
     networking.networkmanager.wifi.powersave = false;
     systemd.watchdog.rebootTime = "10m";
+
+    system.stateVersion = "22.05";
 }

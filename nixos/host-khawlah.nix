@@ -82,4 +82,6 @@
   #services.xserver.desktopManager.plasma5.enable = true;
 
   services.xserver.libinput.enable = true;
+
+  system.stateVersion = "22.05";
 }

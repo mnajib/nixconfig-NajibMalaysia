@@ -207,4 +207,6 @@
 	#environment.systemPackages = [
 	#  pkgs.blender
 	#];
+
+  system.stateVersion = "22.05";
 }

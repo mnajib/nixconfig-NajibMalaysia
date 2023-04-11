@@ -143,4 +143,6 @@
     systemd.watchdog.rebootTime = "10m";
 
     #nix.maxJobs = 4;
+
+    system.stateVersion = "22.05";
 }

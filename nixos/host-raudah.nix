@@ -186,4 +186,6 @@
   #nix.daemonCPUSchedPolicy = "idle";
   #nix.daemonIOSchedClass = "idle"; # default "best-effort",
   #nix.daemonIOSchedPriority = 5; # 0(high,default) to 7(low).
+
+  system.stateVersion = "22.05";
 }

@@ -10,8 +10,6 @@
   };
 
   imports = [
-    #./hardware-configuration-tv.nix
-    # rename to
     ./hardware-configuration-customdesktop.nix
 
     #./bootEFI.nix
@@ -214,5 +212,5 @@
     pkgs.foot
   ];
 
-  #system.stateVersion = "22.11";
+  system.stateVersion = "22.11";
 }

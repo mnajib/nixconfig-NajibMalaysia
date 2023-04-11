@@ -111,4 +111,6 @@
   services.xserver.libinput.touchpad.disableWhileTyping = false;
   services.xserver.libinput.touchpad.scrollMethod = "edge";
   services.xserver.libinput.touchpad.tapping = false;
+
+  system.stateVersion = "22.05";
 }

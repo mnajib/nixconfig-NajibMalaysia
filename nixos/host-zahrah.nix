@@ -288,4 +288,6 @@
   programs.xwayland.enable = true;
 
   #nix.maxJobs = 4;
+
+  system.stateVersion = "22.05";
 }

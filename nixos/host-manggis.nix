@@ -143,4 +143,6 @@
     services.xserver.windowManager.jwm.enable = true;
     services.xserver.windowManager.icewm.enable = true;
     services.xserver.windowManager.fluxbox.enable = true;
+
+    system.stateVersion = "22.05";
 }

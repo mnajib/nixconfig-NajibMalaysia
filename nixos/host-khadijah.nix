@@ -25,7 +25,7 @@
 
     ./bootEFI.nix
     #./bootBIOS.nix
-    
+
     #./thinkpad.nix
     #./touchpad-scrollTwofinger-TapTrue.nix
     #./network-dns.nix
@@ -33,7 +33,7 @@
 
     ./nfs-client-automount.nix
     #./nfs-client.nix
-    
+
     #./virtualbox.nix # compile fail
     #./libvirt.nix
 
@@ -46,13 +46,13 @@
 
     #./audio-pulseaudio.nix
     ./audio-pipewire.nix
-    
+
     ./hardware-printer.nix
     #./hardware-tablet-wacom.nix
     #./veikk.nix
-    
+
     ./zramSwap.nix
-    
+
     # Data Backup (local/remote)
     #./btrbk-khadijah.nix #./btrbk-pull.nix
 
@@ -123,7 +123,7 @@
   #  "/crypto_keyfile.bin" = null;
   #};
   #
-  # XXX: 
+  # XXX:
   # sudo touch /crypto_keyfile.bin
 
   #boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -256,4 +256,6 @@
   #console.font = lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
 
   virtualisation.virtualbox.host.enable = true;
+
+  system.stateVersion = "22.05";
 }
