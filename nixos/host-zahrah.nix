@@ -27,7 +27,8 @@
     ./users-nurnasuha.nix
     ./users-naim-wheel.nix
 
-    ./nfs-client.nix
+    #./nfs-client.nix
+    ./nfs-client-automount.nix
 
     ./console-keyboard-dvorak.nix
     ./keyboard-with-msa.nix
@@ -47,6 +48,8 @@
     #./btrbk.nix
 
     ./typesetting.nix
+
+    ./nix-garbage-collector.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
