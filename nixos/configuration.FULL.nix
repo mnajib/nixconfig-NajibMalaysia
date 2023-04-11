@@ -36,6 +36,22 @@
   #boot.supportedFilesystems =        [ "ext4" "zfs" "btrfs" "xfs" ]; # "bcachefs"
   #boot.initrd.supportedFilesystems = [ "ext4" "zfs" "btrfs" "xfs" ];
 
+  # XXX:
+  systemd.services.rtkit-daemon.serviceConfig.LogLevelMax=5;
+#
+#    0 or emergency, (highest priority messages)
+#    1 or alert,
+#    2 or critical,
+#    3 or error,
+#    4 or warning,
+#    5 or notice,
+#    6 or info
+#    7 or debuginfo (lowest priority messages)
+#
+# For a given level chosen, logs of all higher levels won't be output. Note that if no loglevel is specified in whatever systemd service .conf file, the loglevel of the daemon defaults to 7, in other words allowing the highest level of verbosity.
+# Regarding your specific need as worded in the title, LogLevelMax=5 (notice) should suffice (6 as reported in comments).
+#
+
   #boot.loader.grub.copyKernels = true;  # To avoid boot error "external pointer tables not supported" when the number of hardlinks in the nix store gets very high.
   #services.zfs.autoScrub.enable = true; # Regular scrubbing of ZFS pools is recommended
 
