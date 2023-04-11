@@ -42,6 +42,9 @@
     luks.devices."luks-8eee41a6-35ba-4a1e-ae58-b18446505fd4" = { device = "/dev/disk/by-uuid/8eee41a6-35ba-4a1e-ae58-b18446505fd4"; };
     luks.devices."luks-912c3919-4dec-4298-bac9-e3636ef32bfd" = { device = "/dev/disk/by-uuid/912c3919-4dec-4298-bac9-e3636ef32bfd"; };
     luks.devices."luks-9a965e58-3780-475a-8325-6f47c669cc1d" = { device = "/dev/disk/by-uuid/9a965e58-3780-475a-8325-6f47c669cc1d"; };
+
+    luks.devices."luks-ec2dca2b-84e7-4d33-b6fd-7bdad06ec445" = { device = "/dev/disk/by-uuid/ec2dca2b-84e7-4d33-b6fd-7bdad06ec445"; };        # 1TB
+    luks.devices."luks-acfbbc38-c2c4-453f-b995-f02f8cf17bac" = { device = "/dev/disk/by-uuid/acfbbc38-c2c4-453f-b995-f02f8cf17bac"; };        # 1TB
   };
 
   fileSystems."/" = {
