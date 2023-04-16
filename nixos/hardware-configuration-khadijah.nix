@@ -13,7 +13,7 @@
   boot.initrd.supportedFilesystems = [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ]; #"zfs" "bcachefs"
 
   boot.kernelModules = [ "kvm-intel" "wl" "88x2bu" "8812au" ]; # "8812au"
-  boot.supportedFilesystems = [ "btrfs" "ext4" "xfs" "vfat" "zfs" ]; #"zfs" "bcachefs"
+  boot.supportedFilesystems = [ "btrfs" "ext4" "xfs" "vfat" "zfs" "ntfs" ]; #"zfs" "bcachefs"
   boot.extraModulePackages = [
     # Wireless Network Card
     config.boot.kernelPackages.broadcom_sta
