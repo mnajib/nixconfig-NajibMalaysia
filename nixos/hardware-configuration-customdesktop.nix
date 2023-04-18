@@ -9,12 +9,12 @@
 
   boot.kernelModules =                 [ "kvm-intel" ];
   boot.extraModulePackages =           [ ];
-  boot.supportedFilesystems =          [ "btrfs" "ext4" "xfs" "vfat" "zfs" ]; #"zfs" "bcachefs"
+  boot.supportedFilesystems =          [ "btrfs" "ext4" "xfs" "vfat" "zfs" "ntfs" ];                              # "bcachefs"
 
   boot.initrd = {
     availableKernelModules = [ "ehci_pci" "ahci" "xhci_pci" "ata_piix" "usbhid" "usb_storage" "sd_mod" ];
-    kernelModules =          [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ]; #"zfs" "bcachefs"
-    supportedFilesystems =   [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ]; #"zfs" "bcachefs"
+    kernelModules =          [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ];            #"zfs" "bcachefs"
+    supportedFilesystems =   [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ];            #"zfs" "bcachefs"
 
     # /dev/sda2 --> LUKS --> LVM --> btrfs
     # /dev/sdb2 --> LUKS --> LVM --> btrfs
