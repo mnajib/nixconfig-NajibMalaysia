@@ -33,6 +33,8 @@
     # Email fetch and serve
     #./email.nix
 
+    ./zfs.nix
+
     ./nfs-server-customdesktop.nix
     ./nfs-client-automount.nix
     #./nfs-client.nix
@@ -140,7 +142,7 @@
   services.fstrim.enable = true;
   hardware.enableAllFirmware = true;
 
-  services.zfs.autoScrub.enable = true;
+  #services.zfs.autoScrub.enable = true;  # Look nixos/zfs.nix
 
   # Needed for btrbk
   services.openssh.permitRootLogin = "prohibit-password";
