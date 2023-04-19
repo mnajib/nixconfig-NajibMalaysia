@@ -1,7 +1,8 @@
 { config, ... }:
 let inherit (config.colorscheme) colors kind;
 in {
-  programs.mako = {
+  #programs.mako = {
+  services.mako = {
     enable = true;
     iconPath = if kind == "dark" then
       "${config.gtk.iconTheme.package}/share/icons/Papirus-Dark"
