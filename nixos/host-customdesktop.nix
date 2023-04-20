@@ -142,6 +142,8 @@
   services.fstrim.enable = true;
   hardware.enableAllFirmware = true;
 
+  services.smartd.enable = true;
+
   #services.zfs.autoScrub.enable = true;  # Look nixos/zfs.nix
 
   # Needed for btrbk
