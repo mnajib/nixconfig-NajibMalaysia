@@ -88,6 +88,8 @@
   #services.zfs.autoScrub.enable = true;
   # ... zfs trim support for SSDs ...
 
+  services.smartd.enable = true;
+
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
