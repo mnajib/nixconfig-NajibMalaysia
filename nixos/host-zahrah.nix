@@ -155,9 +155,9 @@
 
   powerManagement.enable = true;
   services.auto-cpufreq.enable = true;
-    powerManagement.cpuFreqGovernor = "powersave";
-    #powerManagement.cpufreq.min =  800000;
-    powerManagement.cpufreq.max = 1500000;
+  powerManagement.cpuFreqGovernor = "powersave";
+  #powerManagement.cpufreq.min =  800000;
+  powerManagement.cpufreq.max = 1500000;
 
   services.power-profiles-daemon.enable = false;
 
@@ -241,14 +241,14 @@
 
   services.xserver.displayManager.defaultSession = "none+xmonad";
   #services.xserver.desktopManager.plasma5.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  #services.xserver.desktopManager.gnome.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
   #services.xserver.desktopManager.pantheon.enable = true;
-  services.xserver.desktopManager.enlightenment.enable = true;
-  services.xserver.desktopManager.lumina.enable = true;
-  services.xserver.desktopManager.mate.enable = true;
+  #services.xserver.desktopManager.enlightenment.enable = true;
+  #services.xserver.desktopManager.lumina.enable = true;
+  #services.xserver.desktopManager.mate.enable = true;
   #services.xserver.desktopManager.cinnamon.enable = true;
-  services.xserver.desktopManager.lxqt.enable = true;
+  #services.xserver.desktopManager.lxqt.enable = true;
 
   services.xserver.windowManager = {
     berry.enable = true;
@@ -277,7 +277,7 @@
     wmderland.enable = true;
     herbstluftwm.enable = true;
 
-    hypr.enable = true;
+    #hypr.enable = true;
 
     clfswm.enable = true;
     #stumpwm.enable = true;
@@ -287,8 +287,8 @@
     "2bwm".enable = true;
   };
 
-  programs.sway.enable = true;
-  programs.xwayland.enable = true;
+  #programs.sway.enable = true;
+  #programs.xwayland.enable = true;
 
   #nix.maxJobs = 4;
 

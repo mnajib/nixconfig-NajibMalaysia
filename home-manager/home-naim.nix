@@ -29,7 +29,7 @@ in
     # ./nvim.nix
     ./roblox.nix
     ./wesnoth.nix
-    ./wayland-wm/default.nix
+    #./wayland-wm/default.nix
     ./minecraft.nix
 
     ./common-configs.nix
