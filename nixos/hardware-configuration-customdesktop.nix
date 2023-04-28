@@ -16,11 +16,20 @@
     kernelModules =          [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ];            #"zfs" "bcachefs"
     supportedFilesystems =   [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ];            #"zfs" "bcachefs"
 
+    #--------------------------------------------------------------------------
+    # NOTES:
+    #--------------------------------------------------------------------------
     # /dev/sda2 --> LUKS --> LVM --> btrfs
     # /dev/sdb2 --> LUKS --> LVM --> btrfs
     # lsblk
     # blkid /dev/sdb2
     # blkid /dev/sda2
+    #
+    # ps -eaf | grep [u]disk
+    # udiskctl status
+    # #lsof -p $(pidof udiskd) | tail
+    # ls -FilahR /dev/disk | grep sdg
+    #--------------------------------------------------------------------------
 
     #luks.devices."crypt1" = {
     #  device = "/dev/disk/by-uuid/552eb401-53a0-43d2-9782-26d28796b6a0"; # /dev/sdb2; 2nd partition on 254GB SSD?
