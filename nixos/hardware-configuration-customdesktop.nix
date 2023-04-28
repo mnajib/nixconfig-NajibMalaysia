@@ -44,7 +44,7 @@
     luks.devices."luks-781bbff1-508d-4287-a748-63d45d74b5e5" = { device = "/dev/disk/by-uuid/781bbff1-508d-4287-a748-63d45d74b5e5"; preLVM = true; };   # swap
 
     #------------------
-    # For data storage (zfs pool)
+    # For data storage (zfs pool: najibzfspool1)
     #------------------
 
     luks.devices."luks-8a53d158-ba69-47a1-9329-2d07372949d6" = { device = "/dev/disk/by-uuid/8a53d158-ba69-47a1-9329-2d07372949d6"; preLVM = true; };                  # 500GB.
@@ -56,6 +56,24 @@
 
     luks.devices."luks-ec2dca2b-84e7-4d33-b6fd-7bdad06ec445" = { device = "/dev/disk/by-uuid/ec2dca2b-84e7-4d33-b6fd-7bdad06ec445"; preLVM = true; };                  # 1TB, bought used-hdd from Shopee on 2023-04.
     luks.devices."luks-acfbbc38-c2c4-453f-b995-f02f8cf17bac" = { device = "/dev/disk/by-uuid/acfbbc38-c2c4-453f-b995-f02f8cf17bac"; preLVM = true; };                  # 1TB, bought used-hdd from Shopee on 2023-04.
+
+    #------------------
+    # For TEST data storage (zfs pool: najibTestPool)
+    #------------------
+
+    luks.devices."luks-0de82803-40d1-4fdf-8841-6e4f79e0394c" = {
+      device = "/dev/disk/by-uuid/0de82803-40d1-4fdf-8841-6e4f79e0394c";
+      preLVM = true;
+    };
+    luks.devices."luks-b25e6a23-1c8b-4037-8f00-5e8c51fa2c27" = {
+      device = "/dev/disk/by-uuid/b25e6a23-1c8b-4037-8f00-5e8c51fa2c27";
+      preLVM = true;
+    };
+    luks.devices."luks-ef189d5d-9138-4b39-baa6-20f999033494" = {
+      device = "/dev/disk/by-uuid/ef189d5d-9138-4b39-baa6-20f999033494";
+      preLVM = true;
+    };
+    #luks.devices."luks-" = { device = "/dev/disk/by-uuid/"; preLVM = true; };                                                                                        # Problem detected with disk: /dev/sdg [SAT]. Warning message from smartd is: Device: /dev/sdg [SAT], unable to open ATA device
   };
 
   fileSystems."/" = {
