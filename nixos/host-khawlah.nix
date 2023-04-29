@@ -75,7 +75,7 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   #networking.firewall.allowedUDPPorts = [ 3450 ]; # 3450 for minetest server
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
 
   #services.xserver.displayManager.sddm.enable = true;
   #services.xserver.displayManager.defaultSession = "none+xmonad";
