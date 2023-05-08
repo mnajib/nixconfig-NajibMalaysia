@@ -175,7 +175,8 @@
     #unstable.google-chrome
     google-chrome
 
-    gptfdisk efibootmgr btrfs-progs btrbk gsmartcontrol #bcachefs-tools
+    gptfdisk efibootmgr btrfs-progs btrbk #bcachefs-tools
+    gsmartcontrol smartmontools
     #lizardfs                 # marked as broken?
     wget curl killall
     mtr iproute # busybox
