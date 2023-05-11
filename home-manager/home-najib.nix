@@ -79,6 +79,7 @@ in
     xarchiver
     #xmind-8-update8
     xournalpp
+    wpsoffice
 
     smlnj
     waydroid
