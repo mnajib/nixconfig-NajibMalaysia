@@ -81,6 +81,9 @@ in
     xournalpp
     wpsoffice
 
+    chemtool
+    marvin
+
     smlnj
     waydroid
     #kmymoney
