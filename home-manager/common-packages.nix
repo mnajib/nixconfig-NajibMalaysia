@@ -86,6 +86,6 @@
     pkgs.fzy                            # CLI fuzzy finder
 
     # GUI Games
-    pkgs.zeroad
+    #pkgs.zeroad
   ];
 }

@@ -15,7 +15,7 @@
 
     ./common-configs.nix
     ./common-packages.nix
-    #./roblox.nix
+    ./roblox.nix
     ./wesnoth.nix
     #./system-benchmark.nix
   ];
@@ -111,7 +111,7 @@
     #neovim
     emacs
 
-    zeroad
+    #zeroad
 
     fluxbox                             # need fbsetroot to set desktop background color
   ];
