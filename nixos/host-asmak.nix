@@ -1,28 +1,45 @@
 { config, pkgs, ... }:
 
 {
+    nix = {
+        package = pkgs.nixFlakes;
+        extraOptions = ''
+            experimental-features = nix-command flakes
+        '';
+    };
+
     imports = [
+        ./hardware-configuration-asmak.nix
         #./bootEFI.nix
-        ./bootBIOS.nix
+        #./bootBIOS.nix
         ./thinkpad.nix
 	#./touchpad-scrollTwofinger-TapTrue.nix
 	#./touchpad-scrollEdge-TapTrue.nix
+        ./zfs.nix
 	./users-anak2.nix
-	./nfs-client.nix
+	./nfs-client-automount.nix
+        ./console-keyboard-dvorak.nix
 	./keyboard-with-msa.nix
 	./audio-pipewire.nix
 	#./synergy-client.nix
 	./hardware-printer.nix
+        ./zramSwap.nix
+        ./hosts2.nix
+        ./configuration.FULL.nix
+        ./nix-garbage-collector.nix
     ];
 
     # For the value of 'networking.hostID', use the following command:
     #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
     #
-    # Thinkpad R61 magnifix hadiah
     networking.hostId = "ec4da958";
     networking.hostName = "asmak";
 
-    nix.trustedUsers = [ "root" "najib" "naqib" ];
+    nix.settings.trusted-users = [ "root" "najib" "naqib" ];
+
+    networking.useDHCP = false;
+    networking.networkmanager.enable = true;
+    systemd.services.NetworkManager-wait-online.enable = false;
 
     #services.xserver.libinput.tapping = pkgs.lib.mkForce true; # Will delete this line, do not need this anymore; instead I have put if-then-else for this in configuration.FULL.nix
 
@@ -34,13 +51,26 @@
     # Or disable the firewall altogether.
     networking.firewall.enable = false;
 
+    boot.loader.grub = {
+      enable = true;
+      version = 2;
+      efiSupport = false;
+      enableCryptodisk = true;
+      copyKernels = true;
+      useOSProber = true;
+      devices = [
+        "/dev/disk/by-id/wwn-0x5000000000000000"
+      ];
+    };
+
     #boot.kernelParams = [ "nomodeset" ]; # Need this to run OBS.
-    boot.kernelPackages = pkgs.linuxPackages_latest; # Need this to make graphical display work on asmak.
+    #boot.kernelPackages = pkgs.linuxPackages_latest; # Need this to make graphical display work on asmak.
+    boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
     #boot.kernelPackages = pkgs.linuxPackages_5_4;
     #boot.kernelPackages = pkgs.linuxPackages_4_19;
 
-    boot.supportedFilesystems =        [ "ext4" "btrfs" "xfs" ]; # "zfs" "bcachefs"
-    boot.initrd.supportedFilesystems = [ "ext4" "btrfs" "xfs" ]; # "zfs" "bcachefs"
+    boot.supportedFilesystems =        [ "ext4" "btrfs" "xfs" "zfs" ]; # "zfs" "bcachefs"
+    boot.initrd.supportedFilesystems = [ "ext4" "btrfs" "xfs" "zfs" ]; # "zfs" "bcachefs"
 
     ## Pinning a kernel version
     #boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_4.override {
@@ -63,6 +93,10 @@
     #   };
     #});
 
+    services.fstrim.enable = true;
+    hardware.enableAllFirmware = true;
+    services.smartd.enable = true;
+
     services.xserver.synaptics.enable = false;
     services.xserver.libinput.enable = true;
     services.xserver.libinput.touchpad.disableWhileTyping = true;
@@ -79,8 +113,12 @@
     #services.xserver.libinput.scrollMethod = "button";
     #services.xserver.libinput.scrollButton = 1;
 
+    services.xserver.enable = true;
+    services.xserver.displayManager.lightdm.enable = true;
+    services.xserver.desktopManager.plasma5.enable = true;
+
     networking.networkmanager.wifi.powersave = false;
     systemd.watchdog.rebootTime = "10m";
 
-    system.stateVersion = "22.05";
+    system.stateVersion = "22.11";
 }

@@ -181,6 +181,13 @@
           ];
         };
 
+        asmak = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            ./nixos/host-asmak.nix
+          ];
+        };
+
         # Laptop Thinkpad T410 (with nvidia) Naim
         zahrah = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
