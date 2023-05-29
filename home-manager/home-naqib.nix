@@ -18,6 +18,7 @@
     ./roblox.nix
     ./wesnoth.nix
     #./system-benchmark.nix
+    #./minecraft.nix
   ];
 
   nixpkgs = {
@@ -112,6 +113,7 @@
     emacs
 
     #zeroad
+    minetest
 
     fluxbox                             # need fbsetroot to set desktop background color
   ];
