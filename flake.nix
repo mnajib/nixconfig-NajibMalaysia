@@ -4,11 +4,11 @@
   inputs = {
     # Nixpkgs
     #nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
     #
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.11";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
 
     # Set this up as an overlay; or pull-request (PR) it to nixpkgs.
     #nixpkgs-mitchty.url = "github:/mitchty/nixpkgs/mitchty";

@@ -67,7 +67,6 @@
 
   boot.loader.grub = {
     enable = true;
-    version = 2;
     efiSupport = false;
     enableCryptodisk = true;
     copyKernels = true;

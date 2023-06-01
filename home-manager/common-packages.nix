@@ -53,7 +53,7 @@
     pkgs.qucs                           # Integrated circuit simulator
     pkgs.ngspice                        # The Next Generation Spice (Electronic Circuit Simulator)
     pkgs.fritzing
-    pkgs.dt-shell-color-scripts         #
+    #pkgs.dt-shell-color-scripts         #
 
     #pkgs.sameboy                       # gameboy emulator
 
@@ -69,7 +69,7 @@
     # TUI E-mail Client
     pkgs.neomutt
     pkgs.mutt
-    pkgs.meli
+    #pkgs.meli
     #pkgs.lumail
     pkgs.aerc
     pkgs.himalaya

@@ -201,7 +201,7 @@
     inxi
 
     darcs
-    atop gotop wavemon iotop bpytop nethogs
+    atop gotop wavemon iotop nethogs
     bandwhich
     xmlstarlet
     xsane sane-backends sane-frontends hplip
@@ -885,7 +885,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  services.openssh.forwardX11 = true;
+  services.openssh.settings.X11Forwarding = true;
   #services.openssh.ports= [ 7177 ];
   services.sshguard.enable = true;
 
