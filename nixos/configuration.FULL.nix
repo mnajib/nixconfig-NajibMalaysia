@@ -197,6 +197,7 @@
     iw
 
     arandr autorandr
+    xorg.libxcvt
 
     inxi
 
