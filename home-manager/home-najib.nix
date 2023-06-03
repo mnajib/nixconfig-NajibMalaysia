@@ -61,7 +61,6 @@ in
 
   home.packages = with pkgs; [
     btop
-
     #steam
     almanah
     #file-roller
@@ -80,10 +79,8 @@ in
     #xmind-8-update8
     xournalpp
     wpsoffice
-
     chemtool
     marvin
-
     smlnj
     waydroid
     #kmymoney
@@ -96,7 +93,6 @@ in
     gdmap
     ncdu
     gdu
-
     baobab
     dutree
     btdu
@@ -107,8 +103,8 @@ in
     xpra
     bootiso
     virt-manager
-
     kitty
+    jfbview
   ];
 
   # Enable home-manager and git
