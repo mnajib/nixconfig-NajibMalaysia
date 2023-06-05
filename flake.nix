@@ -35,7 +35,7 @@
 
     sops-nix.url = "github:mic92/sops-nix";
 
-    sile.url = "github:sile-typesetter/sile/v0.14.3";
+    #sile.url = "github:sile-typesetter/sile/v0.14.3";
 
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
@@ -61,7 +61,7 @@
     nur,
     nix-colors,
     hyprland,
-    sile,
+    #sile,
     nixos-generators,
     dnsblacklist,
     seaweedfs,

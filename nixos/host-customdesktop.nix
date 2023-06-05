@@ -97,7 +97,7 @@
   #boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub = {
     enable = true;
-    version = 2;
+    #version = 2;
     efiSupport = false;
     enableCryptodisk = true;
     copyKernels = true;
@@ -147,7 +147,7 @@
   #services.zfs.autoScrub.enable = true;  # Look nixos/zfs.nix
 
   # Needed for btrbk
-  services.openssh.permitRootLogin = "prohibit-password";
+  services.openssh.settings.PermitRootLogin = "prohibit-password";
 
   networking.firewall.enable = false;
   # open port 24800 for barrier server?/client?

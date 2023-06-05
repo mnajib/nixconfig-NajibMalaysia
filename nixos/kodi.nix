@@ -56,7 +56,7 @@
       steam-controller
       typing_extensions
       visualization-waveform
-      controller-topology-project
+      #controller-topology-project
     ]) )
   ];
 

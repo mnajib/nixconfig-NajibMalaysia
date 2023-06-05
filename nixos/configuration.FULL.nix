@@ -270,10 +270,11 @@
     #gnomeExtensions.draw-on-your-screen
     #pentablet-driver
     gromit-mpx  # Desktop annotation tool
-    xournal    # note-taking application (supposes stylus)
-    xournalpp  # handwriting notetaking software with PDF annotation support
-    pdftk    # Command-line tool for working with PDFs
-    #pdfchain  #
+    xournal     # note-taking application (supposes stylus)
+    xournalpp   # handwriting notetaking software with PDF annotation support
+    rnote       # Simple drawing application to create handwritten notes
+    pdftk       # Command-line tool for working with PDFs
+    #pdfchain   #
 
     gnome.gnome-clocks
 
