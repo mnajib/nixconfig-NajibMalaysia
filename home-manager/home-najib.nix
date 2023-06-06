@@ -104,7 +104,8 @@ in
     bootiso
     virt-manager
     kitty
-    jfbview
+    #jfbview
+    #qmmp
   ];
 
   # Enable home-manager and git
