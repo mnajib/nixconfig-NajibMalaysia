@@ -51,6 +51,51 @@
     ];
   };
 
+  fileSystems."/export/najib" = {
+    device = "/home/najib";
+    options = [
+      "bind"
+      "x-systemd.automount"
+      "noauto"
+    ];
+  };
+
+  fileSystems."/export/julia" = {
+    device = "/home/julia";
+    options = [
+      "bind"
+      "x-systemd.automount"
+      "noauto"
+    ];
+  };
+
+  fileSystems."/export/naqib" = {
+    device = "/home/naqib";
+    options = [
+      "bind"
+      "x-systemd.automount"
+      "noauto"
+    ];
+  };
+
+  fileSystems."/export/nurnasuha" = {
+    device = "/home/nurnasuha";
+    options = [
+      "bind"
+      "x-systemd.automount"
+      "noauto"
+    ];
+  };
+
+  fileSystems."/export/naim" = {
+    device = "/home/naim";
+    options = [
+      "bind"
+      "x-systemd.automount"
+      "noauto"
+    ];
+  };
+
   # NFS Server
   services.nfs.server = {
     enable = true;
@@ -63,13 +108,18 @@
     #extraNfsdConfig = ''
     #'';
 
-    #/export/sekolahgluster    *(rw,nohide,insecure,no_subtree_check,fsid=1)
-    #/export/sekolahdocdir     *(rw,nohide,insecure,no_subtree_check)
-    #/export/documents         *(rw,nohide,insecure,no_subtree_check)
+    #/export/sekolahgluster     *(rw,nohide,insecure,no_subtree_check,fsid=1)
+    #/export/sekolahdocdir      *(rw,nohide,insecure,no_subtree_check)
+    #/export/documents          *(rw,nohide,insecure,no_subtree_check)
 
     exports = ''
-      /export                  *(rw,fsid=0,no_subtree_check,fsid=0)
-      /export/nfsshare2        *(rw,nohide,insecure,no_subtree_check)
+      /export                   *(rw,fsid=0,no_subtree_check,fsid=0)
+      /export/nfsshare2         *(rw,nohide,insecure,no_subtree_check)
+      /export/najib             *(rw,nohide,insecure,no_subtree_check)
+      /export/julia             *(rw,nohide,insecure,no_subtree_check)
+      /export/naqib             *(rw,nohide,insecure,no_subtree_check)
+      /export/nurnasuha         *(rw,nohide,insecure,no_subtree_check)
+      /export/naim              *(rw,nohide,insecure,no_subtree_check)
     '';
   };
 
