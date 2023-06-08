@@ -6,6 +6,9 @@
 {
   services.gitea = {
     enable = true;
-    rootUrl = "http://mahirah:3000/";
+    settings = {
+      server.ROOT_URL = "http://mahirah:3000/";
+      #server.ROOT_URL = "http://192.168.1.72:3000/";
+    };
   };
 }
