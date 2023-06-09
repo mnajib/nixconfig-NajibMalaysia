@@ -116,7 +116,7 @@
   systemd.watchdog.rebootTime = "10m";
 
   # Not remember why I need this. btrbk?
-  services.openssh.permitRootLogin = "prohibit-password";                       # one of "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
+  services.openssh.settings.PermitRootLogin = "prohibit-password";                       # one of "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
 
   networking.firewall.enable = false;
   #networking.firewall.allowedTCPPorts = [
