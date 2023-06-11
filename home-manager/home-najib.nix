@@ -106,6 +106,7 @@ in
     kitty
     #jfbview
     #qmmp
+    ed  # an implemintation of the standard unix editor
   ];
 
   # Enable home-manager and git

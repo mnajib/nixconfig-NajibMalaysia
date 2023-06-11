@@ -380,6 +380,7 @@
     # text editor
     #---------------------------------------------------------------
 
+    ed
     nano neovim vim kakoune micro jedit vis # jed 
     vimHugeX
     emacs # emacs-nox

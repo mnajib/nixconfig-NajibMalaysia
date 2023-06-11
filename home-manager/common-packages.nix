@@ -87,5 +87,7 @@
 
     # GUI Games
     #pkgs.zeroad
+
+    pkgs.ed # text editor
   ];
 }
