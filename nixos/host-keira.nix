@@ -60,6 +60,8 @@
     ./configuration.FULL.nix
 
     ./btrbk-keira.nix
+
+    #./nix-garbage-collector.nix
   ];
 
   # For Thinkpad T410
@@ -146,7 +148,13 @@
   ];
 
   powerManagement.enable = true;
-  #services.auto-cpufreq.enable = true;
+  #----------------------------------------------------------------------------
+  # XXX: on-going test
+  #----------------------------------------------------------------------------
+  services.auto-cpufreq.enable = true;
+  powerManagement.cpuFreqGovernor = "powersave";
+  #powerManagement.cpufreq.min = 800000;
+  powerManagement.cpufreq.max = 2000000; # Guna 1500,000 KHz pada zahrah.
 
   services.tlp = {
     enable = true;
@@ -159,6 +167,19 @@
       DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth wwan";
       #DEVICES_TO_ENABLE_ON_STARTUP = "wifi";
     };
+  };
+
+  services.thinkfan = {
+    enable = true;
+    levels = [
+      [ 0 0 55 ]
+      [ "level auto" 48 60 ]
+      [ "level auto" 50 61 ]
+      [ 6 52 63 ]
+      [ 7 56 65 ]
+      [ "level full-speed" 60 85 ]
+      [ "level full-speed" 80 32767 ]
+    ];
   };
 
   networking.networkmanager.wifi.powersave = false;
@@ -199,7 +220,7 @@
   #services.xserver.desktopManager.plasma5.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
 
-  #services.xserver.displayManager.defaultSession = "none+xmonad";
+  services.xserver.displayManager.defaultSession = "none+xmonad";
 
   nix.settings.max-jobs = 2;
 
