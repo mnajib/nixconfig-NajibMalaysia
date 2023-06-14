@@ -45,6 +45,9 @@
     #./btrbk-mahirah.nix
 
     ./nix-garbage-collector.nix
+
+    ./3D.nix
+    ./chemistry.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
