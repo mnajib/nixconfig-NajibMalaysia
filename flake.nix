@@ -34,6 +34,7 @@
     hyprland.url = "github:hyprwm/hyprland";
 
     sops-nix.url = "github:mic92/sops-nix";
+    #inputs.sops-nix.inputs.nixpkps.follows = "nixpkgs";        # optional, not necessary for the module
 
     #sile.url = "github:sile-typesetter/sile/v0.14.3";
 
@@ -65,6 +66,7 @@
     nixos-generators,
     dnsblacklist,
     seaweedfs,
+    sops-nix,
     ...
   }@inputs:
     let
@@ -178,6 +180,7 @@
           specialArgs = { inherit inputs outputs; };
           modules = [
             ./nixos/host-customdesktop.nix
+            sops-nix.nixosModules.sops
           ];
         };
 
