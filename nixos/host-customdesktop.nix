@@ -58,6 +58,9 @@
     #./btrbk-pull.nix
     #./btrbk-tv.nix # XXX: Temporarily disabled as the HDD is failing.
 
+    #./gogs.nix
+    ./gitea.nix
+
     ./hosts2.nix
     ./configuration.FULL.nix
 
@@ -146,8 +149,8 @@
 
   #services.zfs.autoScrub.enable = true;  # Look nixos/zfs.nix
 
-  # Needed for btrbk
-  services.openssh.settings.PermitRootLogin = "prohibit-password";
+  services.openssh.settings.PermitRootLogin = "yes";            # 
+  #services.openssh.settings.PermitRootLogin = "prohibit-password";           # Needed for btrbk
 
   networking.firewall.enable = false;
   # open port 24800 for barrier server?/client?
