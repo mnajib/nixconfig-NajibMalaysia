@@ -62,6 +62,8 @@
     ./btrbk-keira.nix
 
     #./nix-garbage-collector.nix
+
+    ./monitoring-tools.nix
   ];
 
   # For Thinkpad T410
