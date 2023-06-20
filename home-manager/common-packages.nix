@@ -89,5 +89,7 @@
     #pkgs.zeroad
 
     pkgs.ed # text editor
+
+    pkgs.timeline # Display and navigate information on a timeline
   ];
 }
