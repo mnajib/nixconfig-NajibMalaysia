@@ -58,7 +58,7 @@
 
     #./sway.nix
 
-    ./nix-garbage-collector.nix
+    #./nix-garbage-collector.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
