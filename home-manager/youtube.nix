@@ -7,8 +7,8 @@
     #--------------------------------------------------------------------------
     # GUI Player (or with ability to launch player; browser and player and mybe downloader)
     #--------------------------------------------------------------------------
-    #smtube
-    #minitube # watch youtube with tv-like experience
+    #smtube # insecure because using unmaintained qtwebkit
+    minitube # watch youtube with tv-like experience
     freetube # the private youtube client
     headset
     invidious
@@ -21,6 +21,7 @@
     #--------------------------------------------------------------------------
     youtube-tui
     #pipe-viewer # conflic with gtk-pipe-viewer
+    ytfzf # fuzzy search find and watch youtube videos from terminal
 
     #--------------------------------------------------------------------------
     # GUI Downloader (without ability to launch player)
