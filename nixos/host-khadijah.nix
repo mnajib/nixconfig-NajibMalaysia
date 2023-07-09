@@ -95,7 +95,8 @@
 
   # XXX: ???
   environment.systemPackages = with pkgs; [
-    nvtop
+    #nvtop
+    tmux
   ];
 
   #hardware.video.hidpi.enable = true;
@@ -135,7 +136,7 @@
   #services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
   services.xserver.dpi = 96;
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+  #services.xserver.videoDrivers = [ "nvidia" ];
   # OR
   # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
   #services.xserver.videoDrivers = [ "nvidiaLegacy470" ]; #
@@ -151,9 +152,9 @@
   #   NVIDIA GPU product: Quadro K2100M
   #   Device PCI ID: 11FC
   #   Subdevice PCI ID: -
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
 
-  hardware.nvidia.nvidiaSettings = true;
+  #hardware.nvidia.nvidiaSettings = true;
 
   hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
   hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
@@ -162,8 +163,8 @@
   #
   # OR
   #
-  hardware.nvidia.prime.sync.enable = true;
-  hardware.nvidia.modesetting.enable = true;
+  #hardware.nvidia.prime.sync.enable = true;
+  #hardware.nvidia.modesetting.enable = true;
 
   #hardware.nvidia.prime = {
   # #offload.enable = true;
