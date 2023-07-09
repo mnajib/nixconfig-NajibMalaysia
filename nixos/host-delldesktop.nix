@@ -118,6 +118,8 @@
   networking.networkmanager.wifi.powersave = false;
   systemd.watchdog.rebootTime = "10m";
 
+  services.smartd.enable = true;
+
   # Not remember why I need this. btrbk?
   services.openssh.settings.PermitRootLogin = "prohibit-password";                       # one of "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
 
