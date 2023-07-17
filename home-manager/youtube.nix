@@ -46,5 +46,9 @@
     #video2midi
     mpv # media player needed by youtube-tui
     smplayer # media player needed by smtube
+
+    #ueberzug # alternative for w3mimgdisplay; optional for ytfzf
+    ueberzugpp # drop in replacement for ueberzug
+    imv # a command line image viewer
   ];
 }
