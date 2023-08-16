@@ -1206,7 +1206,8 @@
 
     #enableCoreFonts = true;
     enableGhostscriptFonts = true;
-    fonts = with pkgs; [
+    #fonts = with pkgs; [
+    packages = with pkgs; [
       corefonts # Microsoft free fonts; Microsoft's TrueType core fonts for the Web
       inconsolata # monospaced
       ubuntu_font_family # ubuntu fonts

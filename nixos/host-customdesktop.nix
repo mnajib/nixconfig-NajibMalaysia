@@ -28,6 +28,8 @@
     ./typesetting.nix
 
     #./syncthing.nix
+
+    # /var/lib/nextcloud/config/config.php
     #./nextcloud.nix
 
     # Email fetch and serve

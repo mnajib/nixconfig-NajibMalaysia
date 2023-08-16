@@ -11,7 +11,7 @@
     home = "/home/nextcloud/homedir";
     #datadir = "/home/nextcloud/datadir";
 
-    #package = pkgs.nextcloud25;
+    package = pkgs.nextcloud25;
     #extraApps = with pkgs.nextcloud25Packages.apps; {
     #  inherit mail news contacts;
     #};
