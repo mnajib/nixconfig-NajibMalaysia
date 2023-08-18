@@ -12,7 +12,7 @@
     freetube # the private youtube client
     headset
     invidious
-    gtk-pipe-viewer
+    #gtk-pipe-viewer
     ytmdesktop # desktop player for youtube music
     tartube # the easy way to watch and download videos from youtube, twitch, odysee, etc.
 
