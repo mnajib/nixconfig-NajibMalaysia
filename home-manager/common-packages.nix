@@ -31,7 +31,9 @@
     pkgs.tmux
     pkgs.mosh
     pkgs.pavucontrol
-    pkgs.libreoffice
+    #pkgs.libreoffice-still #pkgs.libreoffice
+    pkgs.libreoffice-fresh #pkgs.libreoffice-qt
+    #pkgs.libreoffice-bin
     pkgs.xournal
     pkgs.xournalpp
     pkgs.inkscape                       #pkgs.unstable.inkscape
