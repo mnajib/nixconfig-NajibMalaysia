@@ -23,7 +23,7 @@ xkb_symbols "basic" {
     key <AE12> {  [           equal,                 plus,                  notequal,               U2248 ]};  // = +     ≠ ≈
 
     key <AD01> {  [      Arabic_dad,                U0762,                     U0670,               U2066 ]};  // ‎ض‎ ‎◌َ   ALABIC_LETTER_SUPERSCRIPT_ALEF(actually a vowel sign, despite the name)    LEFT‑TO‑RIGHT ISOLATE
-    key <AD02> {  [      Arabic_sad,                U06CF,                  NoSymbol,               U2067 ]};  // ‎ص‎ ‎◌ً       RIGHT‑TO‑LEFT ISOLATE
+    key <AD02> {  [      Arabic_sad,                U06CF,                     U0653,               U2067 ]};  // ‎ص‎ ‎◌ً   ARABIC_MADDAH_ABOVE    RIGHT‑TO‑LEFT ISOLATE
     key <AD03> {  [           U062B,                U06BD,                  NoSymbol,               U2068 ]};  // ‎ث‎ ‎◌ُ       FIRST STRONG ISOLATE
     key <AD04> {  [      Arabic_qaf,                U06A4,                  NoSymbol,               U2069 ]};  // ‎ق‎ ‎◌ٌ       POP DIRECTIONAL ISOLATE
     key <AD05> {  [      Arabic_feh,                UFEF9,                Arabic_veh,            NoSymbol ]};  // ‎ف‎ ‎ﻹ     ‎ڤ
