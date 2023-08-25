@@ -1216,13 +1216,13 @@
       terminus_font_ttf
       tewi-font
       #kochi-substitude-naga10
-      source-code-pro
+      source-code-pro # monospaced font family for user interface and coding environments
       anonymousPro
       dejavu_fonts
       noto-fonts #font-droid
       noto-fonts-cjk
       noto-fonts-emoji
-      fira-code
+      fira-code # suitable for coding
       fira-code-symbols
       #mplus-outline-fonts
       dina-font
@@ -1252,6 +1252,8 @@
 
       nerdfonts
       #(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ] })
+
+      jetbrains-mono # An opensource typeface made for developers. suitable for coding
     ];
   };
 
