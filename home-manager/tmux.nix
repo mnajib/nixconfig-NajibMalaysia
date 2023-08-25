@@ -17,7 +17,7 @@
       set -g default-terminal "screen-256color"
     '';
 
-    tmuxinator.enable = true;
+    #tmuxinator.enable = true;
 
     plugins = with pkgs; [
       tmuxPlugins.cpu
