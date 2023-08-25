@@ -1204,6 +1204,11 @@
     fontDir.enable = true;
     fontconfig.enable = true; # XXX:
 
+    #fontconfig.defaultFonts.serif = [ "DejaVu Serif" ];
+    #fontconfig.defaultFonts.emoji = [ "Noto Color Emoji" ];
+    #fontconfig.defaultFonts.sansSerif = [ "DejaVu Sans" ];
+    #fontconfig.defaultFonts.monospace = [ "DejaVu Sans Mono" ]; # "jetbrains mono"
+
     #enableCoreFonts = true;
     enableGhostscriptFonts = true;
     #fonts = with pkgs; [
