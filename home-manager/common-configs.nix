@@ -94,10 +94,34 @@ in
 
   programs.kitty = {
     enable = true;
+
+    #font = {
+      #package = pkgs.dejavu_fonts;
+      #package = pkgs.jetbrains-mono;
+      #name = "DejaVu Sans";
+      #size = "12"; #"13"; # "8";
+    #};
+
+    #theme = "Space Gray Eighties";
+
     settings = {
       background = "#${config.colorScheme.colors.base00}";
       foreground = "#${config.colorScheme.colors.base05}";
+
+      #cursor = "#cccccc";
+      #cursor_text_color = "#111111";
+      cursor_shape = "block"; # "beam"
+      cursor_blink_interval = 1;
+      cursor_stop_blinking_after = 0;
+
+      scrollback_lines = 10000;
+      enable_audio_bell = true;
+      update_check_interval = 0;
     };
+
+    #environment = {
+      #"LS_COLORS" = "1";
+    #};
   };
 
   programs.qutebrowser = {
