@@ -1259,6 +1259,7 @@
       #(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ] })
 
       jetbrains-mono # An opensource typeface made for developers. suitable for coding
+      mononoki # A font for programming and code review
     ];
   };
 
