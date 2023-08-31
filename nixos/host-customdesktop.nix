@@ -20,6 +20,9 @@
     # Disable this; as we can just set custom DNS in NetworkManager
     #./network-dns.nix
 
+    # Internal/private network DNS server
+    ./dnsmasq.nix
+
     ./users-anak2.nix
 
     #./anbox.nix
