@@ -55,7 +55,8 @@
       dbname = "nextcloud";
       dbuser = "nextcloud";
       #dbpassFile = "/home/nextcloud/dbpass";
-      dbpassFile = "${pkgs.writeText "adminpass" "test123"}";
+      #dbpassFile = "${pkgs.writeText "adminpass" "test123"}";
+      dbpassFile = "${pkgs.writeText "dbpass" "test123"}";
 
       adminuser = "root";
       #adminuser = "nextcloud";
