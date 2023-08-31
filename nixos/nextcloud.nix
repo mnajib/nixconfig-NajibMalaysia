@@ -45,8 +45,7 @@
     hostName = "customdesktop";
     #hostName = "customdesktop.localdomain";
 
-    #https = true;
-    #nginx.enable = true;
+    https = true;
 
     #database.createLocally = true;
 
@@ -69,7 +68,7 @@
 
     };
 
-    logLevel = 2; # 0 debug ,1 info, 2 warn, 3 error, 4 fatal
+    #logLevel = 2; # 0 debug ,1 info, 2 warn, 3 error, 4 fatal
   };
 
   #services.postgresql = {
@@ -91,16 +90,24 @@
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
   # Cerficate - Let's Encrypt
-  #security.acme = {
-  #  acceptTerms = true;
-  #  # Replace the email here!
-  #  email = "najib@customdesktop";
-  #};
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "najib@customdesktop";
+  };
 
   #services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
-  #  forceSSL = true;
-  #  enableACME = true;
-  #};
+  services.nginx = {
+    enable = true;
+    recommendedGzipSettings = true;
+    recommendedOptimisation = true;
+    recommendedProxySettings = true;
+    recommendedTlsSettings = true;
 
-  #security.acme.acceptTerms = true;
+    #virtualHosts."customdesktop.localdomain" = {
+    virtualHosts."customdesktop" = {
+      forceSSL = true;
+      enableACME = true;
+    };
+  };
+
 }
