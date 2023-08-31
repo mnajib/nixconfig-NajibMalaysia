@@ -31,7 +31,7 @@
 																				# Disabled here because our current dhcp (on wifi/gw/router/fw) limitation static ip to only small number of hosts.
 		"192.168.1.171"	= [ "redmi9" ];											# phonenajib
 		"192.168.1.22"	= [ "printer" ];										# printsvr, wirelessprinter, hplaserjet
-		"192.168.1.21"	= [ "customdesktop" ];									# Custom desktop. My 2'nd GigaByte motherboard. gigabytez77, desktopz77
+		"192.168.1.21"	= [ "customdesktop" "customdesktop.localdomain" ];									# Custom desktop. My 2'nd GigaByte motherboard. gigabytez77, desktopz77
 		#"192.168.1.20"	= [ "customdesktop2" ];									# My 1'st GigaByte motherboard.
 																				# Not in service anymore Some chips on this board now getting too hot. gigabyteh61, desktoph61
 		"192.168.1.2"	= [ "maryam" ];											# Thinkpad T61/R61 ?

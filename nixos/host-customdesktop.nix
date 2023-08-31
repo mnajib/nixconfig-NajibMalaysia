@@ -30,7 +30,7 @@
     #./syncthing.nix
 
     # /var/lib/nextcloud/config/config.php
-    #./nextcloud.nix
+    ./nextcloud.nix  # OpenSSL 1.1 is marked as unsecured
 
     # Email fetch and serve
     #./email.nix
@@ -221,5 +221,7 @@
     pkgs.foot
   ];
 
-  system.stateVersion = "22.05";
+  #system.stateVersion = "22.05";
+  #system.stateVersion = "22.11";
+  system.stateVersion = "23.05";
 }
