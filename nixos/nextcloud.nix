@@ -42,8 +42,8 @@
 
     autoUpdateApps.enable = true;
 
-    hostName = "customdesktop";
-    #hostName = "customdesktop.localdomain";
+    #hostName = "customdesktop";
+    hostName = "customdesktop.localdomain";
 
     https = true;
 
@@ -63,9 +63,10 @@
       #adminpassFile = "/home/nextcloud/adminpass";
       adminpassFile = "${pkgs.writeText "adminpass" "test123"}";
 
-      #extraTrustedDomains = [
-      #  "192.168.1"
-      #];
+      extraTrustedDomains = [
+        #"192.168.1"
+        "localdomain"
+      ];
 
     };
 
@@ -93,7 +94,7 @@
   # Cerficate - Let's Encrypt
   security.acme = {
     acceptTerms = true;
-    defaults.email = "najib@customdesktop";
+    defaults.email = "najib@customdesktop.localdomain";
   };
 
   #services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
@@ -104,8 +105,8 @@
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
 
-    #virtualHosts."customdesktop.localdomain" = {
-    virtualHosts."customdesktop" = {
+    virtualHosts."customdesktop.localdomain" = {
+    #virtualHosts."customdesktop" = {
       forceSSL = true;
       enableACME = true;
     };
