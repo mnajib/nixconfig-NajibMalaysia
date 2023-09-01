@@ -35,6 +35,9 @@
     # /var/lib/nextcloud/config/config.php
     ./nextcloud.nix  # OpenSSL 1.1 is marked as unsecured
 
+    # System health monitoring
+    ./netdata.nix
+
     # Email fetch and serve
     #./email.nix
 
