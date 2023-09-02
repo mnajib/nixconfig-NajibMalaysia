@@ -87,6 +87,9 @@
   hardware.enableAllFirmware = true;
 
   #boot.kernelPackages = pkgs.linuxKernel.packages.latest;
+  #boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
+  #boot.kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   #boot.loader.systemd-boot.enable = true;
   #boot.loader.efi.canTouchEfiVariables = true;
