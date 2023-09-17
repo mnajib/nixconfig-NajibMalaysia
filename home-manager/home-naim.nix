@@ -84,6 +84,12 @@ in
     effitask
 
     foot
+    minetest
+    blender
+    freecad librecad
+    inkscape
+    gimp
+    libreoffice
   ];
 
   # Enable home-manager and git
