@@ -18,7 +18,8 @@
     ./users-nurnasuha-wheel.nix
     #./hosts.nix
     ./hosts2.nix
-    ./nfs-client.nix
+    #./nfs-client.nix
+    ./nfs-client-automount.nix
     ./console-keyboard-dvorak.nix
     ./keyboard-with-msa.nix
     #./audio-pipewire.nix
