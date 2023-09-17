@@ -38,6 +38,15 @@
       dhcp-host=e8:48:b8:cd:68:68,decotamu,192.168.1.60,infinite
       dhcp-host=00:13:e8:d1:5b:dd,maryam,192.168.1.2,infinite
       dhcp-host=90:2b:34:dd:df:6d,customdesktop,192.168.1.21,infinite
+      dhcp-host=60:67:20:a9:a1:b0,asmak,192.168.1.45,infinite
+      dhcp-host=74:e5:0b:2c:1a:54,sakinah,192.168.1.4,infinite
+      dhcp-host=00:23:14:24:a1:c4,zahrah,192.168.1.74,infinite
+      dhcp-host=00:1e:65:f0:09:ae,raudah,192.168.1.154,infinite
+      dhcp-host=18:3d:a2:53:68:a0,keira,192.168.1.101,infinite
+      #manggis
+      #khawlah
+      #aishah
+      #husna
 
       # Prevent packets with malformed domain names and packets
       # with private IP addresses from leaving your network.
