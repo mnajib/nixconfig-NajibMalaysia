@@ -52,7 +52,7 @@
     pkgs.zathura                        # Document viewer
     pkgs.dropbox                        #pkgs.unstable.dropbox
     pkgs.wpa_supplicant_gui
-    pkgs.qucs                           # Integrated circuit simulator
+    pkgs.qucs-s #pkgs.qucs                           # Integrated circuit simulator. qucs has been removed because it depended on qt4. Try using qucs-s
     pkgs.ngspice                        # The Next Generation Spice (Electronic Circuit Simulator)
     pkgs.fritzing
     #pkgs.dt-shell-color-scripts         #

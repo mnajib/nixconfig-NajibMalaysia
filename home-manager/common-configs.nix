@@ -306,7 +306,8 @@ in
 
   programs.info.enable = true;
 
-  programs.exa = {
+  #programs.exa = {
+  programs.eza = {
     enable = true;
     #enableAliases = true;
   };
