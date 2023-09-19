@@ -254,7 +254,7 @@
     berry.enable = true;
     notion.enable = true;
     pekwm.enable = true;
-    qtile.enable = true;
+    #qtile.enable = true;
     ratpoison.enable = true;
     tinywm.enable = true;
     smallwm.enable = true;

@@ -74,7 +74,7 @@ in
     #sameboy
 
     # CLI task manager
-    taskell
+    #taskell # disable as it failed to build on 2023-09-19
     ctodo
     geek-life
     todoman
