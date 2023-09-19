@@ -12,7 +12,9 @@
   boot.initrd.kernelModules = [ "dm-snapshot" "dm-crypt" "dm-raid" "btrfs" "ext4" "xfs" "vfat" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-  boot.blacklistedKernelModules = [ "intel_ips" ];
+  boot.blacklistedKernelModules = [
+    "intel_ips"      # Some Intel Ibex Peak based platforms support so-called 'intelligent power sharing', which allows the CPU and GPU to cooperate to maximize performance within a given TDP (thermal design point).
+  ];
 
   boot.initrd.luks = {
     devices."crytp-sdb2" = {
