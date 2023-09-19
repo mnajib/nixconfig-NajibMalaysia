@@ -55,6 +55,11 @@
     ./nix-garbage-collector.nix
   ];
 
+  environment.systemPackages = with pkgs; [
+    vim
+    nano
+  ];
+
   nix.settings.trusted-users = [
     "root" "najib"
     #"julia"
