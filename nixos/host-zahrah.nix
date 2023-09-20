@@ -50,6 +50,8 @@
     ./typesetting.nix
 
     ./nix-garbage-collector.nix
+
+    ./flatpak.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
