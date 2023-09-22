@@ -64,6 +64,8 @@
     #./nix-garbage-collector.nix
 
     ./monitoring-tools.nix
+
+    ./flatpak.nix
   ];
 
   # For Thinkpad T410
