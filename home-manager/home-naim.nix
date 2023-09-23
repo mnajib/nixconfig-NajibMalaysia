@@ -23,7 +23,7 @@ in
     ##inputs.hardware.nixosModules.common-gpu-nvidia-disable.nix
     #inputs.hardware.nixosModules.common-pc-laptop
     #inputs.hardware.nixosModules.common-pc-ssd
-    inputs.hyprland.homeManagerModules.default
+    #inputs.hyprland.homeManagerModules.default
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
