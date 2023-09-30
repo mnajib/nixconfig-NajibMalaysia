@@ -25,6 +25,9 @@ in
 
     ./common-configs.nix
     ./common-packages.nix
+
+    # My attemp to use nix-doom-emacs
+    #inputs.nix-doom-emacs.hmModule
   ];
 
   nixpkgs = {
@@ -144,6 +147,11 @@ in
       #};
     };
   };
+
+  #programs.doom-emacs = {
+    #enable = true;
+    #doomPrivateDir = ./src/doomemacs.d;                   # Directory containing my config.el, init.el, and packages.el files
+  #};
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";

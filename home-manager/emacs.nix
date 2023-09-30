@@ -10,6 +10,8 @@
       epkgs.magit
       epkgs.emms
       epkgs.zerodark-theme
+
+      epkgs.doom
     ];
   };
 

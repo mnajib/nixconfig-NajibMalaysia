@@ -49,6 +49,8 @@
     };
 
     seaweedfs.url = "github:/mitchty/nixos-seaweedfs/wip";
+
+    nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
   };
 
   outputs = {
@@ -67,6 +69,7 @@
     dnsblacklist,
     seaweedfs,
     sops-nix,
+    nix-doom-emacs,
     ...
   }@inputs:
     let
