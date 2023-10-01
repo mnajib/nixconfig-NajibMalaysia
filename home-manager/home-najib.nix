@@ -114,6 +114,7 @@ in
     #jfbview
     #qmmp
     ed  # an implemintation of the standard unix editor
+    sakura # a terminal emulator based on GTK and VTE
   ];
 
   # Enable home-manager and git
@@ -133,7 +134,7 @@ in
   programs.dircolors.enable = true;
   programs.htop.enable = true;
   programs.info.enable = true;
-  programs.exa.enable = true;
+  programs.eza.enable = true;
 
   programs.ssh = {
     enable = true;
