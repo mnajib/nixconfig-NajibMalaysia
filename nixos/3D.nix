@@ -4,5 +4,6 @@
     freecad
     openscad
     f3d # viewer
+    qcad
   ];
 }
