@@ -34,6 +34,7 @@
     ./hosts2.nix
     ./configuration.FULL.nix
     ./nix-garbage-collector.nix
+    ./flatpak.nix
   ];
 
   environment.systemPackages = with pkgs; [
@@ -128,7 +129,18 @@
 
   services.xserver.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
+  services.xserver.displayManager.sddm.enable = false;
+  services.xserver.displayManager.jdm.enable = false;
+  #services.xserver.desktopManager.plasma5.enable = true;
+  #services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.desktopManager.xfce.enable = true;
+
+  services.xserver.windowManager.default = "xmonad";
+  services.xserver.windowManager.xmonad = true;
+  services.xserver.windowManager.jwm = true;
+  services.xserver.windowManager.fluxbox = true;
+  services.xserver.windowManager.awesome = true;
+  services.xserver.windowManager.berry = true;
 
   networking.networkmanager.wifi.powersave = false;
   systemd.watchdog.rebootTime = "10m";
