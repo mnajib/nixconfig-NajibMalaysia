@@ -19,7 +19,8 @@
 
     #./users-anak2.nix
     ./users-najib.nix
-    ./users-julia.nix
+    #./users-julia.nix
+    ./users-julia-wheel.nix
     ./users-naqib-wheel.nix
     ./users-nurnasuha.nix
     ./users-naim.nix
@@ -50,7 +51,7 @@
   networking.hostId = "ec4da958";
   networking.hostName = "asmak";
 
-  nix.settings.trusted-users = [ "root" "najib" "naqib" ];
+  nix.settings.trusted-users = [ "root" "najib" "naqib" "julia" ];
 
   networking.useDHCP = false;
   networking.networkmanager.enable = true;
