@@ -51,6 +51,15 @@
     ];
   };
 
+  fileSystems."/export/batocera" = {
+    device = "/home/nfs/batocera/userdata";
+    options = [
+      "bind"
+      "x-systemd.automount"
+      "noauto"
+    ];
+  };
+
   fileSystems."/export/najib" = {
     device = "/home/najib";
     options = [
@@ -115,6 +124,7 @@
     exports = ''
       /export                   *(rw,fsid=0,no_subtree_check,fsid=0)
       /export/nfsshare2         *(rw,nohide,insecure,no_subtree_check)
+      /export/batocera          *(rw,nohide,insecure,no_subtree_check)
       /export/najib             *(rw,nohide,insecure,no_subtree_check)
       /export/julia             *(rw,nohide,insecure,no_subtree_check)
       /export/naqib             *(rw,nohide,insecure,no_subtree_check)
