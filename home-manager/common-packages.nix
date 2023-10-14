@@ -64,7 +64,7 @@
     pkgs.lynx                           # cli webbrowser
 
     # GUI Web Browser
-    pkgs.firefox
+    #pkgs.firefox
     pkgs.qutebrowser
     #pkgs.brave                          #pkgs.unstable.brave # web browser
 
@@ -80,7 +80,7 @@
     # GUI E-mail Client
     pkgs.sylpheed
     pkgs.thunderbird
-    pkgs.mailspring
+    #pkgs.mailspring                    # is marked as insecure
     pkgs.gnome.geary
     pkgs.balsa
     #pkgs.deltachat-desktop             # used electron version that marked as unsecured?

@@ -103,7 +103,7 @@
     gimp
     inkscape
     libreoffice
-    firefox
+    #firefox
     #brave
     qutebrowser
     ranger
