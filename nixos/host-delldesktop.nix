@@ -48,6 +48,7 @@
 
     ./3D.nix
     ./chemistry.nix
+    ./whatsapp.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -63,6 +64,8 @@
   systemd.services.NetworkManager-wait-online.enable = false;
 
   #boot.loader.systemd-boot.enable = true;
+
+  # Only trusted users can properly use the set substituters (nixConfig.substituters, ...)
   nix.settings.trusted-users = [ "root" "najib" ];
 
   #boot.loader.efi.canTouchEfiVariables = true;
