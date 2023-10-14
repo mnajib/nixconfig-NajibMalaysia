@@ -100,7 +100,7 @@
     };
 
   # open luks encrypted
-  boot.initrd.luks.devices."lusk-8418e465-8882-4685-be64-721bda44b077".device = "/dev/disk/by-uuid/8418e465-8882-4685-be64-721bda44b077";
+  boot.initrd.luks.devices."luks-8418e465-8882-4685-be64-721bda44b077".device = "/dev/disk/by-uuid/8418e465-8882-4685-be64-721bda44b077";
 
   swapDevices =
     [

@@ -9,7 +9,10 @@
     ];
 
   boot.initrd.availableKernelModules = [ "ehci_pci" "ata_piix" "ums_realtek" "usb_storage" "usbhid" "sd_mod" "sr_mod" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ];
+  boot.initrd.supportedFilesystems = [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ]; #"zfs" "bcachefs"
+
+  boot.supportedFilesystems = [ "btrfs" "ext4" "xfs" "vfat" "zfs" "ntfs" ]; #"zfs" "bcachefs"
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
@@ -24,9 +27,13 @@
       fsType = "ext4";
     };
 
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/20f8e570-0f49-4a52-975a-92285ad9475e"; }
-    ];
+  # open luks encrypted swap partition
+  boot.initrd.luks.devices."luks-2979c787-abca-462b-b4ac-19a0296faa00".device = "/dev/disk/by-uuid/2979c787-abca-462b-b4ac-19a0296faa00";
+
+  swapDevices = [
+    #{ device = "/dev/disk/by-uuid/20f8e570-0f49-4a52-975a-92285ad9475e"; }
+    { device = "/dev/mapper/luks-2979c787-abca-462b-b4ac-19a0296faa00"; }
+  ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
