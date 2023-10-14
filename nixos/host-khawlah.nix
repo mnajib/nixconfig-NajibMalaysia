@@ -38,10 +38,7 @@
   networking.hostId = "33df86ff";
   networking.hostName = "khawlah";
 
-  nix.settings.trusted-users = [
-    "root"
-    "najib"
-  ];
+  nix.settings.trusted-users = [ "root" "najib" ];
 
   # XXX:
   networking.useDHCP = false;

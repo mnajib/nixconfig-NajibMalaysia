@@ -39,11 +39,7 @@
   networking.hostId = "6a063836";
   networking.hostName = "sakinah";
 
-  nix.settings.trusted-users = [
-    "root"
-    "najib"
-    "nurnasuha"
-  ];
+  nix.settings.trusted-users = [ "root" "najib" "nurnasuha" ];
 
   hardware.enableAllFirmware = true;
 

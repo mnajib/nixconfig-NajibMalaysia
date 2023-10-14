@@ -58,11 +58,7 @@
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   #
 
-  nix.settings.trusted-users = [
-    "root" "najib"
-    #"julia"
-    "naim"
-  ];
+  nix.settings.trusted-users = [ "root" "najib" "naim" ];
 
   networking.hostId = "4dcfcacd";
   networking.hostName = "zahrah"; # also called "tifoten"
