@@ -187,6 +187,7 @@
 
     screen
     tmux
+    dtach
     byobu
     zellij
 
@@ -538,8 +539,17 @@
     #---------------------------------------------------------------
 
     transmission-gtk
+    rtorrent                            # An ncurses client for libtorrent, ideal for use with screen, tmux, or dtach
+    qbittorrent                         # Featureful free software BitTorrent client
     rsync grsync zsync luckybackup      # remote file sync / backup
     rclone                              # Command line program to sync files and directories to and from major cloud storage
+    #deluge                             # A lightweight, Free Software, cross-platform BitTorrent client
+    deluge-gtk
+    #deluged
+    #vuze
+    #torrenttools
+
+    popcorntime                         # An application that streams movies and TV shows from torrents
 
     #---------------------------------------------------------------
     # File Manager, File viewer/reader
