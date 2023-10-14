@@ -99,13 +99,18 @@
       fsType = "vfat";
     };
 
+  # open luks encrypted
+  boot.initrd.luks.devices."lusk-8418e465-8882-4685-be64-721bda44b077".device = "/dev/disk/by-uuid/8418e465-8882-4685-be64-721bda44b077";
+
   swapDevices =
     [
-      # /dev/sda6
-      { device = "/dev/disk/by-uuid/271a21a1-fd81-4a15-9a5f-937174204363"; }
+      # /dev/sda6, swapfs
+      # Disabled this as swap because this is slow HDD
+      #{ device = "/dev/disk/by-uuid/271a21a1-fd81-4a15-9a5f-937174204363"; }
 
-      # /dev/sdb2...
-      #...
+      # /dev/sdb4, luks encrypted, swapfs
+      # This is on 500GB SSD
+      { device = "dev/mapper/luks-8418e465-8882-4685-be64-721bda44b077"; }
 
       #{ device = "/dev/disk/by-uuid/358b666e-9c72-42c4-a0c8-33efee21e8b1"; }
     ];
