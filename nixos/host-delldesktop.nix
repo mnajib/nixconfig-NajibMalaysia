@@ -56,6 +56,7 @@
   #
   # Dell (desktop) RM2xx
   #networking.hostId = "e07c9d49"; # "12331345"
+  networking.hostId = "ce50ff3e"; # "12331345"
   networking.hostName = "delldesktop";
 
   #networking.useDHCP = false;
