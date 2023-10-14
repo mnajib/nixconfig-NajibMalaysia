@@ -854,7 +854,7 @@
   programs.fish.enable = true;
   programs.xonsh.enable = true;
 
-  users.users.najib.shell = pkgs.fish;    #pkgs.zsh; # pkgs.fish;
+  #users.users.najib.shell = pkgs.fish;    #pkgs.zsh; # pkgs.fish;
   #users.defaultUserShell = pkgs.fish;    #pkgs.zsh;
   #users.users.root.shell = pkgs.fish;    #pkgs.zsh;
 
@@ -1158,10 +1158,12 @@
     packages = [
       pkgs.firefox
       pkgs.nnn
+      pkgs.ranger
       pkgs.git
       pkgs.tmux
       pkgs.neovim
       pkgs.vim
+      pkgs.emacs
       pkgs.htop
       pkgs.direnv
     ];
