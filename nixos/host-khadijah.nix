@@ -63,6 +63,9 @@
     #./sway.nix
 
     #./nix-garbage-collector.nix
+
+    ./flatpak.nix
+    ./appimage.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
