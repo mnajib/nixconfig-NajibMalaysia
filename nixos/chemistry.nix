@@ -7,6 +7,6 @@
   environment.systemPackages = with pkgs; [
     chemtool
     jmol
-    avogadro
+    #avogadro  # avogadro has been removed, because it depended on qt4
   ];
 }
