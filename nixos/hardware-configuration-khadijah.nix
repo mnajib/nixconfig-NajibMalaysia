@@ -110,7 +110,8 @@
 
       # /dev/sdb4, luks encrypted, swapfs
       # This is on 500GB SSD
-      { device = "dev/mapper/luks-8418e465-8882-4685-be64-721bda44b077"; }
+      { device = "/dev/mapper/luks-8418e465-8882-4685-be64-721bda44b077"; } # Note: Cannot use /dev/mapper/..., need to used /dev/disk/by-uuid/... ??? OR I just miss-spelled '/dev/mapper' as 'dev/mapper' ???
+      #{ device = "/dev/disk/by-uuid/3b630ed8-385c-4266-8a2c-f81169507889"; }
 
       #{ device = "/dev/disk/by-uuid/358b666e-9c72-42c4-a0c8-33efee21e8b1"; }
     ];
