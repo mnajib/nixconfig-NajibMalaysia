@@ -43,6 +43,8 @@
     #./anbox2.nix
     #./waydroid.nix
 
+    ./mame.nix
+
     ./console-keyboard-dvorak.nix       # keyboard layout for console environment
     ./keyboard-with-msa.nix             # keyboard layout for graphical environment
 

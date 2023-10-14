@@ -384,7 +384,7 @@
     nano neovim vim kakoune micro jedit vis # jed 
     vimHugeX
     emacs # emacs-nox
-    atom vscode leafpad notepadqq geany # kate
+    pulsar vscode leafpad notepadqq geany # kate
     #unstable.yi # Install yi the other way to allow enable personalized configuration.
     #leksah
 
