@@ -197,6 +197,8 @@ in
     shellAliases = {
       aoeu = "setxkbmap us";
       asdf = "setxkbmap dvorak";
+      oeu = "loadkeys us";
+      sdf = "loadkeys dvorak";
 
       l = "ls -alhF";
       #ll = "ls --color=tty -Filah";
@@ -241,6 +243,8 @@ in
     shellAliases = {
       aoeu = "setxkbmap us";
       asdf = "setxkbmap dvorak";
+      oeu = "loadkeys us";
+      sdf = "loadkeys dvorak";
 
       #ls = "exa -g --git --time-style long-iso";
       l = "ls -alhF";
