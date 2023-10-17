@@ -66,6 +66,8 @@
 
     ./flatpak.nix
     ./appimage.nix
+
+    ./walkie-talkie.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
