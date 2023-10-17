@@ -76,7 +76,7 @@ in
     #kodi
     #python3.8-notebook
     qtox
-    retroarch
+    retroarchFull # retroarch
     tig
     treesheets
     unrar
