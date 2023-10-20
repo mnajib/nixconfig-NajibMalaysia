@@ -259,7 +259,13 @@
     retext    # markdow editor
 
     expect    # tool for automating interactive applications
+
     saldl    # cli downloader optimized for speed
+    axel      # Console downloading program with some features of parallel connections for faster downloading
+    aria      # a lightweight, multi-protocol, multi-source, command-line download utility <-- aria2 ?
+    ariang    # a modern web frontend making aria2 easier to use
+    persepolis  # a GUI for aria2
+
     scrot maim  # to take screenshot
     jq      # CLI JSON processor
     xdotool    # xserver dispaly tool
