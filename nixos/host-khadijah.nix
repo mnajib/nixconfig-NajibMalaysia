@@ -32,6 +32,7 @@
     ./users-anak2.nix
 
     ./nfs-client-automount.nix
+    ./nfs-client-automount-games.nix
     #./nfs-client.nix
 
     #./virtualbox.nix # compile fail
