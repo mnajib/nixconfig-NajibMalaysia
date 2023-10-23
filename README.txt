@@ -1,6 +1,7 @@
 
 cd ~/src/nixconfig-NajibMalaysia
 
+nix flake check
 nix flake info
 nix flake show
 nix flake update

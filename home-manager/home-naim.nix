@@ -16,7 +16,7 @@ in
     # outputs.homeManagerModules.example
 
     # Or modules exported from other flakes (such as nix-colors):
-    inputs.nix-colors.homeManagerModules.default
+    #inputs.nix-colors.homeManagerModules.default
     #inputs.hardware.nixosModules.common-cpu-intel
     #inputs.hardware.nixosModules.common-gpu-intel
     #inputs.hardware.nixosModules.common-gpu-nvidia

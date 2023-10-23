@@ -121,7 +121,7 @@
 
       # A couple project templates for different languages.
       # Accessible via `nix init`.
-      templates = import ./templates;
+      #templates = import ./templates;
 
       #hydraJobs = {
       #  packages = mapAttrs ...
@@ -140,17 +140,17 @@
       homeManagerModules = import ./modules/home-manager;
 
       # XXX: Me (Najib) try to include nixos-generators.
-      isoSimple = nixos-generators.nixosGenerate {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        modules = [
-          #./modules/iso/autoinstall.nix
-          #simpleAutoinstall {
-          #  autoinstall.debug = true;
-          #}
-          ./modules/iso/configuration.nix
-        ];
-        format = "install-iso";
-      };
+      #isoSimple = nixos-generators.nixosGenerate {
+      #  pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      #  modules = [
+      #    #./modules/iso/autoinstall.nix
+      #    #simpleAutoinstall {
+      #    #  autoinstall.debug = true;
+      #    #}
+      #    ./modules/iso/configuration.nix
+      #  ];
+      #  format = "install-iso";
+      #};
 
       # NixOS configuration entrypoint
       # Available through 'nixos-rebuild --flake .#your-hostname'
