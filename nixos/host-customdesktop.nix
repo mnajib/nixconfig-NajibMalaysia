@@ -24,6 +24,7 @@
     ./dnsmasq.nix
 
     ./users-anak2.nix
+    ./users-julia.nix
 
     #./anbox.nix
     ./virtualbox.nix
