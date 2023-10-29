@@ -82,6 +82,20 @@
       options = [ "subvol=nixos" "compress=zstd" "autodefrag" "noatime" ];
     };
 
+  # XXX: ???
+  #fileSystems."/nix/store" = {
+  #    device = "/dev/disk/by-uuid/c959cd6c-4f5a-4bd4-ba22-3d1351372228";
+  #    device = "/dev/mapper/vg1-lvroot1";
+  #    fsType = "btrfs";
+  #    options = [ "subvol=nixos" "compress=zstd" "autodefrag" "noatime" ];
+  #};
+
+  fileSystems."/root" =
+    { device = "/dev/disk/by-uuid/c959cd6c-4f5a-4bd4-ba22-3d1351372228";
+      fsType = "btrfs";
+      options = [ "subvol=root" "compress=zstd" "autodefrag" "noatime" ];
+    };
+
   fileSystems."/home" =
     { device = "/dev/disk/by-uuid/c959cd6c-4f5a-4bd4-ba22-3d1351372228";
       fsType = "btrfs";
@@ -94,22 +108,16 @@
       options = [ "subvol=najib" "compress=zstd" "autodefrag" "noatime" ];
     };
 
-  fileSystems."/home/DATA" =
-    { device = "/dev/disk/by-uuid/c959cd6c-4f5a-4bd4-ba22-3d1351372228";
-      fsType = "btrfs";
-      options = [ "subvol=DATA" "compress=zstd" "autodefrag" "noatime" ];
-    };
-
-  fileSystems."/root" =
-    { device = "/dev/disk/by-uuid/c959cd6c-4f5a-4bd4-ba22-3d1351372228";
-      fsType = "btrfs";
-      options = [ "subvol=root" "compress=zstd" "autodefrag" "noatime" ];
-    };
-
   fileSystems."/home/julia" =
     { device = "/dev/disk/by-uuid/c959cd6c-4f5a-4bd4-ba22-3d1351372228";
       fsType = "btrfs";
       options = [ "subvol=juliani" "compress=zstd" "autodefrag" "noatime" ];
+    };
+
+  fileSystems."/home/DATA" =
+    { device = "/dev/disk/by-uuid/c959cd6c-4f5a-4bd4-ba22-3d1351372228";
+      fsType = "btrfs";
+      options = [ "subvol=DATA" "compress=zstd" "autodefrag" "noatime" ];
     };
 
 #-------------------------------------------------------------------------------
