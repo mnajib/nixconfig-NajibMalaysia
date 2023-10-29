@@ -39,6 +39,7 @@
     #};
     #
     extraAppsEnable = true;
+    #appstoreEnable = true;
 
     autoUpdateApps.enable = true;
 
@@ -63,10 +64,19 @@
       #adminpassFile = "/home/nextcloud/adminpass";
       adminpassFile = "${pkgs.writeText "adminpass" "test123"}";
 
+      #trustedDomains = [
+      #  "192.168.1.21"
+      #];
+
       extraTrustedDomains = [
         #"192.168.1"
+        "192.168.1.21"
+        "customdesktop.localdomain"
+        "customdesktop"
         "localdomain"
       ];
+
+      defaultPhoneRegion = "MY";
 
     };
 
