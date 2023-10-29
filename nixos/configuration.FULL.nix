@@ -622,7 +622,7 @@
     #libreoffice-fresh
     jdk #openjdk
 
-    aseprite
+    #aseprite   # disabled because always need recompile, and usually not being use
 
     #wpsoffice
 
