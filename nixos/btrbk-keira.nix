@@ -48,10 +48,10 @@ in {
 
     # Rujukan: https://wiki.gentoo.org/wiki/Btrbk
     #
-    snapshot_preserve                   24h 7d 0w 0m 0y
-    snapshot_preserve_min               latest
-    #snapshot_preserve                   24h 7d 4w 3m 0y
+    #snapshot_preserve                   24h 7d 0w 0m 0y
     #snapshot_preserve_min               latest
+    snapshot_preserve                   24h 7d 4w 3m 0y
+    snapshot_preserve_min               latest
     #
     #target_preserve                     0h 14d 6w 4m 1y
     #target_preserve_min                 latest

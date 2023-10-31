@@ -127,10 +127,15 @@
       fsType = "ext4";
     };
 
+  fileSystems."/boot2" =
+    { device = "/dev/disk/by-uuid/9c121e78-d95a-4462-a9c2-1f8691dcffd3";
+      fsType = "ext4";
+    };
+
   swapDevices =
     [
-      #{ device = "/dev/disk/by-uuid/271b7f30-7bf5-48d0-86e5-efe7c12512c1"; }
-      { device = "/dev/disk/by-uuid/b44ed253-daff-4c75-912a-2b4801611a15"; }
+      { device = "/dev/disk/by-uuid/b44ed253-daff-4c75-912a-2b4801611a15"; }    # /dev/sda --> /dev/sda2 --> /dev/mapper/crypt1 --> /dev/mapper/vg1-lvswap1
+      { device = "/dev/disk/by-uuid/a2b9c885-9d46-41c0-aa42-8c310f12d3ef"; }    # /dev/sdb --> /dev/sdb2 --> /dev/mapper/crypt2 --> /dev/mapper/vg2-lvswap2
     ];
 
   nixpkgs.hostPlatform.system = "x86_64-linux";

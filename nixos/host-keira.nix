@@ -105,7 +105,8 @@
     devices = [
       #"/dev/disk/by-id/wwn-0x5000c5002ea341bc"
       #"/dev/disk/by-id/wwn-0x5000c5002ec8a164"
-      "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK0803806"
+      "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK0803806"                     # /dev/sda
+      "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1017188"                     # /dev/sdb
     ];
     #efiSupport = true;
 
