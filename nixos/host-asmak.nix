@@ -41,6 +41,7 @@
   environment.systemPackages = with pkgs; [
     steam
     steam-tui
+    gparted
   ];
 
   programs.steam.enable = true;
@@ -134,11 +135,14 @@
   services.xserver.displayManager.sddm.enable = false;
   services.xserver.displayManager.gdm.enable = false;
 
+  services.xserver.displayManager.defaultSession = "none+xmonad";
+
   #services.xserver.desktopManager.plasma5.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
 
   services.xserver.windowManager.default = "xmonad";
+
   services.xserver.windowManager.xmonad.enable = true;
   services.xserver.windowManager.jwm.enable = true;
   services.xserver.windowManager.fluxbox.enable = true;
