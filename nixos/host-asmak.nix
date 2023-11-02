@@ -15,7 +15,9 @@
     ./thinkpad.nix
     #./touchpad-scrollTwofinger-TapTrue.nix
     #./touchpad-scrollEdge-TapTrue.nix
-    ./zfs.nix
+
+    #./zfs.nix
+    ./zfs-for-asmak.nix
 
     #./users-anak2.nix
     ./users-najib.nix
