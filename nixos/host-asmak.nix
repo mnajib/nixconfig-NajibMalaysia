@@ -141,8 +141,6 @@
   #services.xserver.desktopManager.gnome.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
 
-  services.xserver.windowManager.default = "xmonad";
-
   services.xserver.windowManager.xmonad.enable = true;
   services.xserver.windowManager.jwm.enable = true;
   services.xserver.windowManager.fluxbox.enable = true;
