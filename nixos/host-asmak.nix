@@ -44,6 +44,7 @@
     steam
     steam-tui
     gparted
+    simplex-chat-desktop
   ];
 
   programs.steam.enable = true;
