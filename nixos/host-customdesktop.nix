@@ -21,7 +21,7 @@
     #./network-dns.nix
 
     # Internal/private network DNS server
-    ./dnsmasq.nix
+    #./dnsmasq.nix # disabled this because now running endian firewall (EFW)
 
     ./users-anak2.nix
     ./users-julia.nix

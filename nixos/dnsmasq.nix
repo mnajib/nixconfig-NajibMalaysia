@@ -26,11 +26,11 @@
       bind-interfaces
       port=53
 
-      #dhcp-range=192.168.123.200,192.168.123.250,24h
-      #dhcp-range=en0s25,192.168.123.100,192.168.123.150,24h
-      #dhcp-range=wls3,192.168.1.100,192.168.1.199,24h                          # Currently assign by out tm router
-      #dhcp-range=wls3,192.168.1.200,192.168.1.250,24h
-      dhcp-range=wls3,192.168.1.200,192.168.1.250,2m                            # XXX: 2 minutes; for testing
+      ##dhcp-range=192.168.123.200,192.168.123.250,24h
+      ##dhcp-range=en0s25,192.168.123.100,192.168.123.150,24h
+      ##dhcp-range=wls3,192.168.1.100,192.168.1.199,24h                          # Currently assign by out tm router
+      ##dhcp-range=wls3,192.168.1.200,192.168.1.250,24h
+      #dhcp-range=wls3,192.168.1.200,192.168.1.250,2m                            # XXX: 2 minutes; for testing
 
       # Static IPs
       dhcp-host=9c:30:5b:d6:b8:f4,printer,192.168.1.22,infinite
