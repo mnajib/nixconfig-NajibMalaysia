@@ -83,11 +83,22 @@
     ];
   };
 
-  #boot.kernelParams = [ "nomodeset" ]; # Need this to run OBS.
-  #boot.kernelPackages = pkgs.linuxPackages_latest; # Need this to make graphical display work on asmak.
+  boot.kernelParams = [
+    #"nomodeset"                                                                # Need this to run OBS.
+
+    # Changing the ZFS Adaptive Replacement Cache (ARC) size: To change the maximum and size of the ARC to (for example) 2 GB and 1 GB, add this to your NixOS configuration:
+    "zfs.zfs_arc_max=2147483648" "zfs.zfs_arc_min=1073741824"                   # Need this to limit RAM usage for zfs cache.
+  ];
+  #boot.kernelPackages = pkgs.linuxPackages_latest;                             # Need this to make graphical display work on asmak.
   boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
   #boot.kernelPackages = pkgs.linuxPackages_5_4;
   #boot.kernelPackages = pkgs.linuxPackages_4_19;
+
+  # Tuning other ZFS parameters: To tune other attributes of ARC, L2ARC or of ZFS itself via runtime modprobe config, add this to your NixOS configuration (keys and values are examples only!):
+  #boot.extraModprobeConfig = ''
+  #  options zfs l2arc_noprefetch=0 l2arc_write_boost=33554432 l2arc_write_max=16777216 zfs_arc_max=2147483648
+  #'';
+  # You can confirm whether any specified configuration/tuning got applied via commands like arc_summary and arcstat -a -s " "
 
   boot.supportedFilesystems =        [ "ext4" "btrfs" "xfs" "zfs" ]; # "zfs" "bcachefs"
   boot.initrd.supportedFilesystems = [ "ext4" "btrfs" "xfs" "zfs" ]; # "zfs" "bcachefs"
