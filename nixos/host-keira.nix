@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  lib,
   ...
 }:
 
@@ -125,7 +126,8 @@
 
   services.fstrim.enable = true;
 
-  networking.useDHCP = false;
+  networking.useDHCP = lib.mkForce true; # XXX:
+  #networking.useDHCP = false;
   #networking.interface.eno1.useDHCP = true;
 
   networking.firewall.enable = false;
@@ -222,17 +224,18 @@
   services.xserver.libinput.touchpad.tapping = true; #false;
 
   #services.xserver.displayManager.sddm.enable = true;
+  services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.displayManager.defaultSession = "none+xmonad";
+
   #services.xserver.desktopManager.plasma5.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
 
-  services.xserver.displayManager.defaultSession = "none+xmonad";
-
   nix.settings.max-jobs = 2;
-
 
   #environment.systemPackages = [
   #  pkgs.blender
   #];
 
-  system.stateVersion = "22.05";
+  #system.stateVersion = "22.05";
+  system.stateVersion = "23.05";
 }
