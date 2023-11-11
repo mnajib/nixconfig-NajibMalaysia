@@ -17,6 +17,12 @@
 
  boot.initrd = {
 
+      #
+      # NOTE:
+      # -----
+      #   Sometimes maybe need add another passphrase key for crypt/luks
+      #
+
       # /dev/sda.. --> crypt --> btrfs
       luks.devices."crypt1" = {
           device = "/dev/disk/by-uuid/c5d49ad4-d678-4b73-906e-9142f70edc6a"; 

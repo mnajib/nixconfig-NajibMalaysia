@@ -4,6 +4,8 @@
 # #OR
 # btrbk.nix --> /etc/btrbk.conf
 #
+# btrbk list all
+#
 
 #{ config, pkgs, ...}:
 {
@@ -13,19 +15,23 @@
     ...
 }:
 let
-    # mkdir /mnt/btr_pool
-    # #mount -o subvolid=5,noatime /dev/mapper/vg1-lvroot1 /mnt/btr_pool
-    # btrfs subvolume list /mnt/btr_pool
-    # mkdir /mnt/btr_pool/btrbk_snapshots
-    btrfsVolume1 = "/mnt/btr_pool1";                                            # btrfs subvolume base-dir from where need to be backup
-    btrfsVolume2 = "/mnt/btr_pool2";                                            # btrfs subvolume base-dir to where to put the backup
+    # NOTE: Need to create directory manually
+    # mkdir /mnt/btrbk_pool1
+    # #mount -o subvolid=5,noatime /dev/mapper/vg1-lvroot1 /mnt/btrbk_pool1
+    # btrfs subvolume list /mnt/btr_pool1
+    # mkdir -p /mnt/btr_pool1/btrbk_snapshots
+    btrfsVolume1 = "/mnt/btrbk_pool1";                                            # btrfs subvolume base-dir from where need to be backup
+    btrfsVolume2 = "/mnt/btrbk_pool2";                                            # btrfs subvolume base-dir to where to put the backup
 in {
 
     fileSystems.${btrfsVolume1} = {
-        device = "/dev/mapper/vg1-lvroot1";
+        #device = "/dev/mapper/vg1-lvroot1";
+        device = "/dev/disk/by-uuid/15762a77-c5ef-4eb0-9a5e-946646691a37";
         fsType = "btrfs";
         options = [
-            "subvolid=5" "compress=zstd" "noatime" "autodefrag"
+            "subvolid=5" "compress=zstd"
+            #"noatime"
+            "autodefrag"
             "rw" "ssd"
         ];
     };
@@ -68,29 +74,29 @@ in {
 
       #------------------------------------------------------------------------
       # 'btrfs subvolume' to be backup
-      subvolume                         juliani                                 # /mnt/btr_pool1/juliani
+
 
         # Where to put snapshots
-        snapshot_dir                    btr_snapshots                           # /mnt/btr_pool1/btr_snapshots/<snapshot_name>.<timestamp>
-        snapshot_name                   juliani                                 # /mnt/btr_pool1/btr_snapshots/juliani.<timestamp>
+        snapshot_dir                    btrbk_snapshots                           # /mnt/btr_pool1/btr_snapshots/<snapshot_name>.<timestamp>
+        snapshot_name                   home                                    # /mnt/btr_pool1/btr_snapshots/home.<timestamp>
 
         # Where to put backups
-        #target send-receive            ${btrfsVolume2}/btr_backups/keira       # /mnt/btr_pool2/btr_backup/keira/<subVolume>.<timestamp>
+        #target send-receive            ${btrfsVolume2}/btrbk_backups/keira       # /mnt/btr_pool2/btr_backup/keira/<subVolume>.<timestamp>
 
         # Where to put backups
-        ##target send-receive           ssh://tv/mnt/btr_backup/mahirah
+        ##target send-receive           ssh://tv/mnt/btrbk_backups/mahirah
         ##ssh_identity                  /root/.ssh/btrbk/id_ed25519
 
       #------------------------------------------------------------------------
-      subvolume                         root                                    # /mnt/btr_pool1/root
+      subvolume                         rootuserhome                            # /mnt/btr_pool1/rootuserhome
 
         # Where to put snapshots
-        snapshot_dir                    btr_snapshots                           # /mnt/btr_pool1/btr_snapshots/<subvolume_name_OR_snapshot_name>.<timestamp>
-        snapshot_name                   root                                    # /mnt/btr_pool1/btr_snapshots/root.<timestamp>
+        snapshot_dir                    btrbk_snapshots                           # /mnt/btr_pool1/btr_snapshots/<subvolume_name_OR_snapshot_name>.<timestamp>
+        snapshot_name                   rootuserhome                            # /mnt/btr_pool1/btr_snapshots/rootuserhome.<timestamp>
 
-        #target send-receive            ${btrfsVolume2}/btr_backups/keira       # /mnt/btr_pool2/btr_backups/keira/<subVolume>.<timestamp>
+        #target send-receive            ${btrfsVolume2}/btrbk_backups/keira       # /mnt/btr_pool2/btr_backups/keira/<subVolume>.<timestamp>
 
-        ##target send-receive           ssh://tv/mnt/btr_backup/mahirah
+        ##target send-receive           ssh://tv/mnt/btrbk_backup/mahirah
         ##ssh_identity                  /root/.ssh/btrbk/id_ed25519
       #------------------------------------------------------------------------
     '';

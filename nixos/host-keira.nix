@@ -126,8 +126,8 @@
 
   services.fstrim.enable = true;
 
-  networking.useDHCP = lib.mkForce true; # XXX:
-  #networking.useDHCP = false;
+  #networking.useDHCP = lib.mkForce true; # XXX:
+  networking.useDHCP = false;
   #networking.interface.eno1.useDHCP = true;
 
   networking.firewall.enable = false;
