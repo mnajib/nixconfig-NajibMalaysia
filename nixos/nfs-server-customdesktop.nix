@@ -60,6 +60,15 @@
     ];
   };
 
+  fileSystems."/export/nixforbatocera" = {
+    device = "/home/nfs/batocera/nix";
+    options = [
+      "bind"
+      "x-systemd.automount"
+      "noauto"
+    ];
+  };
+
   fileSystems."/export/najib" = {
     device = "/home/najib";
     options = [
