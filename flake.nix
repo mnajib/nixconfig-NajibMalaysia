@@ -223,8 +223,8 @@
             # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
             hardware.nixosModules.lenovo-thinkpad-t410
             hardware.nixosModules.common-cpu-intel
-            hardware.nixosModules.common-gpu-intel
-            #hardware.nixosModules.common-gpu-nvidia
+            #hardware.nixosModules.common-gpu-intel
+            hardware.nixosModules.common-gpu-nvidia
             #hardware.nixosModules.common-gpu-nvidia-disable.nix
             hardware.nixosModules.common-pc-laptop
             hardware.nixosModules.common-pc-ssd

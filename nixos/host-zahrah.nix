@@ -65,8 +65,9 @@
 
   hardware.enableAllFirmware = true;
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.supportedFilesystems =        [ "ext4" "btrfs" "xfs" "vfat" "ntfs" ];
+  # Moved to hardware-configuration-zahrah.nix
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.supportedFilesystems =        [ "ext4" "btrfs" "xfs" "vfat" "ntfs" ];
 
   #environment.systemPackages = with pkgs; [
   #  nvtop
@@ -81,7 +82,7 @@
   #hardware.nvidia.nvidiaSettings = true;
   hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
   hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
-  hardware.nvidia.prime.sync.enable = true;
+  #hardware.nvidia.prime.sync.enable = true;
   hardware.nvidia.modesetting.enable = true;
   #hardware.nvidiaOptimus.disable = true; # Completely disable the NVIDIA graphics card and use the integrated graphics processor instead.
   hardware.nvidia.open = true;
@@ -168,7 +169,7 @@
       WIFI_PWR_ON_AC = "off";
       WIFI_PWR_ON_BAT = "off";
       DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth wwan";
-      #DEVICES_TO_ENABLE_ON_STARTUP = "wifi";
+      DEVICES_TO_ENABLE_ON_STARTUP = "wifi";
     };
   };
 
@@ -177,44 +178,44 @@
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
-    services.thinkfan.enable = true;
-    services.thinkfan.levels = [
-      [
-        0
-        0
-        55
-      ]
-      [
-        "level auto"
-        48
-        60
-      ]
-      [
-        "level auto"
-        50
-        61
-      ]
-      [
-        6
-        52
-        63
-      ]
-      [
-        7
-        56
-        65
-      ]
-      [
-        "level full-speed"
-        60
-        85
-      ]
-      [
-        "level full-speed"
-        80
-        32767
-      ]
-    ];
+  services.thinkfan.enable = true;
+  services.thinkfan.levels = [
+    [
+      0
+      0
+      55
+    ]
+    [
+      "level auto"
+      48
+      60
+    ]
+    [
+      "level auto"
+      50
+      61
+    ]
+    [
+      6
+      52
+      63
+    ]
+    [
+      7
+      56
+      65
+    ]
+    [
+      "level full-speed"
+      60
+      85
+    ]
+    [
+      "level full-speed"
+      80
+      32767
+    ]
+  ];
 
   hardware.trackpoint = {
     enable = true;
