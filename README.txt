@@ -11,6 +11,7 @@ nix develop
 sudo nixos-rebuild dry-build --flake .
 sudo nixos-rebuild dry-build --flake .#khawlah
 sudo nixos-rebuild build --flake .#khawlah
+sudo nixos-rebuild boot --flake .#khawlah
 sudo nixos-rebuild switch --flake .#khawlah
 
 home-manager news --flake .
