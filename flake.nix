@@ -1,5 +1,5 @@
 {
-  description = "Najib new nix flake config";
+  description = "Najib new NixOS configuration with flakes";
 
   nixConfig = {
     #experimental-features = [ "nix-command" "flakes" ];
@@ -38,7 +38,8 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # TODO: Add any other flake you might need
-    hardware.url = "github:nixos/nixos-hardware";
+    #hardware.url = "github:nixos/nixos-hardware";
+    hardware.url = "github:NixOS/nixos-hardware/master";
 
     flake-utils.url = "github:numtide/flake-utils";
 
@@ -219,15 +220,17 @@
           modules = [
             ./nixos/host-zahrah.nix
 
-            # Add your model from this list:
-            # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+            # Roferences:
+            #   http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
             hardware.nixosModules.lenovo-thinkpad-t410
             hardware.nixosModules.common-cpu-intel
-            #hardware.nixosModules.common-gpu-intel
-            hardware.nixosModules.common-gpu-nvidia
-            #hardware.nixosModules.common-gpu-nvidia-disable.nix
-            hardware.nixosModules.common-pc-laptop
-            hardware.nixosModules.common-pc-ssd
+            hardware.nixosModules.common-gpu-intel
+            #hardware.nixosModules.common-gpu-nvidia
+            #hardware.nixosModules.common-gpu-nvidia-disable
+            #hardware.nixosModules.common-gpi-nvidia-nonprime
+            #hardware.nixosModules.common-pc-laptop
+            #hardware.nixosModules.common-pc-ssd
+            hardware.nixosModules.common-pc-laptop-ssd
           ];
         };
 

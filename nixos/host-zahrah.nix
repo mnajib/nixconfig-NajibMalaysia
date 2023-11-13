@@ -10,9 +10,7 @@
   };
 
   imports = [
-    #<nixos-hardware/lenovo/thinkpad/t410> # XXX: temporarily disabled because lazy to add nix channel
     ./hardware-configuration-zahrah.nix
-    #./hardware-configuration.nix
     #./hardware-laptopLenovoThinkpadT410eWasteCyberjaya.nix
     #./hardware-storageSSD001.nix
     ./thinkpad.nix
@@ -65,10 +63,6 @@
 
   hardware.enableAllFirmware = true;
 
-  # Moved to hardware-configuration-zahrah.nix
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
-  #boot.supportedFilesystems =        [ "ext4" "btrfs" "xfs" "vfat" "ntfs" ];
-
   #environment.systemPackages = with pkgs; [
   #  nvtop
   #];
@@ -80,12 +74,12 @@
   #services.xserver.videoDrivers = [ "fbdev" ];
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_340;
   #hardware.nvidia.nvidiaSettings = true;
-  hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
-  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
+  #hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
+  #hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
   #hardware.nvidia.prime.sync.enable = true;
-  hardware.nvidia.modesetting.enable = true;
+  #hardware.nvidia.modesetting.enable = true;
   #hardware.nvidiaOptimus.disable = true; # Completely disable the NVIDIA graphics card and use the integrated graphics processor instead.
-  hardware.nvidia.open = true;
+  #hardware.nvidia.open = true;
 
   #boot.loader.systemd-boot.enable = true; # gummi-boot for EFI
   #boot.loader.efi.canTouchEfiVariables = true;
@@ -235,10 +229,11 @@
 
   #services.xserver.displayManager.sddm.enable = true;
   #services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.startx.enable = true;
+  #services.xserver.displayManager.startx.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
 
   services.xserver.displayManager.defaultSession = "none+xmonad";
+
   #services.xserver.desktopManager.plasma5.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
