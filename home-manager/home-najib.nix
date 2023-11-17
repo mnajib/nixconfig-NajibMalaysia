@@ -19,7 +19,7 @@ in
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
 
-    ./emacs.nix
+    #./emacs.nix
 
     ./youtube.nix
 
@@ -27,7 +27,7 @@ in
     ./common-packages.nix
 
     # My attemp to use nix-doom-emacs
-    #inputs.nix-doom-emacs.hmModule
+    inputs.nix-doom-emacs.hmModule
   ];
 
   nixpkgs = {
@@ -149,10 +149,11 @@ in
     };
   };
 
-  #programs.doom-emacs = {
-    #enable = true;
-    #doomPrivateDir = ./src/doomemacs.d;                   # Directory containing my config.el, init.el, and packages.el files
-  #};
+  programs.doom-emacs = {
+    enable = true;
+    #doomPrivateDir = ./doom.d;
+    doomPrivateDir = ./src/.doomemacs.d;                   # Directory containing my config.el, init.el, and packages.el files
+  };
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";

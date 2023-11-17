@@ -169,7 +169,26 @@
         # Laptop Dell Najib
         khadijah = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
+
           modules = [
+            # system-wide doom-emacs
+            #environment.systemPackages =
+            #let
+            #  doom-emacs = nix-doom-emacs.packages.${system}.default.override {
+            #    doomPrivateDir = ./doom.d;
+            #  };
+            #in [
+            #  doom-emacs
+            #];environment.systemPackages =
+            #let
+            #  doom-emacs = nix-doom-emacs.packages.${system}.default.override {
+            #    doomPrivateDir = ./doom.d;
+            #  };
+            #in [
+            #  doom-emacs
+            #];
+
+            #
             ./nixos/host-khadijah.nix
           ];
         };
@@ -302,6 +321,14 @@
           modules = [
             ./home-manager/home-najib.nix
           ];
+
+          # Try setting up doom-emacs
+          # Also look in home-najib.nix and emacs-doom.nix
+          #imports = [ nix-doom-emacs.hmModule ];
+          #programs.doom-emacs = {
+          #  enable = true;
+          #  doomPrivateDir = ./doom.d;                                          # Directory containing your config.el, init.el, and packages.el files
+          #};
         };
 
         "najib@maryam" = home-manager.lib.homeManagerConfiguration {
