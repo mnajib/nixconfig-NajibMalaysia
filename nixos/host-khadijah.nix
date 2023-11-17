@@ -45,6 +45,7 @@
     #./waydroid.nix
 
     ./mame.nix
+    ./emulationstation.nix
 
     ./console-keyboard-dvorak.nix       # keyboard layout for console environment
     ./keyboard-with-msa.nix             # keyboard layout for graphical environment
