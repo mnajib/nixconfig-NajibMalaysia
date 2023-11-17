@@ -151,8 +151,13 @@ in
 
   programs.doom-emacs = {
     enable = true;
-    #doomPrivateDir = ./doom.d;
-    doomPrivateDir = ./src/.doomemacs.d;                   # Directory containing my config.el, init.el, and packages.el files
+
+    # Directory containing my config.el, init.el, and packages.el files
+    # Need to cread ~/doom.d
+    # and copy the three files from
+    # https://github.com/nix-community/nix-doom-emacs/tree/master/test/doom.d
+    #doomPrivateDir = "./doom.d";
+    doomPrivateDir = ./src/doom.d;
   };
 
   # Nicely reload system units when changing configs
