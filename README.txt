@@ -24,3 +24,7 @@ sudo nixos-rebuild dry-build --flake .#zahrah --target-host naim@zahrah --use-re
 sudo nixos-rebuild build --flake .#zahrah --target-host naim@zahrah --use-remote-sudo
 sudo nixos-rebuild switch --flake .#zahrah --target-host naim@zahrah --use-remote-sudo
 
+# XXX:
+nix shell nixpkgs#pulsar
+
+
