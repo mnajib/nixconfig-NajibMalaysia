@@ -10,6 +10,9 @@
 }:{
   xdg.portal.enable = true; # only needed if you are not doing Gnome?
 
+  #XXX:
+  xdg.portal.config.common.default = "*";
+
   #key = if builtins.pathExists ./path then "woot" else "bummer";
   xdg.portal.extraPortals = [
     pkgs.xdg-desktop-portal-gtk
