@@ -15,9 +15,9 @@
 
   #key = if builtins.pathExists ./path then "woot" else "bummer";
   xdg.portal.extraPortals = [
-    pkgs.xdg-desktop-portal-gtk
-    #xdg-desktop-portal-kde
-    #xdg-desktop-portal-gnome
+    #pkgs.xdg-desktop-portal-gtk
+    ##xdg-desktop-portal-kde
+    pkgs.xdg-desktop-portal-gnome
   ];
   environment.systemPackages = [
     #pkgs.xdg-desktop-portal-gtk
