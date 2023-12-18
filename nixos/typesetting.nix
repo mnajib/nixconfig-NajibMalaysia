@@ -15,7 +15,6 @@
     pkgs.texworks
 
     #pkgs.sile
-
     pkgs.groff
   ];
 }

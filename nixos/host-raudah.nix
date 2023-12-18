@@ -1,6 +1,9 @@
 #·vim:·set·noexpandtab·tabstop=4·softtabstop=4·shiftwidth=4·autoindent·list·listchars=tab\:»\·,trail\:█,nbsp\:•: ,space\:· nowrap number:
 
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  ... }:
 {
   nix = {
     package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
@@ -75,6 +78,17 @@
   #boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.supportedFilesystems =        [ "ext4" "btrfs" "xfs" "vfat" "ntfs" ];
 
+  # Setup keyfile
+  boot.initrd.secrets = {
+    "/crypto_keyfile.bin" = null;
+  };
+
+  boot.initrd.luks.devices."luks-b945d308-998d-4495-85f6-abb513ee0bff".keyFile = "/crypto_keyfile.bin";
+  boot.initrd.luks.devices."luks-bd75b3b8-e980-4bc6-a304-de56ee23859c".keyFile = "/crypto_keyfile.bin";
+  # Enable swap on luks
+  boot.initrd.luks.devices."luks-320f1fbc-c916-47e5-9d2b-c8e0416702eb".device = "/dev/disk/by-uuid/320f1fbc-c916-47e5-9d2b-c8e0416702eb";
+  boot.initrd.luks.devices."luks-320f1fbc-c916-47e5-9d2b-c8e0416702eb".keyFile = "/crypto_keyfile.bin";
+
   #boot.loader.systemd-boot.enable = true; # gummi-boot for EFI
   #boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub = {
@@ -82,23 +96,22 @@
     #version = 2;
     enableCryptodisk = true;
     copyKernels = true;
-    #useOSProber = true;
+    useOSProber = true;
     #backgroundColor = "#7EBAE4"; # lightblue
 
     #------------------------------------------
     # BIOS
     #------------------------------------------
-    #devices = [
-    ##"/dev/disk/by-id/wwn-0x5000c5002ea341bc"
-    ##"/dev/disk/by-id/wwn-0x5000c5002ec8a164"
-    ##"/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK0803806"
-    #
-    #"/dev/disk/by-id/ata-PH6-CE120-G_511190117056007159" # /dev/sda (120GB SSD)
-    ##"/dev/disk/by-id/ata-LITEONIT_LCS-256M6S_2.5_7mm_256GB_TW0XFJWX550854255987" # /dev/sdb (256GB SSD)
-    #];
+    devices = [
+      #"/dev/disk/by-id/wwn-0x5000c5002ea341bc"
+      #"/dev/disk/by-id/wwn-0x5000c5002ec8a164"
+      #"/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK0803806"
+      "/dev/disk/by-id/ata-PH6-CE120-G_511190117056007159" 					# /dev/sda (120GB SSD)
+      #"/dev/disk/by-id/ata-LITEONIT_LCS-256M6S_2.5_7mm_256GB_TW0XFJWX550854255987" 		# /dev/sdb (256GB SSD)
+    ];
     #device = "/dev/disk/by-id/ata-PH6-CE120-G_511190117056007159";
     #device = "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1011006";
-    device = "/dev/disk/by-id/ata-TOSHIBA_THNSNF128GCSS_43ES105NT8KY";
+    #device = "/dev/disk/by-id/ata-TOSHIBA_THNSNF128GCSS_43ES105NT8KY";
     #efiSupport = true;
 
     #------------------------------------------
@@ -115,6 +128,9 @@
   };
 
   services.fstrim.enable = true;
+
+  networking.networkmanager.enable = true;
+  programs.nm-applet.enable = true;
 
   #networking.useDHCP = false;
   #networking.interfaces.enp0s25.useDHCP = true;
@@ -188,6 +204,9 @@
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.displayManager.defaultSession = "none+xmonad";
   #services.xserver.desktopManager.plasma5.enable = true;
+  services.xserver.desktopManager.lxqt.enable = true;
+
+  security.rtkit.enable = true;
 
   #nix.maxJobs = 1;
   #nix.settings.max-jobs = 1;
@@ -199,5 +218,6 @@
   #nix.daemonIOSchedClass = "idle"; # default "best-effort",
   #nix.daemonIOSchedPriority = 5; # 0(high,default) to 7(low).
 
-  system.stateVersion = "22.05";
+  #system.stateVersion = "22.05";
+  system.stateVersion = "23.05";
 }

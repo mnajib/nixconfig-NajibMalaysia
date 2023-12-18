@@ -1,5 +1,6 @@
 
 cd ~/src/nixconfig-NajibMalaysia
+cd /etc/nixos-NajibMalaysia
 
 nix flake check
 nix flake info
@@ -7,6 +8,7 @@ nix flake show
 nix flake update
 
 nix develop
+nix develop --extra-experimental-features nix-command --extra-experimental-features flakes
 
 sudo nixos-rebuild dry-build --flake .
 sudo nixos-rebuild dry-build --flake .#khawlah
