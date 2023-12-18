@@ -208,7 +208,7 @@
   #----------------------------------------------------------------------------
   #services.xserver.desktopManager.plasma5.enable = true;
   services.xserver.desktopManager.lxqt.enable = true;
-  services.xserver.desktopManager.budgie.enable = true;
+  #services.xserver.desktopManager.budgie.enable = true;
   #----------------------------------------------------------------------------
   #services.xserver.windowManager.i3.enable = true;
   #----------------------------------------------------------------------------
