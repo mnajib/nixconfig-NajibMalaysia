@@ -4,9 +4,9 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+  ];
 
   #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;	# Need to use this if want to enable zfs support.
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -56,31 +56,33 @@
   };
 
   #---------------------------------------------------------------------------
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/9cd6f6d1-5505-480b-bda5-730816aade1b";
-      fsType = "btrfs";
-      options = [
-        "subvol=@"
-        "compress=zstd" "autodefrag"
-        #"noatime"
-      ];
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/9cd6f6d1-5505-480b-bda5-730816aade1b";
+    fsType = "btrfs";
+    options = [
+      "subvol=@"
+      "compress=zstd" "autodefrag"
+      #"noatime"
+    ];
+  };
 
-  fileSystems."/root" =
-    { device = "/dev/disk/by-uuid/9cd6f6d1-5505-480b-bda5-730816aade1b";
-      fsType = "btrfs";
-      options = [ "subvol=@root"
-        "compress=zstd" "autodefrag"
-      ];
-    };
+  fileSystems."/root" = {
+    device = "/dev/disk/by-uuid/9cd6f6d1-5505-480b-bda5-730816aade1b";
+    fsType = "btrfs";
+    options = [
+      "subvol=@root"
+      "compress=zstd" "autodefrag"
+    ];
+  };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/9cd6f6d1-5505-480b-bda5-730816aade1b";
-      fsType = "btrfs";
-      options = [ "subvol=@home"
-        "compress=zstd" "autodefrag"
-      ];
-    };
+  fileSystems."/home" =  {
+    device = "/dev/disk/by-uuid/9cd6f6d1-5505-480b-bda5-730816aade1b";
+    fsType = "btrfs";
+    options = [
+      "subvol=@home"
+      "compress=zstd" "autodefrag"
+    ];
+  };
 
   #---------------------------------------------------------------------------
   fileSystems."/boot" = {
