@@ -48,7 +48,6 @@
   fileSystems."/boot" = {
     #device = "/dev/disk/by-uuid/b6680943-150d-4337-b114-3a788d21be94";
     #fsType = "ext4";
-    
     device = "/dev/disk/by-uuid/707bcd00-ffa8-4fe5-9c93-a073508fd5a8";
     fsType = "btrfs";
   };
