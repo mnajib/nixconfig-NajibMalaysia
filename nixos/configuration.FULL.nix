@@ -832,8 +832,8 @@
     clock24 = true;
     newSession = true;
     resizeAmount = 1;
-    #baseIndex = 1;
-    historyLimit = 5000;
+    baseIndex = 1;
+    historyLimit = 10000;
 
     #keyMode = "vi";
     #customPaneNavigationAndResize = true;
