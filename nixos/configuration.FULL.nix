@@ -522,6 +522,7 @@
 
     lynx elinks w3m
     firefox chromium qutebrowser #flashplayer rambox
+    floorp  # web browser, forked from firefox ?
     brave
     #midori surf epiphany
 
