@@ -184,6 +184,8 @@
   # nvidiaBusId = "PCI:1:0:0";
   #    };
 
+  services.logind.extraConfig = "RuntimeDirectorySize=4G";    # before this it is 100% full with 1.6G tmpfs /run/user/1001
+
   #services.xserver.displayManager.sddm.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
   #services.xserver.displayManager.startx.enable = true;
