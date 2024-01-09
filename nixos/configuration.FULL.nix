@@ -347,7 +347,6 @@
     taskwarrior-tui vit tasknc
 
     oneko xcape find-cursor #gnomeExtensions.jiggle hlcursors
-    virtscreen
 
     #synergy synergyWithoutGUI
     barrier # share keyboard & mouse; remote
@@ -376,22 +375,26 @@
     #rxvt                               #<-- have vulnerablility
     rxvt-unicode
     #mrxvt
-    termonad
+    #termonad
     #termonad-with-packages
+    enlightenment.terminology           #
+
     #kitty                               # one of my favourite?
     termite                             # alacritty replaced by alacritty?
     alacritty                           #
-    enlightenment.terminology           #
+    rio
 
     #---------------------------------------------------------------
     # text editor
     #---------------------------------------------------------------
 
     ed
-    nano neovim vim kakoune micro jedit vis # jed 
+    nano neovim vim kakoune micro jedit vis # jed
     vimHugeX
     emacs # emacs-nox
-    pulsar vscode leafpad notepadqq geany # kate
+    #vscode
+    leafpad notepadqq geany      # kate
+    #pulsar                             # forked from atom text editor
     #unstable.yi # Install yi the other way to allow enable personalized configuration.
     #leksah
 
@@ -522,6 +525,7 @@
 
     lynx elinks w3m
     firefox chromium qutebrowser #flashplayer rambox
+    floorp  # web browser, forked from firefox ?
     brave
     #midori surf epiphany
 
@@ -744,7 +748,7 @@
     alsaUtils
 
     oneko xcape find-cursor #gnomeExtensions.jiggle hlcursors
-    virtscreen
+    #virtscreen
 
     #synergy synergyWithoutGUI
     barrier     # share keyboard & mouse; remote

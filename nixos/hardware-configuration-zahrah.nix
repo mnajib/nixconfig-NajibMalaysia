@@ -4,9 +4,9 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+  ];
 
   #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;	# Need to use this if want to enable zfs support.
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -24,9 +24,12 @@
   boot.extraModulePackages = [
     #config.boot.kernelPacakages.broadcom_sta
   ];
-  boot.blacklistedKernelModules = [
-    "intel_ips"      # Some Intel Ibex Peak based platforms support so-called 'intelligent power sharing', which allows the CPU and GPU to cooperate to maximize performance within a given TDP (thermal design point).
-  ];
+  #boot.blacklistedKernelModules = [
+  #  "intel_ips"       # Some Intel Ibex Peak based platforms support so-called
+  #                    # 'intelligent power sharing', which allows the CPU and
+  #                    # GPU to cooperate to maximize performance within a given
+  #                    # TDP (thermal design point).
+  #];
 
   boot.initrd.supportedFilesystems = [
     "ext4" "btrfs" "xfs" "vfat" "ntfs"
@@ -39,11 +42,11 @@
     #"zfs"
     #"bcachefs"
   ];
-  boot.initrd.availableKernelModules = [ 
+  boot.initrd.availableKernelModules = [
     "ehci_pci" "ahci" "firewire_ohci" "sd_mod" "sdhci_pci"
     "xhci_pci" "usb_storage"
   ];
-  
+
   #---------------------------------------------------------------------------
   boot.initrd.luks = {
     devices."luks-dd365d20-576c-4e9b-8685-09ed3991ad2d" = {
@@ -53,31 +56,33 @@
   };
 
   #---------------------------------------------------------------------------
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/9cd6f6d1-5505-480b-bda5-730816aade1b";
-      fsType = "btrfs";
-      options = [
-        "subvol=@" 
-        "compress=zstd" "autodefrag"
-        #"noatime"
-      ];
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/9cd6f6d1-5505-480b-bda5-730816aade1b";
+    fsType = "btrfs";
+    options = [
+      "subvol=@"
+      "compress=zstd" "autodefrag"
+      #"noatime"
+    ];
+  };
 
-  fileSystems."/root" =
-    { device = "/dev/disk/by-uuid/9cd6f6d1-5505-480b-bda5-730816aade1b";
-      fsType = "btrfs";
-      options = [ "subvol=@root"
-        "compress=zstd" "autodefrag"
-      ];
-    };
+  fileSystems."/root" = {
+    device = "/dev/disk/by-uuid/9cd6f6d1-5505-480b-bda5-730816aade1b";
+    fsType = "btrfs";
+    options = [
+      "subvol=@root"
+      "compress=zstd" "autodefrag"
+    ];
+  };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/9cd6f6d1-5505-480b-bda5-730816aade1b";
-      fsType = "btrfs";
-      options = [ "subvol=@home" 
-        "compress=zstd" "autodefrag"
-      ];
-    };
+  fileSystems."/home" =  {
+    device = "/dev/disk/by-uuid/9cd6f6d1-5505-480b-bda5-730816aade1b";
+    fsType = "btrfs";
+    options = [
+      "subvol=@home"
+      "compress=zstd" "autodefrag"
+    ];
+  };
 
   #---------------------------------------------------------------------------
   fileSystems."/boot" = {

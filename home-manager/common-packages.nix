@@ -27,7 +27,7 @@
     pkgs.vis
     pkgs.handlr
     pkgs.ranger
-    pkgs.termonad
+    #pkgs.termonad
     pkgs.tmux
     pkgs.mosh
     pkgs.pavucontrol

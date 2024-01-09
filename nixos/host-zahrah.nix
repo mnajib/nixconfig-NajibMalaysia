@@ -95,16 +95,16 @@
     #------------------------------------------
     # BIOS
     #------------------------------------------
-    #devices = [
-    #	#"/dev/disk/by-id/wwn-0x5000c5002ea341bc"
-    #	#"/dev/disk/by-id/wwn-0x5000c5002ec8a164"
-    #	#"/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK0803806"
-    #
-    #	"/dev/disk/by-id/ata-PH6-CE120-G_511190117056007159" # /dev/sda (120GB SSD)
-    #	#"/dev/disk/by-id/ata-LITEONIT_LCS-256M6S_2.5_7mm_256GB_TW0XFJWX550854255987" # /dev/sdb (256GB SSD)
-    #];
+    devices = [
+      #"/dev/disk/by-id/wwn-0x5000c5002ea341bc"
+      #"/dev/disk/by-id/wwn-0x5000c5002ec8a164"
+      #"/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK0803806"
+      #"/dev/disk/by-id/ata-PH6-CE120-G_511190117056007159"                                # /dev/sda (120GB SSD)
+      #"/dev/disk/by-id/ata-LITEONIT_LCS-256M6S_2.5_7mm_256GB_TW0XFJWX550854255987"       # /dev/sdb (256GB SSD)
+      "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1011006"
+    ];
     #device = "/dev/disk/by-id/ata-PH6-CE120-G_511190117056007159";
-    device = "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1011006";
+    #device = "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1011006";
     #efiSupport = true;
 
     #------------------------------------------
@@ -236,14 +236,14 @@
   services.xserver.displayManager.defaultSession = "none+xmonad";
 
   #services.xserver.desktopManager.plasma5.enable = true;
-  #services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
   #services.xserver.desktopManager.xfce.enable = true;
   #services.xserver.desktopManager.pantheon.enable = true;
-  services.xserver.desktopManager.enlightenment.enable = true;
+  #services.xserver.desktopManager.enlightenment.enable = true;
   #services.xserver.desktopManager.lumina.enable = true;
   #services.xserver.desktopManager.mate.enable = true;
   #services.xserver.desktopManager.cinnamon.enable = true;
-  #services.xserver.desktopManager.lxqt.enable = true;
+  services.xserver.desktopManager.lxqt.enable = true;
 
   services.xserver.windowManager = {
     berry.enable = true;

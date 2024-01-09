@@ -14,32 +14,48 @@
   boot.extraModulePackages = [ ];
 
   #----------------------------------------------------------------------------
-  fileSystems."/" =
-    { device = "/dev/mapper/luks-9f449c0e-0cb8-4456-b2e6-0e2e46a09d4b";
-      fsType = "btrfs";
-      options = [ "subvol=@" "compress=zstd" "noatime" "autodefrag" ];
-    };
+  fileSystems."/" = {
+    #device = "/dev/mapper/luks-9f449c0e-0cb8-4456-b2e6-0e2e46a09d4b";
+    device = "/dev/disk/by-uuid/ce99399e-ef75-4ecc-b5b6-2602653aa088";
+    fsType = "btrfs";
+    options = [
+      "subvol=@"
+      "compress=zstd"
+      #"noatime"
+      "autodefrag"
+    ];
+  };
 
-  boot.initrd.luks.devices."luks-9f449c0e-0cb8-4456-b2e6-0e2e46a09d4b" = {
-    device = "/dev/disk/by-uuid/9f449c0e-0cb8-4456-b2e6-0e2e46a09d4b";
+  #boot.initrd.luks.devices."luks-9f449c0e-0cb8-4456-b2e6-0e2e46a09d4b" = {
+  #  device = "/dev/disk/by-uuid/9f449c0e-0cb8-4456-b2e6-0e2e46a09d4b";
+  #  #preLVM = true;
+  #};
+
+  boot.initrd.luks.devices."luks-bd75b3b8-e980-4bc6-a304-de56ee23859c" = {
+    device = "/dev/disk/by-uuid/bd75b3b8-e980-4bc6-a304-de56ee23859c";
     #preLVM = true;
   };
+
+  boot.initrd.luks.devices."luks-b945d308-998d-4495-85f6-abb513ee0bff".device = "/dev/disk/by-uuid/b945d308-998d-4495-85f6-abb513ee0bff";
   #----------------------------------------------------------------------------
 
-  fileSystems."/home" =
-    { device = "/dev/mapper/luks-9f449c0e-0cb8-4456-b2e6-0e2e46a09d4b";
-      fsType = "btrfs";
-      options = [ "subvol=@home" "compress=zstd" "noatime" "autodefrag" ];
-    };
+  #fileSystems."/home" = {
+  #  device = "/dev/mapper/luks-9f449c0e-0cb8-4456-b2e6-0e2e46a09d4b";
+  #  fsType = "btrfs";
+  #  options = [ "subvol=@home" "compress=zstd" "noatime" "autodefrag" ];
+  #};
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/b6680943-150d-4337-b114-3a788d21be94";
-      fsType = "ext4";
-    };
+  fileSystems."/boot" = {
+    #device = "/dev/disk/by-uuid/b6680943-150d-4337-b114-3a788d21be94";
+    #fsType = "ext4";
+    device = "/dev/disk/by-uuid/707bcd00-ffa8-4fe5-9c93-a073508fd5a8";
+    fsType = "btrfs";
+  };
 
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/2cc6a41e-5b8e-42ec-a406-93e13e94f5ed"; }
-    ];
+  swapDevices = [
+    #{ device = "/dev/disk/by-uuid/2cc6a41e-5b8e-42ec-a406-93e13e94f5ed"; }
+    { device = "/dev/disk/by-uuid/d87059fd-12a2-425e-992d-36f383e4f984"; }
+  ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
