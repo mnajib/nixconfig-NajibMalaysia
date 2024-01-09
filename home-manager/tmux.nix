@@ -56,8 +56,11 @@
       bind r source-file ~/.config/tmux/tmux.conf
 
       # Join windows: <prefix> s, <prefix> j
-      bind-key j command-prompt -p "join pane from:"  "join-pane -s '%%'"
-      bind-key s command-prompt -p "send pane to:"  "join-pane -t '%%'"
+      #bind-key j command-prompt -p "join pane from:"  "join-pane -s '%%'"
+      #bind-key s command-prompt -p "send pane to:"  "join-pane -t '%%'"
+      # Change to '<prefix> Shift-j' and '<prefix> Shift-s'
+      bind-key S-j command-prompt -p "join pane from:"  "join-pane -s '%%'"
+      bind-key S-s command-prompt -p "send pane to:"  "join-pane -t '%%'"
 
       # Fast pane-switching: switch panes using Alt-arrow without prefix
       bind -n M-Up select-pane -U                             # Alt-Up
