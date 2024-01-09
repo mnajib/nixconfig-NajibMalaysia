@@ -377,10 +377,12 @@
     #mrxvt
     #termonad
     #termonad-with-packages
+    enlightenment.terminology           #
+
     #kitty                               # one of my favourite?
     termite                             # alacritty replaced by alacritty?
     alacritty                           #
-    enlightenment.terminology           #
+    rio
 
     #---------------------------------------------------------------
     # text editor
@@ -390,7 +392,8 @@
     nano neovim vim kakoune micro jedit vis # jed
     vimHugeX
     emacs # emacs-nox
-    vscode leafpad notepadqq geany      # kate
+    #vscode
+    leafpad notepadqq geany      # kate
     #pulsar                             # forked from atom text editor
     #unstable.yi # Install yi the other way to allow enable personalized configuration.
     #leksah
