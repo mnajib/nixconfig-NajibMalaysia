@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 #let
 #	nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
 #	  export __NV_PRIME_RENDER_OFFLOAD=1
@@ -14,6 +14,7 @@
     extraOptions = ''
         experimental-features = nix-command flakes
     '';
+
   };
 
   imports = [
@@ -126,7 +127,8 @@
   #  useOSProber = true;
   #};
 
-  boot.loader.timeout = null; # XXX: Not sure how to set null value here.
+  #boot.loader.timeout = null;        # XXX: Not sure how to set null value here.
+  boot.loader.timeout = 10;             # in seconds
   #boot.loader.systemd-boot.enable = true;      # for efi boot, not bios?
   boot.loader.grub.useOSProber = true;
 
@@ -138,7 +140,51 @@
   # XXX:
   # sudo touch /crypto_keyfile.bin
 
+  # TODO:
+  # Ref: https://nixos.wiki/wiki/Nvidia
+  # Multiple Boot Configurations
+  # Imagine you have a laptop that you mostly use in clamshell mode (docked, connected to an external display and plugged into a charger) but that you sometimes use on the go.
+  # In clamshell mode, using PRIME Sync is likely to lead to better performance, external display support, etc., at the cost of potentially (but not always) lower battery life. However, when using the laptop on the go, you may prefer to use offload mode.
+
+  # NixOS supports "specialisations", which allow you to automatically generate different boot profiles when rebuilding your system. We can, for example, enable PRIME sync by default, but also create a "on-the-go" specialization that disables PRIME sync and instead enables offload mode:
+  #specialisation = {
+  #  on-the-go.configuration = {
+  #    system.nixos.tags = [ "on-the-go" ];
+  #    hardware.nvidia = {
+  #      prime.offload.enable = lib.mkForce true;
+  #      prime.offload.enableOffloadCmd = lib.mkForce true;
+  #      prime.sync.enable = lib.mkForce false;
+  #    };
+  #  };
+  #};
+
   #boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = [
+    #"i915.modeset=0" "nouveau.modeset=1"                                        # to disable i915 and enable nouveau
+    "video=eDP-1:1920x1080" "video=VGA-1:1280x1024" "video=DP-1-3:1280x1024"    #
+  ];
+
+  #
+  # NOTE:
+  # When using a laptop with NVIDIA's Optimus technology (usually found
+  # in laptops built in 2010 and later), everything will be passed through the
+  # integrated graphics controller (usually Intel) before it gets to the
+  # discrete video card (NVIDIA), which can cause a lot of otherwise
+  # unexplained problems when enabled. There are a few ways to handle this, but
+  # the simplest is to disable Optimus through the BIOS (normally accessed by
+  # pressing F12 during boot). This will result in increased power consumption
+  # (decreased battery life, increased running temperature), as the NVIDIA card
+  # will now be handling all of the work all of the time.
+  #
+  # 1. Laptop Configuration: Hybrid Graphics (Nvidia Optimus PRIME)
+  #   1.1 Optimus PRIME Option A: Offload Mode                        # Not using Nvidia GPU as default. Need manually call/script when we do want use Nvidia GPU.
+  #   1.2 Optimus PRIME Option B: Sync Mode                           # Do using Nvidia GPU as default. Need manually call/script when do no want to use Nvidia GPU.
+  #   1.3 Optimus Option C: Reverse Sync Mode (Experimental)
+  # *PRIME 'Offload Mode' and 'Sync Mode' cannot be enabled at the same time.
+  #
+  # References:
+  # - https://nixos.wiki/wiki/Nvidia
+  #
 
   # Enable swap on luks
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".device = "/dev/disk/by-uuid/a5172078-045e-4b03-abbc-32a86dfe0d06";
@@ -147,42 +193,29 @@
   #services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
   services.xserver.dpi = 96;
 
-  #services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = [ "nvidia" ];
   # OR
   # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
-  #services.xserver.videoDrivers = [ "nvidiaLegacy470" ]; #
+  #services.xserver.videoDrivers = [ "nvidiaLegacy390" ]; #
 
-  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390; # Latest Legacy GPU version (390.xx series): 390.143
-  #
-  # OR
-  #
-  # https://www.nvidia.com/en-us/drivers/unix/legacy-gpu/
+  # 01:00.0 VGA compatible controller: NVIDIA Corporation GK106GLM [Quadro K2100M] (rev a1)
   # For GK106GLM [Quadro K2100M] in Dell Precision M4800
   # Legacy driver
-  # 470.xx driver
   #   NVIDIA GPU product: Quadro K2100M
-  #   Device PCI ID: 11FC
-  #   Subdevice PCI ID: -
-  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
-
-  #hardware.nvidia.nvidiaSettings = true;
+  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390; # Latest Legacy GPU version (390.xx series): 390.143 that support the graphic card.
 
   hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
   hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
 
-  #hardware.nvidia.prime.offload.enable = true;
-  #
-  # OR
-  #
-  #hardware.nvidia.prime.sync.enable = true;
-  #hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia.prime.sync.enable = true;
+  hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
 
-  #hardware.nvidia.prime = {
-  # #offload.enable = true;
-  # #sync.enable = true;
-  # intelBusId = "PCI:0:2:0";
-  # nvidiaBusId = "PCI:1:0:0";
-  #    };
+  hardware.nvidia.powerManagement.enable = false;
+  hardware.nvidia.powerManagement.finegrained = false;
+  hardware.nvidia.open = false;
+  hardware.nvidia.nvidiaSettings = true;
+  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
 
   services.logind.extraConfig = "RuntimeDirectorySize=4G";    # before this it is 100% full with 1.6G tmpfs /run/user/1001
 
