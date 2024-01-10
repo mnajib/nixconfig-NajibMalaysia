@@ -827,6 +827,8 @@
 
   #programs.way-cooler.enable = true;
 
+  programs.java.enable = true;
+
   programs.light.enable = true;
 
   programs.dconf.enable = true;         # for gnome?

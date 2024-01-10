@@ -92,6 +92,11 @@ in
     enable = true;
   };
 
+  programs.java = {
+    enable = true;
+    #package = "pkgs.jdk";
+  };
+
   programs.kitty = {
     enable = true;
 
