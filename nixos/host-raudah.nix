@@ -28,7 +28,8 @@
     #./users-anak2.nix
     #./users-najib.nix
     ./users-julia.nix
-    ./users-naqib.nix
+    #./users-naqib.nix
+    ./users-naqib-wheel.nix
     ./users-nurnasuha.nix
     #./users-naim-wheel.nix
     ./users-naim.nix
