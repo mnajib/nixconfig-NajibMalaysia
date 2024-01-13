@@ -24,12 +24,12 @@
   boot.extraModulePackages = [
     #config.boot.kernelPacakages.broadcom_sta
   ];
-  #boot.blacklistedKernelModules = [
-  #  "intel_ips"       # Some Intel Ibex Peak based platforms support so-called
-  #                    # 'intelligent power sharing', which allows the CPU and
-  #                    # GPU to cooperate to maximize performance within a given
-  #                    # TDP (thermal design point).
-  #];
+  boot.blacklistedKernelModules = [
+    "intel_ips"       # Some Intel Ibex Peak based platforms support so-called
+                      # 'intelligent power sharing', which allows the CPU and
+                      # GPU to cooperate to maximize performance within a given
+                      # TDP (thermal design point).
+  ];
 
   boot.initrd.supportedFilesystems = [
     "ext4" "btrfs" "xfs" "vfat" "ntfs"
