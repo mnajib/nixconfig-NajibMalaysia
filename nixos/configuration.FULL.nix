@@ -185,6 +185,7 @@
     zenith                    # Sort of like top or htop but with zoom-able charts, network, and disk usage
     bmon                      # Network bandwidth monitor
     btop
+    enlightenment.evisum
 
     screen
     tmux
@@ -398,6 +399,7 @@
     #pulsar                             # forked from atom text editor
     #unstable.yi # Install yi the other way to allow enable personalized configuration.
     #leksah
+    enlightenment.ecrire
 
     #---------------------------------------------------------------
     # archiver
@@ -578,6 +580,7 @@
     #keepnote
     #planner <-- removed from nixpkgs
     gqview
+    enlightenment.ephoto
 
     hakuneko  # comic/manga/manhwa downloader/viewer
 
@@ -617,6 +620,7 @@
     #mpv.override { scripts = [ mpvScripts.plugin-name ]; }
 
     smplayer
+    enlightenment.rage
 
 
     #---------------------------------------------------------------
