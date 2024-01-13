@@ -186,14 +186,24 @@
   # - https://nixos.wiki/wiki/Nvidia
   #
 
+  #
+  # NOTE:
+  # - A pre-requisite for PRIME synchronization with the NVIDIA driver is to enable modesetting.
+  # - PRIME synchronization is not available with the AMDGPU DDX driver (xf86-video-amdgpu).
+  #
+  # References:
+  # - https://wiki.archlinux.org/title/PRIME
+  #
+
   # Enable swap on luks
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".device = "/dev/disk/by-uuid/a5172078-045e-4b03-abbc-32a86dfe0d06";
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".keyFile = "/crypto_keyfile.bin";
 
-  #services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
   services.xserver.dpi = 96;
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+  #services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
+  services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
+  #services.xserver.videoDrivers = [ "nvidia" ];
   # OR
   # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
   #services.xserver.videoDrivers = [ "nvidiaLegacy390" ]; #
