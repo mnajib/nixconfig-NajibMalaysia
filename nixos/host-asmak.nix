@@ -155,6 +155,7 @@
   #services.xserver.desktopManager.plasma5.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
   #services.xserver.desktopManager.xfce.enable = true;
+  services.xserver.desktopManager.lxqt.enable = true;
 
   services.xserver.windowManager.xmonad.enable = true;
   services.xserver.windowManager.jwm.enable = true;
