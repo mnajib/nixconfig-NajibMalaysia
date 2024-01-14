@@ -240,6 +240,8 @@
   #services.xserver.desktopManager.mate.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
   #services.xserver.desktopManager.enlightenment.enable = true;
+  #services.xserver.desktopManager.lxqt.enable = true;
+  #services.xserver.desktopManager.lumina.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true; # XXX
