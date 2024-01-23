@@ -12,6 +12,9 @@
   #boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   #boot.extraModulePackages = [ ];
+  boot.extraModprobeConfig = ''
+    options iwldvm bt_coex_active=0
+  '';
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/0ec10b45-150b-4092-b13d-fd64f50b8109";
@@ -32,4 +35,6 @@
     ];
 
   #nix.maxJobs = lib.mkDefault 1; #4;
+  nixpkgs.hostPlatform.system = "x86_64-linux";
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

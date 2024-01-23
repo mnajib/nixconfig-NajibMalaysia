@@ -54,8 +54,10 @@
     networking.hostId = "b7c4abba";
     networking.hostName = "manggis";
 
-    nix.trustedUsers = [ "root" "najib" "julia" ];
+    #nix.trustedUsers = [ "root" "najib" "julia" ];
+    nix.settings.trusted-users = [ "root" "najib" "julia" ];
 
+    boot.loader.timeout = 10;   # wait for 10 seconds
     #boot.kernelPackages = pkgs.linuxPackages_latest;
     boot.supportedFilesystems = [ "ext4" "btrfs" "xfs" ];
     boot.initrd.supportedFilesystems = [ "ext4" "btrfs" "xfs" ];
@@ -105,8 +107,18 @@
 
         WIFI_PWR_ON_AC = "off";
         WIFI_PWR_ON_BAT = "off";
+
         DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth wwan";
         DEVICES_TO_ENABLE_ON_STARTUP = "wifi";
+
+        DEVICES_TO_DISABLE_ON_AC = "bluetooth wwan";
+        DEVICES_TO_ENABLE_ON_AC = "wifi";
+
+        DEVICES_TO_DISABLE_ON_BAT = "bluetooth wwan";
+        DEVICES_TO_ENABLE_ON_BAT = "wifi";
+
+        DEVICES_TO_DISABLE_ON_WIFI_CONNECT="bluetooth wwan";
+        DEVICES_TO_ENABLE_ON_WIFI_DISCONNECT="";
     };
     #services.tlp.extraConfig = ;
 
