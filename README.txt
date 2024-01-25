@@ -30,3 +30,28 @@ sudo nixos-rebuild switch --flake .#zahrah --target-host naim@zahrah --use-remot
 nix shell nixpkgs#pulsar
 
 
+#------------------------------------------------------------------------------
+To show generations:
+  nix-env --list-generations
+
+To delete generations number 23:
+  nix-env --delete-generations 23
+To delete all other generations, but keep 5 last generations:
+  nix-env --delete-generations +5
+
+To run garbage collection:
+  nix-store --gc
+
+#------------------------------------------------------------------------------
+To show derivations:
+  nix derivation show
+
+To perform garbage collect:
+  nix store gc
+#------------------------------------------------------------------------------
+To show generations:
+  home-manager generations
+#------------------------------------------------------------------------------
+
+
+
