@@ -196,7 +196,7 @@
     xpra
     run-scaled
 
-    file bc lsof tree syslinux
+    file lsof tree syslinux
     iw
 
     arandr autorandr
@@ -250,10 +250,29 @@
 
     fluxbox    # Need this because I need to use command 'fbsetroot' to set plain black background when using xmonad.
 
-    rofi    # Using rofi in xmonad.
-    rofi-pass
-    rofi-calc
-    rofi-emoji
+    #--------------------------------------------------------------------------
+    #rofi    # Using rofi in xmonad.
+    #rofi-pass
+    #rofi-calc
+    #rofi-emoji
+    #rofimoji
+    #rofi-rbw # bitrwarden password manager
+    #--------------------------------------------------------------------------
+    (rofi.override {
+      plugins = [
+        rofi-file-browser
+        rofi-pass
+        rofi-calc
+        rofi-emoji
+        rofi-rbw
+        rofi-rbw-x11
+        rofi-systemd
+        rofi-screenshot
+        rofi-power-menu
+        rofi-pulse-select
+      ];
+    })
+    #--------------------------------------------------------------------------
 
     dzen2    # A general purpose messaging, notification and menuing program for X11
     gnumake    # install gnumake, needed for ihp
@@ -288,16 +307,6 @@
     gnome.gnome-clocks
 
     screenkey onboard xorg.xkbcomp # xorg.xkbprint
-
-    gxmessage  #xorg.xmessage # to be used with xmonad, but not support scroll? maybe yad, zenity, dialog, xdialog, gdialog, kdialog, gxmessage, hmessage
-    exiftool
-    wireshark
-    # steghide
-    gdb gdbgui
-    parcellite  # clipboard manager
-    cryptsetup  # luks disk encryption
-    pro-office-calculator speedcrunch wcalc pdd qalculate-gtk galculator # calculator
-    gnome.gnome-calculator
 
     qemu qemu_kvm qemu-utils
     qemu_full
@@ -469,7 +478,9 @@
     xorg.xev
     dmenu
     volumeicon pasystray trayer #phwmon
-    xlockmore xorg.xhost xclip #i3lock
+    xlockmore xorg.xhost
+    xclip
+    #i3lock
     pulsemixer qpaeq pulseeffects-legacy #pulseeffects-pw #pulseeffects pipewire
     xscreensaver
     haskellPackages.xmobar #rfkill
@@ -716,10 +727,30 @@
     wireshark
     # steghide
     gdb gdbgui
-    parcellite  # clipboard manager
+    parcellite  # clipboard manager in GUI
+    clipboard-jh  # clipboard manager in CLI
+    clipcat # clipboard manager
     screenkey onboard xorg.xkbcomp # xorg.xkbprint
     cryptsetup  # luks disk encryption
-    pro-office-calculator speedcrunch wcalc pdd qalculate-gtk galculator # calculator
+
+    bc  # GNU CLI calculator
+    eva # A CLI calculator REPL, similar to bc
+    clac # CLI Interactive stack-based calculator
+    pro-office-calculator speedcrunch wcalc pdd galculator # calculator
+    qalculate-gtk # qalculate-qt # the ultimate desktop calculator
+    gnome.gnome-calculator
+    rink  # unit-aware CLI calculator
+    fend # CLI arbitrary-precision unit-aware calculator
+    wcalc # A command line (CLI) calculator
+    quich # The advanced terminal (CLI) calculator
+    kalker  # A command line (CLI) calculator that supports math-like syntax with user-defined variables, functions, derivation, integration, and complex numbers
+    deepin.deepin-calculator  # A easy to use calculator for ordinary users
+    pantheon.elementary-calculator # GUI Calculator app designed for elementary OS
+    mate.mate-calc # GUI calculator for the MATE desktop
+    lumina.lumina-calculator # Scientific calculator for the Lumina Desktop
+    ipcalc  # Simple CLI IP network calculator
+    sipcalc # advanced console (CLI) ip subnet calculator
+    pdd # CLI tiny date, time diff calculator
 
     ethtool
 
@@ -884,6 +915,8 @@
   #users.users.najib.shell = pkgs.fish;    #pkgs.zsh; # pkgs.fish;
   #users.defaultUserShell = pkgs.fish;    #pkgs.zsh;
   #users.users.root.shell = pkgs.fish;    #pkgs.zsh;
+
+  services.clipcat.enable = true;         # clipboard manager daemon
 
   services.urxvtd.enable = true;          # To use urxvtd, run "urxvtc".
 

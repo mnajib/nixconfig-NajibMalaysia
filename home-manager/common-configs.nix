@@ -82,15 +82,15 @@ in
   #};
 
 #------------------------------------------------------------------------------
-  programs.rofi = {
-    enable = true;
-    #font = "${font} 8"; #9
-    #theme = "~/.cache/wal/colors-rofi-dark-rasi";
-  };
+  #programs.rofi = {
+  #  enable = true;
+  #  #font = "${font} 8"; #9
+  #  #theme = "~/.cache/wal/colors-rofi-dark-rasi";
+  #};
 
-  programs.rofi.pass = {
-    enable = true;
-  };
+  #programs.rofi.pass = {
+  #  enable = true;
+  #};
 
   programs.java = {
     enable = true;
