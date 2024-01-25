@@ -51,6 +51,9 @@ To perform garbage collect:
 #------------------------------------------------------------------------------
 To show generations:
   home-manager generations
+To remove generation:
+  home-manager remove-generations 2
+  home-manager remove-generations 3
 #------------------------------------------------------------------------------
 
 
