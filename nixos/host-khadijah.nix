@@ -202,8 +202,8 @@
   services.xserver.dpi = 96;
 
   #services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
-  services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
-  #services.xserver.videoDrivers = [ "nvidia" ];
+  #services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
+  services.xserver.videoDrivers = [ "nvidia" ];
   # OR
   # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
   #services.xserver.videoDrivers = [ "nvidiaLegacy390" ]; #
@@ -229,6 +229,8 @@
 
   services.logind.extraConfig = "RuntimeDirectorySize=4G";    # before this it is 100% full with 1.6G tmpfs /run/user/1001
 
+  #----------------------------------------------------------------------------
+
   #services.xserver.displayManager.sddm.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
   #services.xserver.displayManager.startx.enable = true;
@@ -242,6 +244,15 @@
   #services.xserver.desktopManager.enlightenment.enable = true;
   #services.xserver.desktopManager.lxqt.enable = true;
   #services.xserver.desktopManager.lumina.enable = true;
+
+  services.xserver.windowManager.spectrwm.enable = true;
+  services.xserver.windowManager.qtile.enable = true;
+  services.xserver.windowManager.notion.enable = true;
+  services.xserver.windowManager.leftwm.enable = true;
+  services.xserver.windowManager.nimdow.enable = true;
+  services.xserver.windowManager.herbstluftwm.enable = true;
+
+  #----------------------------------------------------------------------------
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true; # XXX
