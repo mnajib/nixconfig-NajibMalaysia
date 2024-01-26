@@ -70,7 +70,7 @@ in
     inputs.nix-colors.homeManagerModule
     ./screen.nix
     ./tmux.nix
-    ./rofi.nix
+    #./rofi.nix
   ];
   # XXX: TODO: Should be in seperate file packages.nix
 
