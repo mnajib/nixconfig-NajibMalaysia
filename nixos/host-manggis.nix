@@ -74,18 +74,18 @@
         #49152 # brick1
         49153 # brick2
         #38465-38467 # Gluster NFS
-        
+
         111 # portmapper
-        
+
         1110 # NFS cluster
         4045    # NFS lock manager
     ];
     networking.firewall.allowedUDPPorts = [
         # Gluster
         111 # portmapper
-        
+
         #3450 # for minetest server
-        
+
         1110 # NFS client
         4045 # NFS lock manager
     ];
@@ -105,19 +105,21 @@
         START_CHARGE_THRESH_BAT0 = 75;
         STOP_CHARGE_THRESH_BAT0 = 80;
 
+        # Power saving mode for wifi while on AC power
         WIFI_PWR_ON_AC = "off";
+        # Power saving mode for wifi while on BAT power
         WIFI_PWR_ON_BAT = "off";
 
-        DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth wwan";
+        #DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth wwan";
         DEVICES_TO_ENABLE_ON_STARTUP = "wifi";
 
-        DEVICES_TO_DISABLE_ON_AC = "bluetooth wwan";
+        #DEVICES_TO_DISABLE_ON_AC = "bluetooth wwan";
         DEVICES_TO_ENABLE_ON_AC = "wifi";
 
-        DEVICES_TO_DISABLE_ON_BAT = "bluetooth wwan";
+        #DEVICES_TO_DISABLE_ON_BAT = "bluetooth wwan";
         DEVICES_TO_ENABLE_ON_BAT = "wifi";
 
-        DEVICES_TO_DISABLE_ON_WIFI_CONNECT="bluetooth wwan";
+        #DEVICES_TO_DISABLE_ON_WIFI_CONNECT="bluetooth wwan";
         DEVICES_TO_ENABLE_ON_WIFI_DISCONNECT="";
     };
     #services.tlp.extraConfig = ;
@@ -135,7 +137,7 @@
 		commands = [
 				{
 					command = "/home/julia/bin/decrease-trackpoint-sensitivity-x220.sh";
-					options = [ "SETENV" "NOPASSWD" ]; 
+					options = [ "SETENV" "NOPASSWD" ];
 				}
 		];
 	}
