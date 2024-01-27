@@ -10,11 +10,13 @@
 
   boot.initrd.availableKernelModules = [ "uhci_hcd" "ehci_pci" "ahci" "firewire_ohci" "sd_mod" "sdhci_pci" ];
   #boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [ "kvm-intel" ];         #"iwlwifi" "wl" ];
   #boot.extraModulePackages = [ ];
-  boot.extraModprobeConfig = ''
-    options iwldvm bt_coex_active=0
-  '';
+
+  #  #options iwldvm bt_coex_active=0
+  #boot.extraModprobeConfig = ''
+  #  options iwlwifi bt_coex_active=0
+  #'';
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/0ec10b45-150b-4092-b13d-fd64f50b8109";
