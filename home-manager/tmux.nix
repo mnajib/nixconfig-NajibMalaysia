@@ -31,10 +31,14 @@
     enable = true;
     #packages =  pkgs.tumx;
     clock24 = true;
+    newSession = true;
+    resizeAmount = 1;
+    baseIndex = 1;
     escapeTime = 10;
     historyLimit = 10000;
     keyMode = "vi";
     terminal = "screen-256color";
+    #prefix = "C-b";
 
     extraConfig = ''
       #set -g mouse-select-window on

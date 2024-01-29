@@ -172,6 +172,21 @@
   #  xsaneGimp = pkgs.xsane.override ( nimpSupport = true; );
   #};
 
+  environment.sessionVariables = rec {
+    #XDG_DATA_HOME = "$HOME/var/lib";
+    #XDG_CACHE_HOME = "$HOME/var/cache";
+    XDG_CACHE_HOME = "$HOME/.cache";
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_DATA_HOME = "$HOME/.local/share";
+    XDG_STATE_HOME = "$HOME/.local/state";
+  };
+
+  #environment.variables = {
+  #  XDG_CONFIG_HOME = "${HOME}/.config";
+  #  XDG_DATA_HOME = "${HOME}/var/lib";
+  #  XDG_CACHE_HOME = "${HOME}/var/cache";
+  #};
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   #
@@ -881,6 +896,7 @@
     resizeAmount = 1;
     baseIndex = 1;
     historyLimit = 10000;
+    #prefix = "C-b";
 
     #keyMode = "vi";
     #customPaneNavigationAndResize = true;

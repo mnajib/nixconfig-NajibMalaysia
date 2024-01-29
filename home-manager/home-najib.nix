@@ -141,6 +141,7 @@ in
   programs.ssh = {
     enable = true;
     matchBlocks = {
+      #------------------------------------------------------------------------
       #"najib@gogs.mahirah" = {
       #  hostname = "mahirah";
       #  port = 22;
@@ -148,8 +149,14 @@ in
       #  #certificateFile = [ "~/.ssh/gogs.mahirah.localdomain/id_ed25519" ];
       #  identityFile = [ "~/.ssh/gogs.mahirah.localdomain/id_ed25519" ];
       #};
+      #------------------------------------------------------------------------
     };
   };
+
+  # XXX:
+  #programs.tmux.shell = "\${pkgs.zsh}/bin/zsh";
+  #programs.tmux.shell = "${pkgs.zsh}/bin/zsh";
+  programs.tmux.shell = "/run/current-system/sw/bin/zsh";
 
   #programs.doom-emacs = {
   #  enable = true;

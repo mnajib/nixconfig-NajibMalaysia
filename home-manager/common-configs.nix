@@ -79,7 +79,10 @@ in
   #colorscheme = lib.mkDefault colorSchemes.najib;
 
   #home.sessionVariables = {
-  #  EDITOR = "nvim";       # yi vis nvim kak vim nano rasa jak
+    #EDITOR = "nvim";       # yi vis nvim kak vim nano rasa jak
+    #XDG_CONFIG_HOME = "$HOME/.config";
+    #XDG_DATA_HOME = "$HOME/var/lib";
+    #XDG_CACHE_HOME = "$HOME/var/cache";
   #};
 
 #------------------------------------------------------------------------------
