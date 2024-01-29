@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, lib, home, ... }:
 #let
 #	nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
 #	  export __NV_PRIME_RENDER_OFFLOAD=1
@@ -15,6 +15,35 @@
         experimental-features = nix-command flakes
     '';
 
+    #bash-prompt-prefix = "";
+    #bash-prompt = "[develop] ";
+    #bash-prompt-suffix = "[develop-env] ";
+
+    #
+    # References:
+    #   https://nixos.wiki/wiki/Distributed_build
+    #   https://search.nixos.org/options?channel=unstable&show=nix.buildMachines
+    #   https://nixos.org/manual/nix/stable/command-ref/conf-file#conf-use-xdg-base-directories
+    #
+    distributedBuilds = true;
+    #builders = "ssh://sakinah x86_64-linux; ssh://customdesktop x86_64-linux;";
+    #builders = "ssh://nurnasuha@sakinah.localdomain x86_64-linux";
+    buildMachines = [
+      {
+        hostName = "sakinah.localdomain";
+        protocol = "ssh"; # "ssh-ng"
+        system = "x86_64-linux";
+        #maxJobs = 1;
+        #speedFactor = 2;
+        #supportedFeatures = [
+        #  "nixos-test"
+        #  "benchmark"
+        #  "big-parallel"
+        #  "kvm"
+        #];
+      }
+    ];
+    #max-jobs = 0; # Disable (never build on local machine, even when connecting to remote builders fails) building on local machine; only build on remote builders.
   };
 
   imports = [
@@ -31,6 +60,7 @@
     #./touchpad-scrollTwofinger-TapTrue.nix
     #./network-dns.nix
     ./users-anak2.nix
+    #./users-najib.nix
 
     ./nfs-client-automount.nix
     ./nfs-client-automount-games.nix
@@ -106,10 +136,10 @@
   ];
 
   # XXX: ???
-  environment.systemPackages = with pkgs; [
+  #environment.systemPackages = with pkgs; [
     #nvtop
-    tmux
-  ];
+    #tmux
+  #];
 
   #hardware.video.hidpi.enable = true;
 

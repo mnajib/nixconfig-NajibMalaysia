@@ -80,6 +80,10 @@
   nix.daemonCPUSchedPolicy = "idle";
   nix.daemonIOSchedClass = "idle";
 
+  imports = [
+    ./users-najib.nix
+  ];
+
   # Q: Each time I change my configuration.nix and run nixos-rebuild switch,
   #    I must run the command 'loadkeys dvorak' in order to use my preferred
   #    keyboard. How can I configure nixos to load the dvorak keymap
@@ -245,6 +249,7 @@
     mkpasswd
     pass # CLI password manager
     qtpass
+    bsd-finger
 
     picom    # compositor manager; try to use picom for gromit-mpx (screen annotation) in xmonad (window manager).
 
@@ -889,25 +894,71 @@
     ];
   };
 
+  #
+  # Referrences:
+  #   https://nixos.org/manual/nixos/stable/#module-programs-zsh-ohmyzsh
+  #
   programs.zsh = {
     enable = true;
-    #autosuggestions.enable = true;
-    #enableCompletion = true;
-    #syntaxHighlighting.enable = true;
+    autosuggestions.enable = true;
+    enableCompletion = true;
+    syntaxHighlighting.enable = true;
     #interactiveShellInit = "";
 
+    histSize = 10000;
+    #histFile = "${config.xdg.dataHome}/zsh/history";
+    #histFile = "${HOME}.config/zsh/history";
+
+    shellAliases = {
+      l = "ls -Filah";
+      j = "jobs";
+      s = "sync";
+      d = "export DISPLAY=:0";
+      #update = "sudo nixos-rebuild switch";
+    };
+
+    # zplug: a next-generation plugin manager for zsh
+    #...
+
+    #
+    # References:
+    #   https://github.com/robbyrussell/oh-my-zsh/wiki
+    #
     ohMyZsh = {
       enable = false;
-      plugins = [
-        "git"
-        "colored-man-pages"
-        "command-not-found"
-        "extract"
-        "direnv"
+
+      #plugins = [
+      #  #"git"
+      #  "colored-man-pages"
+      #  "man"
+      #  "command-not-found"
+      #  "extract"
+      #  "direnv"
+      #  "python"
+      #];
+
+      #theme = "agnoster";        # "bureau" "agnoster" "aussiegeek" "dallas" "gentoo"
+      theme = "gentoo";
+
+      # Custom additions
+      #custom = "~/path/to/custom/scripts";
+
+      # Custom environments
+      # https://search.nixos.org/packages?channel=unstable&show=zsh-vi-mode&from=0&size=50&sort=relevance&type=packages&query=zsh
+      customPkgs = with pkgs; [
+        nix-zsh-completions
+        zsh-nix-shell
+        zsh-completions
+        zsh-autosuggestions
+        #zsh-git-prompt
+        zsh-vi-mode
+        #zsh-command-time
+        #zsh-powerlevel10k
+        zsh-fast-syntax-highlighting
       ];
-      theme = "agnoster";        # "bureau" "agnoster" "aussiegeek" "dallas"
-    };
-  };
+    }; # End ohMyZsh
+
+  }; # End zsh
 
   programs.fish.enable = true;
   programs.xonsh.enable = true;
@@ -1200,34 +1251,6 @@
   users.extraGroups.naqib.gid = 1004;
   users.extraGroups.nurnasuha.gid = 1005;
   users.extraGroups.naim.gid = 1006;
-
-  users.users.najib = {
-    description = "Muhammad Najib Bin Ibrahim";
-    uid = 1001;
-    isNormalUser = true;
-    initialPassword = "password";
-    createHome = true;
-    home = "/home/najib";
-    extraGroups = [
-      "wheel"
-      "networkmanager" "istana46" "audio" "video" "cdrom"  "adbusers" "vboxusers" "scanner" "lp" "systemd-journal" "najib" "julia" "naqib" "nurnasuha" "naim" "input" "bluetooth"
-      #"fuse"
-      "dialout"
-    ];
-    #shell = pkgs.zsh;
-    packages = [
-      pkgs.firefox
-      pkgs.nnn
-      pkgs.ranger
-      pkgs.git
-      pkgs.tmux
-      pkgs.neovim
-      pkgs.vim
-      pkgs.emacs
-      pkgs.htop
-      pkgs.direnv
-    ];
-  };
 
   # can also use 'xlsfonts' to see which fonts are available to X.
   # if some fonts appear distorted, e.g. characters are invisible, or not anti-aliases you may need to rebuild the font cache with 'fc-cache --really-force --verbose'.
