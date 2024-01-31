@@ -25,24 +25,24 @@
     #   https://search.nixos.org/options?channel=unstable&show=nix.buildMachines
     #   https://nixos.org/manual/nix/stable/command-ref/conf-file#conf-use-xdg-base-directories
     #
-    distributedBuilds = true;
+    #distributedBuilds = true;
     #builders = "ssh://sakinah x86_64-linux; ssh://customdesktop x86_64-linux;";
     #builders = "ssh://nurnasuha@sakinah.localdomain x86_64-linux";
-    buildMachines = [
-      {
-        hostName = "sakinah.localdomain";
-        protocol = "ssh"; # "ssh-ng"
-        system = "x86_64-linux";
-        #maxJobs = 1;
-        #speedFactor = 2;
-        #supportedFeatures = [
-        #  "nixos-test"
-        #  "benchmark"
-        #  "big-parallel"
-        #  "kvm"
-        #];
-      }
-    ];
+    #buildMachines = [
+    #  {
+    #    hostName = "sakinah.localdomain";
+    #    protocol = "ssh"; # "ssh-ng"
+    #    system = "x86_64-linux";
+    #    #maxJobs = 1;
+    #    #speedFactor = 2;
+    #    #supportedFeatures = [
+    #    #  "nixos-test"
+    #    #  "benchmark"
+    #    #  "big-parallel"
+    #    #  "kvm"
+    #    #];
+    #  }
+    #];
     #max-jobs = 0; # Disable (never build on local machine, even when connecting to remote builders fails) building on local machine; only build on remote builders.
   };
 
