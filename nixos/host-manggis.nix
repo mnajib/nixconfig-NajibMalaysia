@@ -28,10 +28,14 @@
 
         ./nfs-client.nix
 
+        # Keyboard for console:
         #./console-keyboard-dvorak.nix
         ./console-keyboard-us.nix
+        #
+        # Keyboard for xorg:
+        #./keyboard-us_and_dv.nix
         #./keyboard-with-msa.nix
-        ./keyboard-us_and_dv.nix
+        ./keyboard-with-msa-keira.nix
 
         #./audio-pulseaudio.nix
         ./audio-pipewire.nix
