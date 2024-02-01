@@ -67,7 +67,7 @@
     nix.settings.trusted-users = [ "root" "najib" "julia" ];
 
     boot.loader.timeout = 10;   # wait for 10 seconds
-    #boot.kernelPackages = pkgs.linuxPackages_latest;
+    boot.kernelPackages = pkgs.linuxPackages_latest;
     boot.supportedFilesystems = [ "ext4" "btrfs" "xfs" ];
     boot.initrd.supportedFilesystems = [ "ext4" "btrfs" "xfs" ];
 
