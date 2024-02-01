@@ -489,6 +489,14 @@
     jdiskreport
 
     #---------------------------------------------------------------
+    # find duplicate files
+    #---------------------------------------------------------------
+
+    jdupes              # A powerful duplicate file finder and an enhanced fork of 'fdupes'
+    fclones             # Efficiient Duplicate File Finder and Remover
+    fclones-gui         # Interactive duplicate file remover
+
+    #---------------------------------------------------------------
     # Desktop, window manager and tools
     #---------------------------------------------------------------
 
@@ -613,6 +621,8 @@
     #planner <-- removed from nixpkgs
     gqview
     enlightenment.ephoto
+    gtkimageview
+    gthumb
 
     hakuneko  # comic/manga/manhwa downloader/viewer
 
@@ -638,6 +648,34 @@
     feh
     evince
     #qpdfview
+
+    #---------------------------------------------------------------
+    # tools to interact with android phone
+    #---------------------------------------------------------------
+
+    android-tools
+    android-studio
+
+    adbfs-rootless          # Mount Android phones on Linux with adb, no root required
+    android-file-transfer   # Reliable MTP client with minimalistic UI
+    adb-sync                # a tools to synchonise files between a PC and an Android devices using ADB (Android Debug Bridge)
+    #gnirehtet
+
+    abootimg                # a tools to manipulate android boot image
+    imgpatchtools           # a tools to manipulate android OTA archives
+    apktool                 # a tools to reverse engineering Android apk files
+    #universal-android-debloater
+    cargo-apk               # a tool for creating Android packages
+    android-backup-extractor
+    #ghost                   # Android post-exploitation flakework: that exploits the Android Debug Bridge (ADB) to remotely access the android device.
+
+
+    #---------------------------------------------------------------
+    # android emulator
+    #---------------------------------------------------------------
+
+    #anbox
+    #genymotion
 
     #---------------------------------------------------------------
     # Media player
