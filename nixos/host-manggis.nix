@@ -27,6 +27,7 @@
         #./users-anak2.nix
 
         ./nfs-client.nix
+        ./flatpak.nix
 
         # Keyboard for console:
         #./console-keyboard-dvorak.nix
