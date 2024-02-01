@@ -27,6 +27,7 @@
         #./users-anak2.nix
 
         ./nfs-client.nix
+        ./flatpak.nix
 
         # Keyboard for console:
         #./console-keyboard-dvorak.nix
@@ -49,6 +50,10 @@
         ./configuration.FULL.nix
 
         ./typesetting.nix
+    ];
+
+    environment.systemPackages = with pkgs; [
+        blender
     ];
 
     # For the value of 'networking.hostID', use the following command:
