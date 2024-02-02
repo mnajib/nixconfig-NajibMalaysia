@@ -57,25 +57,25 @@
     #------------------
 
     # najibzfspool1, mirror-0
-    luks.devices."luks-8a53d158-ba69-47a1-9329-2d07372949d6" = { device = "/dev/disk/by-uuid/8a53d158-ba69-47a1-9329-2d07372949d6"; preLVM = true; };                  # 500GB.
     #luks.devices."luks-8eee41a6-35ba-4a1e-ae58-b18446505fd4" = { device = "/dev/disk/by-uuid/8eee41a6-35ba-4a1e-ae58-b18446505fd4"; preLVM = true; };                 # 500GB. Seagate. This harddisk is failling; replaced with below harddisk.
     #luks.devices."luks-18b00c41-f401-439a-b3dd-a77b94e9324e" = { device = "/dev/disk/by-uuid/18b00c41-f401-439a-b3dd-a77b94e9324e"; preLVM = true; };                  # 500GB. Toshiba. This harddisk was taken from maryam (a laptop name). TODO: to be removed as it is faulty.
-    luks.devices."luks-0de82803-40d1-4fdf-8841-6e4f79e0394c" = { device = "/dev/disk/by-uuid/0de82803-40d1-4fdf-8841-6e4f79e0394c"; preLVM = true; };
+    luks.devices."luks-8a53d158-ba69-47a1-9329-2d07372949d6" = { device = "/dev/disk/by-uuid/8a53d158-ba69-47a1-9329-2d07372949d6"; preLVM = true; };                  # 500GB.
     luks.devices."luks-3f373d53-ded5-481a-a6f2-c547a3593243" = { device = "/dev/disk/by-uuid/3f373d53-ded5-481a-a6f2-c547a3593243"; preLVM = true; };                  # 500GB. Seagate. As replacement for faulty Toshiba.
+    luks.devices."luks-0de82803-40d1-4fdf-8841-6e4f79e0394c" = { device = "/dev/disk/by-uuid/0de82803-40d1-4fdf-8841-6e4f79e0394c"; preLVM = true; };
 
     # najibzfspool1, mirror-1
-    luks.devices."luks-912c3919-4dec-4298-bac9-e3636ef32bfd" = { device = "/dev/disk/by-uuid/912c3919-4dec-4298-bac9-e3636ef32bfd"; preLVM = true; };                  # 500GB.
+    luks.devices."luks-0e0a3696-797e-4c1b-aea4-9eb681cb66a5" = { device = "/dev/disk/by-uuid/0e0a3696-797e-4c1b-aea4-9eb681cb66a5"; preLVM = true; };
     luks.devices."luks-9a965e58-3780-475a-8325-6f47c669cc1d" = { device = "/dev/disk/by-uuid/9a965e58-3780-475a-8325-6f47c669cc1d"; preLVM = true; };                  # 500GB.
     luks.devices."luks-b25e6a23-1c8b-4037-8f00-5e8c51fa2c27" = { device = "/dev/disk/by-uuid/b25e6a23-1c8b-4037-8f00-5e8c51fa2c27"; preLVM = true; };
+    #luks.devices."luks-912c3919-4dec-4298-bac9-e3636ef32bfd" = { device = "/dev/disk/by-uuid/912c3919-4dec-4298-bac9-e3636ef32bfd"; preLVM = true; };                  # 500GB.
 
     # najibzfspool1, mirror-2
+    #luks.devices."luks-ef189d5d-9138-4b39-baa6-20f999033494" = { device = "/dev/disk/by-uuid/ef189d5d-9138-4b39-baa6-20f999033494"; preLVM = true; };
     luks.devices."luks-ec2dca2b-84e7-4d33-b6fd-7bdad06ec445" = { device = "/dev/disk/by-uuid/ec2dca2b-84e7-4d33-b6fd-7bdad06ec445"; preLVM = true; };                  # 1TB, bought used-hdd from Shopee on 2023-04.
     luks.devices."luks-acfbbc38-c2c4-453f-b995-f02f8cf17bac" = { device = "/dev/disk/by-uuid/acfbbc38-c2c4-453f-b995-f02f8cf17bac"; preLVM = true; };                  # 1TB, bought used-hdd from Shopee on 2023-04.
-    #luks.devices."luks-ef189d5d-9138-4b39-baa6-20f999033494" = { device = "/dev/disk/by-uuid/ef189d5d-9138-4b39-baa6-20f999033494"; preLVM = true; };
+    luks.devices."luks-135621a1-9dfa-467a-a3fd-ab66b21e38d6" = { device = "/dev/disk/by-uuid/135621a1-9dfa-467a-a3fd-ab66b21e38d6"; preLVM = true; };
 
     # hot spare ?
-    luks.devices."luks-0e0a3696-797e-4c1b-aea4-9eb681cb66a5" = { device = "/dev/disk/by-uuid/0e0a3696-797e-4c1b-aea4-9eb681cb66a5"; preLVM = true; };
-    luks.devices."luks-135621a1-9dfa-467a-a3fd-ab66b21e38d6" = { device = "/dev/disk/by-uuid/135621a1-9dfa-467a-a3fd-ab66b21e38d6"; preLVM = true; };
     luks.devices."luks-fb8be4c0-3f75-4306-b2f2-0f21c463c5eb" = { device = "/dev/disk/by-uuid/fb8be4c0-3f75-4306-b2f2-0f21c463c5eb"; preLVM = true; };
 
     #cryptsetup open /dev/disk/by-uuid/b25e6a23-1c8b-4037-8f00-5e8c51fa2c27 luks-b25e6a23-1c8b-4037-8f00-5e8c51fa2c27
@@ -99,7 +99,8 @@
     fsType = "xfs";
   };
 
-  fileSystems."/boot" = { device = "/dev/disk/by-uuid/bdccf3bb-061c-40d5-82c3-d04ccf603485";
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/bdccf3bb-061c-40d5-82c3-d04ccf603485";
     fsType = "ext4";
   };
 
@@ -232,6 +233,7 @@
   swapDevices =  [
     #{ device = "/dev/disk/by-uuid/54a11355-d334-46c5-8cbb-43369d08fd8a"; } # swap on 500GB HD. This HDD is failing
     #{ device = "/dev/disk/by-uuid/600ebd52-edd2-4c42-b3b1-b8d8a6cb5acf"; } # swap partition on 254GB SSD
+
     { device = "/dev/disk/by-uuid/79d45678-d31b-4b39-851b-f00559ea8cc6"; }
     #{ device = "/dev/mapper/luks-781bbff1-508d-4287-a748-63d45d74b5e5"; }
 
