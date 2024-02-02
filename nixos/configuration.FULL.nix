@@ -323,6 +323,7 @@
     rnote       # Simple drawing application to create handwritten notes
     pdftk       # Command-line tool for working with PDFs
     #pdfchain   #
+    gnote       # A note taking application
 
     gnome.gnome-clocks
 
