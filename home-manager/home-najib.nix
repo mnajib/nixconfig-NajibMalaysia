@@ -19,15 +19,17 @@ in
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
 
-    #./emacs.nix
-
     ./youtube.nix
 
     ./common-configs.nix
     ./common-packages.nix
 
     # My attemp to use nix-doom-emacs
-    inputs.nix-doom-emacs.hmModule
+    #./emacs.nix
+    #
+    #inputs.nix-doom-emacs.hmModule
+    #
+    #./emacs-with-doom.nix
   ];
 
   nixpkgs = {
@@ -139,6 +141,7 @@ in
   programs.ssh = {
     enable = true;
     matchBlocks = {
+      #------------------------------------------------------------------------
       #"najib@gogs.mahirah" = {
       #  hostname = "mahirah";
       #  port = 22;
@@ -146,19 +149,24 @@ in
       #  #certificateFile = [ "~/.ssh/gogs.mahirah.localdomain/id_ed25519" ];
       #  identityFile = [ "~/.ssh/gogs.mahirah.localdomain/id_ed25519" ];
       #};
+      #------------------------------------------------------------------------
     };
   };
 
-  programs.doom-emacs = {
-    enable = true;
+  # XXX:
+  #programs.tmux.shell = "\${pkgs.zsh}/bin/zsh";
+  #programs.tmux.shell = "${pkgs.zsh}/bin/zsh";
+  programs.tmux.shell = "/run/current-system/sw/bin/zsh";
 
-    # Directory containing my config.el, init.el, and packages.el files
-    # Need to cread ~/doom.d
-    # and copy the three files from
-    # https://github.com/nix-community/nix-doom-emacs/tree/master/test/doom.d
-    #doomPrivateDir = "./doom.d";
-    doomPrivateDir = ./src/doom.d;
-  };
+  #programs.doom-emacs = {
+  #  enable = true;
+  #  # Directory containing my config.el, init.el, and packages.el files
+  #  # Need to cread ~/doom.d
+  #  # and copy the three files from
+  #  # https://github.com/nix-community/nix-doom-emacs/tree/master/test/doom.d
+  #  #doomPrivateDir = "./doom.d";
+  #  doomPrivateDir = ./src/doom.d;
+  #};
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";

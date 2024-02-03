@@ -70,6 +70,7 @@ in
     inputs.nix-colors.homeManagerModule
     ./screen.nix
     ./tmux.nix
+    #./rofi.nix
   ];
   # XXX: TODO: Should be in seperate file packages.nix
 
@@ -78,18 +79,26 @@ in
   #colorscheme = lib.mkDefault colorSchemes.najib;
 
   #home.sessionVariables = {
-  #  EDITOR = "nvim";       # yi vis nvim kak vim nano rasa jak
+    #EDITOR = "nvim";       # yi vis nvim kak vim nano rasa jak
+    #XDG_CONFIG_HOME = "$HOME/.config";
+    #XDG_DATA_HOME = "$HOME/var/lib";
+    #XDG_CACHE_HOME = "$HOME/var/cache";
   #};
 
 #------------------------------------------------------------------------------
-  programs.rofi = {
-    enable = true;
-    #font = "${font} 8"; #9
-    #theme = "~/.cache/wal/colors-rofi-dark-rasi";
-  };
+  #programs.rofi = {
+  #  enable = true;
+  #  #font = "${font} 8"; #9
+  #  #theme = "~/.cache/wal/colors-rofi-dark-rasi";
+  #};
 
-  programs.rofi.pass = {
+  #programs.rofi.pass = {
+  #  enable = true;
+  #};
+
+  programs.java = {
     enable = true;
+    #package = "pkgs.jdk";
   };
 
   programs.kitty = {

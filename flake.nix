@@ -265,6 +265,18 @@
           ];
         };
 
+        # Laptop Thinkpad x220 Julia
+        manggis = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            ./nixos/host-manggis.nix
+
+            # Add your model from this list:
+            # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+            hardware.nixosModules.lenovo-thinkpad-x220
+          ];
+        };
+
         # Laptop Thinkpad T410 (without nvidia) Julia
         keira = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
@@ -300,6 +312,14 @@
         };
 
         "najib@raudah" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/home-najib.nix
+          ];
+        };
+
+        "najib@zahrah" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
@@ -389,6 +409,14 @@
           ];
         };
 
+        "naqib@raudah" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/home-naqib.nix
+          ];
+        };
+
         "najib@asmak" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
@@ -406,6 +434,14 @@
         };
 
         "julia@keira" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/home-julia.nix
+          ];
+        };
+
+        "julia@manggis" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
