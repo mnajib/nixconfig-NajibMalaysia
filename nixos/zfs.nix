@@ -36,7 +36,8 @@
       };
 
       autoScrub = {
-        enable = false;
+        #enable = false;
+        enable = true;
       };
 
     };
