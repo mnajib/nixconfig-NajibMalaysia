@@ -27,11 +27,21 @@
     #datadir = "/home/nextcloud/data";
     #datadir = "/home/nextcloud/homedir/data";
 
-    # NOTE: Nextcloud doesn't support upgrades across multiple major versions
-    # (i.e. an upgrade from 16 is possible to 17, but not 16 to 18).
     #package = pkgs.nextcloud25;
     #package = pkgs.nextcloud26;
     package = pkgs.nextcloud27;
+    #
+    #  warning: A legacy Nextcloud install (from before NixOS 24.05) may be installed.
+    #  After nextcloud27 is installed successfully, you can safely upgrade
+    #  to 28. The latest version available is Nextcloud28.
+    #
+    #  Please note that Nextcloud doesn't support upgrades across multiple major versions
+    #  (i.e. an upgrade from 16 is possible to 17, but not 16 to 18).
+    #
+    #  The package can be upgraded by explicitly declaring the service-option
+    #  `services.nextcloud.package`.
+    #
+    #package = pkgs.nextcloud27;
 
     #extraApps = with pkgs.nextcloud25Packages.apps; {
     #  #inherit mail news contacts calendar tasks;
@@ -50,6 +60,17 @@
 
     #database.createLocally = true;
 
+    settings = {
+      trusted_domains = [
+        #"192.168.1"
+        "192.168.1.21"
+        "customdesktop.localdomain"
+        "customdesktop"
+        "localdomain"
+      ];
+      default_phone_region = "MY";
+    };
+
     config = {
       dbtype = "sqlite";
       #dbhost = "/run/postgresql"; # nextcloud will add /.s.PGSQL.5432 by itself
@@ -67,17 +88,6 @@
       #trustedDomains = [
       #  "192.168.1.21"
       #];
-
-      extraTrustedDomains = [
-        #"192.168.1"
-        "192.168.1.21"
-        "customdesktop.localdomain"
-        "customdesktop"
-        "localdomain"
-      ];
-
-      defaultPhoneRegion = "MY";
-
     };
 
     #logLevel = 2; # 0 debug ,1 info, 2 warn, 3 error, 4 fatal
