@@ -73,7 +73,7 @@
     ./hosts2.nix
     ./configuration.FULL.nix
 
-    ./kodi.nix
+    #./kodi.nix
 
     #./sway.nix
 
