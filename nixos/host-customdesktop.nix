@@ -156,8 +156,6 @@
 
   services.smartd.enable = true;
 
-  #services.zfs.autoScrub.enable = true;  # Look nixos/zfs.nix
-
   services.openssh.settings.PermitRootLogin = "yes";            # 
   #services.openssh.settings.PermitRootLogin = "prohibit-password";           # Needed for btrbk
 

@@ -201,6 +201,7 @@
     wget curl killall
     mtr iproute # busybox
     htop mc irssi most mosh coreutils mutt
+    nload
     zenith                    # Sort of like top or htop but with zoom-able charts, network, and disk usage
     bmon                      # Network bandwidth monitor
     btop
@@ -315,20 +316,6 @@
     qtox    # chat using tox protocol
     keybase keybase-gui
 
-    #gnomeExtensions.draw-on-your-screen
-    #pentablet-driver
-    gromit-mpx  # Desktop annotation tool
-    xournal     # note-taking application (supposes stylus)
-    xournalpp   # handwriting notetaking software with PDF annotation support
-    rnote       # Simple drawing application to create handwritten notes
-    pdftk       # Command-line tool for working with PDFs
-    #pdfchain   #
-    gnote       # A note taking application
-
-    gnome.gnome-clocks
-
-    screenkey onboard xorg.xkbcomp # xorg.xkbprint
-
     qemu qemu_kvm qemu-utils
     qemu_full
     libvirt virt-manager bridge-utils vde2 # virtmanager virt-manager-qt
@@ -410,6 +397,7 @@
     #termonad
     #termonad-with-packages
     enlightenment.terminology           #
+    gnome-console
 
     #kitty                               # one of my favourite?
     termite                             # alacritty replaced by alacritty?
@@ -430,6 +418,7 @@
     #unstable.yi # Install yi the other way to allow enable personalized configuration.
     #leksah
     enlightenment.ecrire
+    gnome-text-editor
 
     #---------------------------------------------------------------
     # archiver
@@ -441,12 +430,13 @@
     unrar
     p7zip
     xarchiver
+    gnome.file-roller           # Archive manager for the GNOME desktop environment
 
     #---------------------------------------------------------------
     # Games
     #---------------------------------------------------------------
     bzflag
-
+    gnome.gnome-chess
 
     #---------------------------------------------------------------
     # Emulator, subsystem, container, vitualization, ...
@@ -487,6 +477,9 @@
     k4dirstat           # A small utility program that sums up disk usage for directory trees
     qdirstat
     jdiskreport
+    gnome.gnome-disk-utility      # A udisks graphical front-end
+
+    gnome.gnome-logs    # A log viewer for the systemd journal
 
     #---------------------------------------------------------------
     # find duplicate files
@@ -571,6 +564,7 @@
     floorp  # web browser, forked from firefox ?
     brave
     #midori surf epiphany
+    epiphany
 
     #---------------------------------------------------------------
     # E-mail Client
@@ -588,7 +582,7 @@
     discord discord-ptb
 
     #---------------------------------------------------------------
-    # File Sharing and Download Manager, File tranfer
+    # File Sharing and Download Manager, File transfer
     #---------------------------------------------------------------
 
     transmission-gtk
@@ -615,6 +609,7 @@
     clipgrab
     #dfilemanager # File manager written in Qt/C++
     pcmanfm # File manager with GTK interface
+    gnome.nautilus
     index-fm # Multi-platform file manager
     worker # A two-pane file manager with advanced file manipulation features
     #keepnote
@@ -623,6 +618,7 @@
     enlightenment.ephoto
     gtkimageview
     gthumb
+    gnome.eog                       # Gnome image viewer
 
     hakuneko  # comic/manga/manhwa downloader/viewer
 
@@ -633,6 +629,7 @@
     sfm      # Simple file manager
     clex
     ranger
+    deer      # A ranger-like file navigation for zsh
     # hunter # rox-filer spaceFM # xfe
 
     joshuto    # Ranger-like terminal file manager written in Rust
@@ -694,21 +691,40 @@
 
 
     #---------------------------------------------------------------
-    # Destop Application, Office Suit, Word Processor, Spreadsheet, Presentation, Graphic Editor, Video Editor, Audio Editor, ...
+    # Desktop Application, Office Suit, Word Processor, Spreadsheet, Presentation, Graphic Editor, Video Editor, Audio Editor, ...
     #---------------------------------------------------------------
+
+    jdk #openjdk
 
     libreoffice
     #libreoffice-fresh
-    jdk #openjdk
+    #wpsoffice
 
     #aseprite   # disabled because always need recompile, and usually not being use
-
-    #wpsoffice
 
     #gimp-with-plugins
     gimp
 
     drawing drawpile
+
+    gnome.gnome-clocks
+    gnome.gnome-calendar
+    gnome.gnome-contacts
+    gnome.gnome-font-viewer
+    gnome.gnome-screenshot
+    gnome.gnome-system-monitor
+    gnome.totem
+    plots
+    gnome.gnome-weather
+    gnome-decoder         # Scan and Generate QR Codes
+
+    elastic               # Design spring animations
+    emblem                # Generate project icons and avatars from a symbolic icon
+    eyedropper            # Pick and format colors
+    gaphor                # Simple modeling tool written in Python
+
+    gephi                 # A platform for visualizing and manipulating large graphs
+    graphia               # A visualisation tool for the creation and analysis of graphs
 
     vym freemind treesheets drawio dia minder
     #ardour audacity avogadro dia freemind treesheets umlet vue xmind jmol
@@ -728,7 +744,9 @@
     librecad
     sweethome3d.application sweethome3d.furniture-editor sweethome3d.textures-editor
 
-    #gnome3.cheese alchemy lmms marvin mixxx mypaint scribusUnstable
+    #alchemy lmms marvin mixxx mypaint scribusUnstable
+    gnome.cheese
+    snapshot              # Take pictures and videos on your computer, tablet, or phone
     simplescreenrecorder #qt-recordmydesktop
     audio-recorder
 
@@ -736,6 +754,19 @@
 
     #zathura
     ghostwriter mindforger #notes-up
+
+    #gnomeExtensions.draw-on-your-screen
+    #pentablet-driver
+    gromit-mpx  # Desktop annotation tool
+    xournal     # note-taking application (supposes stylus)
+    xournalpp   # handwriting notetaking software with PDF annotation support
+    rnote       # Simple drawing application to create handwritten notes
+    pdftk       # Command-line tool for working with PDFs
+    #pdfchain   #
+    gnote                 # A note taking application
+    gnome.gnome-notes     # Note editor designed to remain simple to use
+
+    screenkey onboard xorg.xkbcomp # xorg.xkbprint
 
 
     #---------------------------------------------------------------
