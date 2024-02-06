@@ -78,7 +78,7 @@ in
     #kodi
     #python3.8-notebook
     qtox
-    retroarchFull # retroarch
+    #retroarchFull # retroarch
     tig
     treesheets
     unrar
@@ -91,7 +91,7 @@ in
     chemtool
     marvin
     smlnj
-    waydroid
+    #waydroid
     #kmymoney
     #anbox
     #pmbootstrap
