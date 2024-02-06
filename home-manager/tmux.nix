@@ -80,6 +80,16 @@
 
       # Do not rename windows automatically, I like to give my tmux windows custom names using the , key.
       set-option -g allow-rename off
+
+      # NOTE: to reload config,
+      #   :source ~/.config/tmux/tmux.conf
+      COLOR1=color233       # light-black / dark-grey
+      COLOR2=black          # black
+      COLOR3=color252       # white
+      set -g pane-border-style bg=$COLOR1,fg=$COLOR3
+      set -g pane-active-border-style bg=$COLOR1,fg=$COLOR3
+      set -g window-style bg=$COLOR1
+      set -g window-active-style bg=$COLOR2
     '';
 
     #tmuxinator.enable = true;
