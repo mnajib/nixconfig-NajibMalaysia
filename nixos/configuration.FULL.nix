@@ -721,10 +721,10 @@
     elastic               # Design spring animations
     emblem                # Generate project icons and avatars from a symbolic icon
     eyedropper            # Pick and format colors
-    gaphor                # Simple modeling tool written in Python
+    #gaphor                # Simple modeling tool written in Python
 
     gephi                 # A platform for visualizing and manipulating large graphs
-    graphia               # A visualisation tool for the creation and analysis of graphs
+    #graphia               # A visualisation tool for the creation and analysis of graphs
 
     vym freemind treesheets drawio dia minder
     #ardour audacity avogadro dia freemind treesheets umlet vue xmind jmol
