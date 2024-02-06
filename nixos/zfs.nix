@@ -36,8 +36,9 @@
       };
 
       autoScrub = {
-        #enable = false;
-        enable = true;
+        enable = true;                # false is the default
+        #pools = [];                  # If empty, all pools will be scrubbed, empty is default
+        #interval = "daily"           # "Sun, 02:00" is the default. See systemd.time(7) for formatting
       };
 
     };
