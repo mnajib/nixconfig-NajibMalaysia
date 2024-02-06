@@ -153,7 +153,30 @@ in
     #  tabs.bar.bg = "#${config.colorScheme.colors.base00}";
     #  keyhint.fg = "#${config.colorScheme.colors.base05}";
     #};
+    extraConfig = ''
+      c.colors.webpage.preferred_color_scheme = 'dark'
+      c.colors.webpage.darkmode.enable = True
+      c.colors.webpage.darkmode.algorithm = 'lightness-hsl'
+      c.colors.webpage.darkmode.contrast = -.022
+      c.colors.webpage.darkmode.threshold.text = 150
+      c.colors.webpage.darkmode.threshold.background = 100
+      c.colors.webpage.darkmode.policy.images = 'never'
+      c.colors.webpage.darkmode.grayscale.images = 0.35
+      c.content.notifications.enabled = False
+      c.content.user_stylesheets = '~/.config/qutebrowser/stylesheet/mydarkmodefix.css'
+    '';
   };
+  #home.file.".config/qutebrowser/stylesheet/mydarkmodefix.css" = {
+  home.file."mydarkmodefix.css" = {
+    enable = true;
+    #text = ''
+    #'';
+    source = "src/.config/qutebrowser/stylesheet/mydarkmodefix.css";
+    #source = src/.Xresources.d;
+    #recursive = true;
+    target = ".config/qutebrowser/stylesheet/mydarkmodefix.css"; # Path to target file relative to HOME
+  };
+  #xresources.extraConfig = builtins.readFile ./src/.Xresources;
 
   programs.urxvt = {
     enable = true;
