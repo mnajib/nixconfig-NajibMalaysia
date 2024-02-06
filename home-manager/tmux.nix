@@ -59,7 +59,7 @@
       # Easy config reloads: reload config file with 'C-b r'
       bind r source-file ~/.config/tmux/tmux.conf
 
-      # Join windows: <prefix> s, <prefix> j
+      ## Join windows: <prefix> s, <prefix> j
       #bind-key j command-prompt -p "join pane from:"  "join-pane -s '%%'"
       #bind-key s command-prompt -p "send pane to:"  "join-pane -t '%%'"
       # Change to '<prefix> Shift-j' and '<prefix> Shift-s'
@@ -81,8 +81,7 @@
       # Do not rename windows automatically, I like to give my tmux windows custom names using the , key.
       set-option -g allow-rename off
 
-      # NOTE: to reload config,
-      #   :source ~/.config/tmux/tmux.conf
+      # Change background color of pane; differenciate background color between non-active-pane and active-pane.
       COLOR1=color233       # light-black / dark-grey
       COLOR2=black          # black
       COLOR3=color252       # white
@@ -90,6 +89,9 @@
       set -g pane-active-border-style bg=$COLOR1,fg=$COLOR3
       set -g window-style bg=$COLOR1
       set -g window-active-style bg=$COLOR2
+
+      # ctrl-r to search the zsh-history in reverse, like emacs style
+      #bind-key '^R' history-incremental-search-backward
     '';
 
     #tmuxinator.enable = true;
