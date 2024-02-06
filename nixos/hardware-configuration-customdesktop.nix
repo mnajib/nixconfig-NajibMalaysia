@@ -72,10 +72,10 @@
       device = "/dev/disk/by-uuid/3f373d53-ded5-481a-a6f2-c547a3593243";
       preLVM = true;
     };
-    luks.devices."luks-0de82803-40d1-4fdf-8841-6e4f79e0394c" = {
-      device = "/dev/disk/by-uuid/0de82803-40d1-4fdf-8841-6e4f79e0394c";
-      preLVM = true;
-    };
+    #luks.devices."luks-0de82803-40d1-4fdf-8841-6e4f79e0394c" = {
+    #  device = "/dev/disk/by-uuid/0de82803-40d1-4fdf-8841-6e4f79e0394c";
+    #  preLVM = true;
+    #};
 
     # najibzfspool1, mirror-1
     luks.devices."luks-b25e6a23-1c8b-4037-8f00-5e8c51fa2c27" = {
