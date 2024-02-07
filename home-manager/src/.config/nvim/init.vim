@@ -5,6 +5,10 @@ set mouse=v                 " middle-click paste with
 set hlsearch                " highlight search
 set incsearch               " incremental search
 set wildmode=longest,list   " get bash-like tab completions
+set termguicolors           " enabling true color
+
+set background=dark
+highlight Normal ctermbg=black ctermfg=lightgrey guibg=black guifg=lightgrey
 
 set number                  " add line numbers
 "highlight LineNr ctermfg=11 guifg=Yellow ctermbg=DarkGrey guibg=DarkGrey
@@ -22,7 +26,7 @@ set colorcolumn=40,60,80
 " if using ANSI-16
 "highlight ColorColumn ctermbg=16
 " if using 256 color terminal
-highlight ColorColumn ctermbg=238
+highlight ColorColumn ctermbg=238 guibg=#111111
 
 " XXX: security risk ???
 set modeline                " to make vim/nvim load setting in file header
@@ -68,8 +72,10 @@ highlight MacthParen gui=NONE guibg=darkblue guifg=lightblue
 "------------------------------------------------------------------------------
 " Comments
 "------------------------------------------------------------------------------
-highlight Comment cterm=italic ctermbg=NONE ctermfg=darkgrey
-highlight Comment gui=italic guibg=NONE guifg=darkgrey
+"highlight Comment cterm=italic ctermbg=NONE ctermfg=darkgrey
+"highlight Comment gui=italic guibg=NONE guifg=darkgrey
+highlight Comment cterm=italic ctermbg=NONE ctermfg=238
+highlight Comment gui=italic guibg=NONE guifg=#444444
 "------------------------------------------------------------------------------
 
 
