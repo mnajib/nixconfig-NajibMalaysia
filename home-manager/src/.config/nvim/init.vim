@@ -15,7 +15,14 @@ syntax on                   " syntax highlighting
 set mouse=a                 " enable mouse click
 set clipboard=unnamedplus   " using system clipboard
 filetype plugin on
-set cc=80                   " set an 80 column border for good coding style
+
+" set an 80 column border for good coding style
+"set colorcolumn=80
+set colorcolumn=40,60,80
+" if using ANSI-16
+"highlight ColorColumn ctermbg=16
+" if using 256 color terminal
+highlight ColorColumn ctermbg=238
 
 " XXX: security risk ???
 set modeline                " to make vim/nvim load setting in file header
