@@ -35,7 +35,7 @@ let
     slug = "najib";
     name = "Najib";
     author = "Najib Ibrahim (https://github.com/mnajib)";
-    colors = {
+    palette = {
       base00 = "#000000";
       base01 = "#c7002e";
       base02 = "#009200";
@@ -114,8 +114,8 @@ in
     #theme = "Space Gray Eighties";
 
     settings = {
-      background = "#${config.colorScheme.colors.base00}";
-      foreground = "#${config.colorScheme.colors.base05}";
+      background = "#${config.colorScheme.palette.base00}";
+      foreground = "#${config.colorScheme.palette.base05}";
 
       #cursor = "#cccccc";
       #cursor_text_color = "#111111";
@@ -138,11 +138,11 @@ in
     settings = {
       colors = {
         hints = {
-          bg = "#${config.colorScheme.colors.base00}";
-          fg = "#${config.colorScheme.colors.base0F}";
+          bg = "#${config.colorScheme.palette.base00}";
+          fg = "#${config.colorScheme.palette.base0F}";
         };
         tabs.bar = {
-          bg = "#${config.colorScheme.colors.base00}";
+          bg = "#${config.colorScheme.palette.base00}";
         };
       };
       #tabs.tabs_are_windows = true;
@@ -153,6 +153,9 @@ in
     #  tabs.bar.bg = "#${config.colorScheme.colors.base00}";
     #  keyhint.fg = "#${config.colorScheme.colors.base05}";
     #};
+
+    #extraConfig = builtins.readFile ./src/.config/nvim/init.vim;
+
     extraConfig = ''
       c.colors.webpage.preferred_color_scheme = 'dark'
       c.colors.webpage.darkmode.enable = True
@@ -171,10 +174,13 @@ in
     enable = true;
     #text = ''
     #'';
-    source = "src/.config/qutebrowser/stylesheet/mydarkmodefix.css";
+    source = ./src/.config/qutebrowser/stylesheet/mydarkmodefix.css;
     #source = src/.Xresources.d;
     #recursive = true;
-    target = ".config/qutebrowser/stylesheet/mydarkmodefix.css"; # Path to target file relative to HOME
+    #target = ".config/qutebrowser/stylesheet/mydarkmodefix.css"; # Path to target file relative to HOME
+    #target = ~/.config/qutebrowser/stylesheet/mydarkmodefix.css; # Path to target file relative to HOME
+    target = "~.config/qutebrowser/stylesheet/mydarkmodefix.css"; # Path to target file relative to HOME
+    #target = ".config/qutebrowser/stylesheet/"; # Path to target file relative to HOME
   };
   #xresources.extraConfig = builtins.readFile ./src/.Xresources;
 
