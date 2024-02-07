@@ -40,7 +40,8 @@ set modeline                " to make vim/nvim load setting in file header
 "------------------------------------------------------------------------------
 "highlight Cursor guifg=bg guibg=fg
 "highlight Cursor guifg=bg guibg=#626262
-highlight Cursor guifg=Black guibg=Yellow
+"highlight Cursor guifg=Black guibg=Yellow
+highlight Cursor guifg=Black guibg=Yellow ctermfg=Black ctermbg=Yellow
 
 "set cursorline              " highlight current cursorline
 "set cursorcolumn
@@ -52,6 +53,25 @@ highlight CursorLine cterm=NONE ctermbg=DarkBlue gui=NONE guibg=DarkBlue
 highlight CursorColumn ctermbg=DarkBlue guibg=DarkBlue
 highlight CursorLineNr cterm=underline ctermfg=11 gui=bold guifg=Yellow
 "------------------------------------------------------------------------------
+
+
+"------------------------------------------------------------------------------
+" Match parenthesis
+"------------------------------------------------------------------------------
+"highlight MatchParen cterm=none ctermbg=green ctermfg=blue
+"highlight MatchParen cterm=none ctermbg=green ctermfg=blue guibg=NONE guifg=brue gui=bold
+highlight MatchParen cterm=NONE ctermbg=darkblue ctermfg=lightblue
+highlight MacthParen gui=NONE guibg=darkblue guifg=lightblue
+"------------------------------------------------------------------------------
+
+
+"------------------------------------------------------------------------------
+" Comments
+"------------------------------------------------------------------------------
+highlight Comment cterm=italic ctermbg=NONE ctermfg=darkgrey
+highlight Comment gui=italic guibg=NONE guifg=darkgrey
+"------------------------------------------------------------------------------
+
 
 set ttyfast                 " Speed up scrolling in Vim
 "set spell                  " enable spell check (may need to download language package)
