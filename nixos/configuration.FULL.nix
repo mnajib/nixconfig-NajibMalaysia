@@ -1371,48 +1371,55 @@
   #==================================================
   #
   fonts = {
-    #enableFontDir = true;
-    fontDir.enable = true;
-    fontconfig.enable = true; # XXX:
+    fontconfig.enable = true;
+    fontDir.enable = true;              # Create a directiry with links to all fonts in /run/current-system/sw/share/X11/fonts
 
+    # System-wide default font(s). Multiple fonts may be listed in case multiple languages must be supported.
     #fontconfig.defaultFonts.serif = [ "DejaVu Serif" ];
     #fontconfig.defaultFonts.emoji = [ "Noto Color Emoji" ];
     #fontconfig.defaultFonts.sansSerif = [ "DejaVu Sans" ];
     #fontconfig.defaultFonts.monospace = [ "DejaVu Sans Mono" ]; # "jetbrains mono"
+    fontconfig.defaultFonts.monospace = [
+      "Fira Mono for Powerline (Bold)"
+      "DejaVu Sans Mono"
+      "jetbrains mono"
+    ];
 
     #enableCoreFonts = true;
     enableGhostscriptFonts = true;
     #fonts = with pkgs; [
     packages = with pkgs; [
-      corefonts # Microsoft free fonts; Microsoft's TrueType core fonts for the Web
-      inconsolata # monospaced
-      ubuntu_font_family # ubuntu fonts
-      unifont # some international languages
+      corefonts                         # Microsoft free fonts; Microsoft's TrueType core fonts for the Web
+      inconsolata                       # monospaced
+      ubuntu_font_family                # ubuntu fonts
+      unifont                           # some international languages
+      cardo                             # Cardo is a large Unicode font specifically designed for the needs of classicists, Biblical scholars, medievalists, and linguists.
       google-fonts
-      terminus_font_ttf
       tewi-font
       #kochi-substitude-naga10
-      source-code-pro # monospaced font family for user interface and coding environments
       anonymousPro
       dejavu_fonts
       noto-fonts #font-droid
       noto-fonts-cjk
       noto-fonts-emoji
-      fira-code # suitable for coding
+      terminus_font_ttf
+      source-code-pro                   # monospaced font family for user interface and coding environments
+      fira-code                         # suitable for coding
       fira-code-symbols
+      cascadia-code                     # Monospaced font that includes programming ligatures and is designed to enhance the modern look and feel of the Windows Terminal
       #mplus-outline-fonts
       dina-font
       proggyfonts
       freefont_ttf
-      liberation_ttf # Liberation Fonts, replacements for Times New Roman, Arial, and Courier New
-      liberation-sans-narrow # Liberation Sans Narrow Font Family is a replacement for Arial Narrow
+      liberation_ttf                    # Liberation Fonts, replacements for Times New Roman, Arial, and Courier New
+      liberation-sans-narrow            # Liberation Sans Narrow Font Family is a replacement for Arial Narrow
       powerline-fonts
       terminus_font
       ttf_bitstream_vera
 
-      vistafonts #vistafonts # Some TrueType fonts from Microsoft Windows Vista (Calibri, Cambria, Candara, Consolas, Constantia, Corbel)
-      carlito
-      wineWowPackages.fonts # Microsoft replacement fonts by the Wine project
+      vistafonts                        # Some TrueType fonts from Microsoft Windows Vista (Calibri, Cambria, Candara, Consolas, Constantia, Corbel)
+      carlito                           # A sans-serif font, metric-compatible with Microsoft Calibri
+      wineWowPackages.fonts             # Microsoft replacement fonts by the Wine project
 
       amiri
       scheherazade-new
