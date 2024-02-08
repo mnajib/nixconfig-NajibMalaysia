@@ -60,6 +60,16 @@ highlight CursorLineNr cterm=underline ctermfg=11 gui=bold guifg=Yellow
 
 
 "------------------------------------------------------------------------------
+" Search hit
+"------------------------------------------------------------------------------
+"highlight Search cterm=NONE ctermbg=darkyellow ctermfg=lightyellow
+"highlight Search gui=NONE guibg=darkyellow guifg=lightyellow
+highlight Search cterm=NONE ctermbg=darkyellow ctermfg=black
+highlight Search gui=NONE guibg=darkyellow guifg=black
+"------------------------------------------------------------------------------
+
+
+"------------------------------------------------------------------------------
 " Match parenthesis
 "------------------------------------------------------------------------------
 "highlight MatchParen cterm=none ctermbg=green ctermfg=blue
