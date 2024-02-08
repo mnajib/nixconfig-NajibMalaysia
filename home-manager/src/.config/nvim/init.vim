@@ -65,7 +65,7 @@ highlight CursorLineNr cterm=underline ctermfg=11 gui=bold guifg=Yellow
 "highlight MatchParen cterm=none ctermbg=green ctermfg=blue
 "highlight MatchParen cterm=none ctermbg=green ctermfg=blue guibg=NONE guifg=brue gui=bold
 highlight MatchParen cterm=NONE ctermbg=darkblue ctermfg=lightblue
-highlight MacthParen gui=NONE guibg=darkblue guifg=lightblue
+highlight MatchParen gui=NONE guibg=darkblue guifg=lightblue
 "------------------------------------------------------------------------------
 
 
