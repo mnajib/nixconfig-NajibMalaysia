@@ -117,23 +117,36 @@
                                        # Enabled by Najib on 2023-02-01T1245 in attemp to decrease delay on startup.
   #networking.interfaces.eno1.useDHCP = true;
 
-  networking.firewall.enable = false;
-  networking.firewall.allowedTCPPorts = [
-    24007         # gluster daemon
-    24008         # gluster management
-    #49152        # gluster brick1
-    49153         # gluster brick2
-    #38465-38467  # Gluster NFS
-    111           # portmapper
-    1110          # NFS cluster
-    4045          # NFS lock manager
-  ];
-  networking.firewall.allowedUDPPorts = [
-    111           # Gluster: portmapper
-    3450          # for minetest server
-    1110          # NFS client
-    4045          # NFS lock manager
-  ];
+  #--------------------------------------------------------
+  networking.nftables.enable = true;    # 'nftable' is enable; 'iptables' if not.
+  networking.firewall = {
+    enable = true;                      #'false' is the default.
+    #trustedInterfaces = [ "enp0s2" ];
+    #interfaces = {};
+    #interfaces."enp0s2".allowedTCPPorts = [];
+    allowPing = true;                   #'true' is the default.
+    #pingLimit = "2/second";
+    #pingLimit = "1/minute burst 5 packets";
+    allowedTCPPorts = [
+      #24007                            # gluster daemon
+      #24008                            # gluster management
+      #49152                            # gluster brick1
+      #49153                            # gluster brick2
+      #{ from = 38465; to = 38467; }    # Gluster NFS
+      #111                              # portmapper
+      1110                              # NFS cluster
+      4045                              # NFS lock manager
+    ];
+    allowedUDPPorts = [
+      #111                              # Gluster: portmapper
+      #3450                             # for minetest server
+      1110                              # NFS client
+      4045                              # NFS lock manager
+      #{ from = 4000; to = 4007; }
+      #{ from = 8000; to = 8010; }
+    ];
+  };
+  #--------------------------------------------------------
 
   # XXX: ???
   #environment.systemPackages = with pkgs; [
