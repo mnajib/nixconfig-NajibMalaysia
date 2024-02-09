@@ -13,7 +13,9 @@
     '';
   };
 
-  #nix.settings.max-jobs = 2;
+  nix.settings.cores = 3;
+  nix.settings.max-jobs = 3;
+
   nix.settings.trusted-users = [ "root" "najib" "julia" ];
 
   imports = [
@@ -123,6 +125,13 @@
     #    path = "/boot2";
     #  }
     #];
+  };
+
+  services.btrfs.autoScrub = {
+    enable = true;
+    fileSystems = [ "/" ];
+    interval = "monthly";
+    #interval = "weekly";
   };
 
   services.fstrim.enable = true;
