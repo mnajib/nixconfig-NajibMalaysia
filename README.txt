@@ -22,9 +22,11 @@ home-manager build --flake .#najib@khawlah
 home-manager switch --flake .#najib@khawlah
 home-manager switch --flake .#najib@khawlah -b backup
 
-sudo nixos-rebuild dry-build --flake .#zahrah --target-host naim@zahrah --use-remote-sudo
-sudo nixos-rebuild build --flake .#zahrah --target-host naim@zahrah --use-remote-sudo
-sudo nixos-rebuild switch --flake .#zahrah --target-host naim@zahrah --use-remote-sudo
+sudo nixos-rebuild dry-build  --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
+sudo nixos-rebuild build      --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
+sudo nixos-rebuild boot       --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
+sudo nixos-rebuild test       --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
+sudo nixos-rebuild switch     --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
 
 # XXX:
 nix shell nixpkgs#pulsar
