@@ -651,7 +651,7 @@
     #---------------------------------------------------------------
 
     android-tools
-    android-studio
+    #android-studio         # Not all host need this software
 
     adbfs-rootless          # Mount Android phones on Linux with adb, no root required
     android-file-transfer   # Reliable MTP client with minimalistic UI
