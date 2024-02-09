@@ -30,6 +30,7 @@
     ./zramSwap.nix
     ./configuration.FULL.nix
     #./btrbk.nix
+    ./zfs.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -61,15 +62,6 @@
   hardware.acpilight.enable = true;
 
   networking.firewall.enable = false;
-
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.supportedFilesystems = [ "ext4" "btrfs" "xfs" ];
-  boot.initrd.supportedFilesystems = [ "ext4" "btrfs" "xfs" ];
-
-  #zramSwap = {
-  #  enable = true;
-  #  algorithm = "zstd";
-  #};
 
   hardware.trackpoint = {
     enable = true;

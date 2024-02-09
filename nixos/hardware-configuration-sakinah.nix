@@ -8,10 +8,25 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "uhci_hcd" "ehci_pci" "ahci" "firewire_ohci" "usb_storage" "sd_mod" "sr_mod" "sdhci_pci" ];
-  boot.initrd.kernelModules = [ ];
+  boot.loader.timeout = 10;
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+  #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;         # Do not neet it here as I already define this in zfs.nix
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  boot.supportedFilesystems = [
+    "ext4" "btrfs" "xfs" "vfat" "ntfs"
+    #"bcachefs"
+    "dm-crypt" "dm-snapshot" "dm-raid"
+    "zfs"
+  ];
+  boot.initrd.availableKernelModules = [ "uhci_hcd" "ehci_pci" "ahci" "firewire_ohci" "usb_storage" "sd_mod" "sr_mod" "sdhci_pci" ];
+  boot.initrd.kernelModules = [ ];
+  boot.initrd.supportedFilesystems = [
+    "ext4" "btrfs" "xfs" "vfat" "ntfs"
+    #"bcachefs"
+    "dm-crypt" "dm-snapshot" "dm-raid"
+    "zfs"
+  ];
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/8636a7e7-ff81-45c7-8d8f-83814b0d50b2";
