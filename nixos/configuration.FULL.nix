@@ -435,14 +435,14 @@
     #---------------------------------------------------------------
     # Games
     #---------------------------------------------------------------
-    bzflag
     gnome.gnome-chess
+    #bzflag
 
     #---------------------------------------------------------------
     # Emulator, subsystem, container, vitualization, ...
     #---------------------------------------------------------------
 
-    genymotion
+    #genymotion
     dosbox
 
     #---------------------------------------------------------------
@@ -688,7 +688,6 @@
 
     smplayer
     enlightenment.rage
-
 
     #---------------------------------------------------------------
     # Desktop Application, Office Suit, Word Processor, Spreadsheet, Presentation, Graphic Editor, Video Editor, Audio Editor, ...
