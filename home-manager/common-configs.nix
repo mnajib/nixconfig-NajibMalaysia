@@ -170,16 +170,19 @@ in
     '';
   };
   #home.file.".config/qutebrowser/stylesheet/mydarkmodefix.css" = {
-  home.file."mydarkmodefix.css" = {
+  #home.file."mydarkmodefix.css" = {
+  home.file.".config/qutebrowser" = {
     enable = true;
     #text = ''
     #'';
-    source = ./src/.config/qutebrowser/stylesheet/mydarkmodefix.css;
+    #source = ./src/.config/qutebrowser/stylesheet/mydarkmodefix.css;
+    source = ./src/.config/qutebrowser;
     #source = src/.Xresources.d;
-    #recursive = true;
+    recursive = true;
     #target = ".config/qutebrowser/stylesheet/mydarkmodefix.css"; # Path to target file relative to HOME
     #target = ~/.config/qutebrowser/stylesheet/mydarkmodefix.css; # Path to target file relative to HOME
-    target = "~.config/qutebrowser/stylesheet/mydarkmodefix.css"; # Path to target file relative to HOME
+    #target = "~.config/qutebrowser/stylesheet/mydarkmodefix.css"; # Path to target file relative to HOME
+    target = "~.config/qutebrowser"; # Path to target file relative to HOME
     #target = ".config/qutebrowser/stylesheet/"; # Path to target file relative to HOME
   };
   #xresources.extraConfig = builtins.readFile ./src/.Xresources;
