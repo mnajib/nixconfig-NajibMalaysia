@@ -57,7 +57,11 @@
     environment.systemPackages = with pkgs; [
         blender
         obs-studio
+        steam
+        steam-run
     ];
+
+    programs.steam.enable = true;
 
     # For the value of 'networking.hostID', use the following command:
     #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
