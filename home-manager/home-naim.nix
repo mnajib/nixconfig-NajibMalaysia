@@ -85,7 +85,7 @@ in
 
     foot
     minetest
-    blender
+    #blender
     freecad librecad
     inkscape
     gimp

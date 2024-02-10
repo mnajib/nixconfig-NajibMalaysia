@@ -297,8 +297,6 @@
 
     dzen2    # A general purpose messaging, notification and menuing program for X11
     gnumake    # install gnumake, needed for ihp
-    #glow    # markdown viewer for CLI
-    retext    # markdow editor
 
     expect    # tool for automating interactive applications
 
@@ -315,6 +313,26 @@
 
     qtox    # chat using tox protocol
     keybase keybase-gui
+
+    #gnomeExtensions.draw-on-your-screen
+    #pentablet-driver
+    gromit-mpx  # Desktop annotation tool
+    xournal     # note-taking application (supposes stylus)
+    xournalpp   # handwriting notetaking software with PDF annotation support
+    rnote       # Simple drawing application to create handwritten notes
+    pdftk       # CLI tool for working with PDFs
+    #pdfchain   #
+    gnote       # GUI A note taking application
+    notes       # GUI A fast and beautiful note-taking app; but look too complex on quick first look.
+    cherrytree  # GUI An hierarchical note taking application
+
+    #glow       # markdown viewer for CLI
+    retext      # markdow editor
+    litemdview  # a suckless markdown viewer
+
+    gnome.gnome-clocks
+
+    screenkey onboard xorg.xkbcomp # xorg.xkbprint
 
     qemu qemu_kvm qemu-utils
     qemu_full
@@ -789,8 +807,7 @@
     picom       # compositor manager; try to use picom for gromit-mpx (screen annotation) in xmonad (window manager).
 
     fluxbox     # Need this because I need to use command 'fbsetroot' to set plain black background when using xmonad.
-    #glow       # markdown viewer for CLI
-    retext      # markdow editor
+
     rsync grsync zsync luckybackup
     expect      # tool for automating interactive applications
     saldl       # cli downloader optimized for speed
@@ -803,8 +820,6 @@
     #pentablet-driver
     gromit-mpx  # Desktop annotation tool
 
-    xournal     # note-taking application (supposes stylus)
-    xournalpp   # handwriting notetaking software with PDF annotation support
     partclone   # Utilities to save and restore used blocks on a partition
     qtox        # chat using tox protocol
     keybase keybase-gui

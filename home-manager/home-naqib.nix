@@ -99,7 +99,7 @@
     bootiso
     virt-manager
 
-    blender
+    #blender
     gimp
     inkscape
     libreoffice
