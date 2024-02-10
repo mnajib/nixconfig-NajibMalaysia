@@ -68,12 +68,12 @@
 
     #./virtualbox.nix # compile fail
     #./libvirt.nix
-
-    ./3D.nix # freecad, qcad, ...
-
     #./anbox.nix
     #./anbox2.nix
     #./waydroid.nix
+
+    ./3D.nix                            # freecad, qcad, ...
+    ./steam.nix                         # steam for game, blender-LTS, ...
 
     ./mame.nix
     ./emulationstation.nix
