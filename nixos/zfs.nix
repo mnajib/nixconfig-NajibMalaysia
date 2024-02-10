@@ -38,13 +38,15 @@
 
       trim = {
         enable = true;
-        interval = "weekly";
+        #interval = "weekly";
+        interval = "3weeks";            # Every 3 weeks interval.
       };
 
       autoScrub = {
-        enable = true;                # false is the default
-        #pools = [];                  # If empty, all pools will be scrubbed, empty is default
-        #interval = "daily"           # "Sun, 02:00" is the default. See systemd.time(7) for formatting
+        enable = true;                  # false is the default.
+        #pools = [];                    # If empty, all pools will be scrubbed, empty is default.
+        #interval = "daily"             # "Sun, 02:00" is the default. See systemd.time(7) for formatting.
+        interval = "4days, 02:00"       # Every 3 days interval, at 02:00.
       };
 
     };
