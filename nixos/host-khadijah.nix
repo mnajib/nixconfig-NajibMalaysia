@@ -156,6 +156,14 @@
 
   #hardware.video.hidpi.enable = true;
 
+  services.btrfs.autoScrub = {
+    enable = true;
+    fileSystems = [
+      "/"
+    ];
+    interval = "weekly";
+  };
+
   services.fstrim.enable = true;
 
   #boot.loader.grub = {

@@ -130,8 +130,8 @@
   services.btrfs.autoScrub = {
     enable = true;
     fileSystems = [ "/" ];
-    interval = "monthly";
-    #interval = "weekly";
+    #interval = "monthly";
+    interval = "weekly";
   };
 
   services.fstrim.enable = true;
