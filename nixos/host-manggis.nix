@@ -50,10 +50,13 @@
         ./configuration.FULL.nix
 
         ./typesetting.nix
+
+        ./nix-garbage-collector.nix
     ];
 
     environment.systemPackages = with pkgs; [
         blender
+        obs-studio
     ];
 
     # For the value of 'networking.hostID', use the following command:
@@ -75,23 +78,24 @@
 
     services.fstrim.enable = true;
 
+    networking.nftables.enable = true;
     networking.firewall.enable = true;
     networking.firewall.allowedTCPPorts = [
         # Gluster
-        24007 # gluster daemon
-        24008 # management
-        #49152 # brick1
-        49153 # brick2
-        #38465-38467 # Gluster NFS
+        #24007 # gluster daemon
+        #24008 # management
+        ##49152 # brick1
+        #49153 # brick2
+        ##38465-38467 # Gluster NFS
 
-        111 # portmapper
+        #111 # portmapper
 
         1110 # NFS cluster
         4045    # NFS lock manager
     ];
     networking.firewall.allowedUDPPorts = [
         # Gluster
-        111 # portmapper
+        #111 # portmapper
 
         #3450 # for minetest server
 
@@ -141,15 +145,15 @@
 
     security.sudo.extraRules = [
     {
-		users = [ "najib" "julia" ];
-		groups = [ "users" ];
-		commands = [
-				{
-					command = "/home/julia/bin/decrease-trackpoint-sensitivity-x220.sh";
-					options = [ "SETENV" "NOPASSWD" ];
-				}
-		];
-	}
+        users = [ "najib" "julia" ];
+        groups = [ "users" ];
+        commands = [
+                {
+                    command = "/home/julia/bin/decrease-trackpoint-sensitivity-x220.sh";
+                    options = [ "SETENV" "NOPASSWD" ];
+                }
+        ];
+    }
     ];
 
     services.xserver.libinput.enable = true;
@@ -163,9 +167,9 @@
     services.xserver.desktopManager.gnome.enable = false;
     services.xserver.desktopManager.xfce.enable = true;
 
-    services.xserver.windowManager.jwm.enable = true;
-    services.xserver.windowManager.icewm.enable = true;
-    services.xserver.windowManager.fluxbox.enable = true;
+    #services.xserver.windowManager.jwm.enable = true;
+    #services.xserver.windowManager.icewm.enable = true;
+    #services.xserver.windowManager.fluxbox.enable = true;
 
     system.stateVersion = "22.05";
 }

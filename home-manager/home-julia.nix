@@ -65,12 +65,12 @@ in
     remmina
     wpsoffice
     clamav
-    audacity
-    shotcut
+    #audacity
+    #shotcut
     #calligra        # calligra marked unsecure because using qtwebkit
-    openshot-qt
-    kmymoney
-    shotwell
+    #openshot-qt
+    #kmymoney
+    #shotwell
   ];
 
   # Enable home-manager and git

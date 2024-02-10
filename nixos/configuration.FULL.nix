@@ -244,7 +244,7 @@
 
     #ripgrep
     #qgis
-    obs-studio #obs-linuxbrowser
+    #obs-studio #obs-linuxbrowser
     vokoscreen #vokoscreen-ng
     #darktable
 
@@ -312,12 +312,12 @@
     xbindkeys
 
     qtox    # chat using tox protocol
-    keybase keybase-gui
+    #keybase keybase-gui
 
     #gnomeExtensions.draw-on-your-screen
     #pentablet-driver
     gromit-mpx  # Desktop annotation tool
-    xournal     # note-taking application (supposes stylus)
+    #xournal     # note-taking application (supposes stylus)
     xournalpp   # handwriting notetaking software with PDF annotation support
     rnote       # Simple drawing application to create handwritten notes
     pdftk       # CLI tool for working with PDFs
@@ -582,7 +582,7 @@
     floorp  # web browser, forked from firefox ?
     brave
     #midori surf epiphany
-    epiphany
+    #epiphany
 
     #---------------------------------------------------------------
     # E-mail Client
@@ -756,10 +756,10 @@
     pandoc
     tectonic
 
-    freecad
+    #freecad
     #blender
-    librecad
-    sweethome3d.application sweethome3d.furniture-editor sweethome3d.textures-editor
+    #librecad
+    #sweethome3d.application sweethome3d.furniture-editor sweethome3d.textures-editor
 
     #alchemy lmms marvin mixxx mypaint scribusUnstable
     gnome.cheese
@@ -775,7 +775,7 @@
     #gnomeExtensions.draw-on-your-screen
     #pentablet-driver
     gromit-mpx  # Desktop annotation tool
-    xournal     # note-taking application (supposes stylus)
+    #xournal     # note-taking application (supposes stylus)
     xournalpp   # handwriting notetaking software with PDF annotation support
     rnote       # Simple drawing application to create handwritten notes
     pdftk       # Command-line tool for working with PDFs
