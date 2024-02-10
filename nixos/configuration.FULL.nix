@@ -1064,7 +1064,7 @@
 
   services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
 
-  services.glusterfs.enable = true;
+  #services.glusterfs.enable = true;
 
   # XXX: better put this on host specific file
   #services.flatpak.enable = true;
