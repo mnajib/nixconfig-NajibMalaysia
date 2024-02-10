@@ -27,7 +27,7 @@
     ./users-julia.nix
 
     #./anbox.nix
-    ./virtualbox.nix
+    #./virtualbox.nix
 
     ./typesetting.nix
 
@@ -219,7 +219,7 @@
   #environment.systemPackages = with pkgs; [
   environment.systemPackages = [
     pkgs.blender
-    pkgs.virtualboxWithExtpack
+    #pkgs.virtualboxWithExtpack
 
     # use in wayland
     pkgs.gnome-randr
