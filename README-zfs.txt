@@ -1,3 +1,21 @@
+zpool create -o compatibility=grub2 -m none myPool1 /dev/disk/by-id/myDisk1
+#zpool create -o compatibility=grub2 -m none myPool1 /dev/disk/by-partlabel/myDisk1
+#zpool create -o compatibility=grub2 -m none myPool1 /dev/disk/by-partuuid/myDisk1
+zpool get compatibility myPool1
+
+#XXX: grub2 not support zfs encryption
+#zfs create -o mountpoint=none -o encryption=on -o keylocation=prompt -o keyformat=passphrase -O compression=on myPool1/a
+zfs create -o mountpoint=none -O compression=on myPool1/a
+
+zfs create -o mountpoint=legacy myPool1/a/nixos
+zfs create -o mountpoint=legacy myPool1/a/home
+zfs get encryption,compression,mountpoint myPool1/a myPool1/a/nixos myPool1/a/home
+
+zpool list -v myPool1
+zpool status -v myPool1
+
+---------------------------------------------------
+
 To export a pool:
   zpool export myPool1
 
