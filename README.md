@@ -1,4 +1,16 @@
+# nixconfig-NajibMalaysia
 
+## Refferences
+
+### My main refferences
+- [Misterio77's nix-config template for starter](https://github.com/Misterio77/nix-starter-configs)
+- [Misterio77's personal nix-config](https://github.com/Misterio77/nix-config)
+### Other refferences
+- ...
+
+### Quick Notes
+
+```
 cd ~/src/nixconfig-NajibMalaysia
 cd /etc/nixos-NajibMalaysia
 
@@ -8,11 +20,12 @@ nix flake show
 nix flake update
 
 nix develop
-nix develop --extra-experimental-features nix-command --extra-experimental-features flakes
+nix develop --extra-experimental-features 'nix-command flakes'
 
 sudo nixos-rebuild dry-build --flake .
 sudo nixos-rebuild dry-build --flake .#khawlah
 sudo nixos-rebuild build --flake .#khawlah
+sudo nixos-rebuild build --flake .#khawlah --option eval-cache false --show-trace
 sudo nixos-rebuild boot --flake .#khawlah
 sudo nixos-rebuild switch --flake .#khawlah
 
@@ -30,7 +43,6 @@ sudo nixos-rebuild switch     --flake .#zahrah    --target-host naim@zahrah     
 
 # XXX:
 nix shell nixpkgs#pulsar
-
 
 #------------------------------------------------------------------------------
 To show generations:
@@ -57,6 +69,10 @@ To remove generation:
   home-manager remove-generations 2
   home-manager remove-generations 3
 #------------------------------------------------------------------------------
+```
 
 
+### TODO
 
+- [ ] Replace '*.txt*' to '*.md*' where appopriate.
+- [ ] Make '*nixos-rebuild*' also build '*home-manager*'.
