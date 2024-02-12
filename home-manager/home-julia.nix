@@ -81,6 +81,11 @@ in
     userEmail = "juliani.jaffar@gmail.com";
   };
 
+  programs.fzf.enable = true;
+  programs.command-not-found.enable = true;
+  programs.htop.enable = true;
+  programs.info.enable = true;
+
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
