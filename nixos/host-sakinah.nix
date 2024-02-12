@@ -9,21 +9,22 @@
 
   imports = [
     ./hardware-configuration-sakinah.nix
-    #./bootEFI.nix
-    ./bootBIOS.nix
+    ./bootEFI.nix
+    #./bootBIOS.nix
     ./thinkpad.nix
     #<nixos-hardware/lenovo/thinkpad/x220>
     ./touchpad-scrollTwofinger-TapTrue.nix
     #./users-anak2.nix
     ./users-nurnasuha-wheel.nix
     #./hosts.nix
-    ./hosts2.nix
+    #./hosts2.nix
     #./nfs-client.nix
     ./nfs-client-automount.nix
+    #./nfs-client.nix
     ./console-keyboard-dvorak.nix
     ./keyboard-with-msa.nix
-    #./audio-pipewire.nix
-    ./audio-pulseaudio.nix
+    ./audio-pipewire.nix
+    #./audio-pulseaudio.nix
     #./synergy-client.nix
     ./hardware-printer.nix
     ./hardware-tablet-wacom.nix
@@ -50,6 +51,7 @@
   #networking.interface.wlp3s0.useDHCP = true;
   #networking.interface.wwp0s29u1u4i6.useDHCP = true;
   #networking.interface.wlp0s29u1u2.useDHCP = true;
+  #networking.networkmanager.enable = true;
 
   # XXX: Move this configuration to per-host
   #powerManagement.enable = true;
@@ -74,8 +76,10 @@
   services.xserver = {
     enable = true;
     libinput.enable = true;
-    desktopManager.xfce.enable = true;
+    displayManager.gdm.enable = true;
     displayManager.defaultSession = "none+xmonad";
+    #desktopManager.xfce.enable = true;
+    desktopManager.gnome.enable = true;
   };
 
   nix.settings.max-jobs = 2;
@@ -84,5 +88,5 @@
   #  pkgs.blender
   #];
 
-  system.stateVersion = "22.05";
+  system.stateVersion = "23.11";
 }
