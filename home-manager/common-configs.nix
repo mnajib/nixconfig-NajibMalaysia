@@ -71,6 +71,8 @@ in
     ./screen.nix
     ./tmux.nix
     #./rofi.nix
+    #./nvim/lsp.nix
+    ./nvim
   ];
   # XXX: TODO: Should be in seperate file packages.nix
 
@@ -372,14 +374,48 @@ in
     # Use Nix Package search engine to find even more plugins:
     # https://search.nixos.org/packages
     plugins = with pkgs.vimPlugins; [
-      nvim-lspconfig
+      #nvim-lspconfig
       nvim-treesitter.withAllGrammars
       plenary-nvim
       gruvbox-material
       mini-nvim
+      nvim-tree-lua
+      vim-illuminate
+      vim-numbertoggle
 
-      nvim-tree-lua {
-        plugin = pkgs.vimPlugins.vim-startify;
+      {
+        plugin = scope-nvim;
+        type = "lua";
+        config = /* lua */ ''
+          require('scope').setup{}
+        '';
+      }
+
+      {
+        plugin = range-highlight-nvim;
+        type = "lua";
+        config = /* lua */ ''
+          require('range-highlight').setup{}
+        '';
+      }
+
+      {
+        plugin = indent-blankline-nvim;
+        type = "lua";
+        config = /* lua */ ''
+          require('ibl').setup{
+            scope = {
+              highlight = {"IndentBlankLine"}
+            },
+            indent = {
+              highlight = {"IndentBlankLine"}
+            },
+          }
+        '';
+      }
+
+      {
+        plugin = vim-startify;
         config = "let g:startify_change_to_vcs_root = 0";
       }
 

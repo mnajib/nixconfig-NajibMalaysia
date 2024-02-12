@@ -104,6 +104,8 @@
   }@inputs:
     let
       inherit (self) outputs;
+
+      # Supported systems for your flake packages, shell, etc.
       forAllSystems = nixpkgs.lib.genAttrs [
         "aarch64-linux"
         "i686-linux"
@@ -111,9 +113,11 @@
         "aarch64-darwin"
         "x86_64-darwin"
       ];
+
       pkgs = import nixpkgs {
         config.allowUnfree = true;
       };
+
       pkgsUnstable = import nixpkgs-unstable {
         config.allowUnfree = true;
       };
