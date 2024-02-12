@@ -11,8 +11,14 @@
 ### Quick Notes
 
 ```
+mkdir -p ~/src
+cd ~/src
+git clone ssh://najib@customdesktop/home/najib/GitRepos/nixconfig-NajibMalaysia.git
+
 cd ~/src/nixconfig-NajibMalaysia
-cd /etc/nixos-NajibMalaysia
+#cd /etc/nixos-NajibMalaysia
+git checkout origin/nixos-unstable
+git branch nixos-unstable
 
 nix flake check
 nix flake info
