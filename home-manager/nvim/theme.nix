@@ -59,7 +59,8 @@ in /* vim */ ''
 
   hi Boolean       guifg=#${c.base09} guibg=NONE gui=NONE guisp=NONE
   hi Character     guifg=#${c.base08} guibg=NONE gui=NONE guisp=NONE
-  hi Comment       guifg=#${c.base03} guibg=NONE gui=NONE guisp=NONE
+  "hi Comment       guifg=#${c.base03} guibg=NONE gui=NONE guisp=NONE
+  hi Comment       guifg=#444444 guibg=NONE gui=NONE guisp=NONE
   hi Conditional   guifg=#${c.base0E} guibg=NONE gui=NONE guisp=NONE
   hi Constant      guifg=#${c.base09} guibg=NONE gui=NONE guisp=NONE
   hi Define        guifg=#${c.base0E} guibg=NONE gui=NONE guisp=NONE

@@ -94,6 +94,7 @@ set ttyfast                 " Speed up scrolling in Vim
 "set noswapfile             " disable creating swap file
 "set backupdir=~/.cache/vim " Directory to store backup files.
 
+highlight IndentBlankLine guifg=#444444 guibg=NONE gui=NONE guisp=NONE
 
 "------------------------------------------------------------------------------
 " Indent Config A: Use tab(s) for indentation

@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 let
-  color = pkgs.writeText "color.vim" (import ./theme.nix config.colorscheme);
+  #color = pkgs.writeText "color.vim" (import ./theme.nix config.colorscheme);
 in
 {
   imports = [
@@ -14,11 +14,11 @@ in
   programs.neovim = {
     enable = true;
 
+      #source ${color}
     extraConfig = /* vim */ ''
       "Use system clipboard
       set clipboard=unnamedplus
       "Source colorscheme
-      source ${color}
 
       "Lets us easily trigger completion from binds
       set wildcharm=<tab>

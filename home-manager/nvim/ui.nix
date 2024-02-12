@@ -80,10 +80,16 @@
     {
       plugin = indent-blankline-nvim;
       type = "lua";
+            #char = {"┆"}
+            #char = {"╎"}
+            #char = {"▏"}
       config = /* lua */ ''
         require('ibl').setup{
           scope = { highlight = {"IndentBlankLine"} },
-          indent = { highlight = {"IndentBlankLine"} },
+          indent = {
+            highlight = {"IndentBlankLine"},
+            char = "┊",
+          },
         }
       '';
     }
@@ -121,9 +127,9 @@
       type = "lua";
       config = /* lua */ ''
         require('fidget').setup{
-          text = {
-            spinner = "dots",
-          },
+          --text = {
+          --  spinner = "dots",
+          --},
         }
       '';
     }
