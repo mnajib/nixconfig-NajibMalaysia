@@ -39,16 +39,13 @@
     ./configuration.FULL.nix
     ./nix-garbage-collector.nix
     ./flatpak.nix
+    ./steam.nix
   ];
 
   environment.systemPackages = with pkgs; [
-    steam
-    steam-tui
     gparted
     simplex-chat-desktop
   ];
-
-  programs.steam.enable = true;
 
   # For the value of 'networking.hostID', use the following command:
   #   cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
