@@ -76,10 +76,11 @@
   services.xserver = {
     enable = true;
     libinput.enable = true;
-    displayManager.gdm.enable = true;
+    #displayManager.gdm.enable = true;
+    displayManager.lightdm.enable = true;
     displayManager.defaultSession = "none+xmonad";
-    #desktopManager.xfce.enable = true;
-    desktopManager.gnome.enable = true;
+    desktopManager.xfce.enable = true;
+    #desktopManager.gnome.enable = true;
   };
 
   nix.settings.max-jobs = 2;
