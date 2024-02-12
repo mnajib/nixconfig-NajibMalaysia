@@ -75,6 +75,7 @@ in {
       #------------------------------------------------------------------------
       # 'btrfs subvolume' to be backup
 
+      subvolume                         home                            # /mnt/btr_pool1/rootuserhome
 
         # Where to put snapshots
         snapshot_dir                    btrbk_snapshots                           # /mnt/btr_pool1/btr_snapshots/<snapshot_name>.<timestamp>
