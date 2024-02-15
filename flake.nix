@@ -79,6 +79,11 @@
     seaweedfs.url = "github:/mitchty/nixos-seaweedfs/wip";
 
     nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
+
+    nix-ld = {
+      url = "github:Mic92/nix-ld";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -100,6 +105,7 @@
     seaweedfs,
     sops-nix,
     nix-doom-emacs,
+    nix-ld,
     ...
   }@inputs:
     let
@@ -210,6 +216,33 @@
             #in [
             #  doom-emacs
             #];
+
+            #------------------------------------------------------------------
+            # nix-ld
+            # Ref:
+            #   - https://github.com/Mic92/nix-ld
+            #   - https://unix.stackexchange.com/questions/522822/different-methods-to-run-a-non-nixos-executable-on-nixos
+            #------------------------------------------------------------------
+            nix-ld.nixosModules.nix-ld
+            #
+            # The module in this repositiry defines a new module under
+            # (prgrams.nix-ld.dev) instead of (programs.nix-ld) to not
+            # collide with the nixpkgs version.
+            { programs.nix-ld.dev.enable = true; }
+            #
+            # Usage: After setting up the nix-ld symlink as described above, one
+            # needs to set NIX_LD and NIX_LD_LIBRARY_PATH to run executables.
+            # For example, this can be done with a shell.nix in a nix-shell like this:
+            #with import <nixpkgs> {};
+            #mkShell {
+            # NIX_LD_LIBRARY_PATH = lib.makeLibraryPath [
+            #   stdev.cc.cc
+            #   openssl
+            #   #...
+            # ]
+            # NIX_LD = lib.fileContents "${stdenv.cc}/nix-support/dynamic-linker";
+            #}
+            #------------------------------------------------------------------
 
             #./machines/host-khadijah.nix
             ./nixos/host-khadijah.nix
