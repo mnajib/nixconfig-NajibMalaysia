@@ -77,22 +77,46 @@
         require('range-highlight').setup{}
       '';
     }
-    {
-      plugin = indent-blankline-nvim;
-      type = "lua";
-            #char = {"┆"}
-            #char = {"╎"}
-            #char = {"▏"}
-      config = /* lua */ ''
-        require('ibl').setup{
-          scope = { highlight = {"IndentBlankLine"} },
-          indent = {
-            highlight = {"IndentBlankLine"},
-            char = "┊",
-          },
-        }
-      '';
-    }
+
+#----------------------------------------------------------
+# Not using this because in this configuration, i have problem
+# where regex replacement preview not display correctly
+#----------------------------------------------------------
+#    {
+#      plugin = indent-blankline-nvim;
+#      type = "lua";
+#      config = /* lua */ ''
+#        --local highlight = {
+#        --  "CursorColumn",
+#        --  "Whitespace",
+#        --}
+#        require('ibl').setup{
+#          indent = {
+#            --highlight = {"IndentBlankLine"},
+#            --highlight = {"CursorColumn"},
+#            highlight = {"IndentBlankLineIndent"},
+#            --char = {"┆"}
+#            --char = {"╎"}
+#            --char = {"▏"}
+#            --char = "┊",
+#            char = "",
+#          },
+#          whitespace = {
+#            --highlight = {"IndentBlankLine"},
+#            --highlight = {"IndentBlankLineWhitespace"},
+#            remove_blankline_trail = true,
+#          },
+#          scope = {
+#            enabled = false,
+#            --highlight = {"IndentBlankLineScope"},
+#            char = "┊",
+#          },
+#          debounce = 100,
+#        }
+#      '';
+#    }
+#----------------------------------------------------------
+
     {
       plugin = nvim-web-devicons;
       type = "lua";

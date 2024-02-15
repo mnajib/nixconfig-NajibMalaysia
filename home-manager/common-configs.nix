@@ -383,37 +383,6 @@ in
       vim-illuminate
       vim-numbertoggle
 
-      #{
-      #  plugin = scope-nvim;
-      #  type = "lua";
-      #  config = /* lua */ ''
-      #    require('scope').setup{}
-      #  '';
-      #}
-
-      #{
-      #  plugin = range-highlight-nvim;
-      #  type = "lua";
-      #  config = /* lua */ ''
-      #    require('range-highlight').setup{}
-      #  '';
-      #}
-
-      #{
-      #  plugin = indent-blankline-nvim;
-      #  type = "lua";
-      #  config = /* lua */ ''
-      #    require('ibl').setup{
-      #      scope = {
-      #        highlight = {"IndentBlankLine"}
-      #      },
-      #      indent = {
-      #        highlight = {"IndentBlankLine"}
-      #      },
-      #    }
-      #  '';
-      #}
-
       {
         plugin = vim-startify;
         config = "let g:startify_change_to_vcs_root = 0";
