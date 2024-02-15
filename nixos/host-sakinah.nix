@@ -63,7 +63,7 @@
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
-  networking.firewall.enable = false;
+  networking.firewall.enable = true;
 
   hardware.trackpoint = {
     enable = true;
