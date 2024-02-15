@@ -51,7 +51,7 @@
   #networking.interface.wlp3s0.useDHCP = true;
   #networking.interface.wwp0s29u1u4i6.useDHCP = true;
   #networking.interface.wlp0s29u1u2.useDHCP = true;
-  #networking.networkmanager.enable = true;
+  networking.networkmanager.enable = true;
 
   # XXX: Move this configuration to per-host
   #powerManagement.enable = true;
