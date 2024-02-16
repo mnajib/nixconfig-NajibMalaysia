@@ -2,13 +2,15 @@
 
 ## Refferences
 
-### My main refferences
+### About Nixos
 - [Misterio77's nix-config template for starter](https://github.com/Misterio77/nix-starter-configs)
 - [Misterio77's personal nix-config](https://github.com/Misterio77/nix-config)
-### Other refferences
-- ...
+- https://nixos.wiki/wiki/Comparison_of_NixOS_setups
+- https://nixos.wiki/wiki/Configuration_Collection
 
-### Quick Notes
+### About mime and file association
+- https://wiki.archlinux.org/title/Default_applications#Resource_openers
+- ...
 
 ```
 mkdir -p ~/src
