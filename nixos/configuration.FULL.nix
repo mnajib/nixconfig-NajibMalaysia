@@ -719,8 +719,8 @@
 
     #aseprite   # disabled because always need recompile, and usually not being use
 
-    #gimp-with-plugins
-    gimp
+    gimp-with-plugins
+    #gimp
 
     drawing drawpile
 
