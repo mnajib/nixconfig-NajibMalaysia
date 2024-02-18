@@ -10,9 +10,12 @@ set termguicolors           " enabling true color
 set background=dark
 highlight Normal ctermbg=black ctermfg=lightgrey guibg=black guifg=lightgrey
 
-set number                  " add line numbers
+"set number                  " add line numbers
+set relativenumber                  " add line numbers
 "highlight LineNr ctermfg=11 guifg=Yellow ctermbg=DarkGrey guibg=DarkGrey
-highlight LineNr ctermfg=11 guifg=Yellow ctermbg=237 guibg=#100c08
+"highlight LineNr ctermfg=11 guifg=Yellow ctermbg=237 guibg=#100c08
+highlight LineNr ctermfg=11   ctermbg=237
+highlight LineNr guifg=#525252 guibg=#333333
 
 filetype plugin indent on   " allow auto-indenting depending on file type
 syntax on                   " syntax highlighting
