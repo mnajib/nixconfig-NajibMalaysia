@@ -360,6 +360,9 @@
             # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
             hardware.nixosModules.lenovo-thinkpad-t410
 
+            nix-ld.nixosModules.nix-ld
+            { programs.nix-ld.dev.enable = true; }
+
             #home-manager.nixosModules.home-manager {
             #  home-manager = {
             #    useGlobalPkgs = true;
