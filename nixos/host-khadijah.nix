@@ -155,21 +155,25 @@ with lib;
   #--------------------------------------------------------
 
   # XXX: ???
-  #environment.systemPackages = with pkgs; [
-  #  #tmux
-  #  nvtop
-  #];
+  environment.systemPackages = with pkgs; [
+    #tmux
+    nvtop
+  ];
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
   #  environment.systemPackages = [
   #    pkgs.nvtop
   #  ];
   #};
   #config.environment = {
-  environment = {
-    systemPackages =
-      mkIf  ( config.services.xserver.videoDrivers == [ "nvidia" ] )
-        [ pkgs.nvtop ];
-  };
+  #environment = {
+  #  systemPackages =
+  #    mkIf  ( config.services.xserver.videoDrivers == [ "nvidia" ] )
+  #      [ pkgs.nvtop ];
+  #      ##[
+  #      ##  pkgs.htop
+  #      ##  { mkIf (config.services.xserver.videoDrivers == [ "nvidia" ])  pkgs.nvtop }
+  #      ##];
+  #};
 
   #hardware.video.hidpi.enable = true;
 
