@@ -1,4 +1,8 @@
-{ pkgs, config, lib, home, ... }:
+{
+  pkgs, config, lib, home,
+  vars, host,
+  ...
+}:
 #let
 #	nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
 #	  export __NV_PRIME_RENDER_OFFLOAD=1
@@ -8,6 +12,8 @@
 #	  exec -a "$0" "$@"
 #	'';
 #in
+with lib;
+#with host;
 {
   nix = {
     package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
@@ -150,9 +156,20 @@
 
   # XXX: ???
   #environment.systemPackages = with pkgs; [
-    #nvtop
-    #tmux
+  #  #tmux
+  #  nvtop
   #];
+  #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
+  #  environment.systemPackages = [
+  #    pkgs.nvtop
+  #  ];
+  #};
+  #config.environment = {
+  environment = {
+    systemPackages =
+      mkIf  ( config.services.xserver.videoDrivers == [ "nvidia" ] )
+        [ pkgs.nvtop ];
+  };
 
   #hardware.video.hidpi.enable = true;
 
