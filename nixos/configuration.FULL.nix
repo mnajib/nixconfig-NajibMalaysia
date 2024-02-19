@@ -316,15 +316,16 @@
 
     #gnomeExtensions.draw-on-your-screen
     #pentablet-driver
-    gromit-mpx  # Desktop annotation tool
-    #xournal     # note-taking application (supposes stylus)
-    xournalpp   # handwriting notetaking software with PDF annotation support
-    rnote       # Simple drawing application to create handwritten notes
-    pdftk       # CLI tool for working with PDFs
-    #pdfchain   #
-    gnote       # GUI A note taking application
-    notes       # GUI A fast and beautiful note-taking app; but look too complex on quick first look.
-    cherrytree  # GUI An hierarchical note taking application
+    gromit-mpx                          # Desktop annotation tool
+    #xournal                            # note-taking application (supposes stylus)
+    xournalpp                           # handwriting notetaking software with PDF annotation support
+    rnote                               # Simple drawing application to create handwritten notes
+    pdftk                               # CLI tool for working with PDFs
+    pdfarranger                         # python38Packages.pikepdf
+    #pdfchain                           #
+    gnote                               # GUI A note taking application
+    notes                               # GUI A fast and beautiful note-taking app; but look too complex on quick first look.
+    cherrytree                          # GUI An hierarchical note taking application
 
     #glow       # markdown viewer for CLI
     retext      # markdow editor
@@ -636,19 +637,23 @@
     enlightenment.ephoto
     gtkimageview
     gthumb
-    gnome.eog                       # Gnome image viewer
+    gnome.eog                           # Gnome image viewer
 
-    hakuneko  # comic/manga/manhwa downloader/viewer
+    hakuneko                            # comic/manga/manhwa downloader/viewer
+    #mcomix                             # Comic book reader and image viewer
 
-    mc      # File Manager and User Shell for the GNU Project
-    fff      # A simple file manager written in bash
+    mc                                  # File Manager and User Shell for the GNU Project
+    fff                                 # A simple file manager written in bash
     nnn
-    clifm    # This is leo-arch/clifm (written in c); not the pasqu4le/clifm (written in haskell)
-    sfm      # Simple file manager
+    clifm                               # This is leo-arch/clifm (written in c); not the pasqu4le/clifm (written in haskell)
+    sfm                                 # Simple file manager
     clex
     ranger
-    deer      # A ranger-like file navigation for zsh
-    # hunter # rox-filer spaceFM # xfe
+    deer                                # A ranger-like file navigation for zsh
+    #hunter
+    #rox-filer
+    #spaceFM
+    #xfe
 
     joshuto    # Ranger-like terminal file manager written in Rust
     lf      # A terminal file manager written in Go and heavily inspired by ranger
@@ -661,7 +666,9 @@
 
     sxiv
     feh
-    evince
+    evince                              # Documents viewer
+    calibre                             # Comprehensive e-book software
+    sioyek                              # A PDF viewer designed for research papers and technical books
     #qpdfview
 
     #---------------------------------------------------------------
@@ -823,7 +830,6 @@
     partclone   # Utilities to save and restore used blocks on a partition
     qtox        # chat using tox protocol
     keybase keybase-gui
-    pdfarranger # python38Packages.pikepdf
     python3Minimal      #python3Full #python39Full
 
     gxmessage   #xorg.xmessage # to be used with xmonad, but not support scroll? maybe yad, zenity, dialog, xdialog, gdialog, kdialog, gxmessage, hmessage
