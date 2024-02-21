@@ -336,6 +336,7 @@
 
     qemu qemu_kvm qemu-utils
     qemu_full
+    virt-viewer
     libvirt virt-manager bridge-utils vde2 # virtmanager virt-manager-qt
     #virtualbox
     ethtool
