@@ -94,8 +94,12 @@
   #systemd.tmpfiles.rules = [ "d /home/nfs/share/DATA 0755 share users" ];
   systemd.tmpfiles.rules = [ "d /home/nfs/share 0755 share users" ];
 
-  users.users.share = {
-    isNormalUser = false;
+  users.users = {
+    share = {
+      isSystemUser = true;
+      isNormalUser = false;
+      group = "users";
+    };
   };
 
   services.samba-wsdd.enable = true;    # To make shares visible for Windows-10

@@ -156,8 +156,8 @@
 
   services.smartd.enable = true;
 
-  services.openssh.settings.PermitRootLogin = "yes";            # 
-  #services.openssh.settings.PermitRootLogin = "prohibit-password";           # Needed for btrbk
+  services.openssh.settings.PermitRootLogin = "yes";                            #
+  #services.openssh.settings.PermitRootLogin = "prohibit-password";             # Needed for btrbk
 
   networking.firewall.enable = false;
   # open port 24800 for barrier server?/client?
