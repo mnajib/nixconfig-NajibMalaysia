@@ -72,6 +72,8 @@ with lib;
     ./nfs-client-automount-games.nix
     #./nfs-client.nix
 
+    ./samba-client.nix
+
     #./virtualbox.nix # compile fail
     #./libvirt.nix
     #./anbox.nix
