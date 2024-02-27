@@ -358,6 +358,37 @@
           ];
         };
 
+        # HP DeskPro
+        cheetah = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            ./nixos/host-cheetah.nix
+
+            nix-ld.nixosModules.nix-ld
+            { programs.nix-ld.dev.enable = true; }
+
+            # Add your model from this list:
+            # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+            #hardware.nixosModules.lenovo-thinkpad-x220
+          ];
+        };
+
+        # Acer Aspire
+        leopard = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            ./nixos/host-leopard.nix
+
+            nix-ld.nixosModules.nix-ld {
+              programs.nix-ld.dev.enable = true;
+            }
+
+            # Add your model from this list:
+            # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+            #hardware.nixosModules.lenovo-thinkpad-x220
+          ];
+        };
+
         # Laptop Thinkpad T410 (without nvidia) Julia
         keira = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
@@ -369,6 +400,9 @@
             # Add your model from this list:
             # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
             hardware.nixosModules.lenovo-thinkpad-t410
+
+            nix-ld.nixosModules.nix-ld
+            { programs.nix-ld.dev.enable = true; }
 
             #home-manager.nixosModules.home-manager {
             #  home-manager = {
