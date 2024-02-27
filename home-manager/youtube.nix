@@ -30,6 +30,7 @@
     clipgrab
     #media-downloader
     youtube-music
+    yt-dlp
 
     #--------------------------------------------------------------------------
     # TUI Downloader (without ability to launch player)
