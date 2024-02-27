@@ -52,6 +52,7 @@
         ./typesetting.nix
 
         ./nix-garbage-collector.nix
+        ./teamviewer.nix
     ];
 
     environment.systemPackages = with pkgs; [
