@@ -1,3 +1,9 @@
+#
+# NOTES:
+#
+#  nix flake show
+#
+
 {
   description = "Najib new NixOS configuration with flakes";
 
@@ -25,7 +31,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     #nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
     #
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
 
@@ -34,8 +40,17 @@
     #nixpkgs-najib.url = "github:/mnajib/nixpkgs/najib";
 
     # Home manager
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    #nixos-mailserver = {
+    #  url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #  inputs.nixpkgs-23_05.follows = "nixpkgs";
+    #  inputs.nixpkgs-23_11.follows = "nixpkgs";
+    #};
 
     # TODO: Add any other flake you might need
     #hardware.url = "github:nixos/nixos-hardware";
@@ -53,8 +68,11 @@
 
     hyprland.url = "github:hyprwm/hyprland";
 
-    sops-nix.url = "github:mic92/sops-nix";
-    #inputs.sops-nix.inputs.nixpkps.follows = "nixpkgs";        # optional, not necessary for the module
+    sops-nix = {
+      url = "github:mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";                   # optional, not necessary for the module
+      inputs.nixpkgs-stable.follows = "nixpkgs";            # ???
+    };
 
     #sile.url = "github:sile-typesetter/sile/v0.14.3";
 
@@ -71,17 +89,24 @@
     seaweedfs.url = "github:/mitchty/nixos-seaweedfs/wip";
 
     nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
+
+    nix-ld = {
+      url = "github:Mic92/nix-ld";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
     self,
     nixpkgs,
     nixpkgs-stable,
+    nixpkgs-unstable,
     #nixpkgs-najib,
     home-manager,
     hardware,
     flake-utils,
     nur,
+    impermanence,
     nix-colors,
     hyprland,
     #sile,
@@ -90,10 +115,13 @@
     seaweedfs,
     sops-nix,
     nix-doom-emacs,
+    nix-ld,
     ...
   }@inputs:
     let
       inherit (self) outputs;
+
+      # Supported systems for your flake packages, shell, etc.
       forAllSystems = nixpkgs.lib.genAttrs [
         "aarch64-linux"
         "i686-linux"
@@ -101,6 +129,14 @@
         "aarch64-darwin"
         "x86_64-darwin"
       ];
+
+      pkgs = import nixpkgs {
+        config.allowUnfree = true;
+      };
+
+      pkgsUnstable = import nixpkgs-unstable {
+        config.allowUnfree = true;
+      };
     in
     rec {
 
@@ -160,6 +196,7 @@
         # Laptop Thinkpad X230
         khawlah = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
+          system = "x86_64-linux";
           modules = [
             #./nixos/configuration-khawlah.nix
             ./nixos/host-khawlah.nix
@@ -169,6 +206,8 @@
         # Laptop Dell Najib
         khadijah = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
+
+          #system = "x86_64-linux";
 
           modules = [
             # system-wide doom-emacs
@@ -188,8 +227,50 @@
             #  doom-emacs
             #];
 
+            #------------------------------------------------------------------
+            # nix-ld
+            # Ref:
+            #   - https://github.com/Mic92/nix-ld
+            #   - https://unix.stackexchange.com/questions/522822/different-methods-to-run-a-non-nixos-executable-on-nixos
+            #------------------------------------------------------------------
+            nix-ld.nixosModules.nix-ld
             #
+            # The module in this repositiry defines a new module under
+            # (prgrams.nix-ld.dev) instead of (programs.nix-ld) to not
+            # collide with the nixpkgs version.
+            { programs.nix-ld.dev.enable = true; }
+            #
+            # Usage: After setting up the nix-ld symlink as described above, one
+            # needs to set NIX_LD and NIX_LD_LIBRARY_PATH to run executables.
+            # For example, this can be done with a shell.nix in a nix-shell like this:
+            #with import <nixpkgs> {};
+            #mkShell {
+            # NIX_LD_LIBRARY_PATH = lib.makeLibraryPath [
+            #   stdev.cc.cc
+            #   openssl
+            #   #...
+            # ]
+            # NIX_LD = lib.fileContents "${stdenv.cc}/nix-support/dynamic-linker";
+            #}
+            #------------------------------------------------------------------
+
+            #./machines/host-khadijah.nix
             ./nixos/host-khadijah.nix
+
+            #pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+            #extraSpecialArgs = { inherit inputs outputs; };
+            #home-manager.nixosModules.home-manager {
+            #  home-manager = {
+            #    useGlobalPkgs = true;
+            #    useUserPackages = true;
+            #    users.najib = import ./home-manager/home-najib.nix {
+            #      inherit pkgs;
+            #      inherit pkgsUnstable;
+            #      inherit impermanence;
+            #      inherit nur;
+            #    };
+            #  };
+            #}
           ];
         };
 
@@ -265,15 +346,82 @@
           ];
         };
 
+        # Laptop Thinkpad x220 Julia
+        manggis = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            ./nixos/host-manggis.nix
+
+            # Add your model from this list:
+            # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+            hardware.nixosModules.lenovo-thinkpad-x220
+          ];
+        };
+
+        # HP DeskPro
+        cheetah = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            ./nixos/host-cheetah.nix
+
+            nix-ld.nixosModules.nix-ld
+            { programs.nix-ld.dev.enable = true; }
+
+            # Add your model from this list:
+            # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+            #hardware.nixosModules.lenovo-thinkpad-x220
+          ];
+        };
+
+        # Acer Aspire
+        leopard = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            ./nixos/host-leopard.nix
+
+            nix-ld.nixosModules.nix-ld {
+              programs.nix-ld.dev.enable = true;
+            }
+
+            # Add your model from this list:
+            # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+            #hardware.nixosModules.lenovo-thinkpad-x220
+          ];
+        };
+
         # Laptop Thinkpad T410 (without nvidia) Julia
         keira = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
+          system = "x86_64-linux";
+          #system = nixpkgs.hostPlatform;
           modules = [
             ./nixos/host-keira.nix
 
             # Add your model from this list:
             # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
             hardware.nixosModules.lenovo-thinkpad-t410
+
+            nix-ld.nixosModules.nix-ld
+            { programs.nix-ld.dev.enable = true; }
+
+            #home-manager.nixosModules.home-manager {
+            #  home-manager = {
+            #    useGlobalPkgs = true;
+            #    useUserPackages = true;
+            #    users.najib = import ./home-manager/home-najib.nix {
+            #      inherit pkgs;
+            #      inherit pkgsUnstable;
+            #      inherit impermanence;
+            #      inherit nur;
+            #    };
+            #    users.julia = import ./home-manager/home-julia.nix {
+            #      inherit pkgs;
+            #      inherit pkgsUnstable;
+            #      inherit impermanence;
+            #      inherit nur;
+            #    };
+            #  };
+            #}
           ];
         };
 
@@ -300,6 +448,14 @@
         };
 
         "najib@raudah" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/home-najib.nix
+          ];
+        };
+
+        "najib@zahrah" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
@@ -389,6 +545,14 @@
           ];
         };
 
+        "naqib@raudah" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/home-naqib.nix
+          ];
+        };
+
         "najib@asmak" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
@@ -406,6 +570,14 @@
         };
 
         "julia@keira" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/home-julia.nix
+          ];
+        };
+
+        "julia@manggis" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [

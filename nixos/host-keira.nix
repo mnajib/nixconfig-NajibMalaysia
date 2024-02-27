@@ -13,6 +13,11 @@
     '';
   };
 
+  nix.settings.cores = 3;
+  nix.settings.max-jobs = 3;
+
+  nix.settings.trusted-users = [ "root" "najib" "julia" ];
+
   imports = [
     #./bootEFI.nix
     #./bootBIOS.nix
@@ -74,8 +79,6 @@
   #    "${builtins.fetchGit { url = "https://github.com/NixOS/nixos-hardware.git"; }}/lenovo/thinkpad/t410"
   #];
 
-  nix.settings.trusted-users = [ "root" "najib" "julia" ];
-
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   #
@@ -122,6 +125,13 @@
     #    path = "/boot2";
     #  }
     #];
+  };
+
+  services.btrfs.autoScrub = {
+    enable = true;
+    fileSystems = [ "/" ];
+    #interval = "monthly";
+    interval = "weekly";
   };
 
   services.fstrim.enable = true;
@@ -229,8 +239,6 @@
 
   #services.xserver.desktopManager.plasma5.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
-
-  nix.settings.max-jobs = 2;
 
   #environment.systemPackages = [
   #  pkgs.blender

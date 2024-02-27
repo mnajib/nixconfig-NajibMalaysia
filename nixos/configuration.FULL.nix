@@ -80,6 +80,10 @@
   nix.daemonCPUSchedPolicy = "idle";
   nix.daemonIOSchedClass = "idle";
 
+  imports = [
+    ./users-najib.nix
+  ];
+
   # Q: Each time I change my configuration.nix and run nixos-rebuild switch,
   #    I must run the command 'loadkeys dvorak' in order to use my preferred
   #    keyboard. How can I configure nixos to load the dvorak keymap
@@ -133,6 +137,7 @@
 
   nixpkgs.config = {
     allowUnfree = true;
+    nvidia.acceptLicense = true;
 
     pulseaudio = true;
 
@@ -167,6 +172,21 @@
   #  xsaneGimp = pkgs.xsane.override ( nimpSupport = true; );
   #};
 
+  environment.sessionVariables = rec {
+    #XDG_DATA_HOME = "$HOME/var/lib";
+    #XDG_CACHE_HOME = "$HOME/var/cache";
+    XDG_CACHE_HOME = "$HOME/.cache";
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_DATA_HOME = "$HOME/.local/share";
+    XDG_STATE_HOME = "$HOME/.local/state";
+  };
+
+  #environment.variables = {
+  #  XDG_CONFIG_HOME = "${HOME}/.config";
+  #  XDG_DATA_HOME = "${HOME}/var/lib";
+  #  XDG_CACHE_HOME = "${HOME}/var/cache";
+  #};
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   #
@@ -181,9 +201,11 @@
     wget curl killall
     mtr iproute # busybox
     htop mc irssi most mosh coreutils mutt
+    nload
     zenith                    # Sort of like top or htop but with zoom-able charts, network, and disk usage
     bmon                      # Network bandwidth monitor
     btop
+    enlightenment.evisum
 
     screen
     tmux
@@ -194,7 +216,7 @@
     xpra
     run-scaled
 
-    file bc lsof tree syslinux
+    file lsof tree syslinux
     iw
 
     arandr autorandr
@@ -222,7 +244,7 @@
 
     #ripgrep
     #qgis
-    obs-studio #obs-linuxbrowser
+    #obs-studio #obs-linuxbrowser
     vokoscreen #vokoscreen-ng
     #darktable
 
@@ -243,20 +265,38 @@
     mkpasswd
     pass # CLI password manager
     qtpass
+    bsd-finger
 
     picom    # compositor manager; try to use picom for gromit-mpx (screen annotation) in xmonad (window manager).
 
     fluxbox    # Need this because I need to use command 'fbsetroot' to set plain black background when using xmonad.
 
-    rofi    # Using rofi in xmonad.
-    rofi-pass
-    rofi-calc
-    rofi-emoji
+    #--------------------------------------------------------------------------
+    #rofi    # Using rofi in xmonad.
+    #rofi-pass
+    #rofi-calc
+    #rofi-emoji
+    #rofimoji
+    #rofi-rbw # bitrwarden password manager
+    #--------------------------------------------------------------------------
+    (rofi.override {
+      plugins = [
+        rofi-file-browser
+        rofi-pass
+        rofi-calc
+        rofi-emoji
+        rofi-rbw
+        rofi-rbw-x11
+        rofi-systemd
+        rofi-screenshot
+        rofi-power-menu
+        rofi-pulse-select
+      ];
+    })
+    #--------------------------------------------------------------------------
 
     dzen2    # A general purpose messaging, notification and menuing program for X11
     gnumake    # install gnumake, needed for ihp
-    #glow    # markdown viewer for CLI
-    retext    # markdow editor
 
     expect    # tool for automating interactive applications
 
@@ -272,33 +312,32 @@
     xbindkeys
 
     qtox    # chat using tox protocol
-    keybase keybase-gui
+    #keybase keybase-gui
 
     #gnomeExtensions.draw-on-your-screen
     #pentablet-driver
-    gromit-mpx  # Desktop annotation tool
-    xournal     # note-taking application (supposes stylus)
-    xournalpp   # handwriting notetaking software with PDF annotation support
-    rnote       # Simple drawing application to create handwritten notes
-    pdftk       # Command-line tool for working with PDFs
-    #pdfchain   #
+    gromit-mpx                          # Desktop annotation tool
+    #xournal                            # note-taking application (supposes stylus)
+    xournalpp                           # handwriting notetaking software with PDF annotation support
+    rnote                               # Simple drawing application to create handwritten notes
+    pdftk                               # CLI tool for working with PDFs
+    pdfarranger                         # python38Packages.pikepdf
+    #pdfchain                           #
+    gnote                               # GUI A note taking application
+    notes                               # GUI A fast and beautiful note-taking app; but look too complex on quick first look.
+    cherrytree                          # GUI An hierarchical note taking application
+
+    #glow       # markdown viewer for CLI
+    retext      # markdow editor
+    litemdview  # a suckless markdown viewer
 
     gnome.gnome-clocks
 
     screenkey onboard xorg.xkbcomp # xorg.xkbprint
 
-    gxmessage  #xorg.xmessage # to be used with xmonad, but not support scroll? maybe yad, zenity, dialog, xdialog, gdialog, kdialog, gxmessage, hmessage
-    exiftool
-    wireshark
-    # steghide
-    gdb gdbgui
-    parcellite  # clipboard manager
-    cryptsetup  # luks disk encryption
-    pro-office-calculator speedcrunch wcalc pdd qalculate-gtk galculator # calculator
-    gnome.gnome-calculator
-
     qemu qemu_kvm qemu-utils
     qemu_full
+    virt-viewer
     libvirt virt-manager bridge-utils vde2 # virtmanager virt-manager-qt
     #virtualbox
     ethtool
@@ -347,7 +386,6 @@
     taskwarrior-tui vit tasknc
 
     oneko xcape find-cursor #gnomeExtensions.jiggle hlcursors
-    virtscreen
 
     #synergy synergyWithoutGUI
     barrier # share keyboard & mouse; remote
@@ -376,24 +414,31 @@
     #rxvt                               #<-- have vulnerablility
     rxvt-unicode
     #mrxvt
-    termonad
+    #termonad
     #termonad-with-packages
+    enlightenment.terminology           #
+    gnome-console
+
     #kitty                               # one of my favourite?
     termite                             # alacritty replaced by alacritty?
     alacritty                           #
-    enlightenment.terminology           #
+    rio
 
     #---------------------------------------------------------------
     # text editor
     #---------------------------------------------------------------
 
     ed
-    nano neovim vim kakoune micro jedit vis # jed 
+    nano neovim vim kakoune micro jedit vis # jed
     vimHugeX
     emacs # emacs-nox
-    pulsar vscode leafpad notepadqq geany # kate
+    #vscode
+    leafpad notepadqq geany      # kate
+    #pulsar                             # forked from atom text editor
     #unstable.yi # Install yi the other way to allow enable personalized configuration.
     #leksah
+    enlightenment.ecrire
+    gnome-text-editor
 
     #---------------------------------------------------------------
     # archiver
@@ -405,18 +450,19 @@
     unrar
     p7zip
     xarchiver
+    gnome.file-roller           # Archive manager for the GNOME desktop environment
 
     #---------------------------------------------------------------
     # Games
     #---------------------------------------------------------------
-    bzflag
-
+    gnome.gnome-chess
+    #bzflag
 
     #---------------------------------------------------------------
     # Emulator, subsystem, container, vitualization, ...
     #---------------------------------------------------------------
 
-    genymotion
+    #genymotion
     dosbox
 
     #---------------------------------------------------------------
@@ -451,6 +497,17 @@
     k4dirstat           # A small utility program that sums up disk usage for directory trees
     qdirstat
     jdiskreport
+    gnome.gnome-disk-utility      # A udisks graphical front-end
+
+    gnome.gnome-logs    # A log viewer for the systemd journal
+
+    #---------------------------------------------------------------
+    # find duplicate files
+    #---------------------------------------------------------------
+
+    jdupes              # A powerful duplicate file finder and an enhanced fork of 'fdupes'
+    fclones             # Efficiient Duplicate File Finder and Remover
+    fclones-gui         # Interactive duplicate file remover
 
     #---------------------------------------------------------------
     # Desktop, window manager and tools
@@ -463,7 +520,9 @@
     xorg.xev
     dmenu
     volumeicon pasystray trayer #phwmon
-    xlockmore xorg.xhost xclip #i3lock
+    xlockmore xorg.xhost
+    xclip
+    #i3lock
     pulsemixer qpaeq pulseeffects-legacy #pulseeffects-pw #pulseeffects pipewire
     xscreensaver
     haskellPackages.xmobar #rfkill
@@ -522,8 +581,10 @@
 
     lynx elinks w3m
     firefox chromium qutebrowser #flashplayer rambox
+    floorp  # web browser, forked from firefox ?
     brave
     #midori surf epiphany
+    #epiphany
 
     #---------------------------------------------------------------
     # E-mail Client
@@ -541,7 +602,7 @@
     discord discord-ptb
 
     #---------------------------------------------------------------
-    # File Sharing and Download Manager, File tranfer
+    # File Sharing and Download Manager, File transfer
     #---------------------------------------------------------------
 
     transmission-gtk
@@ -568,22 +629,32 @@
     clipgrab
     #dfilemanager # File manager written in Qt/C++
     pcmanfm # File manager with GTK interface
+    gnome.nautilus
     index-fm # Multi-platform file manager
     worker # A two-pane file manager with advanced file manipulation features
     #keepnote
     #planner <-- removed from nixpkgs
     gqview
+    enlightenment.ephoto
+    gtkimageview
+    gthumb
+    gnome.eog                           # Gnome image viewer
 
-    hakuneko  # comic/manga/manhwa downloader/viewer
+    hakuneko                            # comic/manga/manhwa downloader/viewer
+    #mcomix                             # Comic book reader and image viewer
 
-    mc      # File Manager and User Shell for the GNU Project
-    fff      # A simple file manager written in bash
+    mc                                  # File Manager and User Shell for the GNU Project
+    fff                                 # A simple file manager written in bash
     nnn
-    clifm    # This is leo-arch/clifm (written in c); not the pasqu4le/clifm (written in haskell)
-    sfm      # Simple file manager
+    clifm                               # This is leo-arch/clifm (written in c); not the pasqu4le/clifm (written in haskell)
+    sfm                                 # Simple file manager
     clex
     ranger
-    # hunter # rox-filer spaceFM # xfe
+    deer                                # A ranger-like file navigation for zsh
+    #hunter
+    #rox-filer
+    #spaceFM
+    #xfe
 
     joshuto    # Ranger-like terminal file manager written in Rust
     lf      # A terminal file manager written in Go and heavily inspired by ranger
@@ -596,8 +667,38 @@
 
     sxiv
     feh
-    evince
+    evince                              # Documents viewer
+    calibre                             # Comprehensive e-book software
+    sioyek                              # A PDF viewer designed for research papers and technical books
     #qpdfview
+
+    #---------------------------------------------------------------
+    # tools to interact with android phone
+    #---------------------------------------------------------------
+
+    android-tools
+    #android-studio         # Not all host need this software
+
+    adbfs-rootless          # Mount Android phones on Linux with adb, no root required
+    android-file-transfer   # Reliable MTP client with minimalistic UI
+    adb-sync                # a tools to synchonise files between a PC and an Android devices using ADB (Android Debug Bridge)
+    #gnirehtet
+
+    abootimg                # a tools to manipulate android boot image
+    imgpatchtools           # a tools to manipulate android OTA archives
+    apktool                 # a tools to reverse engineering Android apk files
+    #universal-android-debloater
+    cargo-apk               # a tool for creating Android packages
+    android-backup-extractor
+    #ghost                   # Android post-exploitation flakework: that exploits the Android Debug Bridge (ADB) to remotely access the android device.
+
+
+    #---------------------------------------------------------------
+    # android emulator
+    #---------------------------------------------------------------
+
+    #anbox
+    #genymotion
 
     #---------------------------------------------------------------
     # Media player
@@ -612,24 +713,43 @@
     #mpv.override { scripts = [ mpvScripts.plugin-name ]; }
 
     smplayer
-
+    enlightenment.rage
 
     #---------------------------------------------------------------
-    # Destop Application, Office Suit, Word Processor, Spreadsheet, Presentation, Graphic Editor, Video Editor, Audio Editor, ...
+    # Desktop Application, Office Suit, Word Processor, Spreadsheet, Presentation, Graphic Editor, Video Editor, Audio Editor, ...
     #---------------------------------------------------------------
+
+    jdk #openjdk
 
     libreoffice
     #libreoffice-fresh
-    jdk #openjdk
+    #wpsoffice
 
     #aseprite   # disabled because always need recompile, and usually not being use
 
-    #wpsoffice
-
-    #gimp-with-plugins
-    gimp
+    gimp-with-plugins
+    #gimp
 
     drawing drawpile
+
+    gnome.gnome-clocks
+    gnome.gnome-calendar
+    gnome.gnome-contacts
+    gnome.gnome-font-viewer
+    gnome.gnome-screenshot
+    gnome.gnome-system-monitor
+    gnome.totem
+    plots
+    gnome.gnome-weather
+    gnome-decoder         # Scan and Generate QR Codes
+
+    elastic               # Design spring animations
+    emblem                # Generate project icons and avatars from a symbolic icon
+    eyedropper            # Pick and format colors
+    #gaphor                # Simple modeling tool written in Python
+
+    gephi                 # A platform for visualizing and manipulating large graphs
+    #graphia               # A visualisation tool for the creation and analysis of graphs
 
     vym freemind treesheets drawio dia minder
     #ardour audacity avogadro dia freemind treesheets umlet vue xmind jmol
@@ -644,12 +764,14 @@
     pandoc
     tectonic
 
-    freecad
+    #freecad
     #blender
-    librecad
-    sweethome3d.application sweethome3d.furniture-editor sweethome3d.textures-editor
+    #librecad
+    #sweethome3d.application sweethome3d.furniture-editor sweethome3d.textures-editor
 
-    #gnome3.cheese alchemy lmms marvin mixxx mypaint scribusUnstable
+    #alchemy lmms marvin mixxx mypaint scribusUnstable
+    gnome.cheese
+    snapshot              # Take pictures and videos on your computer, tablet, or phone
     simplescreenrecorder #qt-recordmydesktop
     audio-recorder
 
@@ -657,6 +779,19 @@
 
     #zathura
     ghostwriter mindforger #notes-up
+
+    #gnomeExtensions.draw-on-your-screen
+    #pentablet-driver
+    gromit-mpx  # Desktop annotation tool
+    #xournal     # note-taking application (supposes stylus)
+    xournalpp   # handwriting notetaking software with PDF annotation support
+    rnote       # Simple drawing application to create handwritten notes
+    pdftk       # Command-line tool for working with PDFs
+    #pdfchain   #
+    gnote                 # A note taking application
+    gnome.gnome-notes     # Note editor designed to remain simple to use
+
+    screenkey onboard xorg.xkbcomp # xorg.xkbprint
 
 
     #---------------------------------------------------------------
@@ -680,8 +815,7 @@
     picom       # compositor manager; try to use picom for gromit-mpx (screen annotation) in xmonad (window manager).
 
     fluxbox     # Need this because I need to use command 'fbsetroot' to set plain black background when using xmonad.
-    #glow       # markdown viewer for CLI
-    retext      # markdow editor
+
     rsync grsync zsync luckybackup
     expect      # tool for automating interactive applications
     saldl       # cli downloader optimized for speed
@@ -694,12 +828,9 @@
     #pentablet-driver
     gromit-mpx  # Desktop annotation tool
 
-    xournal     # note-taking application (supposes stylus)
-    xournalpp   # handwriting notetaking software with PDF annotation support
     partclone   # Utilities to save and restore used blocks on a partition
     qtox        # chat using tox protocol
     keybase keybase-gui
-    pdfarranger # python38Packages.pikepdf
     python3Minimal      #python3Full #python39Full
 
     gxmessage   #xorg.xmessage # to be used with xmonad, but not support scroll? maybe yad, zenity, dialog, xdialog, gdialog, kdialog, gxmessage, hmessage
@@ -707,10 +838,30 @@
     wireshark
     # steghide
     gdb gdbgui
-    parcellite  # clipboard manager
+    parcellite  # clipboard manager in GUI
+    clipboard-jh  # clipboard manager in CLI
+    clipcat # clipboard manager
     screenkey onboard xorg.xkbcomp # xorg.xkbprint
     cryptsetup  # luks disk encryption
-    pro-office-calculator speedcrunch wcalc pdd qalculate-gtk galculator # calculator
+
+    bc  # GNU CLI calculator
+    eva # A CLI calculator REPL, similar to bc
+    clac # CLI Interactive stack-based calculator
+    pro-office-calculator speedcrunch wcalc pdd galculator # calculator
+    qalculate-gtk # qalculate-qt # the ultimate desktop calculator
+    gnome.gnome-calculator
+    rink  # unit-aware CLI calculator
+    fend # CLI arbitrary-precision unit-aware calculator
+    wcalc # A command line (CLI) calculator
+    quich # The advanced terminal (CLI) calculator
+    kalker  # A command line (CLI) calculator that supports math-like syntax with user-defined variables, functions, derivation, integration, and complex numbers
+    deepin.deepin-calculator  # A easy to use calculator for ordinary users
+    pantheon.elementary-calculator # GUI Calculator app designed for elementary OS
+    mate.mate-calc # GUI calculator for the MATE desktop
+    lumina.lumina-calculator # Scientific calculator for the Lumina Desktop
+    ipcalc  # Simple CLI IP network calculator
+    sipcalc # advanced console (CLI) ip subnet calculator
+    pdd # CLI tiny date, time diff calculator
 
     ethtool
 
@@ -744,7 +895,7 @@
     alsaUtils
 
     oneko xcape find-cursor #gnomeExtensions.jiggle hlcursors
-    virtscreen
+    #virtscreen
 
     #synergy synergyWithoutGUI
     barrier     # share keyboard & mouse; remote
@@ -823,6 +974,8 @@
 
   #programs.way-cooler.enable = true;
 
+  programs.java.enable = true;
+
   programs.light.enable = true;
 
   programs.dconf.enable = true;         # for gnome?
@@ -832,8 +985,9 @@
     clock24 = true;
     newSession = true;
     resizeAmount = 1;
-    #baseIndex = 1;
-    historyLimit = 5000;
+    baseIndex = 1;
+    historyLimit = 10000;
+    #prefix = "C-b";
 
     #keyMode = "vi";
     #customPaneNavigationAndResize = true;
@@ -847,25 +1001,71 @@
     ];
   };
 
+  #
+  # Referrences:
+  #   https://nixos.org/manual/nixos/stable/#module-programs-zsh-ohmyzsh
+  #
   programs.zsh = {
     enable = true;
-    #autosuggestions.enable = true;
-    #enableCompletion = true;
-    #syntaxHighlighting.enable = true;
+    autosuggestions.enable = true;
+    enableCompletion = true;
+    syntaxHighlighting.enable = true;
     #interactiveShellInit = "";
 
+    histSize = 10000;
+    #histFile = "${config.xdg.dataHome}/zsh/history";
+    #histFile = "${HOME}.config/zsh/history";
+
+    shellAliases = {
+      l = "ls -Filah";
+      j = "jobs";
+      s = "sync";
+      d = "export DISPLAY=:0";
+      #update = "sudo nixos-rebuild switch";
+    };
+
+    # zplug: a next-generation plugin manager for zsh
+    #...
+
+    #
+    # References:
+    #   https://github.com/robbyrussell/oh-my-zsh/wiki
+    #
     ohMyZsh = {
       enable = false;
-      plugins = [
-        "git"
-        "colored-man-pages"
-        "command-not-found"
-        "extract"
-        "direnv"
+
+      #plugins = [
+      #  #"git"
+      #  "colored-man-pages"
+      #  "man"
+      #  "command-not-found"
+      #  "extract"
+      #  "direnv"
+      #  "python"
+      #];
+
+      #theme = "agnoster";        # "bureau" "agnoster" "aussiegeek" "dallas" "gentoo"
+      theme = "gentoo";
+
+      # Custom additions
+      #custom = "~/path/to/custom/scripts";
+
+      # Custom environments
+      # https://search.nixos.org/packages?channel=unstable&show=zsh-vi-mode&from=0&size=50&sort=relevance&type=packages&query=zsh
+      customPkgs = with pkgs; [
+        nix-zsh-completions
+        zsh-nix-shell
+        zsh-completions
+        zsh-autosuggestions
+        #zsh-git-prompt
+        zsh-vi-mode
+        #zsh-command-time
+        #zsh-powerlevel10k
+        zsh-fast-syntax-highlighting
       ];
-      theme = "agnoster";        # "bureau" "agnoster" "aussiegeek" "dallas"
-    };
-  };
+    }; # End ohMyZsh
+
+  }; # End zsh
 
   programs.fish.enable = true;
   programs.xonsh.enable = true;
@@ -873,6 +1073,8 @@
   #users.users.najib.shell = pkgs.fish;    #pkgs.zsh; # pkgs.fish;
   #users.defaultUserShell = pkgs.fish;    #pkgs.zsh;
   #users.users.root.shell = pkgs.fish;    #pkgs.zsh;
+
+  services.clipcat.enable = true;         # clipboard manager daemon
 
   services.urxvtd.enable = true;          # To use urxvtd, run "urxvtc".
 
@@ -883,7 +1085,7 @@
 
   services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
 
-  services.glusterfs.enable = true;
+  #services.glusterfs.enable = true;
 
   # XXX: better put this on host specific file
   #services.flatpak.enable = true;
@@ -1157,34 +1359,6 @@
   users.extraGroups.nurnasuha.gid = 1005;
   users.extraGroups.naim.gid = 1006;
 
-  users.users.najib = {
-    description = "Muhammad Najib Bin Ibrahim";
-    uid = 1001;
-    isNormalUser = true;
-    initialPassword = "password";
-    createHome = true;
-    home = "/home/najib";
-    extraGroups = [
-      "wheel"
-      "networkmanager" "istana46" "audio" "video" "cdrom"  "adbusers" "vboxusers" "scanner" "lp" "systemd-journal" "najib" "julia" "naqib" "nurnasuha" "naim" "input" "bluetooth"
-      #"fuse"
-      "dialout"
-    ];
-    #shell = pkgs.zsh;
-    packages = [
-      pkgs.firefox
-      pkgs.nnn
-      pkgs.ranger
-      pkgs.git
-      pkgs.tmux
-      pkgs.neovim
-      pkgs.vim
-      pkgs.emacs
-      pkgs.htop
-      pkgs.direnv
-    ];
-  };
-
   # can also use 'xlsfonts' to see which fonts are available to X.
   # if some fonts appear distorted, e.g. characters are invisible, or not anti-aliases you may need to rebuild the font cache with 'fc-cache --really-force --verbose'.
   # (after rm -vRf ~/.cache/fontconfig)
@@ -1218,48 +1392,55 @@
   #==================================================
   #
   fonts = {
-    #enableFontDir = true;
-    fontDir.enable = true;
-    fontconfig.enable = true; # XXX:
+    fontconfig.enable = true;
+    fontDir.enable = true;              # Create a directiry with links to all fonts in /run/current-system/sw/share/X11/fonts
 
+    # System-wide default font(s). Multiple fonts may be listed in case multiple languages must be supported.
     #fontconfig.defaultFonts.serif = [ "DejaVu Serif" ];
     #fontconfig.defaultFonts.emoji = [ "Noto Color Emoji" ];
     #fontconfig.defaultFonts.sansSerif = [ "DejaVu Sans" ];
     #fontconfig.defaultFonts.monospace = [ "DejaVu Sans Mono" ]; # "jetbrains mono"
+    fontconfig.defaultFonts.monospace = [
+      "Fira Mono for Powerline (Bold)"
+      "DejaVu Sans Mono"
+      "jetbrains mono"
+    ];
 
     #enableCoreFonts = true;
     enableGhostscriptFonts = true;
     #fonts = with pkgs; [
     packages = with pkgs; [
-      corefonts # Microsoft free fonts; Microsoft's TrueType core fonts for the Web
-      inconsolata # monospaced
-      ubuntu_font_family # ubuntu fonts
-      unifont # some international languages
+      corefonts                         # Microsoft free fonts; Microsoft's TrueType core fonts for the Web
+      inconsolata                       # monospaced
+      ubuntu_font_family                # ubuntu fonts
+      unifont                           # some international languages
+      cardo                             # Cardo is a large Unicode font specifically designed for the needs of classicists, Biblical scholars, medievalists, and linguists.
       google-fonts
-      terminus_font_ttf
       tewi-font
       #kochi-substitude-naga10
-      source-code-pro # monospaced font family for user interface and coding environments
       anonymousPro
       dejavu_fonts
       noto-fonts #font-droid
       noto-fonts-cjk
       noto-fonts-emoji
-      fira-code # suitable for coding
+      terminus_font_ttf
+      source-code-pro                   # monospaced font family for user interface and coding environments
+      fira-code                         # suitable for coding
       fira-code-symbols
+      cascadia-code                     # Monospaced font that includes programming ligatures and is designed to enhance the modern look and feel of the Windows Terminal
       #mplus-outline-fonts
       dina-font
       proggyfonts
       freefont_ttf
-      liberation_ttf # Liberation Fonts, replacements for Times New Roman, Arial, and Courier New
-      liberation-sans-narrow # Liberation Sans Narrow Font Family is a replacement for Arial Narrow
+      liberation_ttf                    # Liberation Fonts, replacements for Times New Roman, Arial, and Courier New
+      liberation-sans-narrow            # Liberation Sans Narrow Font Family is a replacement for Arial Narrow
       powerline-fonts
       terminus_font
       ttf_bitstream_vera
 
-      vistafonts #vistafonts # Some TrueType fonts from Microsoft Windows Vista (Calibri, Cambria, Candara, Consolas, Constantia, Corbel)
-      carlito
-      wineWowPackages.fonts # Microsoft replacement fonts by the Wine project
+      vistafonts                        # Some TrueType fonts from Microsoft Windows Vista (Calibri, Cambria, Candara, Consolas, Constantia, Corbel)
+      carlito                           # A sans-serif font, metric-compatible with Microsoft Calibri
+      wineWowPackages.fonts             # Microsoft replacement fonts by the Wine project
 
       amiri
       scheherazade-new

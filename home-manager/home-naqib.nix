@@ -64,7 +64,7 @@
     #kodi
     #python3.8-notebook
     qtox
-    retroarch
+    #retroarch
     tig
     treesheets
     unrar
@@ -99,8 +99,8 @@
     bootiso
     virt-manager
 
-    blender
-    gimp
+    #blender
+    #gimp
     inkscape
     libreoffice
     #firefox

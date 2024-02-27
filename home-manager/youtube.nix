@@ -29,8 +29,7 @@
     ytarchive
     clipgrab
     #media-downloader
-    youtube-music
-    yt-dlp
+    #youtube-music   # depend on old electron?
 
     #--------------------------------------------------------------------------
     # TUI Downloader (without ability to launch player)

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   #----------------------------------------------------------------------------
   # Prepare directories
@@ -12,8 +12,8 @@
 
   services.samba = {
     enable = true;
-    #securityType = "user";         # Default: "user"
-    #enableNmbd = true;             # Default: true
+    securityType = "user";              # Default: "user"
+    #enableNmbd = true;                 # Default: true
 
     extraConfig = ''
       workgroup = WORKGROUP
@@ -24,33 +24,34 @@
       log file = /var/log/samba/smbd.%m
       max log size = 50
 
-      #security = user
-      #use sendfile = yes
+      security = user
+      use sendfile = yes
       #max protocol = smb2
       # note: localhost is the ipv6 localhost ::1
-      hosts allow = 192.168.0. 192.168.1. 127.0.0.1 localhost
+      #hosts allow = 192.168.0. 192.168.1. 127.0.0.1 localhost
+      hosts allow = 0.0.0.0/0
       hosts deny = 0.0.0.0/0
       dns proxf = no
       guest account = nobody
-      map to guest = Bad User
+      map to guest = bad user
     '';
 
     shares = {
 
-      public = {
-        path = "/home/Shares/Public";
-        comment = "Najib's Public Samba Share.";
-        browseable = "yes";
-        "writeable" = "yes";
-        "read only" = "no";
-        "guest ok" = "yes";
-        "public" = "yes";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-        #"force user" = "najib";
-        "force user" = "share";
-        "force group" = "users";
-      };
+      #public = {
+      #  path = "/home/Shares/Public";
+      #  comment = "Najib's Public Samba Share.";
+      #  browseable = "yes";
+      #  "writeable" = "yes";
+      #  "read only" = "no";
+      #  "guest ok" = "yes";
+      #  "public" = "yes";
+      #  "create mask" = "0644";
+      #  "directory mask" = "0755";
+      #  #"force user" = "najib";
+      #  "force user" = "share";
+      #  "force group" = "users";
+      #};
 
       #private = {
       #  path = "/home/Shares/Private";
@@ -62,6 +63,22 @@
       #  "force user" = "najib";
       #  "force group" = "users";
       #};
+
+      data = {
+        #path = "/home/nfs/share/DATA";
+        path = "/home/nfs/share";
+        comment = "Najib's NFS and CIFS Shared Storage";
+        browseable = "yes";
+        #"writeable" = "yes";
+        "read only" = "yes";            # "no"
+        "guest ok" = "yes";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        #"force user" = "najib";        # "share" "cadey" "abdullah"
+        "force user" = "share";         # "share" "cadey" "abdullah"
+        "force group" = "users";        # "within"
+      };
+
     };
 
     # Printer Sharing
@@ -73,10 +90,16 @@
     #...
   };
 
-  systemd.tmpfiles.rules = [ "d /home/Shares/Public 0755 share users" ];
+  #systemd.tmpfiles.rules = [ "d /home/Shares/Public 0755 share users" ];
+  #systemd.tmpfiles.rules = [ "d /home/nfs/share/DATA 0755 share users" ];
+  systemd.tmpfiles.rules = [ "d /home/nfs/share 0755 share users" ];
 
-  users.users.share = {
-    isNormalUser = false;
+  users.users = {
+    share = {
+      isSystemUser = true;
+      isNormalUser = false;
+      group = "users";
+    };
   };
 
   services.samba-wsdd.enable = true;    # To make shares visible for Windows-10

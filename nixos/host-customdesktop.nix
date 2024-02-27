@@ -27,7 +27,7 @@
     ./users-julia.nix
 
     #./anbox.nix
-    ./virtualbox.nix
+    #./virtualbox.nix
 
     ./typesetting.nix
 
@@ -48,8 +48,8 @@
     ./nfs-client-automount.nix
     #./nfs-client.nix
 
-    #./samba-server-customdesktop.nix
-    #./samba-client.nix
+    ./samba-server-customdesktop.nix
+    ./samba-client.nix
 
     ./console-keyboard-dvorak.nix
     ./keyboard-with-msa.nix
@@ -73,7 +73,7 @@
     ./hosts2.nix
     ./configuration.FULL.nix
 
-    ./kodi.nix
+    #./kodi.nix
 
     #./sway.nix
 
@@ -156,10 +156,8 @@
 
   services.smartd.enable = true;
 
-  #services.zfs.autoScrub.enable = true;  # Look nixos/zfs.nix
-
-  services.openssh.settings.PermitRootLogin = "yes";            # 
-  #services.openssh.settings.PermitRootLogin = "prohibit-password";           # Needed for btrbk
+  services.openssh.settings.PermitRootLogin = "yes";                            #
+  #services.openssh.settings.PermitRootLogin = "prohibit-password";             # Needed for btrbk
 
   networking.firewall.enable = false;
   # open port 24800 for barrier server?/client?
@@ -221,7 +219,7 @@
   #environment.systemPackages = with pkgs; [
   environment.systemPackages = [
     pkgs.blender
-    pkgs.virtualboxWithExtpack
+    #pkgs.virtualboxWithExtpack
 
     # use in wayland
     pkgs.gnome-randr

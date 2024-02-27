@@ -39,16 +39,13 @@
     ./configuration.FULL.nix
     ./nix-garbage-collector.nix
     ./flatpak.nix
+    ./steam.nix
   ];
 
   environment.systemPackages = with pkgs; [
-    steam
-    steam-tui
     gparted
     simplex-chat-desktop
   ];
-
-  programs.steam.enable = true;
 
   # For the value of 'networking.hostID', use the following command:
   #   cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
@@ -155,6 +152,7 @@
   #services.xserver.desktopManager.plasma5.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
   #services.xserver.desktopManager.xfce.enable = true;
+  services.xserver.desktopManager.lxqt.enable = true;
 
   services.xserver.windowManager.xmonad.enable = true;
   services.xserver.windowManager.jwm.enable = true;

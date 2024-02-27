@@ -65,12 +65,12 @@ in
     remmina
     wpsoffice
     clamav
-    audacity
-    shotcut
+    #audacity
+    #shotcut
     #calligra        # calligra marked unsecure because using qtwebkit
-    openshot-qt
-    kmymoney
-    shotwell
+    #openshot-qt
+    #kmymoney
+    #shotwell
   ];
 
   # Enable home-manager and git
@@ -80,6 +80,11 @@ in
     userName = "Juliani Jaffar";
     userEmail = "juliani.jaffar@gmail.com";
   };
+
+  programs.fzf.enable = true;
+  programs.command-not-found.enable = true;
+  programs.htop.enable = true;
+  programs.info.enable = true;
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
