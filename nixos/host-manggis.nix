@@ -61,6 +61,7 @@
         obs-studio
         steam
         steam-run
+        lightlocker
     ];
 
     programs.steam.enable = true;
@@ -142,6 +143,14 @@
         DEVICES_TO_ENABLE_ON_WIFI_DISCONNECT="";
     };
     #services.tlp.extraConfig = ;
+
+    services.xserver.displayManager.sessionCommands = ''
+        xset -dpms                      # Disable Energy Star, as we are going to suspend anyway and it may hide "success" on that
+        xset s blank                    # `noblank` may be useful for debugging
+        xset s 120                      # in seconds
+        #xset s 300                     # in seconds
+        #${pkgs.lightlocker}/bin/light-locker --idle-hint &
+    '';
 
     hardware.trackpoint.enable = true;
     hardware.trackpoint.device = "TPPS/2 IBM TrackPoint";
