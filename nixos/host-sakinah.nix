@@ -36,7 +36,7 @@
 
   # Booting
   boot.loader = {
-    timeout = null;
+    timeout = 100;                     #null;
     grub = {
       useOSProber = true;
       timeoutStyle = "menu";
