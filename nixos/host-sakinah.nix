@@ -17,7 +17,7 @@
     #./users-anak2.nix
     ./users-nurnasuha-wheel.nix
     #./hosts.nix
-    #./hosts2.nix
+    ./hosts2.nix
     #./nfs-client.nix
     ./nfs-client-automount.nix
     #./nfs-client.nix
@@ -33,6 +33,19 @@
     #./btrbk.nix
     ./zfs.nix
   ];
+
+  # Booting
+  boot.loader = {
+    timeout = null;
+    grub = {
+      useOSProber = true;
+      timeoutStyle = "menu";
+
+      #gfsmodeEfi = "1566x768";
+      #gfsmodeBios = "1024x768";
+      memtest86.enable = true;
+    };
+  };
 
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done

@@ -70,7 +70,7 @@
 
     sops-nix = {
       url = "github:mic92/sops-nix";
-      inputs.nixpkps.follows = "nixpkgs";                   # optional, not necessary for the module
+      inputs.nixpkgs.follows = "nixpkgs";                   # optional, not necessary for the module
       inputs.nixpkgs-stable.follows = "nixpkgs";            # ???
     };
 
