@@ -88,7 +88,7 @@ in
     #blender
     freecad librecad
     inkscape
-    gimp
+    #gimp
     libreoffice
   ];
 

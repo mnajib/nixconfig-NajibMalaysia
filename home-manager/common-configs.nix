@@ -72,7 +72,7 @@ in
     ./tmux.nix
     #./rofi.nix
     #./nvim/lsp.nix
-    ./nvim
+    #./nvim
   ];
   # XXX: TODO: Should be in seperate file packages.nix
 
@@ -367,54 +367,54 @@ in
   programs.neovim = {
     enable = true;
     defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-    vimdiffAlias = true;
+    #viAlias = true;
+    #vimAlias = true;
+    #vimdiffAlias = true;
 
     # Use Nix Package search engine to find even more plugins:
     # https://search.nixos.org/packages
     plugins = with pkgs.vimPlugins; [
-      #nvim-lspconfig
-      nvim-treesitter.withAllGrammars
-      plenary-nvim
-      gruvbox-material
-      mini-nvim
-      nvim-tree-lua
-      vim-illuminate
-      vim-numbertoggle
+      ##nvim-lspconfig
+      #nvim-treesitter.withAllGrammars
+      #plenary-nvim
+      #gruvbox-material
+      #mini-nvim
+      #nvim-tree-lua
+      #vim-illuminate
+      #vim-numbertoggle
 
-      {
-        plugin = vim-startify;
-        config = "let g:startify_change_to_vcs_root = 0";
-      }
+      #{
+      #plugin = vim-startify;
+      #config = "let g:startify_change_to_vcs_root = 0";
+      #}
 
     ];
 
     extraConfig = builtins.readFile ./src/.config/nvim/init.vim;
   };
 
-  programs.vim = {
-    enable = true;
-    extraConfig = builtins.readFile ./src/vim/vimrc;
-    settings = {
-      relativenumber = true;
-      number = true;
-      #nowrap = true;
-    };
-    plugins = with pkgs.vimPlugins; [
-      vim-elixir
-      #vim-mix-format
-      sensible
-      vim-airline
-      The_NERD_tree                      # file system explorer
-      fugitive vim-gitgutter             # git
-      rust-vim
-      #YouCompleteMe
-      vim-abolish
-      command-t
-      vim-go
-    ];
-  };
+# programs.vim = {
+#   enable = true;
+#   extraConfig = builtins.readFile ./src/vim/vimrc;
+#   settings = {
+#     relativenumber = true;
+#     number = true;
+#     #nowrap = true;
+#   };
+#   plugins = with pkgs.vimPlugins; [
+#     vim-elixir
+#     #vim-mix-format
+#     sensible
+#     vim-airline
+#     The_NERD_tree                      # file system explorer
+#     fugitive vim-gitgutter             # git
+#     rust-vim
+#     #YouCompleteMe
+#     vim-abolish
+#     command-t
+#     vim-go
+#   ];
+# };
 
   #programs.yi = {
   #    ...

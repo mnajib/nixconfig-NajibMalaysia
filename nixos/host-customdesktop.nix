@@ -48,8 +48,8 @@
     ./nfs-client-automount.nix
     #./nfs-client.nix
 
-    #./samba-server-customdesktop.nix
-    #./samba-client.nix
+    ./samba-server-customdesktop.nix
+    ./samba-client.nix
 
     ./console-keyboard-dvorak.nix
     ./keyboard-with-msa.nix
@@ -156,8 +156,8 @@
 
   services.smartd.enable = true;
 
-  services.openssh.settings.PermitRootLogin = "yes";            # 
-  #services.openssh.settings.PermitRootLogin = "prohibit-password";           # Needed for btrbk
+  services.openssh.settings.PermitRootLogin = "yes";                            #
+  #services.openssh.settings.PermitRootLogin = "prohibit-password";             # Needed for btrbk
 
   networking.firewall.enable = false;
   # open port 24800 for barrier server?/client?

@@ -100,7 +100,7 @@
     virt-manager
 
     #blender
-    gimp
+    #gimp
     inkscape
     libreoffice
     #firefox

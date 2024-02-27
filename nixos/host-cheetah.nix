@@ -4,13 +4,13 @@
   ...
 }:
 #let
-#	nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
-#	  export __NV_PRIME_RENDER_OFFLOAD=1
-#	  export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
-#	  export __GLX_VENDOR_LIBRARY_NAME=nvidia
-#	  export __VK_LAYER_NV_optimus=NVIDIA_only
-#	  exec -a "$0" "$@"
-#	'';
+#  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
+#    export __NV_PRIME_RENDER_OFFLOAD=1
+#    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+#    export __GLX_VENDOR_LIBRARY_NAME=nvidia
+#    export __VK_LAYER_NV_optimus=NVIDIA_only
+#    exec -a "$0" "$@"
+#  '';
 #in
 with lib;
 #with host;
@@ -53,11 +53,11 @@ with lib;
   };
 
   imports = [
-    ./hardware-configuration-khadijah.nix
+    ./hardware-configuration-cheetah.nix
     ./configuration.FULL.nix
 
     #./hosts.nix
-    ./hosts2.nix
+    #./hosts2.nix
 
     ./bootEFI.nix
     #./bootBIOS.nix
@@ -65,14 +65,16 @@ with lib;
     #./thinkpad.nix
     #./touchpad-scrollTwofinger-TapTrue.nix
     #./network-dns.nix
-    ./users-anak2.nix
-    #./users-najib.nix
+
+    #./users-anak2.nix
+    ./users-naqib-wheels.nix
+    ./users-naim.nix
+    ./users-nurnasuha.nix
+    ./users-julia.nix
 
     ./nfs-client-automount.nix
     ./nfs-client-automount-games.nix
     #./nfs-client.nix
-
-    ./samba-client.nix
 
     #./virtualbox.nix # compile fail
     #./libvirt.nix
@@ -83,7 +85,7 @@ with lib;
     ./3D.nix                            # freecad, qcad, ...
     ./steam.nix                         # steam for game, blender-LTS, ...
 
-    ./mame.nix
+    #./mame.nix
     ./emulationstation.nix
 
     ./console-keyboard-dvorak.nix       # keyboard layout for console environment
@@ -116,10 +118,13 @@ with lib;
   #
 
   # Dell Precision M4800
-  networking.hostId = "b74534bf";
-  networking.hostName = "khadijah";
+  networking.hostId = "b77174bf";
+  networking.hostName = "cheetah";
 
-  nix.settings.trusted-users = [ "root" "najib" ];
+  nix.settings.trusted-users = [
+    "root" "najib"
+    "naqib"
+  ];
 
   networking.useDHCP = false;          # Disabled by Najib on 20220724T0740
                                        # Enabled by Najib on 2023-02-01T1245 in attemp to decrease delay on startup.
