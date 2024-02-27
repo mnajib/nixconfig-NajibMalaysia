@@ -32,6 +32,7 @@
     ./configuration.FULL.nix
     #./btrbk.nix
     ./zfs.nix
+    ./timetracker.nix
   ];
 
   # Booting
