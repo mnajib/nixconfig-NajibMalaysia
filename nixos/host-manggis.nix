@@ -26,6 +26,7 @@
         ./users-julia-wheel.nix
         #./users-anak2.nix
 
+        ./samba-client.nix
         ./nfs-client.nix
         ./flatpak.nix
 
