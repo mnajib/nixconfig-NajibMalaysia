@@ -226,6 +226,7 @@
 
     darcs
     atop gotop wavemon iotop nethogs
+    iperf
     bandwhich
     xmlstarlet
     xsane sane-backends sane-frontends hplip
