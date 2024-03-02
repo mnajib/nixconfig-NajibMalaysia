@@ -19,7 +19,7 @@
 		./thinkpad.nix
 		#<nixos-hardware/lenovo/thinkpad/x230>
 		#./anbox.nix
-		./nfs-client.nix
+		./nfs-client-automount.nix
 		#./audio-pulseaudio.nix
 		./audio-pipewire.nix
 		./hardware-printer.nix
@@ -29,7 +29,8 @@
 		./configuration.FULL.nix
 		#./btrbk-khawlah.nix
 		./typesetting.nix
-	];
+    ./nix-garbage-collector.nix
+  ];
 
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
@@ -37,6 +38,10 @@
   # x230
   networking.hostId = "33df86ff";
   networking.hostName = "khawlah";
+
+  services.fstrim.enable = true;
+  hardware.enableAllFirmware = true;
+  services.smartd.enable = true;
 
   nix.settings.trusted-users = [
     "root"
@@ -77,9 +82,13 @@
   # Or disable the firewall altogether.
   networking.firewall.enable = false;
 
-  #services.xserver.displayManager.sddm.enable = true;
-  #services.xserver.displayManager.defaultSession = "none+xmonad";
-  #services.xserver.desktopManager.plasma5.enable = true;
+  #services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.displayManager.defaultSession = "none+xmonad";
+  #services.xserver.desktopManager.xfce.enable = true;
+  services.xserver.desktopManager.plasma6.enable = true;
+  #services.xserver.desktopManager.lxqt.enable = true;
+  #services.xserver.desktopManager.deepin.enable = true;
+  #services.xserver.desktopManager.budgie.enable = true;
 
   services.xserver.libinput.enable = true;
 
