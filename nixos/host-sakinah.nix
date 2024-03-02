@@ -9,8 +9,8 @@
 
   imports = [
     ./hardware-configuration-sakinah.nix
-    #./bootEFI.nix
-    ./bootBIOS.nix
+    ./bootEFI.nix
+    #./bootBIOS.nix
     ./thinkpad.nix
     #<nixos-hardware/lenovo/thinkpad/x220>
     ./touchpad-scrollTwofinger-TapTrue.nix
@@ -18,18 +18,35 @@
     ./users-nurnasuha-wheel.nix
     #./hosts.nix
     ./hosts2.nix
-    ./nfs-client.nix
+    #./nfs-client.nix
+    ./nfs-client-automount.nix
+    #./nfs-client.nix
     ./console-keyboard-dvorak.nix
     ./keyboard-with-msa.nix
-    #./audio-pipewire.nix
-    ./audio-pulseaudio.nix
+    ./audio-pipewire.nix
+    #./audio-pulseaudio.nix
     #./synergy-client.nix
     ./hardware-printer.nix
     ./hardware-tablet-wacom.nix
     ./zramSwap.nix
     ./configuration.FULL.nix
     #./btrbk.nix
+    ./zfs.nix
+    ./timetracker.nix
   ];
+
+  # Booting
+  boot.loader = {
+    timeout = 100;                     #null;
+    grub = {
+      useOSProber = true;
+      timeoutStyle = "menu";
+
+      #gfsmodeEfi = "1566x768";
+      #gfsmodeBios = "1024x768";
+      memtest86.enable = true;
+    };
+  };
 
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
@@ -38,11 +55,7 @@
   networking.hostId = "6a063836";
   networking.hostName = "sakinah";
 
-  nix.settings.trusted-users = [
-    "root"
-    "najib"
-    "nurnasuha"
-  ];
+  nix.settings.trusted-users = [ "root" "najib" "nurnasuha" ];
 
   hardware.enableAllFirmware = true;
 
@@ -52,6 +65,7 @@
   #networking.interface.wlp3s0.useDHCP = true;
   #networking.interface.wwp0s29u1u4i6.useDHCP = true;
   #networking.interface.wlp0s29u1u2.useDHCP = true;
+  networking.networkmanager.enable = true;
 
   # XXX: Move this configuration to per-host
   #powerManagement.enable = true;
@@ -63,16 +77,7 @@
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
-  networking.firewall.enable = false;
-
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.supportedFilesystems = [ "ext4" "btrfs" "xfs" ];
-  boot.initrd.supportedFilesystems = [ "ext4" "btrfs" "xfs" ];
-
-  #zramSwap = {
-  #  enable = true;
-  #  algorithm = "zstd";
-  #};
+  networking.firewall.enable = true;
 
   hardware.trackpoint = {
     enable = true;
@@ -85,8 +90,11 @@
   services.xserver = {
     enable = true;
     libinput.enable = true;
-    desktopManager.xfce.enable = true;
+    #displayManager.gdm.enable = true;
+    displayManager.lightdm.enable = true;
     displayManager.defaultSession = "none+xmonad";
+    desktopManager.xfce.enable = true;
+    #desktopManager.gnome.enable = true;
   };
 
   nix.settings.max-jobs = 2;
@@ -95,5 +103,5 @@
   #  pkgs.blender
   #];
 
-  system.stateVersion = "22.05";
+  system.stateVersion = "23.11";
 }

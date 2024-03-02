@@ -10,9 +10,7 @@
   };
 
   imports = [
-    #<nixos-hardware/lenovo/thinkpad/t410> # XXX: temporarily disabled because lazy to add nix channel
     ./hardware-configuration-zahrah.nix
-    #./hardware-configuration.nix
     #./hardware-laptopLenovoThinkpadT410eWasteCyberjaya.nix
     #./hardware-storageSSD001.nix
     ./thinkpad.nix
@@ -50,25 +48,21 @@
     ./typesetting.nix
 
     ./nix-garbage-collector.nix
+
+    ./flatpak.nix
+    ./emulationstation.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   #
 
-  nix.settings.trusted-users = [
-    "root" "najib"
-    #"julia"
-    "naim"
-  ];
+  nix.settings.trusted-users = [ "root" "najib" "naim" ];
 
   networking.hostId = "4dcfcacd";
   networking.hostName = "zahrah"; # also called "tifoten"
 
   hardware.enableAllFirmware = true;
-
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.supportedFilesystems =        [ "ext4" "btrfs" "xfs" "vfat" "ntfs" ];
 
   #environment.systemPackages = with pkgs; [
   #  nvtop
@@ -81,18 +75,18 @@
   #services.xserver.videoDrivers = [ "fbdev" ];
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_340;
   #hardware.nvidia.nvidiaSettings = true;
-  hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
-  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
-  hardware.nvidia.prime.sync.enable = true;
-  hardware.nvidia.modesetting.enable = true;
+  #hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
+  #hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
+  #hardware.nvidia.prime.sync.enable = true;
+  #hardware.nvidia.modesetting.enable = true;
   #hardware.nvidiaOptimus.disable = true; # Completely disable the NVIDIA graphics card and use the integrated graphics processor instead.
-  hardware.nvidia.open = true;
+  #hardware.nvidia.open = true;
 
   #boot.loader.systemd-boot.enable = true; # gummi-boot for EFI
   #boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub = {
     enable = true;
-    version = 2;
+    #version = 2;
     enableCryptodisk = true;
     copyKernels = true;
     #useOSProber = true;
@@ -101,16 +95,16 @@
     #------------------------------------------
     # BIOS
     #------------------------------------------
-    #devices = [
-    #	#"/dev/disk/by-id/wwn-0x5000c5002ea341bc"
-    #	#"/dev/disk/by-id/wwn-0x5000c5002ec8a164"
-    #	#"/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK0803806"
-    #
-    #	"/dev/disk/by-id/ata-PH6-CE120-G_511190117056007159" # /dev/sda (120GB SSD)
-    #	#"/dev/disk/by-id/ata-LITEONIT_LCS-256M6S_2.5_7mm_256GB_TW0XFJWX550854255987" # /dev/sdb (256GB SSD)
-    #];
+    devices = [
+      #"/dev/disk/by-id/wwn-0x5000c5002ea341bc"
+      #"/dev/disk/by-id/wwn-0x5000c5002ec8a164"
+      #"/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK0803806"
+      #"/dev/disk/by-id/ata-PH6-CE120-G_511190117056007159"                                # /dev/sda (120GB SSD)
+      #"/dev/disk/by-id/ata-LITEONIT_LCS-256M6S_2.5_7mm_256GB_TW0XFJWX550854255987"       # /dev/sdb (256GB SSD)
+      "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1011006"
+    ];
     #device = "/dev/disk/by-id/ata-PH6-CE120-G_511190117056007159";
-    device = "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1011006";
+    #device = "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1011006";
     #efiSupport = true;
 
     #------------------------------------------
@@ -170,7 +164,7 @@
       WIFI_PWR_ON_AC = "off";
       WIFI_PWR_ON_BAT = "off";
       DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth wwan";
-      #DEVICES_TO_ENABLE_ON_STARTUP = "wifi";
+      DEVICES_TO_ENABLE_ON_STARTUP = "wifi";
     };
   };
 
@@ -179,44 +173,44 @@
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
-    services.thinkfan.enable = true;
-    services.thinkfan.levels = [
-      [
-        0
-        0
-        55
-      ]
-      [
-        "level auto"
-        48
-        60
-      ]
-      [
-        "level auto"
-        50
-        61
-      ]
-      [
-        6
-        52
-        63
-      ]
-      [
-        7
-        56
-        65
-      ]
-      [
-        "level full-speed"
-        60
-        85
-      ]
-      [
-        "level full-speed"
-        80
-        32767
-      ]
-    ];
+  services.thinkfan.enable = true;
+  services.thinkfan.levels = [
+    [
+      0
+      0
+      55
+    ]
+    [
+      "level auto"
+      48
+      60
+    ]
+    [
+      "level auto"
+      50
+      61
+    ]
+    [
+      6
+      52
+      63
+    ]
+    [
+      7
+      56
+      65
+    ]
+    [
+      "level full-speed"
+      60
+      85
+    ]
+    [
+      "level full-speed"
+      80
+      32767
+    ]
+  ];
 
   hardware.trackpoint = {
     enable = true;
@@ -236,25 +230,26 @@
 
   #services.xserver.displayManager.sddm.enable = true;
   #services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.startx.enable = true;
+  #services.xserver.displayManager.startx.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
 
   services.xserver.displayManager.defaultSession = "none+xmonad";
+
   #services.xserver.desktopManager.plasma5.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
+  #services.xserver.desktopManager.xfce.enable = true;
   #services.xserver.desktopManager.pantheon.enable = true;
   #services.xserver.desktopManager.enlightenment.enable = true;
   #services.xserver.desktopManager.lumina.enable = true;
   #services.xserver.desktopManager.mate.enable = true;
   #services.xserver.desktopManager.cinnamon.enable = true;
-  #services.xserver.desktopManager.lxqt.enable = true;
+  services.xserver.desktopManager.lxqt.enable = true;
 
   services.xserver.windowManager = {
     berry.enable = true;
     notion.enable = true;
     pekwm.enable = true;
-    qtile.enable = true;
+    #qtile.enable = true;
     ratpoison.enable = true;
     tinywm.enable = true;
     smallwm.enable = true;

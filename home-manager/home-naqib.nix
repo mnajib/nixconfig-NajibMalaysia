@@ -15,9 +15,10 @@
 
     ./common-configs.nix
     ./common-packages.nix
-    #./roblox.nix
+    ./roblox.nix
     ./wesnoth.nix
     #./system-benchmark.nix
+    #./minecraft.nix
   ];
 
   nixpkgs = {
@@ -63,7 +64,7 @@
     #kodi
     #python3.8-notebook
     qtox
-    retroarch
+    #retroarch
     tig
     treesheets
     unrar
@@ -98,11 +99,11 @@
     bootiso
     virt-manager
 
-    blender
-    gimp
+    #blender
+    #gimp
     inkscape
     libreoffice
-    firefox
+    #firefox
     #brave
     qutebrowser
     ranger
@@ -111,7 +112,8 @@
     #neovim
     emacs
 
-    zeroad
+    #zeroad
+    minetest
 
     fluxbox                             # need fbsetroot to set desktop background color
   ];

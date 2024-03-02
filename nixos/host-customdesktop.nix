@@ -20,15 +20,24 @@
     # Disable this; as we can just set custom DNS in NetworkManager
     #./network-dns.nix
 
+    # Internal/private network DNS server
+    #./dnsmasq.nix # disabled this because now running endian firewall (EFW)
+
     ./users-anak2.nix
+    ./users-julia.nix
 
     #./anbox.nix
-    ./virtualbox.nix
+    #./virtualbox.nix
 
     ./typesetting.nix
 
     #./syncthing.nix
-    #./nextcloud.nix
+
+    # /var/lib/nextcloud/config/config.php
+    ./nextcloud.nix  # OpenSSL 1.1 is marked as unsecured
+
+    # System health monitoring
+    ./netdata.nix
 
     # Email fetch and serve
     #./email.nix
@@ -39,8 +48,8 @@
     ./nfs-client-automount.nix
     #./nfs-client.nix
 
-    #./samba-server-customdesktop.nix
-    #./samba-client.nix
+    ./samba-server-customdesktop.nix
+    ./samba-client.nix
 
     ./console-keyboard-dvorak.nix
     ./keyboard-with-msa.nix
@@ -57,6 +66,9 @@
 
     #./btrbk-pull.nix
     #./btrbk-tv.nix # XXX: Temporarily disabled as the HDD is failing.
+
+    #./gogs.nix
+    ./gitea.nix
 
     ./hosts2.nix
     ./configuration.FULL.nix
@@ -97,7 +109,7 @@
   #boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub = {
     enable = true;
-    version = 2;
+    #version = 2;
     efiSupport = false;
     enableCryptodisk = true;
     copyKernels = true;
@@ -144,10 +156,8 @@
 
   services.smartd.enable = true;
 
-  #services.zfs.autoScrub.enable = true;  # Look nixos/zfs.nix
-
-  # Needed for btrbk
-  services.openssh.permitRootLogin = "prohibit-password";
+  services.openssh.settings.PermitRootLogin = "yes";                            #
+  #services.openssh.settings.PermitRootLogin = "prohibit-password";             # Needed for btrbk
 
   networking.firewall.enable = false;
   # open port 24800 for barrier server?/client?
@@ -209,12 +219,14 @@
   #environment.systemPackages = with pkgs; [
   environment.systemPackages = [
     pkgs.blender
-    pkgs.virtualboxWithExtpack
+    #pkgs.virtualboxWithExtpack
 
     # use in wayland
     pkgs.gnome-randr
     pkgs.foot
   ];
 
-  system.stateVersion = "22.05";
+  #system.stateVersion = "22.05";
+  #system.stateVersion = "22.11";
+  system.stateVersion = "23.05";
 }

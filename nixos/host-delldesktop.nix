@@ -45,6 +45,10 @@
     #./btrbk-mahirah.nix
 
     ./nix-garbage-collector.nix
+
+    ./3D.nix
+    ./chemistry.nix
+    ./whatsapp.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -52,6 +56,7 @@
   #
   # Dell (desktop) RM2xx
   #networking.hostId = "e07c9d49"; # "12331345"
+  networking.hostId = "ce50ff3e"; # "12331345"
   networking.hostName = "delldesktop";
 
   #networking.useDHCP = false;
@@ -60,6 +65,8 @@
   systemd.services.NetworkManager-wait-online.enable = false;
 
   #boot.loader.systemd-boot.enable = true;
+
+  # Only trusted users can properly use the set substituters (nixConfig.substituters, ...)
   nix.settings.trusted-users = [ "root" "najib" ];
 
   #boot.loader.efi.canTouchEfiVariables = true;
@@ -115,8 +122,10 @@
   networking.networkmanager.wifi.powersave = false;
   systemd.watchdog.rebootTime = "10m";
 
+  services.smartd.enable = true;
+
   # Not remember why I need this. btrbk?
-  services.openssh.permitRootLogin = "prohibit-password";                       # one of "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
+  services.openssh.settings.PermitRootLogin = "prohibit-password";                       # one of "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
 
   networking.firewall.enable = false;
   #networking.firewall.allowedTCPPorts = [

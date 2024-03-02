@@ -35,7 +35,7 @@ let
     slug = "najib";
     name = "Najib";
     author = "Najib Ibrahim (https://github.com/mnajib)";
-    colors = {
+    palette = {
       base00 = "#000000";
       base01 = "#c7002e";
       base02 = "#009200";
@@ -70,6 +70,9 @@ in
     inputs.nix-colors.homeManagerModule
     ./screen.nix
     ./tmux.nix
+    #./rofi.nix
+    #./nvim/lsp.nix
+    #./nvim
   ];
   # XXX: TODO: Should be in seperate file packages.nix
 
@@ -78,26 +81,58 @@ in
   #colorscheme = lib.mkDefault colorSchemes.najib;
 
   #home.sessionVariables = {
-  #  EDITOR = "nvim";       # yi vis nvim kak vim nano rasa jak
+    #EDITOR = "nvim";       # yi vis nvim kak vim nano rasa jak
+    #XDG_CONFIG_HOME = "$HOME/.config";
+    #XDG_DATA_HOME = "$HOME/var/lib";
+    #XDG_CACHE_HOME = "$HOME/var/cache";
   #};
 
 #------------------------------------------------------------------------------
-  programs.rofi = {
-    enable = true;
-    #font = "${font} 8"; #9
-    #theme = "~/.cache/wal/colors-rofi-dark-rasi";
-  };
+  #programs.rofi = {
+  #  enable = true;
+  #  #font = "${font} 8"; #9
+  #  #theme = "~/.cache/wal/colors-rofi-dark-rasi";
+  #};
 
-  programs.rofi.pass = {
+  #programs.rofi.pass = {
+  #  enable = true;
+  #};
+
+  programs.java = {
     enable = true;
+    #package = "pkgs.jdk";
   };
 
   programs.kitty = {
     enable = true;
+
+    #font = {
+      #package = pkgs.dejavu_fonts;
+      #package = pkgs.jetbrains-mono;
+      #name = "DejaVu Sans";
+      #size = "12"; #"13"; # "8";
+    #};
+
+    #theme = "Space Gray Eighties";
+
     settings = {
-      background = "#${config.colorScheme.colors.base00}";
-      foreground = "#${config.colorScheme.colors.base05}";
+      background = "#${config.colorScheme.palette.base00}";
+      foreground = "#${config.colorScheme.palette.base05}";
+
+      #cursor = "#cccccc";
+      #cursor_text_color = "#111111";
+      cursor_shape = "block"; # "beam"
+      cursor_blink_interval = 1;
+      cursor_stop_blinking_after = 0;
+
+      scrollback_lines = 10000;
+      enable_audio_bell = true;
+      update_check_interval = 0;
     };
+
+    #environment = {
+      #"LS_COLORS" = "1";
+    #};
   };
 
   programs.qutebrowser = {
@@ -105,11 +140,11 @@ in
     settings = {
       colors = {
         hints = {
-          bg = "#${config.colorScheme.colors.base00}";
-          fg = "#${config.colorScheme.colors.base0F}";
+          bg = "#${config.colorScheme.palette.base00}";
+          fg = "#${config.colorScheme.palette.base0F}";
         };
         tabs.bar = {
-          bg = "#${config.colorScheme.colors.base00}";
+          bg = "#${config.colorScheme.palette.base00}";
         };
       };
       #tabs.tabs_are_windows = true;
@@ -120,7 +155,39 @@ in
     #  tabs.bar.bg = "#${config.colorScheme.colors.base00}";
     #  keyhint.fg = "#${config.colorScheme.colors.base05}";
     #};
+
+    #extraConfig = builtins.readFile ./src/.config/nvim/init.vim;
+
+      #c.colors.webpage.darkmode.grayscale.images = 0.35
+      #c.content.user_stylesheets = '~/.config/qutebrowser/stylesheet/mydarkmodefix.css'
+    extraConfig = ''
+      c.colors.webpage.preferred_color_scheme = 'dark'
+      c.colors.webpage.darkmode.enabled = True
+      c.colors.webpage.darkmode.algorithm = 'lightness-hsl'
+      c.colors.webpage.darkmode.contrast = -.022
+      c.colors.webpage.darkmode.threshold.foreground = 150
+      c.colors.webpage.darkmode.threshold.background = 100
+      c.colors.webpage.darkmode.policy.images = 'never'
+      c.content.notifications.enabled = False
+    '';
   };
+  #home.file.".config/qutebrowser/stylesheet/mydarkmodefix.css" = {
+  #home.file."mydarkmodefix.css" = {
+  home.file.".config/qutebrowser" = {
+    enable = true;
+    #text = ''
+    #'';
+    #source = ./src/.config/qutebrowser/stylesheet/mydarkmodefix.css;
+    source = ./src/.config/qutebrowser;
+    #source = src/.Xresources.d;
+    recursive = true;
+    #target = ".config/qutebrowser/stylesheet/mydarkmodefix.css"; # Path to target file relative to HOME
+    #target = ~/.config/qutebrowser/stylesheet/mydarkmodefix.css; # Path to target file relative to HOME
+    #target = "~.config/qutebrowser/stylesheet/mydarkmodefix.css"; # Path to target file relative to HOME
+    target = "~.config/qutebrowser"; # Path to target file relative to HOME
+    #target = ".config/qutebrowser/stylesheet/"; # Path to target file relative to HOME
+  };
+  #xresources.extraConfig = builtins.readFile ./src/.Xresources;
 
   programs.urxvt = {
     enable = true;
@@ -173,6 +240,8 @@ in
     shellAliases = {
       aoeu = "setxkbmap us";
       asdf = "setxkbmap dvorak";
+      oeu = "loadkeys us";
+      sdf = "loadkeys dvorak";
 
       l = "ls -alhF";
       #ll = "ls --color=tty -Filah";
@@ -217,6 +286,8 @@ in
     shellAliases = {
       aoeu = "setxkbmap us";
       asdf = "setxkbmap dvorak";
+      oeu = "loadkeys us";
+      sdf = "loadkeys dvorak";
 
       #ls = "exa -g --git --time-style long-iso";
       l = "ls -alhF";
@@ -282,7 +353,8 @@ in
 
   programs.info.enable = true;
 
-  programs.exa = {
+  #programs.exa = {
+  programs.eza = {
     enable = true;
     #enableAliases = true;
   };
@@ -295,51 +367,54 @@ in
   programs.neovim = {
     enable = true;
     defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-    vimdiffAlias = true;
+    #viAlias = true;
+    #vimAlias = true;
+    #vimdiffAlias = true;
 
     # Use Nix Package search engine to find even more plugins:
     # https://search.nixos.org/packages
     plugins = with pkgs.vimPlugins; [
-      nvim-lspconfig
-      nvim-treesitter.withAllGrammars
-      plenary-nvim
-      gruvbox-material
-      mini-nvim
+      ##nvim-lspconfig
+      #nvim-treesitter.withAllGrammars
+      #plenary-nvim
+      #gruvbox-material
+      #mini-nvim
+      #nvim-tree-lua
+      #vim-illuminate
+      #vim-numbertoggle
 
-      nvim-tree-lua {
-        plugin = pkgs.vimPlugins.vim-startify;
-        config = "let g:startify_change_to_vcs_root = 0";
-      }
+      #{
+      #plugin = vim-startify;
+      #config = "let g:startify_change_to_vcs_root = 0";
+      #}
 
     ];
 
     extraConfig = builtins.readFile ./src/.config/nvim/init.vim;
   };
 
-  programs.vim = {
-    enable = true;
-    extraConfig = builtins.readFile ./src/vim/vimrc;
-    settings = {
-      relativenumber = true;
-      number = true;
-      #nowrap = true;
-    };
-    plugins = with pkgs.vimPlugins; [
-      vim-elixir
-      #vim-mix-format
-      sensible
-      vim-airline
-      The_NERD_tree                      # file system explorer
-      fugitive vim-gitgutter             # git
-      rust-vim
-      #YouCompleteMe
-      vim-abolish
-      command-t
-      vim-go
-    ];
-  };
+# programs.vim = {
+#   enable = true;
+#   extraConfig = builtins.readFile ./src/vim/vimrc;
+#   settings = {
+#     relativenumber = true;
+#     number = true;
+#     #nowrap = true;
+#   };
+#   plugins = with pkgs.vimPlugins; [
+#     vim-elixir
+#     #vim-mix-format
+#     sensible
+#     vim-airline
+#     The_NERD_tree                      # file system explorer
+#     fugitive vim-gitgutter             # git
+#     rust-vim
+#     #YouCompleteMe
+#     vim-abolish
+#     command-t
+#     vim-go
+#   ];
+# };
 
   #programs.yi = {
   #    ...
@@ -544,9 +619,9 @@ in
   };
 
   services.xscreensaver = {
-    enable = true;
+    enable = false;                     # Xserver just blank/power-off the display, no need to display xscreensaver
     settings = {
-      mode = "random";
+      mode = "Voronoi";                 # "random";
       lock = false;
       fadeTicks = 20;
     };

@@ -19,8 +19,17 @@ in
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
 
+    ./youtube.nix
+
     ./common-configs.nix
     ./common-packages.nix
+
+    # My attemp to use nix-doom-emacs
+    #./emacs.nix
+    #
+    #inputs.nix-doom-emacs.hmModule
+    #
+    #./emacs-with-doom.nix
   ];
 
   nixpkgs = {
@@ -61,7 +70,6 @@ in
 
   home.packages = with pkgs; [
     btop
-
     #steam
     almanah
     #file-roller
@@ -70,7 +78,7 @@ in
     #kodi
     #python3.8-notebook
     qtox
-    retroarch
+    #retroarchFull # retroarch
     tig
     treesheets
     unrar
@@ -79,9 +87,11 @@ in
     xarchiver
     #xmind-8-update8
     xournalpp
-
+    wpsoffice
+    chemtool
+    marvin
     smlnj
-    waydroid
+    #waydroid
     #kmymoney
     #anbox
     #pmbootstrap
@@ -92,7 +102,6 @@ in
     gdmap
     ncdu
     gdu
-
     baobab
     dutree
     btdu
@@ -103,8 +112,11 @@ in
     xpra
     bootiso
     virt-manager
-
     kitty
+    #jfbview
+    #qmmp
+    ed  # an implemintation of the standard unix editor
+    sakura # a terminal emulator based on GTK and VTE
   ];
 
   # Enable home-manager and git
@@ -120,15 +132,16 @@ in
   programs.fzf.enable = true;                    # A command-line fuzzy finder written in Go
   #programs.jq.enable = true;                    # ??? lightweight and flexible command-line JSON processor
   #programs.bat.enable = true;                   # ??? battery?
-  programs.command-not-found.enable = true;      # Whether interactive shells should show which Nix package (if any) provides a missing command. 
+  programs.command-not-found.enable = true;      # Whether interactive shells should show which Nix package (if any) provides a missing command.
   programs.dircolors.enable = true;
   programs.htop.enable = true;
   programs.info.enable = true;
-  programs.exa.enable = true;
+  programs.eza.enable = true;
 
   programs.ssh = {
     enable = true;
     matchBlocks = {
+      #------------------------------------------------------------------------
       #"najib@gogs.mahirah" = {
       #  hostname = "mahirah";
       #  port = 22;
@@ -136,8 +149,24 @@ in
       #  #certificateFile = [ "~/.ssh/gogs.mahirah.localdomain/id_ed25519" ];
       #  identityFile = [ "~/.ssh/gogs.mahirah.localdomain/id_ed25519" ];
       #};
+      #------------------------------------------------------------------------
     };
   };
+
+  # XXX:
+  #programs.tmux.shell = "\${pkgs.zsh}/bin/zsh";
+  #programs.tmux.shell = "${pkgs.zsh}/bin/zsh";
+  programs.tmux.shell = "/run/current-system/sw/bin/zsh";
+
+  #programs.doom-emacs = {
+  #  enable = true;
+  #  # Directory containing my config.el, init.el, and packages.el files
+  #  # Need to cread ~/doom.d
+  #  # and copy the three files from
+  #  # https://github.com/nix-community/nix-doom-emacs/tree/master/test/doom.d
+  #  #doomPrivateDir = "./doom.d";
+  #  doomPrivateDir = ./src/doom.d;
+  #};
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";

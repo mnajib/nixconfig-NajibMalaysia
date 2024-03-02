@@ -16,14 +16,14 @@ in
     # outputs.homeManagerModules.example
 
     # Or modules exported from other flakes (such as nix-colors):
-    inputs.nix-colors.homeManagerModules.default
+    #inputs.nix-colors.homeManagerModules.default
     #inputs.hardware.nixosModules.common-cpu-intel
     #inputs.hardware.nixosModules.common-gpu-intel
     #inputs.hardware.nixosModules.common-gpu-nvidia
     ##inputs.hardware.nixosModules.common-gpu-nvidia-disable.nix
     #inputs.hardware.nixosModules.common-pc-laptop
     #inputs.hardware.nixosModules.common-pc-ssd
-    inputs.hyprland.homeManagerModules.default
+    #inputs.hyprland.homeManagerModules.default
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
@@ -74,7 +74,7 @@ in
     #sameboy
 
     # CLI task manager
-    taskell
+    #taskell # disable as it failed to build on 2023-09-19
     ctodo
     geek-life
     todoman
@@ -84,6 +84,12 @@ in
     effitask
 
     foot
+    minetest
+    #blender
+    freecad librecad
+    inkscape
+    #gimp
+    libreoffice
   ];
 
   # Enable home-manager and git

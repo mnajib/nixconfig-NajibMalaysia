@@ -5,17 +5,31 @@ set mouse=v                 " middle-click paste with
 set hlsearch                " highlight search
 set incsearch               " incremental search
 set wildmode=longest,list   " get bash-like tab completions
+set termguicolors           " enabling true color
 
-set number                  " add line numbers
+set background=dark
+highlight Normal ctermbg=black ctermfg=lightgrey guibg=black guifg=lightgrey
+
+"set number                  " add line numbers
+set relativenumber                  " add line numbers
 "highlight LineNr ctermfg=11 guifg=Yellow ctermbg=DarkGrey guibg=DarkGrey
-highlight LineNr ctermfg=11 guifg=Yellow ctermbg=237 guibg=#100c08
+"highlight LineNr ctermfg=11 guifg=Yellow ctermbg=237 guibg=#100c08
+highlight LineNr ctermfg=11   ctermbg=237
+highlight LineNr guifg=#525252 guibg=#333333
 
 filetype plugin indent on   " allow auto-indenting depending on file type
 syntax on                   " syntax highlighting
 set mouse=a                 " enable mouse click
 set clipboard=unnamedplus   " using system clipboard
 filetype plugin on
-set cc=80                   " set an 80 column border for good coding style
+
+" set an 80 column border for good coding style
+"set colorcolumn=80
+set colorcolumn=40,60,80
+" if using ANSI-16
+"highlight ColorColumn ctermbg=16
+" if using 256 color terminal
+highlight ColorColumn ctermbg=238 guibg=#111111
 
 " XXX: security risk ???
 set modeline                " to make vim/nvim load setting in file header
@@ -33,7 +47,8 @@ set modeline                " to make vim/nvim load setting in file header
 "------------------------------------------------------------------------------
 "highlight Cursor guifg=bg guibg=fg
 "highlight Cursor guifg=bg guibg=#626262
-highlight Cursor guifg=Black guibg=Yellow
+"highlight Cursor guifg=Black guibg=Yellow
+highlight Cursor guifg=Black guibg=Yellow ctermfg=Black ctermbg=Yellow
 
 "set cursorline              " highlight current cursorline
 "set cursorcolumn
@@ -46,10 +61,51 @@ highlight CursorColumn ctermbg=DarkBlue guibg=DarkBlue
 highlight CursorLineNr cterm=underline ctermfg=11 gui=bold guifg=Yellow
 "------------------------------------------------------------------------------
 
+
+"------------------------------------------------------------------------------
+" Search hit
+"------------------------------------------------------------------------------
+"highlight Search cterm=NONE ctermbg=darkyellow ctermfg=lightyellow
+"highlight Search gui=NONE guibg=darkyellow guifg=lightyellow
+highlight Search cterm=NONE ctermbg=darkyellow ctermfg=black
+highlight Search gui=NONE guibg=darkyellow guifg=black
+"------------------------------------------------------------------------------
+
+
+"------------------------------------------------------------------------------
+" Match parenthesis
+"------------------------------------------------------------------------------
+"highlight MatchParen cterm=none ctermbg=green ctermfg=blue
+"highlight MatchParen cterm=none ctermbg=green ctermfg=blue guibg=NONE guifg=brue gui=bold
+highlight MatchParen cterm=NONE ctermbg=darkblue ctermfg=lightblue
+highlight MatchParen gui=NONE guibg=darkblue guifg=lightblue
+"------------------------------------------------------------------------------
+
+
+"------------------------------------------------------------------------------
+" Comments
+"------------------------------------------------------------------------------
+"highlight Comment cterm=italic ctermbg=NONE ctermfg=darkgrey
+"highlight Comment gui=italic guibg=NONE guifg=darkgrey
+highlight Comment cterm=italic ctermbg=NONE ctermfg=238
+highlight Comment gui=italic guibg=NONE guifg=#444444
+"------------------------------------------------------------------------------
+
+
 set ttyfast                 " Speed up scrolling in Vim
 "set spell                  " enable spell check (may need to download language package)
 "set noswapfile             " disable creating swap file
 "set backupdir=~/.cache/vim " Directory to store backup files.
+
+
+"------------------------------------------------------------------------------
+" indent-blankline
+"------------------------------------------------------------------------------
+"highlight IndentBlankLine               guifg=#444444 guibg=NONE gui=NONE guisp=NONE
+"highlight IndentBlankLineIndent         guifg=white guibg=green gui=NONE guisp=NONE
+"highlight IndentBlankLineWhitespace     guifg=red guibg=#444444 gui=NONE guisp=NONE
+"highlight IndentBlankLineScope          guifg=purple guibg=blue gui=NONE guisp=NONE
+"------------------------------------------------------------------------------
 
 
 "------------------------------------------------------------------------------

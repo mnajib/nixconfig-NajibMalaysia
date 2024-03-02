@@ -64,7 +64,7 @@ in
   home.packages = with pkgs; [
     posterazor
     remmina
-    wpsoffice
+    #wpsoffice
     clamav
     audacity
     shotcut

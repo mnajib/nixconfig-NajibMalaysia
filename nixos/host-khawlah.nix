@@ -2,33 +2,33 @@
 
 { pkgs, config, ... }:
 {
-	nix = {
-		package = pkgs.nixFlakes;
-		extraOptions = ''
+  nix = {
+    package = pkgs.nixFlakes;
+    extraOptions = ''
       experimental-features = nix-command flakes
-		'';
-	};
+    '';
+  };
 
-	imports = [
-		./hardware-configuration-khawlah.nix
-		#./bootEFI.nix # harddisk asal dari laptop x230 khawlah
-		./bootBIOS.nix # harddisk dari laptop lain, pindah ke x230, tukar ke hostname khawlah
-		#./network-dns.nix
-		./hosts2.nix
-		./users-anak2.nix
-		./thinkpad.nix
-		#<nixos-hardware/lenovo/thinkpad/x230>
-		#./anbox.nix
-		./nfs-client-automount.nix
-		#./audio-pulseaudio.nix
-		./audio-pipewire.nix
-		./hardware-printer.nix
-		./console-keyboard-dvorak.nix
-		./keyboard-with-msa.nix
-		./zramSwap.nix
-		./configuration.FULL.nix
-		#./btrbk-khawlah.nix
-		./typesetting.nix
+  imports = [
+    ./hardware-configuration-khawlah.nix
+    #./bootEFI.nix # harddisk asal dari laptop x230 khawlah
+    ./bootBIOS.nix # harddisk dari laptop lain, pindah ke x230, tukar ke hostname khawlah
+    #./network-dns.nix
+    ./hosts2.nix
+    ./users-anak2.nix
+    ./thinkpad.nix
+    #<nixos-hardware/lenovo/thinkpad/x230>
+    #./anbox.nix
+    ./nfs-client-automount.nix
+    #./audio-pulseaudio.nix
+    ./audio-pipewire.nix
+    ./hardware-printer.nix
+    ./console-keyboard-dvorak.nix
+    ./keyboard-with-msa.nix
+    ./zramSwap.nix
+    ./configuration.FULL.nix
+    #./btrbk-khawlah.nix
+    ./typesetting.nix
     ./nix-garbage-collector.nix
   ];
 
@@ -86,6 +86,7 @@
   services.xserver.displayManager.defaultSession = "none+xmonad";
   #services.xserver.desktopManager.xfce.enable = true;
   services.xserver.desktopManager.plasma6.enable = true;
+  #services.xserver.desktopManager.enlightenment.enable = true;
   #services.xserver.desktopManager.lxqt.enable = true;
   #services.xserver.desktopManager.deepin.enable = true;
   #services.xserver.desktopManager.budgie.enable = true;

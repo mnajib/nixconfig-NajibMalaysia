@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  lib,
   ...
 }:
 
@@ -11,6 +12,11 @@
       experimental-features = nix-command flakes
     '';
   };
+
+  nix.settings.cores = 3;
+  nix.settings.max-jobs = 3;
+
+  nix.settings.trusted-users = [ "root" "najib" "julia" ];
 
   imports = [
     #./bootEFI.nix
@@ -60,17 +66,18 @@
     ./configuration.FULL.nix
 
     ./btrbk-keira.nix
+
+    #./nix-garbage-collector.nix
+
+    ./monitoring-tools.nix
+
+    ./flatpak.nix
   ];
 
   # For Thinkpad T410
   #imports = [
   #    "${builtins.fetchGit { url = "https://github.com/NixOS/nixos-hardware.git"; }}/lenovo/thinkpad/t410"
   #];
-
-  nix.settings.trusted-users = [
-    "root" "najib"
-    "julia"
-  ];
 
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
@@ -83,12 +90,14 @@
   hardware.enableAllFirmware = true;
 
   #boot.kernelPackages = pkgs.linuxKernel.packages.latest;
+  #boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
+  #boot.kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   #boot.loader.systemd-boot.enable = true;
   #boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub = {
     enable = true;
-    version = 2;
     enableCryptodisk = true;
     copyKernels = true;
     #useOSProber = true; # XXX:
@@ -100,7 +109,8 @@
     devices = [
       #"/dev/disk/by-id/wwn-0x5000c5002ea341bc"
       #"/dev/disk/by-id/wwn-0x5000c5002ec8a164"
-      "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK0803806"
+      "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK0803806"                     # /dev/sda
+      "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1017188"                     # /dev/sdb
     ];
     #efiSupport = true;
 
@@ -117,8 +127,16 @@
     #];
   };
 
+  services.btrfs.autoScrub = {
+    enable = true;
+    fileSystems = [ "/" ];
+    #interval = "monthly";
+    interval = "weekly";
+  };
+
   services.fstrim.enable = true;
 
+  #networking.useDHCP = lib.mkForce true; # XXX:
   networking.useDHCP = false;
   #networking.interface.eno1.useDHCP = true;
 
@@ -147,7 +165,13 @@
   ];
 
   powerManagement.enable = true;
-  #services.auto-cpufreq.enable = true;
+  #----------------------------------------------------------------------------
+  # XXX: on-going test
+  #----------------------------------------------------------------------------
+  services.auto-cpufreq.enable = true;
+  powerManagement.cpuFreqGovernor = "powersave";
+  #powerManagement.cpufreq.min = 800000;
+  powerManagement.cpufreq.max = 2000000; # Guna 1500,000 KHz pada zahrah.
 
   services.tlp = {
     enable = true;
@@ -160,6 +184,19 @@
       DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth wwan";
       #DEVICES_TO_ENABLE_ON_STARTUP = "wifi";
     };
+  };
+
+  services.thinkfan = {
+    enable = true;
+    levels = [
+      [ 0 0 55 ]
+      [ "level auto" 48 60 ]
+      [ "level auto" 50 61 ]
+      [ 6 52 63 ]
+      [ 7 56 65 ]
+      [ "level full-speed" 60 85 ]
+      [ "level full-speed" 80 32767 ]
+    ];
   };
 
   networking.networkmanager.wifi.powersave = false;
@@ -197,17 +234,16 @@
   services.xserver.libinput.touchpad.tapping = true; #false;
 
   #services.xserver.displayManager.sddm.enable = true;
+  services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.displayManager.defaultSession = "none+xmonad";
+
   #services.xserver.desktopManager.plasma5.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
-
-  #services.xserver.displayManager.defaultSession = "none+xmonad";
-
-  nix.settings.max-jobs = 2;
-
 
   #environment.systemPackages = [
   #  pkgs.blender
   #];
 
-  system.stateVersion = "22.05";
+  #system.stateVersion = "22.05";
+  system.stateVersion = "23.05";
 }

@@ -8,28 +8,30 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "firewire_ohci" "sd_mod" "sdhci_pci" ];
-  #boot.initrd.kernelModules = [ "dm-snapshot" ];
+  boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "firewire_ohci" "usb_storage" "sd_mod" "sdhci_pci" ];
+  #boot.initrd.kernelModules = [ "dm-snapshot" ]; # Look below
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-  
+
 #--------------------------------------------------------------------
 
  boot.initrd = {
 
-      # /dev/sda2 --> crypt --> LVM --> btrfs
+      #
+      # NOTE:
+      # -----
+      #   Sometimes maybe need add another passphrase key for crypt/luks
+      #
+
+      # /dev/sda.. --> crypt --> btrfs
       luks.devices."crypt1" = {
-          device = "/dev/disk/by-uuid/c5d49ad4-d678-4b73-906e-9142f70edc6a"; #"/dev/disk/by-uuid/9273e024-1e66-4bdf-affb-1b26c647f78f";
+          device = "/dev/disk/by-uuid/c5d49ad4-d678-4b73-906e-9142f70edc6a"; 
           preLVM = true;
           #keyFile =
           #allowDiscards =
       };
 
-      # /dev/sdb2 --> crypt --> LVM --> btrfs
-      #luks.devices."crypt2" = {
-      #    device = "/dev/disk/by-uuid/f6bd180c-6557-476b-890e-fd958046f466"; # "/dev/disk/by-uuid/GBeXRg-fwsa-X3bX-Buhe-8FiG-qqm4-0>
-      #    preLVM = true;
-      #};
+      # /dev/sdb.. --> crypt --> btrfs
       luks.devices."crypt2" = {
           device = "/dev/disk/by-uuid/17b47f8c-916a-42b7-bc30-6b8cbe887a83";
           preLVM = true;
@@ -77,40 +79,43 @@
 #--------------------------------------------------------------------
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/c959cd6c-4f5a-4bd4-ba22-3d1351372228";
+    { 
+      device = "/dev/disk/by-uuid/15762a77-c5ef-4eb0-9a5e-946646691a37";
       fsType = "btrfs";
-      options = [ "subvol=nixos" "compress=zstd" "autodefrag" "noatime" ];
-    };
-
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/c959cd6c-4f5a-4bd4-ba22-3d1351372228";
-      fsType = "btrfs";
-      options = [ "subvol=home" "compress=zstd" "autodefrag" "noatime" ];
-    };
-
-  fileSystems."/home/najib" =
-    { device = "/dev/disk/by-uuid/c959cd6c-4f5a-4bd4-ba22-3d1351372228";
-      fsType = "btrfs";
-      options = [ "subvol=najib" "compress=zstd" "autodefrag" "noatime" ];
-    };
-
-  fileSystems."/home/DATA" =
-    { device = "/dev/disk/by-uuid/c959cd6c-4f5a-4bd4-ba22-3d1351372228";
-      fsType = "btrfs";
-      options = [ "subvol=DATA" "compress=zstd" "autodefrag" "noatime" ];
+      options = [
+        "subvol=nixos" "compress=zstd" "autodefrag"
+        #"noatime"
+      ];
     };
 
   fileSystems."/root" =
-    { device = "/dev/disk/by-uuid/c959cd6c-4f5a-4bd4-ba22-3d1351372228";
+    { 
+      device = "/dev/disk/by-uuid/15762a77-c5ef-4eb0-9a5e-946646691a37";
       fsType = "btrfs";
-      options = [ "subvol=root" "compress=zstd" "autodefrag" "noatime" ];
+      options = [
+        "subvol=rootuserhome" "compress=zstd" "autodefrag"
+        #"noatime"
+      ];
     };
 
-  fileSystems."/home/julia" =
-    { device = "/dev/disk/by-uuid/c959cd6c-4f5a-4bd4-ba22-3d1351372228";
+  fileSystems."/home" =
+    {
+      device = "/dev/disk/by-uuid/15762a77-c5ef-4eb0-9a5e-946646691a37";
       fsType = "btrfs";
-      options = [ "subvol=juliani" "compress=zstd" "autodefrag" "noatime" ];
+      options = [
+        "subvol=home" "compress=zstd" "autodefrag" 
+	#"noatime"
+      ];
     };
+
+  fileSystems."/nix" =
+    {
+      device = "/dev/disk/by-uuid/15762a77-c5ef-4eb0-9a5e-946646691a37";
+      fsType = "btrfs";
+      options = [ "subvol=nix" "compress=zstd" "autodefrag" "noatime" ];
+    };
+
+
 
 #-------------------------------------------------------------------------------
 
@@ -119,11 +124,20 @@
       fsType = "ext4";
     };
 
+  fileSystems."/boot2" =
+    { device = "/dev/disk/by-uuid/9c121e78-d95a-4462-a9c2-1f8691dcffd3";
+      fsType = "ext4";
+    };
+
+#-------------------------------------------------------------------------------
+
   swapDevices =
     [
-      #{ device = "/dev/disk/by-uuid/271b7f30-7bf5-48d0-86e5-efe7c12512c1"; }
-      { device = "/dev/disk/by-uuid/b44ed253-daff-4c75-912a-2b4801611a15"; }
+      { device = "/dev/disk/by-uuid/b44ed253-daff-4c75-912a-2b4801611a15"; }    # /dev/sda --> /dev/sda2 --> /dev/mapper/crypt1 --> /dev/mapper/vg1-lvswap1
+      { device = "/dev/disk/by-uuid/a2b9c885-9d46-41c0-aa42-8c310f12d3ef"; }    # /dev/sdb --> /dev/sdb2 --> /dev/mapper/crypt2 --> /dev/mapper/vg2-lvswap2
     ];
+
+#-------------------------------------------------------------------------------
 
   nixpkgs.hostPlatform.system = "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
