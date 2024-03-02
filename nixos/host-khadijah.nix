@@ -202,7 +202,7 @@ with lib;
   #};
 
   #boot.loader.timeout = null;        # XXX: Not sure how to set null value here.
-  boot.loader.timeout = 10;             # in seconds
+  boot.loader.timeout = 120;             # in seconds
   #boot.loader.systemd-boot.enable = true;      # for efi boot, not bios?
   boot.loader.grub.useOSProber = true;
 
