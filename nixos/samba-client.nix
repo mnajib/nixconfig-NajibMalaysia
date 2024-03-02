@@ -1,8 +1,34 @@
+#
+# NOTE:
+#
+#   sudo journalctl -u samba-smbd.service -f
+#
+
 { pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
     cifs-utils
+
+    lxqt.lxqt-policykit                 # provides a default authentication client for policykit
   ];
+
+  services.samba = {
+    enable = true;
+    openFirewall = true;
+
+    extraConfig = ''
+      workgroup = WORKGROUP
+      security = user
+      #guest account = najib
+      guest account = nobody
+      map to guest = bad user
+    '';
+  };
+
+  services.gvfs = {
+    enable = true;
+    #package = lib.mkForce pkgs.gnome3.gvfs;
+  };
 
   #fileSystems."/mnt/public" = {
   #  device = "//customdesktop/public";

@@ -45,6 +45,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    #nixos-mailserver = {
+    #  url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #  inputs.nixpkgs-23_05.follows = "nixpkgs";
+    #  inputs.nixpkgs-23_11.follows = "nixpkgs";
+    #};
+
     # TODO: Add any other flake you might need
     #hardware.url = "github:nixos/nixos-hardware";
     hardware.url = "github:NixOS/nixos-hardware/master";
@@ -61,8 +68,11 @@
 
     hyprland.url = "github:hyprwm/hyprland";
 
-    sops-nix.url = "github:mic92/sops-nix";
-    #inputs.sops-nix.inputs.nixpkps.follows = "nixpkgs";        # optional, not necessary for the module
+    sops-nix = {
+      url = "github:mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";                   # optional, not necessary for the module
+      inputs.nixpkgs-stable.follows = "nixpkgs";            # ???
+    };
 
     #sile.url = "github:sile-typesetter/sile/v0.14.3";
 
@@ -390,6 +400,9 @@
             # Add your model from this list:
             # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
             hardware.nixosModules.lenovo-thinkpad-t410
+
+            nix-ld.nixosModules.nix-ld
+            { programs.nix-ld.dev.enable = true; }
 
             #home-manager.nixosModules.home-manager {
             #  home-manager = {

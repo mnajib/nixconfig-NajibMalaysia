@@ -619,9 +619,9 @@ in
   };
 
   services.xscreensaver = {
-    enable = true;
+    enable = false;                     # Xserver just blank/power-off the display, no need to display xscreensaver
     settings = {
-      mode = "random";
+      mode = "Voronoi";                 # "random";
       lock = false;
       fadeTicks = 20;
     };

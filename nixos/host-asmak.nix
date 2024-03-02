@@ -45,6 +45,7 @@
   environment.systemPackages = with pkgs; [
     gparted
     simplex-chat-desktop
+    lightlocker
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -124,6 +125,13 @@
   services.fstrim.enable = true;
   hardware.enableAllFirmware = true;
   services.smartd.enable = true;
+
+  services.xserver.displayManager.sessionCommands = ''
+    xset -dpms
+    xset s blank
+    xset s 120
+    #${pkgs.lightlocker}/bin/light-locker --idle-hint &
+  '';
 
   services.xserver.synaptics.enable = false;
   services.xserver.libinput.enable = true;
