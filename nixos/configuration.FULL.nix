@@ -724,6 +724,8 @@
     #libreoffice-fresh
     #wpsoffice
 
+    scribus
+
     #aseprite   # disabled because always need recompile, and usually not being use
 
     gimp-with-plugins
@@ -768,7 +770,7 @@
     #librecad
     #sweethome3d.application sweethome3d.furniture-editor sweethome3d.textures-editor
 
-    #alchemy lmms marvin mixxx mypaint scribusUnstable
+    #alchemy lmms marvin mixxx mypaint
     gnome.cheese
     snapshot              # Take pictures and videos on your computer, tablet, or phone
     simplescreenrecorder #qt-recordmydesktop
