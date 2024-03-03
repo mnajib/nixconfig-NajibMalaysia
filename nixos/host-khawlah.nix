@@ -30,6 +30,8 @@
     #./btrbk-khawlah.nix
     ./typesetting.nix
     ./nix-garbage-collector.nix
+
+    ./hyprland.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
