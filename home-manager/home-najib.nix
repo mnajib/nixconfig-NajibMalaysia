@@ -30,6 +30,8 @@ in
     #inputs.nix-doom-emacs.hmModule
     #
     #./emacs-with-doom.nix
+
+    ./hyprland.nix
   ];
 
   nixpkgs = {
