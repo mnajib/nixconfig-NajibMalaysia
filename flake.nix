@@ -67,6 +67,10 @@
     nix-colors.url = "github:misterio77/nix-colors";
 
     hyprland.url = "github:hyprwm/hyprland";
+    #plugin_name = {
+    #  url = "github:maintener/plugin_name";
+    #  inputs.hyprland.follows = "hyprland";                 # IMPORTANT
+    #};
 
     sops-nix = {
       url = "github:mic92/sops-nix";
