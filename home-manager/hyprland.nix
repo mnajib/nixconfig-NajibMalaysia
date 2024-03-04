@@ -13,8 +13,8 @@
   #};
 
   home.packages = with pkgs; [
-    rofi-wayland
-    #rofi
+    #rofi-wayland
+    rofi
     #bemenu
     #fuzzel
     #tofi

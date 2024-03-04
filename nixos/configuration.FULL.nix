@@ -280,20 +280,20 @@
     #rofimoji
     #rofi-rbw # bitrwarden password manager
     #--------------------------------------------------------------------------
-    (rofi.override {
-      plugins = [
-        rofi-file-browser
-        rofi-pass
-        rofi-calc
-        rofi-emoji
-        rofi-rbw
-        rofi-rbw-x11
-        rofi-systemd
-        rofi-screenshot
-        rofi-power-menu
-        rofi-pulse-select
-      ];
-    })
+    #(rofi.override {
+    #  plugins = [
+    #    rofi-file-browser
+    #    rofi-pass
+    #    rofi-calc
+    #    rofi-emoji
+    #    rofi-rbw
+    #    rofi-rbw-x11
+    #    rofi-systemd
+    #    rofi-screenshot
+    #    rofi-power-menu
+    #    rofi-pulse-select
+    #  ];
+    #})
     #--------------------------------------------------------------------------
 
     dzen2    # A general purpose messaging, notification and menuing program for X11
