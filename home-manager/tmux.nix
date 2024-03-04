@@ -31,14 +31,20 @@
     enable = true;
     #packages =  pkgs.tumx;
     clock24 = true;
-    newSession = true;
+    newSession = true;                                      # Automatically spawn a session if trying to attach and none are running.
+
     resizeAmount = 1;
     baseIndex = 1;
     escapeTime = 10;
     historyLimit = 10000;
     keyMode = "vi";
     terminal = "screen-256color";
-    #prefix = "C-b";
+
+    prefix = "C-b";
+    #shortcut = "b";                                         # Default is "b".
+
+    #withUtempter = true;                                    # Default is 'true'. Whether to enable libutempter for tmux. This is required so that tmux can write to /var/run/utmp (which can be queried with who to display currently connected user sessions). Note, this will add a guid wrapper for the group utmp!
+    secureSocket = false;                                   # Store tmux socket under /run, which is more secure than /tmp, but as a downside it doesn’t survive user logout.
 
     extraConfig = ''
       #set -g mouse-select-window on
