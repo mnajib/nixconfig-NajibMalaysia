@@ -101,6 +101,10 @@
       set -g window-status-style bg=yellow                  # Change inactive window color
       set -g window-status-current-style bg=red,fg=white    # Change active window color
 
+      set -g status-right ""
+      set -g status-right-length 60
+      set -g status-right " \"#{client_user}@#{host_short}\" %A %Y-%m-%d %H:%M:%S "
+
       # ctrl-r to search the zsh-history in reverse, like emacs style
       #bind-key '^R' history-incremental-search-backward
     '';
