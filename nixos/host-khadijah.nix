@@ -84,7 +84,7 @@ with lib;
     ./steam.nix                         # steam for game, blender-LTS, ...
 
     ./mame.nix
-    ./emulationstation.nix
+    #./emulationstation.nix
 
     ./console-keyboard-dvorak.nix       # keyboard layout for console environment
     ./keyboard-with-msa.nix             # keyboard layout for graphical environment
@@ -299,7 +299,7 @@ with lib;
   hardware.nvidia.open = false;
   hardware.nvidia.nvidiaSettings = true;
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;  # <-- this is tested and work
 
   services.logind.extraConfig = "RuntimeDirectorySize=4G";    # before this it is 100% full with 1.6G tmpfs /run/user/1001
 
