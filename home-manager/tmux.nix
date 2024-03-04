@@ -96,6 +96,11 @@
       set -g window-style bg=$COLOR1
       set -g window-active-style bg=$COLOR2
 
+      # Change colors to easier to see how many windows have open and which one is active
+      set -g status-bg cyan                                 # Change the status bar background color
+      set -g window-status-style bg=yellow                  # Change inactive window color
+      set -g window-status-current-style bg=red,fg=white    # Change active window color
+
       # ctrl-r to search the zsh-history in reverse, like emacs style
       #bind-key '^R' history-incremental-search-backward
     '';
