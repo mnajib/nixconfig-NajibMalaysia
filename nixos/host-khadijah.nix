@@ -166,6 +166,7 @@ with lib;
   environment.systemPackages = with pkgs; [
     #tmux
     nvtop
+    kdenlive
   ];
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
   #  environment.systemPackages = [
