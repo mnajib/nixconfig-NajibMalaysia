@@ -52,6 +52,12 @@ with lib;
     #max-jobs = 0; # Disable (never build on local machine, even when connecting to remote builders fails) building on local machine; only build on remote builders.
   };
 
+  nixpkgs.config = {
+    allowUnfree = true;
+    #allowBroken = true;
+    cudaSupport = true;                 # May cause a mass rebuild
+  };
+
   imports = [
     ./hardware-configuration-khadijah.nix
     ./configuration.FULL.nix
