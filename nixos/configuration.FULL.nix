@@ -280,20 +280,20 @@
     #rofimoji
     #rofi-rbw # bitrwarden password manager
     #--------------------------------------------------------------------------
-    (rofi.override {
-      plugins = [
-        rofi-file-browser
-        rofi-pass
-        rofi-calc
-        rofi-emoji
-        rofi-rbw
-        rofi-rbw-x11
-        rofi-systemd
-        rofi-screenshot
-        rofi-power-menu
-        rofi-pulse-select
-      ];
-    })
+    #(rofi.override {
+    #  plugins = [
+    #    rofi-file-browser
+    #    rofi-pass
+    #    rofi-calc
+    #    rofi-emoji
+    #    rofi-rbw
+    #    rofi-rbw-x11
+    #    rofi-systemd
+    #    rofi-screenshot
+    #    rofi-power-menu
+    #    rofi-pulse-select
+    #  ];
+    #})
     #--------------------------------------------------------------------------
 
     dzen2    # A general purpose messaging, notification and menuing program for X11
@@ -990,14 +990,17 @@
     resizeAmount = 1;
     baseIndex = 1;
     historyLimit = 10000;
-    #prefix = "C-b";
+
+    #prefix = "C-a";
+    shortcut = "a";
 
     #keyMode = "vi";
     #customPaneNavigationAndResize = true;
 
     # XXX:
     withUtempter = true;
-    secureSocket = false;
+
+    secureSocket = false;               # Store tmux socket under /run, which is more secure than /tmp, but as a downside it doesn’t survive user logout.
 
     plugins = [
       #pkgs.tmuxPlugins.nord
