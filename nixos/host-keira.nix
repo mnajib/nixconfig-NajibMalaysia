@@ -238,7 +238,8 @@
   services.xserver.displayManager.defaultSession = "none+xmonad";
 
   #services.xserver.desktopManager.plasma5.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
+  #services.xserver.desktopManager.xfce.enable = true;
+  services.xserver.desktopManager.lxqt.enable = true;
 
   #environment.systemPackages = [
   #  pkgs.blender
