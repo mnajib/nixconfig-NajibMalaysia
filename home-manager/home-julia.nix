@@ -61,7 +61,7 @@ in
   #programs.neovim.enable = true;
 
   home.packages = with pkgs; [
-    posterazor
+    #posterazor
     remmina
     wpsoffice
     clamav
