@@ -1071,7 +1071,7 @@
       ];
     }; # End ohMyZsh
 
-  }; # End zsh
+  }; # End programs.zsh
 
   programs.fish.enable = true;
   programs.xonsh.enable = true;
@@ -1080,7 +1080,7 @@
   #users.defaultUserShell = pkgs.fish;    #pkgs.zsh;
   #users.users.root.shell = pkgs.fish;    #pkgs.zsh;
 
-  services.clipcat.enable = true;         # clipboard manager daemon
+  #services.clipcat.enable = true;         # clipboard manager daemon
 
   services.urxvtd.enable = true;          # To use urxvtd, run "urxvtc".
 

@@ -32,6 +32,8 @@
     ./nix-garbage-collector.nix
 
     #./hyprland.nix
+
+    ./logitech-unifying.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
