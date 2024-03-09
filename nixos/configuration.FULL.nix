@@ -992,7 +992,8 @@
     historyLimit = 10000;
 
     #prefix = "C-a";
-    shortcut = "a";
+    #shortcut = "a";
+    shortcut = "b";
 
     #keyMode = "vi";
     #customPaneNavigationAndResize = true;

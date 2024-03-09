@@ -54,11 +54,13 @@
     #--------------------------------------------------------------------------
     # Open LUKS encrypted device
     #--------------------------------------------------------------------------
+    # '/'
     luks.devices."luks-c7650c0c-d344-4e0a-8590-fa3dd49088f4" = {
       device = "/dev/disk/by-uuid/c7650c0c-d344-4e0a-8590-fa3dd49088f4";
       #preLVM = true;
     };
 
+    # swap
     luks.devices."luks-9f205856-b2d4-459b-ad0a-2bf8e230a7ca" = {
       device = "/dev/disk/by-uuid/9f205856-b2d4-459b-ad0a-2bf8e230a7ca";
     };
@@ -76,7 +78,8 @@
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/16B8-42E5";
+    #device = "/dev/disk/by-uuid/16B8-42E5";
+    device = "/dev/disk/by-uuid/110C-CEC0";
     fsType = "vfat";
     #options = [
     #  "subvol=swap"
@@ -85,10 +88,6 @@
   };
 
   swapDevices =  [
-    #{ device = "/dev/disk/by-uuid/54a11355-d334-46c5-8cbb-43369d08fd8a"; } # swap on 500GB HD. This HDD is failing
-    #{ device = "/dev/disk/by-uuid/600ebd52-edd2-4c42-b3b1-b8d8a6cb5acf"; } # swap partition on 254GB SSD
-    #{ device = "/dev/disk/by-uuid/79d45678-d31b-4b39-851b-f00559ea8cc6"; }
-    #{ device = "/dev/mapper/luks-781bbff1-508d-4287-a748-63d45d74b5e5"; }
     { device = "/dev/disk/by-uuid/0a2a334b-66f7-4fa3-aea1-d111a480e83f"; }
 
     #{
