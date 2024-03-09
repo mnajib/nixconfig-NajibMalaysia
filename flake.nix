@@ -363,10 +363,12 @@
         };
 
         # HP DeskPro
-        cheetah = nixpkgs.lib.nixosSystem {
+        #cheetah = nixpkgs.lib.nixosSystem {
+        hidayah = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
-            ./nixos/host-cheetah.nix
+            #./nixos/host-cheetah.nix
+            ./nixos/host-hidayah.nix
 
             nix-ld.nixosModules.nix-ld
             { programs.nix-ld.dev.enable = true; }
@@ -378,10 +380,12 @@
         };
 
         # Acer Aspire
-        leopard = nixpkgs.lib.nixosSystem {
+        #leopard = nixpkgs.lib.nixosSystem {
+        taufiq = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
-            ./nixos/host-leopard.nix
+            #./nixos/host-leopard.nix
+            ./nixos/host-taufiq.nix
 
             nix-ld.nixosModules.nix-ld {
               programs.nix-ld.dev.enable = true;
@@ -582,6 +586,14 @@
         };
 
         "julia@manggis" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/home-julia.nix
+          ];
+        };
+
+        "julia@taufiq" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [

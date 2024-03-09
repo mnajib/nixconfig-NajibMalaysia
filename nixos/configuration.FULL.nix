@@ -1073,7 +1073,7 @@
 
   }; # End zsh
 
-  programs.fish.enable = true;
+  #programs.fish.enable = true;
   programs.xonsh.enable = true;
 
   #users.users.najib.shell = pkgs.fish;    #pkgs.zsh; # pkgs.fish;

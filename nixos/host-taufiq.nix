@@ -53,13 +53,14 @@ with lib;
   };
 
   imports = [
-    ./hardware-configuration-cheetah.nix
+    #./hardware-configuration-cheetah.nix
+    ./hardware-configuration-taufiq.nix
     ./configuration.FULL.nix
 
     #./hosts.nix
     #./hosts2.nix
 
-    ./bootEFI.nix
+    #./bootEFI.nix
     #./bootBIOS.nix
 
     #./thinkpad.nix
@@ -67,13 +68,14 @@ with lib;
     #./network-dns.nix
 
     #./users-anak2.nix
-    ./users-naqib-wheels.nix
+    ./users-naqib-wheel.nix
     ./users-naim.nix
     ./users-nurnasuha.nix
-    ./users-julia.nix
+    ./users-julia-wheel.nix
+    ./users-abdullah.nix
 
     ./nfs-client-automount.nix
-    ./nfs-client-automount-games.nix
+    #./nfs-client-automount-games.nix
     #./nfs-client.nix
 
     #./virtualbox.nix # compile fail
@@ -82,11 +84,11 @@ with lib;
     #./anbox2.nix
     #./waydroid.nix
 
-    ./3D.nix                            # freecad, qcad, ...
+    #./3D.nix                            # freecad, qcad, ...
     ./steam.nix                         # steam for game, blender-LTS, ...
 
     #./mame.nix
-    ./emulationstation.nix
+    #./emulationstation.nix
 
     ./console-keyboard-dvorak.nix       # keyboard layout for console environment
     ./keyboard-with-msa.nix             # keyboard layout for graphical environment
@@ -107,23 +109,22 @@ with lib;
 
     #./nix-garbage-collector.nix
 
-    ./flatpak.nix
-    ./appimage.nix
+    #./flatpak.nix
+    #./appimage.nix
 
-    ./walkie-talkie.nix
+    #./walkie-talkie.nix
   ];
 
+  # Dell Precision M4800
+  networking.hostName = "taufiq";   # "cheetah";
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
-  #
-
-  # Dell Precision M4800
-  networking.hostId = "b77174bf";
-  networking.hostName = "cheetah";
+  networking.hostId = "fc10af0f";
 
   nix.settings.trusted-users = [
     "root" "najib"
     "naqib"
+    "julia"
   ];
 
   networking.useDHCP = false;          # Disabled by Najib on 20220724T0740
@@ -133,7 +134,9 @@ with lib;
   #--------------------------------------------------------
   networking.nftables.enable = true;    # 'nftable' is enable; 'iptables' if not.
   networking.firewall = {
-    enable = true;                      #'false' is the default.
+    enable = false;                      #'false' is the default.
+    #enable = true;                      #'false' is the default.
+
     #trustedInterfaces = [ "enp0s2" ];
     #interfaces = {};
     #interfaces."enp0s2".allowedTCPPorts = [];
@@ -165,6 +168,8 @@ with lib;
   environment.systemPackages = with pkgs; [
     #tmux
     nvtop
+    gparted
+    kate
   ];
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
   #  environment.systemPackages = [
@@ -194,6 +199,13 @@ with lib;
 
   services.fstrim.enable = true;
 
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.useOSProber = true;
+  boot.loader.grub.efiSupport = true;
+  boot.loader.timeout = 300; # in seconds
+  #boot.loader.timeout = null;        # XXX: Not sure how to set null value here.
+
   #boot.loader.grub = {
   #  enable = true;
   #  version = 2;
@@ -205,11 +217,6 @@ with lib;
   #
   #  useOSProber = true;
   #};
-
-  #boot.loader.timeout = null;        # XXX: Not sure how to set null value here.
-  boot.loader.timeout = 10;             # in seconds
-  #boot.loader.systemd-boot.enable = true;      # for efi boot, not bios?
-  boot.loader.grub.useOSProber = true;
 
   # Setup keyfile
   #boot.initrd.secrets = {
@@ -238,10 +245,10 @@ with lib;
   #};
 
   #boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelParams = [
-    #"i915.modeset=0" "nouveau.modeset=1"                                        # to disable i915 and enable nouveau
-    "video=eDP-1:1920x1080" "video=VGA-1:1280x1024" "video=DP-1-3:1280x1024"    #
-  ];
+  #boot.kernelParams = [
+  #  #"i915.modeset=0" "nouveau.modeset=1"                                        # to disable i915 and enable nouveau
+  #  "video=eDP-1:1920x1080" "video=VGA-1:1280x1024" "video=DP-1-3:1280x1024"    #
+  #];
 
   #
   # NOTE:
@@ -278,11 +285,20 @@ with lib;
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".device = "/dev/disk/by-uuid/a5172078-045e-4b03-abbc-32a86dfe0d06";
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".keyFile = "/crypto_keyfile.bin";
 
-  services.xserver.dpi = 96;
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "yes";
+    };
+  };
+
+  services.xserver.enable = true;
+
+  #services.xserver.dpi = 96;
 
   #services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
   #services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
-  services.xserver.videoDrivers = [ "nvidia" ];
+  #services.xserver.videoDrivers = [ "nvidia" ];
   # OR
   # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
   #services.xserver.videoDrivers = [ "nvidiaLegacy390" ]; #
@@ -293,18 +309,18 @@ with lib;
   #   NVIDIA GPU product: Quadro K2100M
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390; # Latest Legacy GPU version (390.xx series): 390.143 that support the graphic card.
 
-  hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
-  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
+  #hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
+  #hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
 
-  hardware.nvidia.prime.sync.enable = true;
-  hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
+  #hardware.nvidia.prime.sync.enable = true;
+  #hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
 
-  hardware.nvidia.powerManagement.enable = false;
-  hardware.nvidia.powerManagement.finegrained = false;
-  hardware.nvidia.open = false;
-  hardware.nvidia.nvidiaSettings = true;
-  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+  #hardware.nvidia.powerManagement.enable = false;
+  #hardware.nvidia.powerManagement.finegrained = false;
+  #hardware.nvidia.open = false;
+  #hardware.nvidia.nvidiaSettings = true;
+  ##hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
+  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
 
   services.logind.extraConfig = "RuntimeDirectorySize=4G";    # before this it is 100% full with 1.6G tmpfs /run/user/1001
 
@@ -317,19 +333,20 @@ with lib;
   services.xserver.displayManager.defaultSession = "none+xmonad";
 
   #services.xserver.desktopManager.plasma5.enable = true;
+  #services.xserver.desktopManager.plasma6.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
   #services.xserver.desktopManager.mate.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
+  #services.xserver.desktopManager.xfce.enable = true;
   #services.xserver.desktopManager.enlightenment.enable = true;
-  #services.xserver.desktopManager.lxqt.enable = true;
+  services.xserver.desktopManager.lxqt.enable = true;
   #services.xserver.desktopManager.lumina.enable = true;
 
-  services.xserver.windowManager.spectrwm.enable = true;
-  services.xserver.windowManager.qtile.enable = true;
-  services.xserver.windowManager.notion.enable = true;
-  services.xserver.windowManager.leftwm.enable = true;
-  services.xserver.windowManager.nimdow.enable = true;
-  services.xserver.windowManager.herbstluftwm.enable = true;
+  #services.xserver.windowManager.spectrwm.enable = true;
+  #services.xserver.windowManager.qtile.enable = true;
+  #services.xserver.windowManager.notion.enable = true;
+  #services.xserver.windowManager.leftwm.enable = true;
+  #services.xserver.windowManager.nimdow.enable = true;
+  #services.xserver.windowManager.herbstluftwm.enable = true;
 
   #----------------------------------------------------------------------------
 
@@ -349,10 +366,10 @@ with lib;
   #    };
 
   services.power-profiles-daemon.enable = false;
-  #powerManagement.cpuFreqGovernor = "powersave";
-  #powerManagement.enable = false; # Default is true;
-  powerManagement.cpufreq.min = 2000000000; # 2000000; # 800000; # Default is 'null';
-  powerManagement.cpufreq.max = 2600000000; # 2600000; # 3200000; # Default is null;
+  ##powerManagement.cpuFreqGovernor = "powersave";
+  ##powerManagement.enable = false; # Default is true;
+  #powerManagement.cpufreq.min = 2000000000; # 2000000; # 800000; # Default is 'null';
+  #powerManagement.cpufreq.max = 2600000000; # 2600000; # 3200000; # Default is null;
   #services.upower.enable = true;
   #powerManagement.powertop.enable = true;
   services.tlp = {
@@ -377,18 +394,18 @@ with lib;
       #CPU_MAX_PERF_ON_BAT=60;
 
       # CPU frequency
-      CPU_SCALING_MIN_FREQ_ON_AC="2.0GHz"; # 2000000; # 800000;
-      CPU_SCALING_MAX_FREQ_ON_AC="2.6GHz"; # 2600000; # 3200000;
-      CPU_SCALING_MIN_FREQ_ON_BAT="2.0GHz"; # 2000000; #800000;
-      CPU_SCALING_MAX_FREQ_ON_BAT="2.6GHz"; # 2600000; #3200000; #2300000;
+      #CPU_SCALING_MIN_FREQ_ON_AC="2.0GHz"; # 2000000; # 800000;
+      #CPU_SCALING_MAX_FREQ_ON_AC="2.6GHz"; # 2600000; # 3200000;
+      #CPU_SCALING_MIN_FREQ_ON_BAT="2.0GHz"; # 2000000; #800000;
+      #CPU_SCALING_MAX_FREQ_ON_BAT="2.6GHz"; # 2600000; #3200000; #2300000;
     };
   };
-  services.auto-cpufreq = {
-    enable = true;
-  };
-  systemd.services."auto-cpufreq" = {
-    after = [ "display-manager.service" ];
-  };
+  #services.auto-cpufreq = {
+  #  enable = true;
+  #};
+  #systemd.services."auto-cpufreq" = {
+  #  after = [ "display-manager.service" ];
+  #};
 
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.powersave = false;
@@ -404,7 +421,13 @@ with lib;
   # XXX: High-DPI console
   #console.font = lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
 
-  virtualisation.virtualbox.host.enable = true;
+  #virtualisation.virtualbox.host.enable = true;
 
-  system.stateVersion = "22.05";
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "23.11";
 }
