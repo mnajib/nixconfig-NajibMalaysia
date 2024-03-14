@@ -63,7 +63,7 @@ with lib;
     ./configuration.FULL.nix
 
     #./hosts.nix
-    ./hosts2.nix
+    #./hosts2.nix
 
     ./bootEFI.nix
     #./bootBIOS.nix

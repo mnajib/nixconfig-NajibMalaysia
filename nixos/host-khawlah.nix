@@ -14,7 +14,7 @@
     #./bootEFI.nix # harddisk asal dari laptop x230 khawlah
     ./bootBIOS.nix # harddisk dari laptop lain, pindah ke x230, tukar ke hostname khawlah
     #./network-dns.nix
-    ./hosts2.nix
+    #./hosts2.nix
     ./users-anak2.nix
     ./thinkpad.nix
     #<nixos-hardware/lenovo/thinkpad/x230>
@@ -31,7 +31,7 @@
     ./typesetting.nix
     ./nix-garbage-collector.nix
 
-    ./hyprland.nix
+    #./hyprland.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
