@@ -7,9 +7,9 @@
       save = 10000;
       size = 10000;
     };
-    defaultKeymap = "viins"
+    defaultKeymap = "viins";
     enableAutosuggestions = true;
-    enableCompletion = true:
+    enableCompletion = true;
     syntaxHighlighting = {
       enable = true;
     };
@@ -19,6 +19,10 @@
     shellAliases = {
       ll = "ls -l";
       ".." = "cd ..";
+      j = "jobs";
+      s = "sync";
+      echod = "echo $DISPLAY";
+      exportd = "export DISPLAY=:0";
     };
 
     #plugins = [
