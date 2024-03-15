@@ -31,6 +31,7 @@
     ./typesetting.nix
     ./nix-garbage-collector.nix
 
+    ./gnome.nix
     #./hyprland.nix
 
     ./logitech-unifying.nix
