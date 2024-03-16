@@ -73,6 +73,7 @@ in
     ./rofi.nix
     #./nvim/lsp.nix
     #./nvim
+    ./zsh.nix
   ];
   # XXX: TODO: Should be in seperate file packages.nix
 

@@ -31,7 +31,10 @@
     ./typesetting.nix
     ./nix-garbage-collector.nix
 
+    ./gnome.nix
     #./hyprland.nix
+
+    ./logitech-unifying.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:

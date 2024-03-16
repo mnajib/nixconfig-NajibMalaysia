@@ -630,7 +630,7 @@
     clipgrab
     #dfilemanager # File manager written in Qt/C++
     pcmanfm # File manager with GTK interface
-    gnome.nautilus
+    #gnome.nautilus
     index-fm # Multi-platform file manager
     worker # A two-pane file manager with advanced file manipulation features
     #keepnote
@@ -1072,7 +1072,7 @@
       ];
     }; # End ohMyZsh
 
-  }; # End zsh
+  }; # End programs.zsh
 
   #programs.fish.enable = true;
   programs.xonsh.enable = true;
@@ -1081,7 +1081,7 @@
   #users.defaultUserShell = pkgs.fish;    #pkgs.zsh;
   #users.users.root.shell = pkgs.fish;    #pkgs.zsh;
 
-  services.clipcat.enable = true;         # clipboard manager daemon
+  #services.clipcat.enable = true;         # clipboard manager daemon
 
   services.urxvtd.enable = true;          # To use urxvtd, run "urxvtc".
 
@@ -1090,7 +1090,8 @@
   programs.mtr.enable = true;
   #programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
 
-  services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
+  # XXX:
+  #services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
 
   #services.glusterfs.enable = true;
 
