@@ -581,7 +581,8 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            ./home-manager/home-julia.nix
+            #./home-manager/home-julia.nix
+            ./home-manager/julia-keira/default.nix
           ];
         };
 
@@ -589,7 +590,8 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            ./home-manager/home-julia.nix
+            #./home-manager/home-julia.nix
+            ./home-manager/julia-manggis/default.nix
           ];
         };
 
@@ -597,7 +599,8 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            ./home-manager/home-julia.nix
+            #./home-manager/home-julia.nix
+            ./home-manager/julia-taufiq/default.nix
           ];
         };
 
