@@ -169,6 +169,7 @@ with lib;
     #tmux
     nvtop
     gparted
+    fatresize
     kate
   ];
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
