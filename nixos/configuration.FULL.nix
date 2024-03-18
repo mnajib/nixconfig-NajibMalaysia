@@ -191,6 +191,8 @@
   # $ nix search wget
   #
   environment.systemPackages = with pkgs; [
+    cachix
+
     #unstable.minetest
     #unstable.google-chrome
     google-chrome

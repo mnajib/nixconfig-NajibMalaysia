@@ -52,6 +52,11 @@ with lib;
     #max-jobs = 0; # Disable (never build on local machine, even when connecting to remote builders fails) building on local machine; only build on remote builders.
   };
 
+  nixpkgs.config = {
+    allowUnfree = true;
+    #cudaSupport = true;                 # May cause a mass rebuild
+  };
+
   imports = [
     #./hardware-configuration-cheetah.nix
     ./hardware-configuration-taufiq.nix
@@ -168,6 +173,11 @@ with lib;
   environment.systemPackages = with pkgs; [
     #tmux
     nvtop
+    cudatoolkit
+    pciutils
+    file
+    gnumake
+    gcc
     gparted
     fatresize
     kate
@@ -297,31 +307,69 @@ with lib;
 
   #services.xserver.dpi = 96;
 
+  #----------------------------------------------------------------------------
   #services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
   #services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
-  #services.xserver.videoDrivers = [ "nvidia" ];
-  # OR
-  # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
-  #services.xserver.videoDrivers = [ "nvidiaLegacy390" ]; #
+  services.xserver.videoDrivers = [ "nvidia" ];
+  #
+  # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`, not here.
+  ##services.xserver.videoDrivers = [ "nvidiaLegacy390" ]; #
 
-  # 01:00.0 VGA compatible controller: NVIDIA Corporation GK106GLM [Quadro K2100M] (rev a1)
-  # For GK106GLM [Quadro K2100M] in Dell Precision M4800
-  # Legacy driver
-  #   NVIDIA GPU product: Quadro K2100M
-  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390; # Latest Legacy GPU version (390.xx series): 390.143 that support the graphic card.
+  hardware.nvidia = {
+    #hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
+    #hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
 
-  #hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
-  #hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
+    #hardware.nvidia.prime.sync.enable = true;
+    #hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
 
-  #hardware.nvidia.prime.sync.enable = true;
-  #hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
+    #hardware.nvidia.powerManagement.enable = false;
+    #hardware.nvidia.powerManagement.finegrained = false;
+    #hardware.nvidia.open = false;
+    #hardware.nvidia.nvidiaSettings = true;
+    ##hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
+    #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
 
-  #hardware.nvidia.powerManagement.enable = false;
-  #hardware.nvidia.powerManagement.finegrained = false;
-  #hardware.nvidia.open = false;
-  #hardware.nvidia.nvidiaSettings = true;
-  ##hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
-  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+    # Modesetting is required.
+    modesetting.enable = true;
+
+    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+    # Enable this if you have graphical corruption issues or application crashes after waking
+    # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
+    # of just the bare essentials.
+    powerManagement.enable = false;
+
+    # Fine-grained power management. Turns off GPU when not in use.
+    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+    powerManagement.finegrained = false;
+
+    # Use the NVidia open source kernel module (not to be confused with the
+    # independent third-party "nouveau" open source driver).
+    # Support is limited to the Turing and later architectures. Full list of
+    # supported GPUs is at:
+    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
+    # Only available from driver 515.43.04+
+    # Currently alpha-quality/buggy, so false is currently the recommended setting.
+    open = false;
+
+    # Enable the Nvidia settings menu,
+    # accessible via `nvidia-settings`.
+    nvidiaSettings = true;
+
+    # Optionally, you may need to select the appropriate driver version for your specific GPU.
+    #
+    # Refer:
+    #   https://www.nvidia.com/en-us/drivers/unix/
+    #
+    # 01:00.0 VGA compatible controller: NVIDIA Corporation GK106GLM [Quadro K2100M] (rev a1)
+    # For GK106GLM [Quadro K2100M] in Dell Precision M4800
+    # Card: Quadro K2100M --> Driver: nvidia legacy, version 390
+    #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
+    #
+    # card: nvidia gt 720 --> driver: nvidia legacy, version 470
+    #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+  };
+  #----------------------------------------------------------------------------
 
   services.logind.extraConfig = "RuntimeDirectorySize=4G";    # before this it is 100% full with 1.6G tmpfs /run/user/1001
 
@@ -337,9 +385,9 @@ with lib;
   #services.xserver.desktopManager.plasma6.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
   #services.xserver.desktopManager.mate.enable = true;
-  #services.xserver.desktopManager.xfce.enable = true;
+  services.xserver.desktopManager.xfce.enable = true;
   #services.xserver.desktopManager.enlightenment.enable = true;
-  services.xserver.desktopManager.lxqt.enable = true;
+  #services.xserver.desktopManager.lxqt.enable = true;
   #services.xserver.desktopManager.lumina.enable = true;
 
   #services.xserver.windowManager.spectrwm.enable = true;
@@ -374,7 +422,7 @@ with lib;
   #services.upower.enable = true;
   #powerManagement.powertop.enable = true;
   services.tlp = {
-    enable = true; # default is 'false'
+    enable = false;#true; # default is 'false'
     settings = {
       #TLP_PERSISTENT_DEFAULT=1;
       #TLP_DEFAULT_MODE="BAT";

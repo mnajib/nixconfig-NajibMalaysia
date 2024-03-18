@@ -16,14 +16,17 @@
     #  "https://cache.nixos.org/"
     #];
 
-    #extra-substituters = [
-    #  # Nix community's cache server
-    #  "https://nix-community.cachix.org"
-    #];
+    extra-substituters = [
+      # Nix community's cache server
+      "https://nix-community.cachix.org"
+    ];
 
-    #extra-trusted-public-keys = [
-    #  "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-    #];
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+
+    # Need to pass '--accept-nix-config' or accept them interactively.
+    # Looks like the flag is '--accept-flake-config'.
   };
 
   inputs = {
@@ -98,7 +101,13 @@
       url = "github:Mic92/nix-ld";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  };
+
+    expose-cuda = {
+      url = "github:ogoid/nixos-expose-cuda";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+  }; # End 'inputs'.
 
   outputs = {
     self,
@@ -120,6 +129,7 @@
     sops-nix,
     nix-doom-emacs,
     nix-ld,
+    expose-cuda,
     ...
   }@inputs:
     let
@@ -394,8 +404,10 @@
             # Add your model from this list:
             # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
             #hardware.nixosModules.lenovo-thinkpad-x220
-          ];
-        };
+
+            expose-cuda.nixosModules.default
+          ]; # End 'modules'.
+        }; #End: taufiq = nixpkgs.lib.nixosSystem
 
         # Laptop Thinkpad T410 (without nvidia) Julia
         keira = nixpkgs.lib.nixosSystem {
