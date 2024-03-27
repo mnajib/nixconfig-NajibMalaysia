@@ -115,6 +115,8 @@ with lib;
     ./appimage.nix
 
     ./walkie-talkie.nix
+
+    ./ai.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:

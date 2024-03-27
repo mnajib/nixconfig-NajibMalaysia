@@ -91,5 +91,9 @@ in
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   #home.stateVersion = "22.11";
-  home.stateVersion = "24.05";
+  #home.stateVersion = "24.05";
+  # I separate this to user@host specific;
+  #   nixconfig-NajibMalaysia/home-manager/julia-keira.nix
+  #   nixconfig-NajibMalaysia/home-manager/julia-manggis.nix
+  #   nixconfig-NajibMalaysia/home-manager/julia-taufiq.nix
 }
