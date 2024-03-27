@@ -91,7 +91,7 @@ with lib;
 
     #./3D.nix                            # freecad, qcad, ...
     ./steam.nix                         # steam for game, blender-LTS, ...
-
+    ./roblox.nix
     #./mame.nix
     #./emulationstation.nix
 
@@ -181,6 +181,8 @@ with lib;
     gparted
     fatresize
     kate
+
+    blender
   ];
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
   #  environment.systemPackages = [
