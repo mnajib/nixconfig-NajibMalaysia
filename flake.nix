@@ -495,7 +495,8 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            ./home-manager/home-najib.nix
+            #./home-manager/home-najib.nix
+            ./home-manager/user-najib/host-khadijah/default.nix
           ];
 
           # Try setting up doom-emacs
