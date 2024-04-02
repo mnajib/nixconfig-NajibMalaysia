@@ -594,7 +594,8 @@
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
             #./home-manager/home-julia.nix
-            ./home-manager/julia-keira/default.nix
+            #./home-manager/julia-keira/default.nix
+            ./home-manager/user-julia/host-keira/default.nix
           ];
         };
 

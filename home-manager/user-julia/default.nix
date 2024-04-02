@@ -20,8 +20,8 @@ in
     #./roblox.nix
     #./wesnoth.nix
 
-    ./common-configs.nix
-    ./common-packages.nix
+    ../common-configs.nix
+    ../common-packages.nix
   ];
 
   nixpkgs = {
@@ -63,7 +63,7 @@ in
   home.packages = with pkgs; [
     #posterazor
     remmina
-    wpsoffice
+    #wpsoffice
     clamav
     #audacity
     #shotcut

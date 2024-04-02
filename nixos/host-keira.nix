@@ -32,7 +32,7 @@
     #./hardware-storage-keira-SSD002.nix
 
     #./hosts.nix
-    ./hosts2.nix
+    #./hosts2.nix
     #./network-dns.nix
 
     #./users-najib.nix
@@ -239,7 +239,7 @@
 
   #services.xserver.desktopManager.plasma5.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
-  services.xserver.desktopManager.lxqt.enable = true;
+  #services.xserver.desktopManager.lxqt.enable = true;
 
   #environment.systemPackages = [
   #  pkgs.blender
