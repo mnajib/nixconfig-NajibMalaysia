@@ -118,6 +118,8 @@ with lib;
     #./appimage.nix
 
     #./walkie-talkie.nix
+
+    ./ai.nix
   ];
 
   # Dell Precision M4800
