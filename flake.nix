@@ -37,6 +37,12 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
+    #
+    # pkgs ? import <nixpkgs> {}
+    # unstable-pkgs ? import <nixpkgs-unstable> {}
+    # old-pkgs ? import <nixpkgs-23.05> {}
+    # old-pkgs ? import <nixos-old> {}
+    #
 
     # Set this up as an overlay; or pull-request (PR) it to nixpkgs.
     #nixpkgs-mitchty.url = "github:/mitchty/nixpkgs/mitchty";
@@ -582,6 +588,15 @@
           ];
         };
 
+        "naqib@hidayah" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            #./home-manager/naqib-hidayah/default.nix
+            ./home-manager/user-naqib/host-hidayah/default.nix
+          ];
+        };
+
         "nurnasuha@sakinah" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
@@ -605,7 +620,8 @@
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
             #./home-manager/home-julia.nix
-            ./home-manager/julia-manggis/default.nix
+            #./home-manager/julia-manggis/default.nix
+            ./home-manager/user-julia/host-manggis/default.nix
           ];
         };
 
@@ -614,7 +630,8 @@
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
             #./home-manager/home-julia.nix
-            ./home-manager/julia-taufiq/default.nix
+            #./home-manager/julia-taufiq/default.nix
+            ./home-manager/user-julia/host-taufiq/default.nix
           ];
         };
 
