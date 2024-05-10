@@ -34,7 +34,7 @@
     #./syncthing.nix
 
     # /var/lib/nextcloud/config/config.php
-    ./nextcloud.nix  # OpenSSL 1.1 is marked as unsecured
+    #./nextcloud.nix  # OpenSSL 1.1 is marked as unsecured
 
     # System health monitoring
     ./netdata.nix
@@ -218,7 +218,7 @@
 
   #environment.systemPackages = with pkgs; [
   environment.systemPackages = [
-    pkgs.blender
+    #pkgs.blender
     #pkgs.virtualboxWithExtpack
 
     # use in wayland
