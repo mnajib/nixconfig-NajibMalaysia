@@ -63,7 +63,7 @@ with lib;
     ./configuration.FULL.nix
 
     #./hosts.nix
-    ./hosts2.nix
+    #./hosts2.nix
 
     ./bootEFI.nix
     #./bootBIOS.nix
@@ -115,6 +115,8 @@ with lib;
     ./appimage.nix
 
     ./walkie-talkie.nix
+
+    ./ai.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:

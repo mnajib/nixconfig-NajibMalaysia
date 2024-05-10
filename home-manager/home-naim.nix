@@ -89,7 +89,7 @@ in
     freecad librecad
     inkscape
     #gimp
-    libreoffice
+    #libreoffice
   ];
 
   # Enable home-manager and git

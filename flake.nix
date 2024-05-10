@@ -16,14 +16,17 @@
     #  "https://cache.nixos.org/"
     #];
 
-    #extra-substituters = [
-    #  # Nix community's cache server
-    #  "https://nix-community.cachix.org"
-    #];
+    extra-substituters = [
+      # Nix community's cache server
+      "https://nix-community.cachix.org"
+    ];
 
-    #extra-trusted-public-keys = [
-    #  "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-    #];
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+
+    # Need to pass '--accept-nix-config' or accept them interactively.
+    # Looks like the flag is '--accept-flake-config'.
   };
 
   inputs = {
@@ -98,7 +101,13 @@
       url = "github:Mic92/nix-ld";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  };
+
+    expose-cuda = {
+      url = "github:ogoid/nixos-expose-cuda";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+  }; # End 'inputs'.
 
   outputs = {
     self,
@@ -120,6 +129,7 @@
     sops-nix,
     nix-doom-emacs,
     nix-ld,
+    expose-cuda,
     ...
   }@inputs:
     let
@@ -363,10 +373,12 @@
         };
 
         # HP DeskPro
-        cheetah = nixpkgs.lib.nixosSystem {
+        #cheetah = nixpkgs.lib.nixosSystem {
+        hidayah = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
-            ./nixos/host-cheetah.nix
+            #./nixos/host-cheetah.nix
+            ./nixos/host-hidayah.nix
 
             nix-ld.nixosModules.nix-ld
             { programs.nix-ld.dev.enable = true; }
@@ -378,10 +390,12 @@
         };
 
         # Acer Aspire
-        leopard = nixpkgs.lib.nixosSystem {
+        #leopard = nixpkgs.lib.nixosSystem {
+        taufiq = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
-            ./nixos/host-leopard.nix
+            #./nixos/host-leopard.nix
+            ./nixos/host-taufiq.nix
 
             nix-ld.nixosModules.nix-ld {
               programs.nix-ld.dev.enable = true;
@@ -390,8 +404,10 @@
             # Add your model from this list:
             # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
             #hardware.nixosModules.lenovo-thinkpad-x220
-          ];
-        };
+
+            expose-cuda.nixosModules.default
+          ]; # End 'modules'.
+        }; #End: taufiq = nixpkgs.lib.nixosSystem
 
         # Laptop Thinkpad T410 (without nvidia) Julia
         keira = nixpkgs.lib.nixosSystem {
@@ -479,7 +495,8 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            ./home-manager/home-najib.nix
+            #./home-manager/home-najib.nix
+            ./home-manager/user-najib/host-khadijah/default.nix
           ];
 
           # Try setting up doom-emacs
@@ -577,7 +594,9 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            ./home-manager/home-julia.nix
+            #./home-manager/home-julia.nix
+            #./home-manager/julia-keira/default.nix
+            ./home-manager/user-julia/host-keira/default.nix
           ];
         };
 
@@ -585,7 +604,17 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            ./home-manager/home-julia.nix
+            #./home-manager/home-julia.nix
+            ./home-manager/julia-manggis/default.nix
+          ];
+        };
+
+        "julia@taufiq" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            #./home-manager/home-julia.nix
+            ./home-manager/julia-taufiq/default.nix
           ];
         };
 

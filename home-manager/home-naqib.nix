@@ -102,7 +102,7 @@
     #blender
     #gimp
     inkscape
-    libreoffice
+    #libreoffice
     #firefox
     #brave
     qutebrowser

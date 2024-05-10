@@ -20,8 +20,8 @@ in
     #./roblox.nix
     #./wesnoth.nix
 
-    ./common-configs.nix
-    ./common-packages.nix
+    ../common-configs.nix
+    ../common-packages.nix
   ];
 
   nixpkgs = {
@@ -61,9 +61,9 @@ in
   #programs.neovim.enable = true;
 
   home.packages = with pkgs; [
-    posterazor
+    #posterazor
     remmina
-    wpsoffice
+    #wpsoffice
     clamav
     #audacity
     #shotcut
@@ -90,5 +90,10 @@ in
   systemd.user.startServices = "sd-switch";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "22.11";
+  #home.stateVersion = "22.11";
+  #home.stateVersion = "24.05";
+  # I separate this to user@host specific;
+  #   nixconfig-NajibMalaysia/home-manager/julia-keira.nix
+  #   nixconfig-NajibMalaysia/home-manager/julia-manggis.nix
+  #   nixconfig-NajibMalaysia/home-manager/julia-taufiq.nix
 }
