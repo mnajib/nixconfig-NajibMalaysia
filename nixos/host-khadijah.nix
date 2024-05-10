@@ -117,6 +117,7 @@ with lib;
     ./walkie-talkie.nix
 
     ./ai.nix
+    ./barrier.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
