@@ -37,6 +37,7 @@
     #tartube-yt-dlp # conflic with tartube
     youtube-dl
     #youtude-dl-light
+    yt-dlp
     ytmdl
 
     #--------------------------------------------------------------------------

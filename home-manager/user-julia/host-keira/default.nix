@@ -9,7 +9,8 @@
 {
   # You can import other home-manager modules here
   imports = [
-    ../../default.nix
+    #../../default.nix
+    ../default.nix
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

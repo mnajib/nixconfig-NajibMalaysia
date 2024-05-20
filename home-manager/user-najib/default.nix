@@ -19,10 +19,10 @@ in
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
 
-    ./youtube.nix
+    ../youtube.nix
 
-    ./common-configs.nix
-    ./common-packages.nix
+    ../common-configs.nix
+    ../common-packages.nix
 
     # My attemp to use nix-doom-emacs
     #./emacs.nix
@@ -174,5 +174,5 @@ in
   systemd.user.startServices = "sd-switch";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "22.05";
+  #home.stateVersion = "22.05";
 }

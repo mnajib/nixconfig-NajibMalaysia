@@ -3,8 +3,7 @@
 
 { inputs, outputs, lib, config, pkgs, ... }:
 #let
-#  name = "Juliani Jaffar";
-#  email = "jung_jue@yahoo.com";
+#  hostname = "khadijah";
 #in
 {
   # You can import other home-manager modules here
@@ -13,6 +12,5 @@
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  #home.stateVersion = "22.11";
-  home.stateVersion = "24.05";
+  home.stateVersion = "22.05";
 }
