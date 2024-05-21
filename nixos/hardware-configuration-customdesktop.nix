@@ -62,12 +62,12 @@
     # AGI SSD 256GB
     luks.devices."luks-bcd7371c-c49a-4b74-a041-9cf9728cf395" = {
       device = "/dev/disk/by-uuid/bcd7371c-c49a-4b74-a041-9cf9728cf395";
-      preLVM = true;
+      #preLVM = true;
     };   # xfs (nixos)
     # swap
     luks.devices."luks-781bbff1-508d-4287-a748-63d45d74b5e5" = {
       device = "/dev/disk/by-uuid/781bbff1-508d-4287-a748-63d45d74b5e5";
-      preLVM = true;
+      #preLVM = true;
     };
 
     #------------------
@@ -85,11 +85,11 @@
     # najibzfspool1, mirror-0
     luks.devices."luks-8a53d158-ba69-47a1-9329-2d07372949d6" = {
       device = "/dev/disk/by-uuid/8a53d158-ba69-47a1-9329-2d07372949d6";
-      preLVM = true;
+      #preLVM = true;
     };
     luks.devices."luks-3f373d53-ded5-481a-a6f2-c547a3593243" = {
       device = "/dev/disk/by-uuid/3f373d53-ded5-481a-a6f2-c547a3593243";
-      preLVM = true;
+      #preLVM = true;
     };
     #luks.devices."luks-0de82803-40d1-4fdf-8841-6e4f79e0394c" = {
     #  device = "/dev/disk/by-uuid/0de82803-40d1-4fdf-8841-6e4f79e0394c";
@@ -99,21 +99,21 @@
     # najibzfspool1, mirror-1
     luks.devices."luks-b25e6a23-1c8b-4037-8f00-5e8c51fa2c27" = {
       device = "/dev/disk/by-uuid/b25e6a23-1c8b-4037-8f00-5e8c51fa2c27";
-      preLVM = true;
+      #preLVM = true;
     };
 
     # najibzfspool1, mirror-2
     luks.devices."luks-ec2dca2b-84e7-4d33-b6fd-7bdad06ec445" = {
       device = "/dev/disk/by-uuid/ec2dca2b-84e7-4d33-b6fd-7bdad06ec445";
-      preLVM = true;
+      #preLVM = true;
     };                  # 1TB, bought used-hdd from Shopee on 2023-04.
     luks.devices."luks-acfbbc38-c2c4-453f-b995-f02f8cf17bac" = {
       device = "/dev/disk/by-uuid/acfbbc38-c2c4-453f-b995-f02f8cf17bac";
-      preLVM = true;
+      #preLVM = true;
     };                  # 1TB, bought used-hdd from Shopee on 2023-04.
     luks.devices."luks-135621a1-9dfa-467a-a3fd-ab66b21e38d6" = {
       device = "/dev/disk/by-uuid/135621a1-9dfa-467a-a3fd-ab66b21e38d6";
-      preLVM = true;
+      #preLVM = true;
     };
 
     # hot spare ?
