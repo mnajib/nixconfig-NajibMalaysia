@@ -1,3 +1,9 @@
+#
+# NOTE:
+#
+# showmount -e remote_nfs_server
+#
+
 {
   # Mount gluster volume
   #fileSystems."/mnt/gluster" = {
