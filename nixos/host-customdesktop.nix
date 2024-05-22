@@ -74,7 +74,7 @@
     #./gogs.nix
     ./gitea.nix
 
-    ./hosts2.nix
+    #./hosts2.nix
     ./configuration.FULL.nix
 
     #./kodi.nix
@@ -113,15 +113,17 @@
 
   systemd.services.NetworkManager-wait-online.enable = false;
 
+  #--------------------------------------------------------
+  # XXX: aaa
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
     timeout = 100;
 
     grub = {
-      enable = true;
+      #enable = true;
       #version = 2;
-      efiSupport = false;
+      efiSupport = true;
       enableCryptodisk = true;
       copyKernels = true;
       useOSProber = true;
@@ -144,7 +146,7 @@
 
   #boot.kernelPackages = pkgs.linuxPackages_latest; # XXX: test disable this while trying to solve monitor on build-in VGA, DVI, HDMI not detectded in Xorg, but detected in Wayland.
   boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
-  boot.kernelParams = [
+  #boot.kernelParams = [
     #"video=DisplayPort-2:D"
     #"video=DP-1:D"
     #"video=DP-2:D"
@@ -157,7 +159,7 @@
     #"video=DVI-1-1:D"
     #"video=VGA-0:1280x1024@60me"
     #"video=VGA-1:1280x1024@60me"
-  ];
+  #];
   #boot.supportedFilesystems = [ "ext4" "btrfs" "xfs" "vfat" ]; # "zfs" bcachefs
   #boot.initrd.supportedFilesystems = [ "ext4" "btrfs" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" ]; # "zfs" bcachefs
   #boot.loader.grub.copyKernels = true;
@@ -179,10 +181,12 @@
   #boot.kernelModules = [ "snd-ctxfi" "snd-ca0106" "snd-hda-intel" ];
   #boot.kernelModules = [ "snd-ctxfi" "snd-hda-intel" ];
 
+  services.libinput.enable = true;
+  services.displayManager.defaultSession = "none+xmonad";
+
   #------------------------------------
   services.xserver = {
     enable = true;
-    libinput.enable = true;
 
     # Test: Cuba disable, sebab SweetHome3D tak dapat jalan
     #videoDrivers = [ "nvidiaLegacy390" ]; #"radeon" "cirrus" "vesa"  "vmware"  "modesetting" ];
@@ -203,7 +207,6 @@
     #displayManager.sddm.enable = true;
     #displayManager.gdm.enable = true;
     displayManager.lightdm.enable = true;
-    displayManager.defaultSession = "none+xmonad";
 
     #desktopManager.plasma5.enable = true;
     desktopManager.xfce.enable = true;
