@@ -43,7 +43,8 @@
   #};
 
   fileSystems."/export/nfsshare2" = {
-    device = "/home/nfs/share";
+    #device = "/home/nfs/share";
+    device = "/mnt/data/nfs/share";
     options = [
       "bind"
       "x-systemd.automount"
@@ -52,7 +53,8 @@
   };
 
   fileSystems."/export/batocera" = {
-    device = "/home/nfs/batocera/userdata";
+    #device = "/home/nfs/batocera/userdata";
+    device = "/mnt/data/nfs/batocera/userdata";
     options = [
       "bind"
       "x-systemd.automount"
@@ -61,7 +63,8 @@
   };
 
   fileSystems."/export/nixforbatocera" = {
-    device = "/home/nfs/batocera/nix";
+    #device = "/home/nfs/batocera/nix";
+    device = "/mnt/data/nfs/batocera/nix";
     options = [
       "bind"
       "x-systemd.automount"
@@ -70,7 +73,8 @@
   };
 
   fileSystems."/export/najib" = {
-    device = "/home/najib";
+    #device = "/home/najib";
+    device = "/mnt/data/najib";
     options = [
       "bind"
       "x-systemd.automount"
@@ -79,7 +83,8 @@
   };
 
   fileSystems."/export/julia" = {
-    device = "/home/julia";
+    #device = "/home/julia";
+    device = "/mnt/data/julia";
     options = [
       "bind"
       "x-systemd.automount"
@@ -88,7 +93,8 @@
   };
 
   fileSystems."/export/naqib" = {
-    device = "/home/naqib";
+    #device = "/home/naqib";
+    device = "/mnt/data/naqib";
     options = [
       "bind"
       "x-systemd.automount"
@@ -97,7 +103,8 @@
   };
 
   fileSystems."/export/nurnasuha" = {
-    device = "/home/nurnasuha";
+    #device = "/home/nurnasuha";
+    device = "/mnt/data/nurnasuha";
     options = [
       "bind"
       "x-systemd.automount"
@@ -106,7 +113,8 @@
   };
 
   fileSystems."/export/naim" = {
-    device = "/home/naim";
+    #device = "/home/naim";
+    device = "/mnt/data/naim";
     options = [
       "bind"
       "x-systemd.automount"

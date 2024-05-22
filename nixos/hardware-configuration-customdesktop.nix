@@ -163,6 +163,10 @@
   #  device = "najibzfspool1/home";
   #  fsType = "zfs";
   #};
+  #fileSystems."/mnt/data" = {
+  #  device = "najibzfspool1/home";
+  #  fsType = "zfs";
+  #};
 
   #fileSystems."/root" = {
     #device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
