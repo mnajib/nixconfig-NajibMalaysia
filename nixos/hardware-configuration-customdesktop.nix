@@ -89,10 +89,10 @@
     #------------------
 
     # najibzfspool1, mirror-0
-    luks.devices."luks-8a53d158-ba69-47a1-9329-2d07372949d6" = {
-      device = "/dev/disk/by-uuid/8a53d158-ba69-47a1-9329-2d07372949d6";
-      #preLVM = true;
-    };
+    #luks.devices."luks-8a53d158-ba69-47a1-9329-2d07372949d6" = {
+    #  device = "/dev/disk/by-uuid/8a53d158-ba69-47a1-9329-2d07372949d6";
+    #  #preLVM = true;
+    #};
 
     # tak detect
     #luks.devices."luks-3f373d53-ded5-481a-a6f2-c547a3593243" = {
@@ -106,24 +106,24 @@
     #};
 
     # najibzfspool1, mirror-1
-    luks.devices."luks-b25e6a23-1c8b-4037-8f00-5e8c51fa2c27" = {
-      device = "/dev/disk/by-uuid/b25e6a23-1c8b-4037-8f00-5e8c51fa2c27";
-      #preLVM = true;
-    };
+    #luks.devices."luks-b25e6a23-1c8b-4037-8f00-5e8c51fa2c27" = {
+    #  device = "/dev/disk/by-uuid/b25e6a23-1c8b-4037-8f00-5e8c51fa2c27";
+    #  #preLVM = true;
+    #};
 
     # najibzfspool1, mirror-2
-    luks.devices."luks-ec2dca2b-84e7-4d33-b6fd-7bdad06ec445" = {
-      device = "/dev/disk/by-uuid/ec2dca2b-84e7-4d33-b6fd-7bdad06ec445";
-      #preLVM = true;
-    };                  # 1TB, bought used-hdd from Shopee on 2023-04.
-    luks.devices."luks-acfbbc38-c2c4-453f-b995-f02f8cf17bac" = {
-      device = "/dev/disk/by-uuid/acfbbc38-c2c4-453f-b995-f02f8cf17bac";
-      #preLVM = true;
-    };                  # 1TB, bought used-hdd from Shopee on 2023-04.
-    luks.devices."luks-135621a1-9dfa-467a-a3fd-ab66b21e38d6" = {
-      device = "/dev/disk/by-uuid/135621a1-9dfa-467a-a3fd-ab66b21e38d6";
-      #preLVM = true;
-    };
+    #luks.devices."luks-ec2dca2b-84e7-4d33-b6fd-7bdad06ec445" = {
+    #  device = "/dev/disk/by-uuid/ec2dca2b-84e7-4d33-b6fd-7bdad06ec445";
+    #  #preLVM = true;
+    #};                  # 1TB, bought used-hdd from Shopee on 2023-04.
+    #luks.devices."luks-acfbbc38-c2c4-453f-b995-f02f8cf17bac" = {
+    #  device = "/dev/disk/by-uuid/acfbbc38-c2c4-453f-b995-f02f8cf17bac";
+    #  #preLVM = true;
+    #};                  # 1TB, bought used-hdd from Shopee on 2023-04.
+    #luks.devices."luks-135621a1-9dfa-467a-a3fd-ab66b21e38d6" = {
+    #  device = "/dev/disk/by-uuid/135621a1-9dfa-467a-a3fd-ab66b21e38d6";
+    #  #preLVM = true;
+    #};
 
     # hot spare ?
     #...
