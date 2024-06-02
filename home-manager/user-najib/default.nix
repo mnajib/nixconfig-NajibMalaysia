@@ -138,7 +138,7 @@ in
   programs.dircolors.enable = true;
   programs.htop.enable = true;
   programs.info.enable = true;
-  programs.eza.enable = true;
+  #programs.eza.enable = true;
 
   programs.ssh = {
     enable = true;
@@ -158,7 +158,7 @@ in
   # XXX:
   #programs.tmux.shell = "\${pkgs.zsh}/bin/zsh";
   #programs.tmux.shell = "${pkgs.zsh}/bin/zsh";
-  programs.tmux.shell = "/run/current-system/sw/bin/zsh";
+  #programs.tmux.shell = "/run/current-system/sw/bin/zsh";
 
   #programs.doom-emacs = {
   #  enable = true;

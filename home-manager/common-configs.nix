@@ -355,10 +355,10 @@ in
   programs.info.enable = true;
 
   #programs.exa = {
-  programs.eza = {
-    enable = true;
-    #enableAliases = true;
-  };
+  #programs.eza = {
+  #  enable = true;
+  #  #enableAliases = true;
+  #};
 
   programs.dircolors.enable = true;
 

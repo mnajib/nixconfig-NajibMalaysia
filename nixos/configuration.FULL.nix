@@ -920,7 +920,7 @@
     gitAndTools.git-hub
     gitg
 
-    seaweedfs
+    #seaweedfs
 
     # XXX
     maven

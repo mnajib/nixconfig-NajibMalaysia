@@ -27,8 +27,8 @@
       "dialout"
     ];
 
-    shell = pkgs.zsh; # path/location of the shell program
-    useDefaultShell = false; # if true, the user's shell will be set to 'users.defaultUserShell'
+    #shell = pkgs.zsh; # path/location of the shell program
+    #useDefaultShell = false; # if true, the user's shell will be set to 'users.defaultUserShell'
 
     #packages = with pkgs; [
     #  firefox nnn ranger git tmux neovim htop direnv

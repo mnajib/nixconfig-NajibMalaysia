@@ -75,7 +75,7 @@ with lib;
     #./users-najib.nix
 
     ./nfs-client-automount.nix
-    ./nfs-client-automount-games.nix
+    #./nfs-client-automount-games.nix
     #./nfs-client.nix
 
     ./samba-client.nix
@@ -329,12 +329,12 @@ with lib;
   #services.xserver.desktopManager.lxqt.enable = true;
   #services.xserver.desktopManager.lumina.enable = true;
 
-  services.xserver.windowManager.spectrwm.enable = true;
-  services.xserver.windowManager.qtile.enable = true;
-  services.xserver.windowManager.notion.enable = true;
-  services.xserver.windowManager.leftwm.enable = true;
-  services.xserver.windowManager.nimdow.enable = true;
-  services.xserver.windowManager.herbstluftwm.enable = true;
+  #services.xserver.windowManager.spectrwm.enable = true;
+  #services.xserver.windowManager.qtile.enable = true;
+  #services.xserver.windowManager.notion.enable = true;
+  #services.xserver.windowManager.leftwm.enable = true;
+  #services.xserver.windowManager.nimdow.enable = true;
+  #services.xserver.windowManager.herbstluftwm.enable = true;
 
   #----------------------------------------------------------------------------
 
