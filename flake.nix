@@ -586,7 +586,17 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            ./home-manager/home-nurnasuha.nix
+            #./home-manager/home-nurnasuha.nix
+            ./home-manager/user-nurnasuha/host-sakinah/default.nix
+          ];
+        };
+
+        "nurnasuha@customdesktop" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            #./home-manager/home-nurnasuha.nix
+            ./home-manager/user-nurnasuha/host-customdesktop/default.nix
           ];
         };
 

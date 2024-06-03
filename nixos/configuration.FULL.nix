@@ -66,6 +66,13 @@
 
   #nix.trustedUsers = [ "root" "najib" ]; <-- moved to host-hostname.nix
 
+  # a workaround for error:
+  #   store path starts with illegal character '.'
+  # when running
+  #   nix-store --delete
+  #   nix-collect-garbage
+  nix.package = pkgs.nixVersions.latest;
+
   # Binary Cache for Haskell.nix
   nix.settings.trusted-public-keys = [
     "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
@@ -732,8 +739,8 @@
 
     #aseprite   # disabled because always need recompile, and usually not being use
 
-    gimp-with-plugins
-    #gimp
+    #gimp-with-plugins
+    gimp
 
     drawing drawpile
 

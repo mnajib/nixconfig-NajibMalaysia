@@ -89,7 +89,7 @@ with lib;
     #./anbox2.nix
     #./waydroid.nix
 
-    #./3D.nix                            # freecad, qcad, ...
+    ./3D.nix                            # freecad, qcad, ...
     ./steam.nix                         # steam for game, blender-LTS, ...
     ./roblox.nix
     #./mame.nix
@@ -184,7 +184,8 @@ with lib;
     fatresize
     kate
 
-    blender
+    #blender
+    #freecad
   ];
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
   #  environment.systemPackages = [
