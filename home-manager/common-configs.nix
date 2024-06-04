@@ -504,7 +504,22 @@ in
                 new = "green bold";
               };
           };
-      };
+
+          # mkdir /srv/gitrepo/nixconfig-NajibMalaysia.git
+          # chgrp -R users nixconfig-NajibMalaysia.git
+          # git init --bare --shared=0664 /srv/gitrepo/nixconfig-NajibMalaysia.git
+          # git init --bare --shared=group mysharedgitrepo
+          #
+          # git clone --config core.sharedRepository=true
+          #
+          # setfacl -R -m g:<whatever group>:rwX gitrepo
+          # find gitrepo -type d | xargs setfacl -R -m d:g:<whatever group>:rwX
+          safe = {
+            #directory = "/srv/gitrepo/nixconfig-NajibMalaysia.git";
+            #directory = "/srv/gitrepo";
+            directory = "*";
+          };
+      }; # End extraConfig
   };
 
 #------------------------------------------------------------------------------
