@@ -514,6 +514,8 @@ in
           #
           # setfacl -R -m g:<whatever group>:rwX gitrepo
           # find gitrepo -type d | xargs setfacl -R -m d:g:<whatever group>:rwX
+          #
+          # chmod -vR g+swX /srv/gitrepo
           safe = {
             #directory = "/srv/gitrepo/nixconfig-NajibMalaysia.git";
             #directory = "/srv/gitrepo";
