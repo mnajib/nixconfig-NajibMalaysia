@@ -3,6 +3,8 @@
 #
 # showmount -e remote_nfs_server
 #
+# systemctl list-dependencies --fater timers.target
+# systemctl list-dependencies --before sysstat-collect.timer
 
 {
   # Mount gluster volume
@@ -48,6 +50,14 @@
   #  ];
   #};
 
+  fileSystems."/mnt/data" = {
+    device = "najibzfspool1/home";
+    fsType = "zfs";
+    options = [
+      "x-systemd.before=export-nfsshare2.automount" #???
+    ];
+  };
+
   fileSystems."/export/nfsshare2" = {
     #device = "/home/nfs/share";
     device = "/mnt/data/nfs/share";
@@ -55,6 +65,11 @@
       "bind"
       "x-systemd.automount"
       "noauto"
+      #"noatime"
+      #"nofail"
+      "xsystemd.after=mnt-data.automount"
+      #"x-systemd.before=local-fs.target"
+      "x-systemd.before=nfs-server.service"
     ];
   };
 
@@ -65,6 +80,8 @@
       "bind"
       "x-systemd.automount"
       "noauto"
+      "xsystemd.after=mnt-data.automount"
+      "x-systemd.before=nfs-server.service"
     ];
   };
 
@@ -75,6 +92,8 @@
       "bind"
       "x-systemd.automount"
       "noauto"
+      "xsystemd.after=mnt-data.automount"
+      "x-systemd.before=nfs-server.service"
     ];
   };
 
@@ -85,6 +104,8 @@
       "bind"
       "x-systemd.automount"
       "noauto"
+      "xsystemd.after=mnt-data.automount"
+      "x-systemd.before=nfs-server.service"
     ];
   };
 
@@ -95,6 +116,8 @@
       "bind"
       "x-systemd.automount"
       "noauto"
+      "xsystemd.after=mnt-data.automount"
+      "x-systemd.before=nfs-server.service"
     ];
   };
 
@@ -105,6 +128,8 @@
       "bind"
       "x-systemd.automount"
       "noauto"
+      "xsystemd.after=mnt-data.automount"
+      "x-systemd.before=nfs-server.service"
     ];
   };
 
@@ -115,6 +140,8 @@
       "bind"
       "x-systemd.automount"
       "noauto"
+      "xsystemd.after=mnt-data.automount"
+      "x-systemd.before=nfs-server.service"
     ];
   };
 
@@ -125,6 +152,8 @@
       "bind"
       "x-systemd.automount"
       "noauto"
+      "xsystemd.after=mnt-data.automount"
+      "x-systemd.before=nfs-server.service"
     ];
   };
 

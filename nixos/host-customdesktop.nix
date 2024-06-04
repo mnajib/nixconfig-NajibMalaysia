@@ -3,7 +3,7 @@
 { pkgs, config, ... }:
 {
   nix = {
-    package = pkgs.nixFlakes;
+    #package = pkgs.nixFlakes;
     #settings.max-jobs = 2;
     extraOptions = ''
       experimental-features = nix-command flakes
