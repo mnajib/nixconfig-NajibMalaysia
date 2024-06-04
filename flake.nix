@@ -487,7 +487,8 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            ./home-manager/home-najib.nix
+            #./home-manager/home-najib.nix
+            ./home-manager/user-najib/host-customdesktop/default.nix
           ];
         };
 
