@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
   nix = {
-    package = pkgs.nixFlakes;
+    #package = lib.mkForce pkgs.nixFlakes;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
@@ -14,17 +14,26 @@
     ./thinkpad.nix
     #<nixos-hardware/lenovo/thinkpad/x220>
     ./touchpad-scrollTwofinger-TapTrue.nix
+
     #./users-anak2.nix
     ./users-nurnasuha-wheel.nix
+    ./users-naqib-wheel.nix
+    ./users-naim.nix
+    ./users-julia.nix
+
     #./hosts.nix
-    ./hosts2.nix
+    #./hosts2.nix
+
     #./nfs-client.nix
     ./nfs-client-automount.nix
     #./nfs-client.nix
+
     ./console-keyboard-dvorak.nix
     ./keyboard-with-msa.nix
+
     ./audio-pipewire.nix
     #./audio-pulseaudio.nix
+
     #./synergy-client.nix
     ./hardware-printer.nix
     ./hardware-tablet-wacom.nix
@@ -66,6 +75,7 @@
   #networking.interface.wwp0s29u1u4i6.useDHCP = true;
   #networking.interface.wlp0s29u1u2.useDHCP = true;
   networking.networkmanager.enable = true;
+  programs.nm-applet.enable = true;
 
   # XXX: Move this configuration to per-host
   #powerManagement.enable = true;
@@ -87,13 +97,14 @@
     emulateWheel = true;
   };
 
+  services.libinput.enable = true;
+  services.displayManager.defaultSession = "none+xmonad";
   services.xserver = {
     enable = true;
-    libinput.enable = true;
     #displayManager.gdm.enable = true;
     displayManager.lightdm.enable = true;
-    displayManager.defaultSession = "none+xmonad";
-    desktopManager.xfce.enable = true;
+    #desktopManager.xfce.enable = true;
+    desktopManager.mate.enable = true;
     #desktopManager.gnome.enable = true;
   };
 
