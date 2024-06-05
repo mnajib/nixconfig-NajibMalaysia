@@ -13,12 +13,13 @@
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
 
-    ./common-configs.nix
-    ./common-packages.nix
-    ./roblox.nix
-    ./wesnoth.nix
+    ../common-configs.nix
+    ../common-packages.nix
+    ../roblox.nix
+    #../wesnoth.nix
     #./system-benchmark.nix
     #./minecraft.nix
+    ../youtube.nix
   ];
 
   nixpkgs = {
@@ -130,5 +131,5 @@
   systemd.user.startServices = "sd-switch";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "22.11";
+  #home.stateVersion = "22.11";
 }
