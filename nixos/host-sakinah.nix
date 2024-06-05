@@ -110,9 +110,13 @@
 
   nix.settings.max-jobs = 2;
 
-  #environment.systemPackages = [
-  #  pkgs.blender
-  #];
+  environment.systemPackages = [
+    pkgs.blender
+
+    pkgs.sweethome3d.application
+    pkgs.sweethome3d.textures-editor
+    pkgs.sweethome3d.furniture-editor
+  ];
 
   system.stateVersion = "23.11";
 }
