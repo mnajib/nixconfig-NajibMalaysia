@@ -5,6 +5,7 @@
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+    #settings.experimental-features = "nix-command flakes";
   };
 
   imports = [
@@ -20,6 +21,8 @@
     ./users-naqib-wheel.nix
     ./users-naim.nix
     ./users-julia.nix
+
+    #inputs.home-manager.nixosModules.default # Home Manager module
 
     #./hosts.nix
     #./hosts2.nix
@@ -117,6 +120,14 @@
     pkgs.sweethome3d.textures-editor
     pkgs.sweethome3d.furniture-editor
   ];
+
+  # Home Manager configuration
+  #home-manager = {
+  #  extraSpecialArgs = { inherit inputs; };
+  #  users = {
+  #    "najib" = import ./home.nix;
+  #  };
+  #};
 
   system.stateVersion = "23.11";
 }
