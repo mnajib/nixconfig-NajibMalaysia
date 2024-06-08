@@ -90,6 +90,10 @@ in
     #xmind-8-update8
     xournalpp
     wpsoffice
+
+    libreoffice-fresh
+    #libreoffice-qt-fresh
+
     chemtool
     marvin
     smlnj

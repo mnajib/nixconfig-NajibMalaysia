@@ -732,7 +732,7 @@
 
     jdk #openjdk
 
-    libreoffice
+    #libreoffice
     #libreoffice-fresh
     #wpsoffice
 
