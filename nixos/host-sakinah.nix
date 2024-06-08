@@ -45,6 +45,8 @@
     #./btrbk.nix
     ./zfs.nix
     ./timetracker.nix
+
+    ./3D.nix
   ];
 
   # Booting
@@ -113,13 +115,12 @@
 
   nix.settings.max-jobs = 2;
 
-  environment.systemPackages = [
-    pkgs.blender
-
-    pkgs.sweethome3d.application
-    pkgs.sweethome3d.textures-editor
-    pkgs.sweethome3d.furniture-editor
-  ];
+  #environment.systemPackages = [
+    #pkgs.blender
+    #pkgs.sweethome3d.application
+    #pkgs.sweethome3d.textures-editor
+    #pkgs.sweethome3d.furniture-editor
+  #];
 
   # Home Manager configuration
   #home-manager = {
