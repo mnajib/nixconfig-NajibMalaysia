@@ -357,6 +357,7 @@
     gnome3.adwaita-icon-theme
 
     niv
+    npins
 
     fontforge  # fontforge-gtk
     fontforge-fonttools
@@ -880,8 +881,6 @@
 
     adwaita-qt
     gnome3.adwaita-icon-theme
-
-    niv
 
     fontforge   # fontforge-gtk
     fontforge-fonttools
