@@ -66,6 +66,14 @@
 
   #nix.trustedUsers = [ "root" "najib" ]; <-- moved to host-hostname.nix
 
+  # a workaround for error:
+  #   store path starts with illegal character '.'
+  # when running
+  #   nix-store --delete
+  #   nix-collect-garbage
+  #nix.package = pkgs.nixVersions.latest;
+  nix.package = lib.mkDefault pkgs.nixVersions.latest;
+
   # Binary Cache for Haskell.nix
   nix.settings.trusted-public-keys = [
     "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
@@ -350,6 +358,7 @@
     gnome3.adwaita-icon-theme
 
     niv
+    npins
 
     fontforge  # fontforge-gtk
     fontforge-fonttools
@@ -725,7 +734,7 @@
 
     jdk #openjdk
 
-    libreoffice
+    #libreoffice
     #libreoffice-fresh
     #wpsoffice
 
@@ -733,8 +742,8 @@
 
     #aseprite   # disabled because always need recompile, and usually not being use
 
-    gimp-with-plugins
-    #gimp
+    #gimp-with-plugins
+    gimp
 
     drawing drawpile
 
@@ -874,8 +883,6 @@
     adwaita-qt
     gnome3.adwaita-icon-theme
 
-    niv
-
     fontforge   # fontforge-gtk
     fontforge-fonttools
 
@@ -921,7 +928,7 @@
     gitAndTools.git-hub
     gitg
 
-    seaweedfs
+    #seaweedfs
 
     # XXX
     maven

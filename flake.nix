@@ -493,7 +493,8 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            ./home-manager/home-najib.nix
+            #./home-manager/home-najib.nix
+            ./home-manager/user-najib/host-customdesktop/default.nix
           ];
         };
 
@@ -572,6 +573,15 @@
           ];
         };
 
+        "naqib@sakinah" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            #./home-manager/home-naqib.nix
+            ./home-manager/user-naqib/host-sakinah/default.nix
+          ];
+        };
+
         "naqib@raudah" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
@@ -601,7 +611,17 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            ./home-manager/home-nurnasuha.nix
+            #./home-manager/home-nurnasuha.nix
+            ./home-manager/user-nurnasuha/host-sakinah/default.nix
+          ];
+        };
+
+        "nurnasuha@customdesktop" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            #./home-manager/home-nurnasuha.nix
+            ./home-manager/user-nurnasuha/host-customdesktop/default.nix
           ];
         };
 

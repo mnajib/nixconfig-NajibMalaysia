@@ -56,11 +56,15 @@ nix shell nixpkgs#pulsar
 #------------------------------------------------------------------------------
 To show generations:
   nix-env --list-generations
+  sudo nix-env --list-generations --profile /nix/var/nix/profiles/system
 
-To delete generations number 23:
-  nix-env --delete-generations 23
+To delete generations number 23 42 43:
+  nix-env --delete-generations 23 42 43
+  sudo nix-env --delete-generations 42 43 --profile /nix/var/nix/profiles/system
 To delete all other generations, but keep 5 last generations:
   nix-env --delete-generations +5
+To delete old generations:
+  sudo nix-env --delete-generations old
 
 To run garbage collection:
   nix-store --gc

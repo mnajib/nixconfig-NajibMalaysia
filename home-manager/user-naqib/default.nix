@@ -17,11 +17,14 @@ in
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
-    #./roblox.nix
-    #./wesnoth.nix
 
     ../common-configs.nix
     ../common-packages.nix
+    ../roblox.nix
+    #../wesnoth.nix
+    #./system-benchmark.nix
+    #./minecraft.nix
+    ../youtube.nix
   ];
 
   nixpkgs = {
@@ -57,9 +60,6 @@ in
   };
 
   # Add stuff for your user as you see fit:
-
-  #programs.neovim.enable = true;
-
   home.packages = with pkgs; [
     #posterazor
     remmina
@@ -71,13 +71,77 @@ in
     #openshot-qt
     #kmymoney
     #shotwell
+    #steam
+    almanah
+    #file-roller
+    heimer
+    #jrnl
+    #kodi
+    #python3.8-notebook
+    qtox
+    #retroarch
+    tig
+    treesheets
+    unrar
+    vue
+    vym
+    xarchiver
+    #xmind-8-update8
+    xournalpp
+    evince
+    gnome.gnome-clocks
+    smlnj
+    waydroid
+    #kmymoney
+    #anbox
+    #pmbootstrap
+    #xwayland
+    #tribler
+    webtorrent_desktop
+    duf
+    gdmap
+    ncdu
+    gdu
+
+    baobab
+    dutree
+    btdu
+    dfc
+    duc
+    dua
+    epr
+    xpra
+    bootiso
+    virt-manager
+
+    #blender
+    #gimp
+    inkscape
+    #libreoffice
+    #firefox
+    #brave
+    qutebrowser
+    ranger
+    #nnn
+    nano
+    #neovim
+    emacs
+
+    #zeroad
+    minetest
+
+    fluxbox                             # need fbsetroot to set desktop background color
   ];
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
+
+  # programs.neovim.enable = true;
+
   programs.git = {
     enable = true;
-    userName = "Naqib Najib";
+    #userName = "Naqib Najib";
+    userName = "Muhammad Naqib";
     userEmail = "m.naqib.bin.m.najib@gmail.com";
   };
 

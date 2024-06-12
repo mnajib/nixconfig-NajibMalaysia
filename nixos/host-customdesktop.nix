@@ -1,9 +1,10 @@
-# vim:set ts=4 sw=4 nowrap number
+# vim:set ts=2 sw=2 nowrap number
 
 { pkgs, config, ... }:
 {
   nix = {
-    package = pkgs.nixFlakes;
+    #package = pkgs.nixFlakes;
+    #settings.max-jobs = 2;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
@@ -23,7 +24,10 @@
     # Internal/private network DNS server
     #./dnsmasq.nix # disabled this because now running endian firewall (EFW)
 
-    ./users-anak2.nix
+    #./users-anak2.nix
+    ./users-naqib.nix
+    ./users-naim.nix
+    ./users-nurnasuha-wheel.nix
     ./users-julia.nix
 
     #./anbox.nix
@@ -34,10 +38,10 @@
     #./syncthing.nix
 
     # /var/lib/nextcloud/config/config.php
-    ./nextcloud.nix  # OpenSSL 1.1 is marked as unsecured
+    #./nextcloud.nix  # OpenSSL 1.1 is marked as unsecured
 
     # System health monitoring
-    ./netdata.nix
+    #./netdata.nix
 
     # Email fetch and serve
     #./email.nix
@@ -70,7 +74,7 @@
     #./gogs.nix
     ./gitea.nix
 
-    ./hosts2.nix
+    #./hosts2.nix
     ./configuration.FULL.nix
 
     #./kodi.nix
@@ -79,6 +83,8 @@
 
     # XXX:
     ./nix-garbage-collector.nix
+
+    #./timetracker.nix                  # desktop app for time management
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -88,7 +94,10 @@
   networking.hostId = "7b2076ba";
   networking.hostName = "customdesktop"; # "tv"; # tv.desktop.local
 
-  nix.settings.trusted-users = [ "root" "najib" ];
+  nix.settings.trusted-users = [
+    "root" "najib"
+    "nurnasuha"
+  ];
 
   networking.useDHCP = false;
   #networking.interfaces.enp7s0.useDHCP = true;
@@ -104,49 +113,53 @@
 
   systemd.services.NetworkManager-wait-online.enable = false;
 
-  #boot.loader.systemd-boot.enable = true;
+  #--------------------------------------------------------
+  # XXX: aaa
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+    timeout = 100;
 
-  #boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.grub = {
-    enable = true;
-    #version = 2;
-    efiSupport = false;
-    enableCryptodisk = true;
-    copyKernels = true;
+    grub = {
+      #enable = true;
+      #version = 2;
+      efiSupport = true;
+      enableCryptodisk = true;
+      copyKernels = true;
+      useOSProber = true;
+      timeoutStyle = "menu";
+      memtest86.enable = true;
 
-    #mirroredBoots = [
-      #{
-        #devices = [ "/dev/disk/by-id/wwn-0x5000cca7c5e11b3c" ];
-        #path = "/boot2";
-      #}
-    #];
-    useOSProber = true;
+      #mirroredBoots = [
+        #{
+          #devices = [ "/dev/disk/by-id/wwn-0x5000cca7c5e11b3c" ];
+          #path = "/boot2";
+        #}
+      #];
 
-    #device = "/dev/sda"; #"nodev";
-    devices = [
-      #"/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1011005-part1"
-      #"/dev/disk/by-id/wwn-0x5000c5001f67c049-part1"
-      #"/dev/sda1"
-      #"3dacbf58-01"
+      devices = [
+        "/dev/disk/by-id/wwn-0x5000c500a837f420" # 500GB HDD from sakinah
+      ];
 
-      #"/dev/sda"
-      "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1011005"
-    ];
-  };
+    }; # End boot.loader.grub
+  }; # End boot.loader
 
   #boot.kernelPackages = pkgs.linuxPackages_latest; # XXX: test disable this while trying to solve monitor on build-in VGA, DVI, HDMI not detectded in Xorg, but detected in Wayland.
   boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
-  boot.kernelParams = [
+  #boot.kernelParams = [
     #"video=DisplayPort-2:D"
-    "video=HDMI-2:D"
-    "video=DVI-0:D"
-
-    "video=HDMI-1:D"
-    "video=DVI-1:D"
-    "video=DVI-1-1:D"
-    "video=VGA-0:1280x1024@60me"
-    "video=VGA-1:1280x1024@60me"
-  ];
+    #"video=DP-1:D"
+    #"video=DP-2:D"
+    #"video=DP-3:D"
+    #"video=HDMI-1:D"
+    #"video=HDMI-2:D"
+    #"video=HDMI-3:D"
+    #"video=DVI-0:D"
+    #"video=DVI-1:D"
+    #"video=DVI-1-1:D"
+    #"video=VGA-0:1280x1024@60me"
+    #"video=VGA-1:1280x1024@60me"
+  #];
   #boot.supportedFilesystems = [ "ext4" "btrfs" "xfs" "vfat" ]; # "zfs" bcachefs
   #boot.initrd.supportedFilesystems = [ "ext4" "btrfs" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" ]; # "zfs" bcachefs
   #boot.loader.grub.copyKernels = true;
@@ -168,39 +181,45 @@
   #boot.kernelModules = [ "snd-ctxfi" "snd-ca0106" "snd-hda-intel" ];
   #boot.kernelModules = [ "snd-ctxfi" "snd-hda-intel" ];
 
-  services.xserver.enable = true;
+  services.libinput.enable = true;
+  services.displayManager.defaultSession = "none+xmonad";
 
-  # Test: Cuba disable, sebab SweetHome3D tak dapat jalan
-  #services.xserver.videoDrivers = [ "nvidiaLegacy390" ]; #"radeon" "cirrus" "vesa"  "vmware"  "modesetting" ];
-  #
-  #services.xserver.videoDrivers = [ "radeon" ];
+  #------------------------------------
+  services.xserver = {
+    enable = true;
+
+    # Test: Cuba disable, sebab SweetHome3D tak dapat jalan
+    #videoDrivers = [ "nvidiaLegacy390" ]; #"radeon" "cirrus" "vesa"  "vmware"  "modesetting" ];
+    #
+    #videoDrivers = [ "radeon" ];
+
+    #resolutions = [
+    #  {
+    #    x = 1280;
+    #    y = 1024;
+    #  }
+    #  {
+    #    x = 1024;
+    #    y = 786;
+    #  }
+    #];
+
+    #displayManager.sddm.enable = true;
+    #displayManager.gdm.enable = true;
+    displayManager.lightdm.enable = true;
+
+    #desktopManager.plasma5.enable = true;
+    desktopManager.xfce.enable = true;
+    #desktopManager.gnome.enable = true;
+    #desktopManager.enlightenment.enable = true;
+
+  }; # End services.xserver
+  #------------------------------------
 
   #services.flatpak.enable = true;
   #xdg.portal.enable = true;
   #xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # OR enable gnome desktopManager
 
-  #services.xserver.resolutions = [
-  #  {
-  #    x = 1280;
-  #    y = 1024;
-  #  }
-  #  {
-  #    x = 1024;
-  #    y = 786;
-  #  }
-  #];
-
-  #services.xserver.displayManager.sddm.enable = true;
-  #services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.displayManager.defaultSession = "none+xmonad";
-
-  #services.xserver.desktopManager.plasma5.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
-  #services.xserver.desktopManager.gnome.enable = true;
-  #services.xserver.desktopManager.enlightenment.enable = true;
-
-  services.xserver.libinput.enable = true;
 
   # Disable all power/screen saver; leave it to tv hardware
   powerManagement.enable = false;
@@ -218,7 +237,7 @@
 
   #environment.systemPackages = with pkgs; [
   environment.systemPackages = [
-    pkgs.blender
+    #pkgs.blender
     #pkgs.virtualboxWithExtpack
 
     # use in wayland
@@ -228,5 +247,6 @@
 
   #system.stateVersion = "22.05";
   #system.stateVersion = "22.11";
-  system.stateVersion = "23.05";
+  #system.stateVersion = "23.05";
+  system.stateVersion = "23.11";
 }

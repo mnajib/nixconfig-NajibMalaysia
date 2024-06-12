@@ -1,7 +1,12 @@
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 
-{ inputs, outputs, lib, config, pkgs, ... }: {
+{ inputs, outputs, lib, config, pkgs, ... }:
+let
+  name = "Nur Nasuha";
+  #email = "";
+in
+{
   # You can import other home-manager modules here
   imports = [
     # If you want to use modules your own flake exports (from modules/home-manager):
@@ -12,13 +17,12 @@
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
-
-    ./common-configs.nix
-    ./common-packages.nix
-    ./roblox.nix
-    ./wesnoth.nix
-    #./system-benchmark.nix
+    #./roblox.nix
+    #./wesnoth.nix
     #./minecraft.nix
+
+    ../common-configs.nix
+    ../common-packages.nix
   ];
 
   nixpkgs = {
@@ -49,86 +53,49 @@
 
   # TODO: Set your username
   home = {
-    username = "naqib";
-    homeDirectory = "/home/naqib";
+    username = "nurnasuha";
+    homeDirectory = "/home/nurnasuha";
   };
 
   # Add stuff for your user as you see fit:
-  # programs.neovim.enable = true;
+
+  #programs.neovim.enable = true;
+
   home.packages = with pkgs; [
-    #steam
-    almanah
-    #file-roller
-    heimer
-    #jrnl
-    #kodi
-    #python3.8-notebook
-    qtox
-    #retroarch
-    tig
-    treesheets
-    unrar
-    vue
-    vym
-    xarchiver
-    #xmind-8-update8
-    xournalpp
-    evince
-    gnome.gnome-clocks
-    smlnj
-    waydroid
-    #kmymoney
-    #anbox
-    #pmbootstrap
-    #xwayland
-    #tribler
-    webtorrent_desktop
-    duf
-    gdmap
-    ncdu
-    gdu
+    #posterazor
+    remmina
+    #wpsoffice
+    clamav
+    #audacity
+    #shotcut
+    #calligra        # calligra marked unsecure because using qtwebkit
+    #openshot-qt
+    kmymoney
+    #shotwell
 
-    baobab
-    dutree
-    btdu
-    dfc
-    duc
-    dua
-    epr
-    xpra
-    bootiso
-    virt-manager
-
-    #blender
-    #gimp
-    inkscape
-    #libreoffice
-    #firefox
-    #brave
-    qutebrowser
-    ranger
-    #nnn
-    nano
-    #neovim
-    emacs
-
-    #zeroad
+    teeworlds
     minetest
-
-    fluxbox                             # need fbsetroot to set desktop background color
+    #minecraft-launcher
+    #minecraft-server
+    openttd
+    #0ad
+    #grapejuice
+    #zoom-us
   ];
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
   programs.git = {
     enable = true;
-    userName = "Muhammad Naqib";
-    userEmail = "m.naqib.bin.m.najib@gmail.com";
+    userName = "Nur Nasuha";
+    userEmail = "nurnasuhabintimohdnajib@gmail.com";
+    #cincludes.
   };
+  programs.gitui.enable = true;
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "22.11";
+  #home.stateVersion = "22.11";
 }

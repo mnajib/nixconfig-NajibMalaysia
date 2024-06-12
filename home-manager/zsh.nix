@@ -8,7 +8,7 @@
       size = 10000;
     };
     defaultKeymap = "viins";
-    enableAutosuggestions = true;
+    autosuggestion.enable = true; #enableAutosuggestions = true;
     enableCompletion = true;
     syntaxHighlighting = {
       enable = true;

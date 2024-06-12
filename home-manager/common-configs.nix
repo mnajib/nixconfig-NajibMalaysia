@@ -355,10 +355,10 @@ in
   programs.info.enable = true;
 
   #programs.exa = {
-  programs.eza = {
-    enable = true;
-    #enableAliases = true;
-  };
+  #programs.eza = {
+  #  enable = true;
+  #  #enableAliases = true;
+  #};
 
   programs.dircolors.enable = true;
 
@@ -504,7 +504,24 @@ in
                 new = "green bold";
               };
           };
-      };
+
+          # mkdir /srv/gitrepo/nixconfig-NajibMalaysia.git
+          # chgrp -R users nixconfig-NajibMalaysia.git
+          # git init --bare --shared=0664 /srv/gitrepo/nixconfig-NajibMalaysia.git
+          # git init --bare --shared=group mysharedgitrepo
+          #
+          # git clone --config core.sharedRepository=true
+          #
+          # setfacl -R -m g:<whatever group>:rwX gitrepo
+          # find gitrepo -type d | xargs setfacl -R -m d:g:<whatever group>:rwX
+          #
+          # chmod -vR g+swX /srv/gitrepo
+          safe = {
+            #directory = "/srv/gitrepo/nixconfig-NajibMalaysia.git";
+            #directory = "/srv/gitrepo";
+            directory = "*";
+          };
+      }; # End extraConfig
   };
 
 #------------------------------------------------------------------------------
