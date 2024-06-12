@@ -23,10 +23,13 @@
     availableKernelModules = [
       "ehci_pci" "ahci" "xhci_pci" "ata_piix" "usbhid" "usb_storage" "sd_mod" "mpt3sas"
       "uhci_hcd" "firewire_ohci" "sr_mod" "sdhci_pci"
+      "ums_realtek"
+      "mpt3sas"
     ];
     kernelModules = [
       "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs"
       #"ntfs"
+      "kvm-intel"
     ];            #"zfs" "bcachefs"
     supportedFilesystems = [
       "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs"
@@ -78,11 +81,12 @@
 
     #------------------
     # NixOS (disk from sakinah)
+    # update on 2024-06-12: HDD ni ada problem IO error
     #------------------
     # For '/' partition
-    luks.devices."luks-34a274e3-4353-430f-8ded-9354cd8acab5".device = "/dev/disk/by-uuid/34a274e3-4353-430f-8ded-9354cd8acab5";
+    #luks.devices."luks-34a274e3-4353-430f-8ded-9354cd8acab5".device = "/dev/disk/by-uuid/34a274e3-4353-430f-8ded-9354cd8acab5";
     # For swap partition
-    luks.devices."luks-745aa30d-5f90-4d57-8193-c380ed2ece24".device = "/dev/disk/by-uuid/745aa30d-5f90-4d57-8193-c380ed2ece24";
+    #luks.devices."luks-745aa30d-5f90-4d57-8193-c380ed2ece24".device = "/dev/disk/by-uuid/745aa30d-5f90-4d57-8193-c380ed2ece24";
 
     #------------------
     # For data storage (zfs pool: najibzfspool1)
@@ -145,7 +149,12 @@
     #fsType = "xfs";
 
     # HDD from sakinah
-    device = "/dev/disk/by-uuid/606e7695-318c-4105-b4fe-ca0db0343b84";
+    # Update on 2024-06-12, HDD ni ada masalah IO error
+    #device = "/dev/disk/by-uuid/606e7695-318c-4105-b4fe-ca0db0343b84";
+    #fsType = "ext4";
+
+    # 1TB HDD from hidayah (HP ProDesk Naqib)
+    device = "/dev/disk/by-uuid/f7dbf09e-c9b0-4e27-9ded-3a31b43760b0";
     fsType = "ext4";
   };
 
@@ -155,7 +164,11 @@
     #fsType = "ext4";
 
     # hdd from sakinah
-    device = "/dev/disk/by-uuid/FD6B-4835";
+    #device = "/dev/disk/by-uuid/FD6B-4835";
+    #fsType = "vfat";
+
+    # HDD from hidayah
+    device = "/dev/disk/by-uuid/E127-10B1";
     fsType = "vfat";
   };
 
@@ -297,7 +310,10 @@
     #{ device = "/dev/disk/by-uuid/79d45678-d31b-4b39-851b-f00559ea8cc6"; } # AGI SSD customdesktop
     #{ device = "/dev/mapper/luks-781bbff1-508d-4287-a748-63d45d74b5e5"; }
 
-    { device = "/dev/disk/by-uuid/615add4b-eb31-4d5f-82e5-7f17387307c5"; } # HDD from sakinah
+    #{ device = "/dev/disk/by-uuid/615add4b-eb31-4d5f-82e5-7f17387307c5"; } # HDD from sakinah
+
+    { device = "/dev/disk/by-uuid/1f6b478f-a5ad-4e66-aef8-951f340b7b78"; } # HDD from hidayah
+    #{ device = "/dev/disk/by-uuid/c367f2dc-b870-4675-a75a-8f0fd7e286b0"; } # HDD from hidayah
 
     #{
     #  device = "/swap/swapfile";

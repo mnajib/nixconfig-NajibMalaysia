@@ -1,6 +1,11 @@
 # vim:set ts=2 sw=2 nowrap number
 
-{ pkgs, config, ... }:
+{
+  pkgs, config,
+  lib, home,
+  vars, host,
+  ...
+}:
 {
   nix = {
     #package = pkgs.nixFlakes;
@@ -11,6 +16,11 @@
   };
 
   imports = [
+    # TODO:
+    #./hostname-specific-config/customdesktop.nix
+    #./hardware-specific-config/ # box
+    #./hardware-specific-config/ # harddisk
+
     ./hardware-configuration-customdesktop.nix
 
     #./bootEFI.nix
@@ -24,8 +34,10 @@
     # Internal/private network DNS server
     #./dnsmasq.nix # disabled this because now running endian firewall (EFW)
 
+    #./users-abdullah-wheels.nix
     #./users-anak2.nix
-    ./users-naqib.nix
+    #./users-naqib.nix
+    ./users-naqib-wheel.nix
     ./users-naim.nix
     ./users-nurnasuha-wheel.nix
     ./users-julia.nix
@@ -50,6 +62,7 @@
 
     ./nfs-server-customdesktop.nix
     ./nfs-client-automount.nix
+    #./nfs-client-automount-games.nix
     #./nfs-client.nix
 
     ./samba-server-customdesktop.nix
@@ -85,6 +98,14 @@
     ./nix-garbage-collector.nix
 
     #./timetracker.nix                  # desktop app for time management
+
+    ./3D.nix
+    #./steam.nix
+
+    ./flatpak.nix
+    ./appimage.nix
+
+    ./walkie-talkie.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -97,6 +118,8 @@
   nix.settings.trusted-users = [
     "root" "najib"
     "nurnasuha"
+    "naqib"
+    #"abdullah"
   ];
 
   networking.useDHCP = false;
@@ -110,6 +133,7 @@
   # Refer network-dns.nix for DNS
   #networking.enableIPv6 = false;
   networking.networkmanager.enable = true;
+  networking.networkmanager.wifi.powersave = false;
 
   systemd.services.NetworkManager-wait-online.enable = false;
 
@@ -138,7 +162,8 @@
       #];
 
       devices = [
-        "/dev/disk/by-id/wwn-0x5000c500a837f420" # 500GB HDD from sakinah
+        #"/dev/disk/by-id/wwn-0x5000c500a837f420" # 500GB HDD from sakinah
+        "/dev/disk/by-id/wwn-0x5000039fe7c9db77" # HDD from HP ProDesk Naqib
       ];
 
     }; # End boot.loader.grub
@@ -147,6 +172,7 @@
   #boot.kernelPackages = pkgs.linuxPackages_latest; # XXX: test disable this while trying to solve monitor on build-in VGA, DVI, HDMI not detectded in Xorg, but detected in Wayland.
   boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
   #boot.kernelParams = [
+    ##"i915.modeset=0" "nouveau.modeset=1" # to disable i915 and enable nouveau
     #"video=DisplayPort-2:D"
     #"video=DP-1:D"
     #"video=DP-2:D"
@@ -164,6 +190,14 @@
   #boot.initrd.supportedFilesystems = [ "ext4" "btrfs" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" ]; # "zfs" bcachefs
   #boot.loader.grub.copyKernels = true;
 
+  #services.btrfs.autoScrub = {
+  #  enable = true;
+  #  fileSystems = [
+  #    "/"
+  #  ];
+  #  interval = "weekly";
+  #};
+
   services.fstrim.enable = true;
   hardware.enableAllFirmware = true;
 
@@ -172,14 +206,31 @@
   services.openssh.settings.PermitRootLogin = "yes";                            #
   #services.openssh.settings.PermitRootLogin = "prohibit-password";             # Needed for btrbk
 
-  networking.firewall.enable = false;
+  #networking.firewall.enable = false;
   # open port 24800 for barrier server?/client?
+  networking.nftables.enable = true;
+  networking.firewall = {
+    enable = true;
+    allowPing = true;
+    allowedTCPPorts = [
+      1110  # NFS cluster
+      4045  # NFS lock manager
+
+      22 # SSH
+    ];
+    allowedUDPPorts = [
+      1110  # NFS client
+      4045  # NFS lock manager
+    ];
+  };
 
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
   #boot.kernelModules = [ "snd-ctxfi" "snd-ca0106" "snd-hda-intel" ];
   #boot.kernelModules = [ "snd-ctxfi" "snd-hda-intel" ];
+
+  services.logind.extraConfig = "RuntimeDirectorySize=4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001
 
   services.libinput.enable = true;
   services.displayManager.defaultSession = "none+xmonad";
@@ -209,7 +260,8 @@
     displayManager.lightdm.enable = true;
 
     #desktopManager.plasma5.enable = true;
-    desktopManager.xfce.enable = true;
+    #desktopManager.xfce.enable = true;
+    desktopManager.mate.enable = true;
     #desktopManager.gnome.enable = true;
     #desktopManager.enlightenment.enable = true;
 
@@ -226,11 +278,11 @@
   services.upower.enable = false;
   powerManagement.powertop.enable = false;
   services.tlp.enable = false;
+  services.power-profiles-daemon.enable = false;
   services.auto-cpufreq = {
     enable = true;
   };
 
-  networking.networkmanager.wifi.powersave = false;
   systemd.watchdog.rebootTime = "10m";
 
   #nix.maxJobs = 4;
@@ -244,6 +296,8 @@
     pkgs.gnome-randr
     pkgs.foot
   ];
+
+  #virtualisation.virtualbox.host.enable = true;
 
   #system.stateVersion = "22.05";
   #system.stateVersion = "22.11";
