@@ -37,9 +37,11 @@
     #./users-abdullah-wheels.nix
     #./users-anak2.nix
     #./users-naqib.nix
-    ./users-naqib-wheel.nix
+    #./users-naqib-wheel.nix
+    ./users-naqib.nix
     ./users-naim.nix
-    ./users-nurnasuha-wheel.nix
+    #./users-nurnasuha-wheel.nix
+    ./users-nurnasuha.nix
     ./users-julia.nix
 
     #./anbox.nix
