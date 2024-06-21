@@ -11,6 +11,9 @@
   ...
 }:
 {
+  # XXX: Mount /mnt/data/gitea to /svr/gitea
+  #...
+
   services.gitea = {
     enable = true;
     settings = {
