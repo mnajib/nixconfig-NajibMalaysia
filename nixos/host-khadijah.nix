@@ -218,6 +218,8 @@ with lib;
   #boot.loader.systemd-boot.enable = true;      # for efi boot, not bios?
   boot.loader.grub.useOSProber = true;
 
+  boot.loader.systemd-boot.netbootxyz.enable = true;
+
   # Setup keyfile
   #boot.initrd.secrets = {
   #  "/crypto_keyfile.bin" = null;
