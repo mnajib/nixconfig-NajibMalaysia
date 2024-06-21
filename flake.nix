@@ -191,7 +191,7 @@
       #);
       #
       forEachSystem = nixpkgs.lib.genAttrs ["x86_64-linux"];
-      forEachPkgs = f: forEachSystem (sys: f nixpkgs.legacyPackage.${sys});
+      forEachPkgs = f: forEachSystem (sys: f nixpkgs.legacyPackages.${sys});
 
       #pkgs = import nixpkgs {
       #  config.allowUnfree = true;
