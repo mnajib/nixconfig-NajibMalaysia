@@ -59,12 +59,6 @@ let
   inherit (inputs.nix-colors.lib-contrib { inherit pkgs; }) colorschemeFromPicture nixWallpaperFromScheme;
 in
 {
-  nixpkgs.config = {
-    allowUnfree = true;
-    #firefox.enableAdobeFlash = false;
-    pulseaudio = true;
-  };
-
   # XXX: TODO: Better if not import here; but import from user specific file
   imports = [
     inputs.nix-colors.homeManagerModule
@@ -74,8 +68,21 @@ in
     #./nvim/lsp.nix
     #./nvim
     ./zsh.nix
-  ];
+  ]
+  ++ (builtins.attrValues outputs.homeManagerModules);
   # XXX: TODO: Should be in seperate file packages.nix
+
+  nixpkgs.overlays = builtins.attrValues outputs.overlays;
+  nixpkgs.config = {
+    allowUnfree = true;
+    allowUnfreePredicate = _: true;
+    permittedInsecurePackages = [
+      #"nix-2.15.3"
+      #"electron-25.9.0"
+    ];
+    #firefox.enableAdobeFlash = false;
+    pulseaudio = true;
+  };
 
   colorscheme = lib.mkDefault colorSchemes.dracula;
   #colorscheme = lib.mkDefault colorSchemes.nord;

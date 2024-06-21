@@ -48,6 +48,10 @@
     #nixpkgs-mitchty.url = "github:/mitchty/nixpkgs/mitchty";
     #nixpkgs-najib.url = "github:/mnajib/nixpkgs/najib";
 
+    #systems = {
+    #  url = "github:nix-systems/default-linux";
+    #};
+
     # Home manager
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -64,6 +68,7 @@
     # TODO: Add any other flake you might need
     #hardware.url = "github:nixos/nixos-hardware";
     hardware.url = "github:NixOS/nixos-hardware/master";
+    #nixos-hardware.url = "github:NixOS/nixos-hardware";
 
     flake-utils.url = "github:numtide/flake-utils";
 
@@ -75,15 +80,35 @@
     # everything match nicely? Try nix-colors!
     nix-colors.url = "github:misterio77/nix-colors";
 
-    hyprland.url = "github:hyprwm/hyprland";
-    #plugin_name = {
-    #  url = "github:maintener/plugin_name";
-    #  inputs.hyprland.follows = "hyprland";                 # IMPORTANT
-    #};
+    hyprland = {
+      #url = "github:hyprwm/hyprland";
+      url = "git+https://github.com/hyprwm/hyprland?submodules=1";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      #plugin_name = {
+      #  url = "github:maintener/plugin_name";
+      #  inputs.hyprland.follows = "hyprland";                 # IMPORTANT
+      #}
+    };
+
+    hyprwn-contrib = {
+      url = "github:hyprwm/contrib";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
+    hyprkeys = {
+      url = "github:hyprland-community/hyprkeys";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
+    nh = {
+      url = "github:viperML/nh?ref=fe4a96a0b0b0662dba7c186b4a1746c70bbcad03";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
 
     sops-nix = {
       url = "github:mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";                   # optional, not necessary for the module
+      #inputs.nixpkgs.follows = "nixpkgs";                   # optional, not necessary for the module
+      inputs.nixpkgs.follows = "nixpkgs-unstable";                   # optional, not necessary for the module
       inputs.nixpkgs-stable.follows = "nixpkgs";            # ???
     };
 
@@ -121,8 +146,12 @@
     nixpkgs-stable,
     nixpkgs-unstable,
     #nixpkgs-najib,
+    #systems,
     home-manager,
+
     hardware,
+    #nixos-hardware,
+
     flake-utils,
     nur,
     impermanence,
@@ -141,22 +170,49 @@
     let
       inherit (self) outputs;
 
+      #lib = nixpkgs.lib // home-manager.lib;
+
       # Supported systems for your flake packages, shell, etc.
-      forAllSystems = nixpkgs.lib.genAttrs [
-        "aarch64-linux"
-        "i686-linux"
-        "x86_64-linux"
-        "aarch64-darwin"
-        "x86_64-darwin"
-      ];
+      #forAllSystems = nixpkgs.lib.genAttrs [
+      #  "aarch64-linux"
+      #  "i686-linux"
+      #  "x86_64-linux"
+      #  "aarch64-darwin"
+      #  "x86_64-darwin"
+      #];
+      #
+      #forEachSystem = f: lib.genAttrs (import systems) (system: f pkgsFor.${system});
+      #pkgsFor = lib.genAttrs (import systems) (
+      #  system:
+      #    import nixpkgs {
+      #      inherit system;
+      #      config.allowUnfree = true;
+      #    }
+      #);
+      #
+      forEachSystem = nixpkgs.lib.genAttrs ["x86_64-linux"];
+      forEachPkgs = f: forEachSystem (sys: f nixpkgs.legacyPackage.${sys});
 
-      pkgs = import nixpkgs {
-        config.allowUnfree = true;
-      };
+      #pkgs = import nixpkgs {
+      #  config.allowUnfree = true;
+      #};
+      #
+      #pkgsUnstable = import nixpkgs-unstable {
+      #  config.allowUnfree = true;
+      #};
 
-      pkgsUnstable = import nixpkgs-unstable {
-        config.allowUnfree = true;
-      };
+      mkNixos = modules:
+        nixpkgs.lib.nixosSystem {
+          inherit modules;
+          specialArgs = {inherit inputs outputs;};
+        };
+
+      mkHome = modules: pkgs:
+        home-manager.lib.homeManagerConfiguration {
+          inherit modules pkgs;
+          extraSpecialArgs = {inherit inputs outputs;};
+        };
+
     in
     rec {
 
@@ -164,21 +220,43 @@
       # Acessible through 'nix build', 'nix shell', etc
       # You can compose these into your own configuration by using my flake's overlay,
       # or comsume them through NUR.
-      packages = forAllSystems (system:
-        let pkgs = nixpkgs.legacyPackages.${system};
-        in import ./pkgs { inherit pkgs; }
+      #packages = forAllSystems (system:
+      #  let pkgs = nixpkgs.legacyPackages.${system};
+      #  in import ./pkgs { inherit pkgs; }
+      #);
+      #
+      # Also setup iso installs with nixos generators
+      packages = forEachPkgs (
+        pkgs:
+          (import ./pkgs {
+            inherit pkgs;
+          })
+          //
+          (import ./generators {
+            inherit pkgs inputs outputs;
+            specialArgs = {inherit inputs outputs;};
+          })
       );
 
       # Devshell for bootstrapping
       # Acessible through 'nix develop' or 'nix-shell' (legacy)
-      devShells = forAllSystems (system:
-        let pkgs = nixpkgs.legacyPackages.${system};
-        in import ./shell.nix { inherit pkgs; }
+      #devShells = forAllSystems (system:
+      #  let pkgs = nixpkgs.legacyPackages.${system};
+      #  in import ./shell.nix { inherit pkgs; }
+      #);
+      #
+      devShells = forEachPkgs (
+        pkgs:
+          import ./shell.nix {
+            inherit pkgs;
+          }
       );
 
       # A couple project templates for different languages.
       # Accessible via `nix init`.
-      #templates = import ./templates;
+      templates = import ./templates;
+
+      formatter = forEachPkgs (pkgs: pkgs.alejandra);
 
       #hydraJobs = {
       #  packages = mapAttrs ...
@@ -186,7 +264,7 @@
       #};
 
       # Your custom packages and modifications, exported as overlays
-      overlays = import ./overlays;
+      overlays = import ./overlays {inherit inputs outputs;};
 
       # Reusable nixos modules you might want to export
       # These are usually stuff you would upstream into nixpkgs
@@ -214,85 +292,93 @@
       nixosConfigurations = {
 
         # Laptop Thinkpad X230
-        khawlah = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          system = "x86_64-linux";
-          modules = [
-            #./nixos/configuration-khawlah.nix
-            ./nixos/host-khawlah.nix
-          ];
-        };
+        #khawlah = nixpkgs.lib.nixosSystem {
+        #  specialArgs = { inherit inputs outputs; };
+        #  system = "x86_64-linux";
+        #  modules = [
+        #    #./nixos/configuration-khawlah.nix
+        #    ./nixos/host-khawlah.nix
+        #  ];
+        #};
+        #
+        khawlah = mkNixos [./nixos/host-khawlah.nix];
 
         # Laptop Dell Najib
-        khadijah = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-
-          #system = "x86_64-linux";
-
-          modules = [
-            # system-wide doom-emacs
-            #environment.systemPackages =
-            #let
-            #  doom-emacs = nix-doom-emacs.packages.${system}.default.override {
-            #    doomPrivateDir = ./doom.d;
-            #  };
-            #in [
-            #  doom-emacs
-            #];environment.systemPackages =
-            #let
-            #  doom-emacs = nix-doom-emacs.packages.${system}.default.override {
-            #    doomPrivateDir = ./doom.d;
-            #  };
-            #in [
-            #  doom-emacs
-            #];
-
-            #------------------------------------------------------------------
-            # nix-ld
-            # Ref:
-            #   - https://github.com/Mic92/nix-ld
-            #   - https://unix.stackexchange.com/questions/522822/different-methods-to-run-a-non-nixos-executable-on-nixos
-            #------------------------------------------------------------------
-            nix-ld.nixosModules.nix-ld
-            #
-            # The module in this repositiry defines a new module under
-            # (prgrams.nix-ld.dev) instead of (programs.nix-ld) to not
-            # collide with the nixpkgs version.
-            { programs.nix-ld.dev.enable = true; }
-            #
-            # Usage: After setting up the nix-ld symlink as described above, one
-            # needs to set NIX_LD and NIX_LD_LIBRARY_PATH to run executables.
-            # For example, this can be done with a shell.nix in a nix-shell like this:
-            #with import <nixpkgs> {};
-            #mkShell {
-            # NIX_LD_LIBRARY_PATH = lib.makeLibraryPath [
-            #   stdev.cc.cc
-            #   openssl
-            #   #...
-            # ]
-            # NIX_LD = lib.fileContents "${stdenv.cc}/nix-support/dynamic-linker";
-            #}
-            #------------------------------------------------------------------
-
-            #./machines/host-khadijah.nix
-            ./nixos/host-khadijah.nix
-
-            #pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-            #extraSpecialArgs = { inherit inputs outputs; };
-            #home-manager.nixosModules.home-manager {
-            #  home-manager = {
-            #    useGlobalPkgs = true;
-            #    useUserPackages = true;
-            #    users.najib = import ./home-manager/home-najib.nix {
-            #      inherit pkgs;
-            #      inherit pkgsUnstable;
-            #      inherit impermanence;
-            #      inherit nur;
-            #    };
-            #  };
-            #}
-          ];
-        };
+#        khadijah = nixpkgs.lib.nixosSystem {
+#          specialArgs = { inherit inputs outputs; };
+#
+#          #system = "x86_64-linux";
+#
+#          modules = [
+#            # system-wide doom-emacs
+#            #environment.systemPackages =
+#            #let
+#            #  doom-emacs = nix-doom-emacs.packages.${system}.default.override {
+#            #    doomPrivateDir = ./doom.d;
+#            #  };
+#            #in [
+#            #  doom-emacs
+#            #];environment.systemPackages =
+#            #let
+#            #  doom-emacs = nix-doom-emacs.packages.${system}.default.override {
+#            #    doomPrivateDir = ./doom.d;
+#            #  };
+#            #in [
+#            #  doom-emacs
+#            #];
+#
+#            #------------------------------------------------------------------
+#            # nix-ld
+#            # Ref:
+#            #   - https://github.com/Mic92/nix-ld
+#            #   - https://unix.stackexchange.com/questions/522822/different-methods-to-run-a-non-nixos-executable-on-nixos
+#            #------------------------------------------------------------------
+#            nix-ld.nixosModules.nix-ld
+#            #
+#            # The module in this repositiry defines a new module under
+#            # (prgrams.nix-ld.dev) instead of (programs.nix-ld) to not
+#            # collide with the nixpkgs version.
+#            { programs.nix-ld.dev.enable = true; }
+#            #
+#            # Usage: After setting up the nix-ld symlink as described above, one
+#            # needs to set NIX_LD and NIX_LD_LIBRARY_PATH to run executables.
+#            # For example, this can be done with a shell.nix in a nix-shell like this:
+#            #with import <nixpkgs> {};
+#            #mkShell {
+#            # NIX_LD_LIBRARY_PATH = lib.makeLibraryPath [
+#            #   stdev.cc.cc
+#            #   openssl
+#            #   #...
+#            # ]
+#            # NIX_LD = lib.fileContents "${stdenv.cc}/nix-support/dynamic-linker";
+#            #}
+#            #------------------------------------------------------------------
+#
+#            #./machines/host-khadijah.nix
+#            ./nixos/host-khadijah.nix
+#
+#            #pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+#            #extraSpecialArgs = { inherit inputs outputs; };
+#            #home-manager.nixosModules.home-manager {
+#            #  home-manager = {
+#            #    useGlobalPkgs = true;
+#            #    useUserPackages = true;
+#            #    users.najib = import ./home-manager/home-najib.nix {
+#            #      inherit pkgs;
+#            #      inherit pkgsUnstable;
+#            #      inherit impermanence;
+#            #      inherit nur;
+#            #    };
+#            #  };
+#            #}
+#          ];
+#        };
+        #
+        khadijah = mkNixos [
+          nix-ld.nixosModules.nix-ld
+          { programs.nix-ld.dev.enable = true; }
+          ./nixos/host-khadijah.nix
+        ];
 
         # Laptop Thinkpad T400 (dalam bilik tidur)
         raudah = nixpkgs.lib.nixosSystem {
@@ -465,13 +551,15 @@
       # Available through 'home-manager --flake .#your-username@your-hostname'
       homeConfigurations = {
 
-        "najib@khawlah" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            ./home-manager/home-najib.nix
-          ];
-        };
+        #"najib@khawlah" = home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #  extraSpecialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    ./home-manager/home-najib.nix
+        #  ];
+        #};
+        #
+        "najib@khawlah" = mkHome [./home-manager/home-najib.nix] nixpkgs.legacyPackages."x86_64-linux";
 
         "najib@raudah" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
@@ -498,22 +586,25 @@
           ];
         };
 
-        "najib@khadijah" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            #./home-manager/home-najib.nix
-            ./home-manager/user-najib/host-khadijah/default.nix
-          ];
-
-          # Try setting up doom-emacs
-          # Also look in home-najib.nix and emacs-doom.nix
-          #imports = [ nix-doom-emacs.hmModule ];
-          #programs.doom-emacs = {
-          #  enable = true;
-          #  doomPrivateDir = ./doom.d;                                          # Directory containing your config.el, init.el, and packages.el files
-          #};
-        };
+        #"najib@khadijah" = home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #  extraSpecialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    #./home-manager/home-najib.nix
+        #    ./home-manager/user-najib/host-khadijah/default.nix
+        #  ];
+        #
+        #  # Try setting up doom-emacs
+        #  # Also look in home-najib.nix and emacs-doom.nix
+        #  #imports = [ nix-doom-emacs.hmModule ];
+        #  #programs.doom-emacs = {
+        #  #  enable = true;
+        #  #  doomPrivateDir = ./doom.d;                                          # Directory containing your config.el, init.el, and packages.el files
+        #  #};
+        #};
+        #
+        #"najib@khadijah" = mkHome [./home-manager/user-najib/host-khadijah/default.nix] nixpkgs.legacyPackages."x86_64-linux";
+        "najib@khadijah" = mkHome [./home-manager/user-najib/host-khadijah] nixpkgs.legacyPackages."x86_64-linux";
 
         "najib@maryam" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance

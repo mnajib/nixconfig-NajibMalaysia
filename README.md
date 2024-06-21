@@ -7,6 +7,7 @@
 - [Misterio77's personal nix-config](https://github.com/Misterio77/nix-config)
 - https://nixos.wiki/wiki/Comparison_of_NixOS_setups
 - https://nixos.wiki/wiki/Configuration_Collection
+- https://github.com/sjcobb2022/nixos-config
 
 ### About mime and file association
 - https://wiki.archlinux.org/title/Default_applications#Resource_openers
