@@ -47,6 +47,9 @@
     ./timetracker.nix
 
     ./3D.nix
+
+    # Games
+    ./openra.nix
   ];
 
   # Booting
