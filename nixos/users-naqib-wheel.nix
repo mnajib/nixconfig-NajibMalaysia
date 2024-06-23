@@ -13,4 +13,6 @@
       "wheel"
     ];
   };
+
+  nix.settings.trusted-users = [ "naqib" ];
 }
