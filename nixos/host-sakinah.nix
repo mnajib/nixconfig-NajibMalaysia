@@ -20,7 +20,7 @@
     ./users-nurnasuha-wheel.nix
     ./users-naqib-wheel.nix
     ./users-naim.nix
-    ./users-julia.nix
+    ./users-julia-wheel.nix
 
     #inputs.home-manager.nixosModules.default # Home Manager module
 
