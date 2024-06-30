@@ -609,10 +609,15 @@
     # Instant Messenger
     #---------------------------------------------------------------
 
-    tdesktop
+    telegram-desktop #tdesktop
     signal-desktop
     hexchat
     discord discord-ptb
+
+    simplex-chat-desktop
+    session-desktop
+
+    briar-desktop
 
     #---------------------------------------------------------------
     # File Sharing and Download Manager, File transfer
