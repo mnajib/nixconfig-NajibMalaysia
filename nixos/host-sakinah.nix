@@ -50,6 +50,8 @@
 
     # Games
     ./openra.nix
+
+    ./steam.nix
   ];
 
   # Booting
