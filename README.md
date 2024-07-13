@@ -13,6 +13,8 @@
 - https://wiki.archlinux.org/title/Default_applications#Resource_openers
 - ...
 
+# Please run 'nixos-generate-config --show-hardware-config' and copy the output into hardware-configuration.nix
+
 ```
 mkdir -p ~/src
 cd ~/src

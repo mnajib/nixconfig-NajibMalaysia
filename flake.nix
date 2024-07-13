@@ -405,13 +405,17 @@
         };
 
         # Najib's Main Desktop
-        customdesktop = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [
-            ./nixos/host-customdesktop.nix
-            sops-nix.nixosModules.sops
-          ];
-        };
+        #customdesktop = nixpkgs.lib.nixosSystem {
+        #  specialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    ./nixos/host-customdesktop.nix
+        #    sops-nix.nixosModules.sops
+        #  ];
+        #};
+        customdesktop = mkNixos [
+	  ./nixos/host-customdesktop.nix
+          sops-nix.nixosModules.sops
+	];
 
         asmak = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
@@ -577,14 +581,15 @@
           ];
         };
 
-        "najib@customdesktop" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            #./home-manager/home-najib.nix
-            ./home-manager/user-najib/host-customdesktop/default.nix
-          ];
-        };
+        #"najib@customdesktop" = home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        #  extraSpecialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    #./home-manager/home-najib.nix
+        #    ./home-manager/user-najib/host-customdesktop/default.nix
+        #  ];
+        #};
+        "najib@customdesktop" = mkHome [./home-manager/user-najib/host-customdesktop/default.nix] nixpkgs.legacyPackages."x86_64-linux";
 
         #"najib@khadijah" = home-manager.lib.homeManagerConfiguration {
         #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
@@ -655,6 +660,8 @@
             ./home-manager/home-naim.nix
           ];
         };
+
+        "naim@sakinah" = mkHome [./home-manager/user-naim/host-sakinah] nixpkgs.legacyPackages."x86_64-linux";
 
         "naqib@asmak" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
