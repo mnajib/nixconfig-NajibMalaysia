@@ -28,6 +28,7 @@ in
   ];
 
   nixpkgs = {
+
     # You can add overlays here
     overlays = [
       # Add overlays your own flake exports (from overlays and pkgs dir):
@@ -44,14 +45,16 @@ in
       #   });
       # })
     ];
+
     # Configure your nixpkgs instance
     config = {
       # Disable if you don't want unfree packages
       allowUnfree = true;
       # Workaround for https://github.com/nix-community/home-manager/issues/2942
       allowUnfreePredicate = (_: true);
-    };
-  };
+    }; # End nixpkgs.config{};
+
+  }; # End nixpkgs{};
 
   # TODO: Set your username
   home = {
@@ -118,9 +121,16 @@ in
     #gimp
     inkscape
     #libreoffice
+    pixelorama
+
+    godot_4
+    gdtoolkit #gdtoolkit_4
+    godot_4-export-templates
+
     #firefox
     #brave
     qutebrowser
+
     ranger
     #nnn
     nano
@@ -129,6 +139,7 @@ in
 
     #zeroad
     minetest
+    _4d-minesweeper
 
     fluxbox                             # need fbsetroot to set desktop background color
   ];
