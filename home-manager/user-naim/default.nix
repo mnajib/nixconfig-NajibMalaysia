@@ -3,8 +3,10 @@
 
 { inputs, outputs, lib, config, pkgs, ... }:
 let
-  name = "Juliani Jaffar";
-  email = "jung_jue@yahoo.com";
+  username = "naim";
+  name = "Muhammad Na'im";
+  fullname = "Muhammad Na'im Bin Muhammad Najib";
+  email = "muhammadnaimbinmohdnajib@gmail.com";
 in
 {
   # You can import other home-manager modules here
@@ -17,11 +19,14 @@ in
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
-    #./roblox.nix
-    #./wesnoth.nix
 
     ../common-configs.nix
     ../common-packages.nix
+    ../roblox.nix
+    #../wesnoth.nix
+    #./system-benchmark.nix
+    #./minecraft.nix
+    ../youtube.nix
   ];
 
   nixpkgs = {
@@ -52,14 +57,11 @@ in
 
   # TODO: Set your username
   home = {
-    username = "julia";
-    homeDirectory = "/home/julia";
+    username = "${username}";
+    homeDirectory = "/home/${username}";
   };
 
   # Add stuff for your user as you see fit:
-
-  #programs.neovim.enable = true;
-
   home.packages = with pkgs; [
     #posterazor
     remmina
@@ -72,14 +74,77 @@ in
     #openshot-qt
     #kmymoney
     #shotwell
+    #steam
+    almanah
+    #file-roller
+    heimer
+    #jrnl
+    #kodi
+    #python3.8-notebook
+    qtox
+    #retroarch
+    tig
+    treesheets
+    unrar
+    vue
+    vym
+    xarchiver
+    #xmind-8-update8
+    xournalpp
+    evince
+    gnome.gnome-clocks
+    smlnj
+    waydroid
+    #kmymoney
+    #anbox
+    #pmbootstrap
+    #xwayland
+    #tribler
+    webtorrent_desktop
+    duf
+    gdmap
+    ncdu
+    gdu
+
+    baobab
+    dutree
+    btdu
+    dfc
+    duc
+    dua
+    epr
+    xpra
+    bootiso
+    virt-manager
+
+    #blender
+    #gimp
+    inkscape
+    #libreoffice
+    #firefox
+    #brave
+    qutebrowser
+    ranger
+    #nnn
+    nano
+    #neovim
+    emacs
+
+    #zeroad
+    minetest
+
+    fluxbox                             # need fbsetroot to set desktop background color
   ];
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
+
+  # programs.neovim.enable = true;
+
   programs.git = {
     enable = true;
-    userName = "Juliani Jaffar";
-    userEmail = "juliani.jaffar@gmail.com";
+    userName = "${name}";
+    userEmail = "${email}";
   };
 
   programs.fzf.enable = true;
