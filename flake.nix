@@ -38,6 +38,9 @@
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
     #
+    #fh.url = "https://flakehub.com/f/DeterminateSystems/fh/*.tar.gz";
+    #nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.2305.*.tar.gz";
+    #
     # pkgs ? import <nixpkgs> {}
     # unstable-pkgs ? import <nixpkgs-unstable> {}
     # old-pkgs ? import <nixpkgs-23.05> {}
@@ -142,6 +145,7 @@
 
   outputs = {
     self,
+    #fh                                 # flakehub.com
     nixpkgs,
     nixpkgs-stable,
     nixpkgs-unstable,
@@ -378,6 +382,8 @@
           nix-ld.nixosModules.nix-ld
           { programs.nix-ld.dev.enable = true; }
           ./nixos/host-khadijah.nix
+
+          #{ environment.systemPackages = [ fh.packages.x86_64-linux.default ]; }
         ];
 
         # Laptop Thinkpad T400 (dalam bilik tidur)
