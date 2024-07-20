@@ -65,6 +65,7 @@ in
     #posterazor
     remmina
     #wpsoffice
+    libreoffice
     clamav
     #audacity
     #shotcut

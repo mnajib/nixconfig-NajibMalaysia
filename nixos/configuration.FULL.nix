@@ -492,6 +492,8 @@
     libinput-gestures
     alsaUtils
     partclone           # Utilities to save and restore used blocks on a partition
+    hdparm
+    lsscsi
 
     diskonaut           # a terminal disk space navigator
     duf
