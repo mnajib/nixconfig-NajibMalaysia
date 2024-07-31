@@ -15,7 +15,7 @@
     #./hardware-storageSSD001.nix
     ./thinkpad.nix
 
-    ./hosts2.nix
+    #./hosts2.nix
     #./network-dns.nix
 
     #./users-anak2.nix
