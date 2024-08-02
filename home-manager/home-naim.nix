@@ -85,11 +85,11 @@ in
 
     foot
     minetest
-    blender
+    #blender
     freecad librecad
     inkscape
-    gimp
-    libreoffice
+    #gimp
+    #libreoffice
   ];
 
   # Enable home-manager and git

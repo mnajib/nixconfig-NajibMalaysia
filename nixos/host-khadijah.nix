@@ -1,4 +1,8 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs, config, lib, home,
+  vars, host,
+  ...
+}:
 #let
 #	nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
 #	  export __NV_PRIME_RENDER_OFFLOAD=1
@@ -8,13 +12,51 @@
 #	  exec -a "$0" "$@"
 #	'';
 #in
+with lib;
+#with host;
 {
   nix = {
-    package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
+    #package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
+    #package = pkgs.nixVersions.latest;
     extraOptions = ''
         experimental-features = nix-command flakes
     '';
 
+    #bash-prompt-prefix = "";
+    #bash-prompt = "[develop] ";
+    #bash-prompt-suffix = "[develop-env] ";
+
+    #
+    # References:
+    #   https://nixos.wiki/wiki/Distributed_build
+    #   https://search.nixos.org/options?channel=unstable&show=nix.buildMachines
+    #   https://nixos.org/manual/nix/stable/command-ref/conf-file#conf-use-xdg-base-directories
+    #
+    #distributedBuilds = true;
+    #builders = "ssh://sakinah x86_64-linux; ssh://customdesktop x86_64-linux;";
+    #builders = "ssh://nurnasuha@sakinah.localdomain x86_64-linux";
+    #buildMachines = [
+    #  {
+    #    hostName = "sakinah.localdomain";
+    #    protocol = "ssh"; # "ssh-ng"
+    #    system = "x86_64-linux";
+    #    #maxJobs = 1;
+    #    #speedFactor = 2;
+    #    #supportedFeatures = [
+    #    #  "nixos-test"
+    #    #  "benchmark"
+    #    #  "big-parallel"
+    #    #  "kvm"
+    #    #];
+    #  }
+    #];
+    #max-jobs = 0; # Disable (never build on local machine, even when connecting to remote builders fails) building on local machine; only build on remote builders.
+  };
+
+  nixpkgs.config = {
+    allowUnfree = true;
+    #allowBroken = true;
+    cudaSupport = true;                 # May cause a mass rebuild
   };
 
   imports = [
@@ -22,7 +64,7 @@
     ./configuration.FULL.nix
 
     #./hosts.nix
-    ./hosts2.nix
+    #./hosts2.nix
 
     ./bootEFI.nix
     #./bootBIOS.nix
@@ -31,22 +73,25 @@
     #./touchpad-scrollTwofinger-TapTrue.nix
     #./network-dns.nix
     ./users-anak2.nix
+    #./users-najib.nix
 
     ./nfs-client-automount.nix
-    ./nfs-client-automount-games.nix
+    #./nfs-client-automount-games.nix
     #./nfs-client.nix
+
+    ./samba-client.nix
 
     #./virtualbox.nix # compile fail
     #./libvirt.nix
-
-    ./3D.nix # freecad, qcad, ...
-
     #./anbox.nix
     #./anbox2.nix
     #./waydroid.nix
 
+    ./3D.nix                            # freecad, qcad, ...
+    ./steam.nix                         # steam for game, blender-LTS, ...
+
     ./mame.nix
-    ./emulationstation.nix
+    #./emulationstation.nix
 
     ./console-keyboard-dvorak.nix       # keyboard layout for console environment
     ./keyboard-with-msa.nix             # keyboard layout for graphical environment
@@ -71,6 +116,9 @@
     ./appimage.nix
 
     ./walkie-talkie.nix
+
+    ./ai.nix
+    ./barrier.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -87,31 +135,69 @@
                                        # Enabled by Najib on 2023-02-01T1245 in attemp to decrease delay on startup.
   #networking.interfaces.eno1.useDHCP = true;
 
-  networking.firewall.enable = false;
-  networking.firewall.allowedTCPPorts = [
-    24007         # gluster daemon
-    24008         # gluster management
-    #49152        # gluster brick1
-    49153         # gluster brick2
-    #38465-38467  # Gluster NFS
-    111           # portmapper
-    1110          # NFS cluster
-    4045          # NFS lock manager
-  ];
-  networking.firewall.allowedUDPPorts = [
-    111           # Gluster: portmapper
-    3450          # for minetest server
-    1110          # NFS client
-    4045          # NFS lock manager
-  ];
+  #--------------------------------------------------------
+  networking.nftables.enable = true;    # 'nftable' is enable; 'iptables' if not.
+  networking.firewall = {
+    enable = true;                      #'false' is the default.
+    #trustedInterfaces = [ "enp0s2" ];
+    #interfaces = {};
+    #interfaces."enp0s2".allowedTCPPorts = [];
+    allowPing = true;                   #'true' is the default.
+    #pingLimit = "2/second";
+    #pingLimit = "1/minute burst 5 packets";
+    allowedTCPPorts = [
+      #24007                            # gluster daemon
+      #24008                            # gluster management
+      #49152                            # gluster brick1
+      #49153                            # gluster brick2
+      #{ from = 38465; to = 38467; }    # Gluster NFS
+      #111                              # portmapper
+      1110                              # NFS cluster
+      4045                              # NFS lock manager
+    ];
+    allowedUDPPorts = [
+      #111                              # Gluster: portmapper
+      #3450                             # for minetest server
+      1110                              # NFS client
+      4045                              # NFS lock manager
+      #{ from = 4000; to = 4007; }
+      #{ from = 8000; to = 8010; }
+    ];
+  };
+  #--------------------------------------------------------
 
   # XXX: ???
   environment.systemPackages = with pkgs; [
-    #nvtop
-    tmux
+    #tmux
+    #nvtop # has been rename to nvtopPackages.full
+    nvtopPackages.full
+    kdenlive
   ];
+  #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
+  #  environment.systemPackages = [
+  #    pkgs.nvtop
+  #  ];
+  #};
+  #config.environment = {
+  #environment = {
+  #  systemPackages =
+  #    mkIf  ( config.services.xserver.videoDrivers == [ "nvidia" ] )
+  #      [ pkgs.nvtop ];
+  #      ##[
+  #      ##  pkgs.htop
+  #      ##  { mkIf (config.services.xserver.videoDrivers == [ "nvidia" ])  pkgs.nvtop }
+  #      ##];
+  #};
 
   #hardware.video.hidpi.enable = true;
+
+  services.btrfs.autoScrub = {
+    enable = true;
+    fileSystems = [
+      "/"
+    ];
+    interval = "weekly";
+  };
 
   services.fstrim.enable = true;
 
@@ -128,9 +214,11 @@
   #};
 
   #boot.loader.timeout = null;        # XXX: Not sure how to set null value here.
-  boot.loader.timeout = 10;             # in seconds
+  boot.loader.timeout = 120;             # in seconds
   #boot.loader.systemd-boot.enable = true;      # for efi boot, not bios?
   boot.loader.grub.useOSProber = true;
+
+  boot.loader.systemd-boot.netbootxyz.enable = true;
 
   # Setup keyfile
   #boot.initrd.secrets = {
@@ -225,7 +313,7 @@
   hardware.nvidia.open = false;
   hardware.nvidia.nvidiaSettings = true;
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;  # <-- this is tested and work
 
   services.logind.extraConfig = "RuntimeDirectorySize=4G";    # before this it is 100% full with 1.6G tmpfs /run/user/1001
 
@@ -235,7 +323,8 @@
   services.xserver.displayManager.lightdm.enable = true;
   #services.xserver.displayManager.startx.enable = true;
 
-  services.xserver.displayManager.defaultSession = "none+xmonad";
+  #services.xserver.displayManager.defaultSession = "none+xmonad"; # Replaced by services.displayManager.defaultSession = "none+xmonad";
+  services.displayManager.defaultSession = "none+xmonad";
 
   #services.xserver.desktopManager.plasma5.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
@@ -245,17 +334,18 @@
   #services.xserver.desktopManager.lxqt.enable = true;
   #services.xserver.desktopManager.lumina.enable = true;
 
-  services.xserver.windowManager.spectrwm.enable = true;
-  services.xserver.windowManager.qtile.enable = true;
-  services.xserver.windowManager.notion.enable = true;
-  services.xserver.windowManager.leftwm.enable = true;
-  services.xserver.windowManager.nimdow.enable = true;
-  services.xserver.windowManager.herbstluftwm.enable = true;
+  #services.xserver.windowManager.spectrwm.enable = true;
+  #services.xserver.windowManager.qtile.enable = true;
+  #services.xserver.windowManager.notion.enable = true;
+  #services.xserver.windowManager.leftwm.enable = true;
+  #services.xserver.windowManager.nimdow.enable = true;
+  #services.xserver.windowManager.herbstluftwm.enable = true;
 
   #----------------------------------------------------------------------------
 
   # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true; # XXX
+  #services.xserver.libinput.enable = true; # XXX replaced by services.libinput.enable = true;
+  services.libinput.enable = true;
   #services.xserver.libinput.disableWhileTyping = true;
   #services.xserver.libinput.tapping = false; # Default is 'true'
   #services.xserver.libinput.scrollMethod = "twofinger";

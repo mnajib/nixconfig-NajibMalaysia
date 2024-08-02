@@ -19,10 +19,10 @@ in
     # ./nvim.nix
     #./roblox.nix
     #./wesnoth.nix
-    ./minecraft.nix
+    #./minecraft.nix
 
-    ./common-configs.nix
-    ./common-packages.nix
+    ../common-configs.nix
+    ../common-packages.nix
   ];
 
   nixpkgs = {
@@ -62,16 +62,17 @@ in
   #programs.neovim.enable = true;
 
   home.packages = with pkgs; [
-    posterazor
+    #posterazor
     remmina
-    wpsoffice
+    #wpsoffice
+    libreoffice
     clamav
-    audacity
-    shotcut
+    #audacity
+    #shotcut
     #calligra        # calligra marked unsecure because using qtwebkit
-    openshot-qt
+    #openshot-qt
     kmymoney
-    shotwell
+    #shotwell
 
     teeworlds
     minetest
@@ -79,8 +80,8 @@ in
     #minecraft-server
     openttd
     #0ad
-    grapejuice
-    zoom-us
+    #grapejuice
+    #zoom-us
   ];
 
   # Enable home-manager and git
@@ -97,5 +98,5 @@ in
   systemd.user.startServices = "sd-switch";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "22.11";
+  #home.stateVersion = "22.11";
 }

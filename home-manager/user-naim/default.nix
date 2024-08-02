@@ -3,9 +3,10 @@
 
 { inputs, outputs, lib, config, pkgs, ... }:
 let
-  name = "Najib Ibrahim";
-  email = "mnajib@gmail.com";
-  githubUsername = "mnajib";
+  username = "naim";
+  name = "Muhammad Na'im";
+  fullname = "Muhammad Na'im Bin Muhammad Najib";
+  email = "muhammadnaimbinmohdnajib@gmail.com";
 in
 {
   # You can import other home-manager modules here
@@ -19,17 +20,13 @@ in
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
 
-    ./youtube.nix
-
-    ./common-configs.nix
-    ./common-packages.nix
-
-    # My attemp to use nix-doom-emacs
-    #./emacs.nix
-    #
-    #inputs.nix-doom-emacs.hmModule
-    #
-    #./emacs-with-doom.nix
+    ../common-configs.nix
+    ../common-packages.nix
+    ../roblox.nix
+    #../wesnoth.nix
+    #./system-benchmark.nix
+    #./minecraft.nix
+    ../youtube.nix
   ];
 
   nixpkgs = {
@@ -53,7 +50,6 @@ in
     config = {
       # Disable if you don't want unfree packages
       allowUnfree = true;
-
       # Workaround for https://github.com/nix-community/home-manager/issues/2942
       allowUnfreePredicate = (_: true);
     };
@@ -61,15 +57,23 @@ in
 
   # TODO: Set your username
   home = {
-    username = "najib";
-    homeDirectory = "/home/najib";
+    username = "${username}";
+    homeDirectory = "/home/${username}";
   };
 
   # Add stuff for your user as you see fit:
-  # programs.neovim.enable = true;
-
   home.packages = with pkgs; [
-    btop
+    #posterazor
+    remmina
+    #wpsoffice
+    libreoffice
+    clamav
+    #audacity
+    #shotcut
+    #calligra        # calligra marked unsecure because using qtwebkit
+    #openshot-qt
+    #kmymoney
+    #shotwell
     #steam
     almanah
     #file-roller
@@ -78,7 +82,7 @@ in
     #kodi
     #python3.8-notebook
     qtox
-    retroarchFull # retroarch
+    #retroarch
     tig
     treesheets
     unrar
@@ -87,9 +91,8 @@ in
     xarchiver
     #xmind-8-update8
     xournalpp
-    wpsoffice
-    chemtool
-    marvin
+    evince
+    gnome.gnome-clocks
     smlnj
     waydroid
     #kmymoney
@@ -102,6 +105,7 @@ in
     gdmap
     ncdu
     gdu
+
     baobab
     dutree
     btdu
@@ -112,58 +116,50 @@ in
     xpra
     bootiso
     virt-manager
-    kitty
-    #jfbview
-    #qmmp
-    ed  # an implemintation of the standard unix editor
-    sakura # a terminal emulator based on GTK and VTE
+
+    #blender
+    #gimp
+    inkscape
+    #libreoffice
+    #firefox
+    #brave
+    qutebrowser
+    ranger
+    #nnn
+    nano
+    #neovim
+    emacs
+
+    #zeroad
+    minetest
+
+    fluxbox                             # need fbsetroot to set desktop background color
   ];
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
-  programs.git.enable = true;
-  programs.git.userName = "Najib Ibrahim";
-  programs.git.userEmail = "mnajib@gmail.com";
-  programs.git.aliases = {
-    co = "checkout";
+
+  # programs.neovim.enable = true;
+
+  programs.git = {
+    enable = true;
+    userName = "${name}";
+    userEmail = "${email}";
   };
 
-  programs.gpg.enable = true;
-  programs.fzf.enable = true;                    # A command-line fuzzy finder written in Go
-  #programs.jq.enable = true;                    # ??? lightweight and flexible command-line JSON processor
-  #programs.bat.enable = true;                   # ??? battery?
-  programs.command-not-found.enable = true;      # Whether interactive shells should show which Nix package (if any) provides a missing command. 
-  programs.dircolors.enable = true;
+  programs.fzf.enable = true;
+  programs.command-not-found.enable = true;
   programs.htop.enable = true;
   programs.info.enable = true;
-  programs.eza.enable = true;
-
-  programs.ssh = {
-    enable = true;
-    matchBlocks = {
-      #"najib@gogs.mahirah" = {
-      #  hostname = "mahirah";
-      #  port = 22;
-      #  user = "najib";
-      #  #certificateFile = [ "~/.ssh/gogs.mahirah.localdomain/id_ed25519" ];
-      #  identityFile = [ "~/.ssh/gogs.mahirah.localdomain/id_ed25519" ];
-      #};
-    };
-  };
-
-  #programs.doom-emacs = {
-  #  enable = true;
-  #  # Directory containing my config.el, init.el, and packages.el files
-  #  # Need to cread ~/doom.d
-  #  # and copy the three files from
-  #  # https://github.com/nix-community/nix-doom-emacs/tree/master/test/doom.d
-  #  #doomPrivateDir = "./doom.d";
-  #  doomPrivateDir = ./src/doom.d;
-  #};
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "22.05";
+  #home.stateVersion = "22.11";
+  #home.stateVersion = "24.05";
+  # I separate this to user@host specific;
+  #   nixconfig-NajibMalaysia/home-manager/julia-keira.nix
+  #   nixconfig-NajibMalaysia/home-manager/julia-manggis.nix
+  #   nixconfig-NajibMalaysia/home-manager/julia-taufiq.nix
 }
