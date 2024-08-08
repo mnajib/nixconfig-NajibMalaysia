@@ -34,6 +34,7 @@
       #listen-address=192.168.1.17
       #listen-address=192.168.0.21
       bind-interfaces
+
       port=53
 
       ##dhcp-range=192.168.123.200,192.168.123.250,24h
@@ -68,6 +69,8 @@
       # will not use /etc/resolv.conf or any other system
       # name service files.
       no-resolv
+
+      no-hosts                          # Don't read the hostnames in /etc/hosts
 
       #
       expand-hosts
@@ -107,6 +110,11 @@
       #
       # Enable ad blocking using a third-party list
       #url="http://winhelp2002.mvps.org/hosts.txt"
+
+      clear-on-reload
+      rebind-localhost-ok
+
+      log-queries
     '';
   };
 
