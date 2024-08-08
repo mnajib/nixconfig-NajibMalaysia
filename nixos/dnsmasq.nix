@@ -29,8 +29,10 @@
     extraConfig = ''
       #interface=enp0s25
       #interface=wls3
+      #interface=enp2s0
       #listen-address=127.0.0.1
       #listen-address=192.168.1.17
+      #listen-address=192.168.0.21
       bind-interfaces
       port=53
 
@@ -119,4 +121,13 @@
   #server=8.8.8.8
   #server=4.4.4.4
   #'';
+
+  networking.firewall = {
+    #allowedTCPPorts = [
+    #  53  # DNS
+    #];
+    allowedUDPPorts = [
+      53  # DNS
+    ];
+  };
 }
