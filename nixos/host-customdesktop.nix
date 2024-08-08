@@ -32,7 +32,7 @@
     #./network-dns.nix
 
     # Internal/private network DNS server
-    #./dnsmasq.nix # disabled this because now running endian firewall (EFW)
+    ./dnsmasq.nix # disabled this because now running endian firewall (EFW)
 
     #./users-abdullah-wheels.nix
     #./users-anak2.nix
