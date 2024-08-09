@@ -35,7 +35,7 @@
     #./synergy-client.nix
     ./hardware-printer.nix
     ./zramSwap.nix
-    ./hosts2.nix
+    #./hosts2.nix
     ./configuration.FULL.nix
     ./nix-garbage-collector.nix
     ./flatpak.nix
