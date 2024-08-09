@@ -690,14 +690,15 @@
         };
 
         #----------------------------------------------------------------------
-        "naim@zahrah" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            #hyprland.homeManagerModules.default
-            ./home-manager/home-naim.nix
-          ];
-        };
+        #"naim@zahrah" = home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #  extraSpecialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    #hyprland.homeManagerModules.default
+        #    ./home-manager/home-naim.nix
+        #  ];
+        #};
+        "naim@zahrah" = mkHome [./home-manager/user-naim/host-zahrah] nixpkgs.legacyPackages."x86_64-linux";
 
         #----------------------------------------------------------------------
         "naim@khadijah" = home-manager.lib.homeManagerConfiguration {
