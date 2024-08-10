@@ -432,12 +432,16 @@
         #----------------------------------------------------------------------
         # Thinkpad Farid bagi, problem
         # dah baiki; keyboard, ram, ssd, screen
-        asmak = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [
-            ./nixos/host-asmak.nix
-          ];
-        };
+        #asmak = nixpkgs.lib.nixosSystem {
+        #  specialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    ./nixos/host-asmak.nix
+        #  ];
+        #};
+        asmak = mkNixos [
+          ./nixos/host-asmak.nix
+          #sops-nix.nixosModules.sops
+        ];
 
         #----------------------------------------------------------------------
         # Laptop Thinkpad T410 (with nvidia) Naim
@@ -714,13 +718,14 @@
         "naim@sakinah" = mkHome [./home-manager/user-naim/host-sakinah] nixpkgs.legacyPackages."x86_64-linux";
 
         #----------------------------------------------------------------------
-        "naqib@asmak" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            ./home-manager/home-naqib.nix
-          ];
-        };
+        #"naqib@asmak" = home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #  extraSpecialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    ./home-manager/home-naqib.nix
+        #  ];
+        #};
+        "naqib@asmak" = mkHome [./home-manager/user-naqib/host-asmak] nixpkgs.legacyPackages."x86_64-linux";
 
         #----------------------------------------------------------------------
         "naqib@sakinah" = home-manager.lib.homeManagerConfiguration {
