@@ -53,7 +53,7 @@ with lib;
   };
 
   imports = [
-    ./hardware-configuration-cheetah.nix
+    ./hardware-configuration-hidayah.nix 	# cheetah.nix
     ./configuration.FULL.nix
 
     #./hosts.nix
@@ -66,8 +66,9 @@ with lib;
     #./touchpad-scrollTwofinger-TapTrue.nix
     #./network-dns.nix
 
+    ./users-abdullah-wheels.nix
     #./users-anak2.nix
-    ./users-naqib-wheels.nix
+    ./users-naqib-wheel.nix
     ./users-naim.nix
     ./users-nurnasuha.nix
     ./users-julia.nix
@@ -86,7 +87,7 @@ with lib;
     ./steam.nix                         # steam for game, blender-LTS, ...
 
     #./mame.nix
-    ./emulationstation.nix
+    #./emulationstation.nix
 
     ./console-keyboard-dvorak.nix       # keyboard layout for console environment
     ./keyboard-with-msa.nix             # keyboard layout for graphical environment
@@ -105,7 +106,7 @@ with lib;
 
     #./sway.nix
 
-    #./nix-garbage-collector.nix
+    ./nix-garbage-collector.nix
 
     ./flatpak.nix
     ./appimage.nix
@@ -117,13 +118,14 @@ with lib;
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   #
 
-  # Dell Precision M4800
   networking.hostId = "b77174bf";
-  networking.hostName = "cheetah";
+  #networking.hostName = "cheetah";
+  networking.hostName = "hidayah";
 
   nix.settings.trusted-users = [
     "root" "najib"
     "naqib"
+    "abdullah" # XXX
   ];
 
   networking.useDHCP = false;          # Disabled by Najib on 20220724T0740
@@ -163,8 +165,28 @@ with lib;
 
   # XXX: ???
   environment.systemPackages = with pkgs; [
-    #tmux
+    tmux
     nvtop
+    brave
+    pulsemixer
+    pciutils
+    htop
+    neovim
+    git
+    ranger
+    firefox
+    qutebrowser
+    floorp
+    libreoffice
+    gimp
+    unzip
+    telegram-desktop
+    #grapejuice
+    #wineWowPackage.full
+    #winetricks
+    xournalpp
+    gparted
+    rofi
   ];
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
   #  environment.systemPackages = [
@@ -207,7 +229,7 @@ with lib;
   #};
 
   #boot.loader.timeout = null;        # XXX: Not sure how to set null value here.
-  boot.loader.timeout = 10;             # in seconds
+  boot.loader.timeout = 100;             # in seconds
   #boot.loader.systemd-boot.enable = true;      # for efi boot, not bios?
   boot.loader.grub.useOSProber = true;
 
@@ -239,8 +261,8 @@ with lib;
 
   #boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [
-    #"i915.modeset=0" "nouveau.modeset=1"                                        # to disable i915 and enable nouveau
-    "video=eDP-1:1920x1080" "video=VGA-1:1280x1024" "video=DP-1-3:1280x1024"    #
+    ##"i915.modeset=0" "nouveau.modeset=1"                                        # to disable i915 and enable nouveau
+    #"video=eDP-1:1920x1080" "video=VGA-1:1280x1024" "video=DP-1-3:1280x1024"    #
   ];
 
   #
@@ -278,11 +300,11 @@ with lib;
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".device = "/dev/disk/by-uuid/a5172078-045e-4b03-abbc-32a86dfe0d06";
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".keyFile = "/crypto_keyfile.bin";
 
-  services.xserver.dpi = 96;
+  #services.xserver.dpi = 96;
 
   #services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
   #services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
-  services.xserver.videoDrivers = [ "nvidia" ];
+  #services.xserver.videoDrivers = [ "nvidia" ];
   # OR
   # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
   #services.xserver.videoDrivers = [ "nvidiaLegacy390" ]; #
@@ -293,18 +315,18 @@ with lib;
   #   NVIDIA GPU product: Quadro K2100M
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390; # Latest Legacy GPU version (390.xx series): 390.143 that support the graphic card.
 
-  hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
-  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
+  #hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
+  #hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
 
-  hardware.nvidia.prime.sync.enable = true;
-  hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
+  #hardware.nvidia.prime.sync.enable = true;
+  #hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
 
-  hardware.nvidia.powerManagement.enable = false;
-  hardware.nvidia.powerManagement.finegrained = false;
-  hardware.nvidia.open = false;
-  hardware.nvidia.nvidiaSettings = true;
-  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+  #hardware.nvidia.powerManagement.enable = false;
+  #hardware.nvidia.powerManagement.finegrained = false;
+  #hardware.nvidia.open = false;
+  #hardware.nvidia.nvidiaSettings = true;
+  ##hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
+  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
 
   services.logind.extraConfig = "RuntimeDirectorySize=4G";    # before this it is 100% full with 1.6G tmpfs /run/user/1001
 
@@ -318,7 +340,7 @@ with lib;
 
   #services.xserver.desktopManager.plasma5.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
-  #services.xserver.desktopManager.mate.enable = true;
+  services.xserver.desktopManager.mate.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
   #services.xserver.desktopManager.enlightenment.enable = true;
   #services.xserver.desktopManager.lxqt.enable = true;
@@ -351,25 +373,25 @@ with lib;
   services.power-profiles-daemon.enable = false;
   #powerManagement.cpuFreqGovernor = "powersave";
   #powerManagement.enable = false; # Default is true;
-  powerManagement.cpufreq.min = 2000000000; # 2000000; # 800000; # Default is 'null';
-  powerManagement.cpufreq.max = 2600000000; # 2600000; # 3200000; # Default is null;
+  #powerManagement.cpufreq.min = 2000000000; # 2000000; # 800000; # Default is 'null';
+  #powerManagement.cpufreq.max = 2600000000; # 2600000; # 3200000; # Default is null;
   #services.upower.enable = true;
   #powerManagement.powertop.enable = true;
   services.tlp = {
-    enable = true; # default is 'false'
+    #enable = true; # default is 'false'
     settings = {
       #TLP_PERSISTENT_DEFAULT=1;
       #TLP_DEFAULT_MODE="BAT";
 
-      CPU_SCALING_GOVERNOR_ON_BAT="powersave";
-      CPU_SCALING_GOVERNOR_ON_AC="powersave"; #"performance";
+      #CPU_SCALING_GOVERNOR_ON_BAT="powersave";
+      #CPU_SCALING_GOVERNOR_ON_AC="powersave"; #"performance";
 
       # The following prevents the battery from charging fully to
       # preserve lifetime. Run `tlp fullcharge` to temporarily force
       # full charge.
       # https://linrunner.de/tlp/faq/battery.html#how-to-choose-good-battery-charge-thresholds
-      START_CHARGE_THRESH_BAT0=40;
-      STOP_CHARGE_THRESH_BAT0=50;
+      #START_CHARGE_THRESH_BAT0=40;
+      #STOP_CHARGE_THRESH_BAT0=50;
 
       # 100 being the maximum, limit the speed of my CPU to reduce
       # heat and increase battery usage:
@@ -377,18 +399,18 @@ with lib;
       #CPU_MAX_PERF_ON_BAT=60;
 
       # CPU frequency
-      CPU_SCALING_MIN_FREQ_ON_AC="2.0GHz"; # 2000000; # 800000;
-      CPU_SCALING_MAX_FREQ_ON_AC="2.6GHz"; # 2600000; # 3200000;
-      CPU_SCALING_MIN_FREQ_ON_BAT="2.0GHz"; # 2000000; #800000;
-      CPU_SCALING_MAX_FREQ_ON_BAT="2.6GHz"; # 2600000; #3200000; #2300000;
+      #CPU_SCALING_MIN_FREQ_ON_AC="2.0GHz"; # 2000000; # 800000;
+      #CPU_SCALING_MAX_FREQ_ON_AC="2.6GHz"; # 2600000; # 3200000;
+      #CPU_SCALING_MIN_FREQ_ON_BAT="2.0GHz"; # 2000000; #800000;
+      #CPU_SCALING_MAX_FREQ_ON_BAT="2.6GHz"; # 2600000; #3200000; #2300000;
     };
   };
-  services.auto-cpufreq = {
-    enable = true;
-  };
-  systemd.services."auto-cpufreq" = {
-    after = [ "display-manager.service" ];
-  };
+  #services.auto-cpufreq = {
+  #  enable = true;
+  #};
+  #systemd.services."auto-cpufreq" = {
+  #  after = [ "display-manager.service" ];
+  #};
 
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.powersave = false;
@@ -397,7 +419,7 @@ with lib;
   systemd.watchdog.rebootTime = "10m";
 
   #nix.maxJobs = lib.mkDefault 4; #8;
-  nix.settings.max-jobs = 4;
+  #nix.settings.max-jobs = 4;
   #nix.daemonNiceLevel = 19; # 0 to 19, default 0
   #nix.daemonIONiceLevel = 7; # 0 to 7, default 0
 
@@ -406,5 +428,5 @@ with lib;
 
   virtualisation.virtualbox.host.enable = true;
 
-  system.stateVersion = "22.05";
+  system.stateVersion = "23.11";
 }

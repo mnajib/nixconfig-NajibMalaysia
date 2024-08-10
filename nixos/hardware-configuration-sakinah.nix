@@ -18,7 +18,7 @@
     "dm-crypt" "dm-snapshot" "dm-raid"
     "zfs"
   ];
-  boot.initrd.availableKernelModules = [ "uhci_hcd" "ehci_pci" "ahci" "firewire_ohci" "usb_storage" "sd_mod" "sr_mod" "sdhci_pci" ];
+  boot.initrd.availableKernelModules = [ "uhci_hcd" "ehci_pci" "ahci" "firewire_ohci" "usb_storage" "sd_mod" "sr_mod" "sdhci_pci" "usbhid"];
   boot.initrd.kernelModules = [ ];
   boot.initrd.supportedFilesystems = [
     "ext4" "btrfs" "xfs" "vfat" "ntfs"
@@ -28,22 +28,36 @@
   ];
 
   # For '/' partition
-  boot.initrd.luks.devices."luks-34a274e3-4353-430f-8ded-9354cd8acab5".device = "/dev/disk/by-uuid/34a274e3-4353-430f-8ded-9354cd8acab5";
+  #boot.initrd.luks.devices."luks-34a274e3-4353-430f-8ded-9354cd8acab5".device = "/dev/disk/by-uuid/34a274e3-4353-430f-8ded-9354cd8acab5";
   # For swap partition
-  boot.initrd.luks.devices."luks-745aa30d-5f90-4d57-8193-c380ed2ece24".device = "/dev/disk/by-uuid/745aa30d-5f90-4d57-8193-c380ed2ece24";
+  #boot.initrd.luks.devices."luks-745aa30d-5f90-4d57-8193-c380ed2ece24".device = "/dev/disk/by-uuid/745aa30d-5f90-4d57-8193-c380ed2ece24";
+
+  #fileSystems."/" =
+  #  { device = "/dev/disk/by-uuid/606e7695-318c-4105-b4fe-ca0db0343b84";
+  #    fsType = "ext4";
+  #  };
+  #
+  #fileSystems."/boot" =
+  #  { device = "/dev/disk/by-uuid/FD6B-4835";
+  #    fsType = "vfat";
+  #  };
+  #
+  #swapDevices =
+  #  [ { device = "/dev/disk/by-uuid/615add4b-eb31-4d5f-82e5-7f17387307c5"; }
+  #  ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/606e7695-318c-4105-b4fe-ca0db0343b84";
-      fsType = "ext4";
+    { device = "/dev/disk/by-uuid/49891baf-ec78-4b5f-97b2-ce0915bf4dfd";
+      fsType = "xfs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/FD6B-4835";
+    { device = "/dev/disk/by-uuid/0525-C5DB";
       fsType = "vfat";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/615add4b-eb31-4d5f-82e5-7f17387307c5"; }
+    [ { device = "/dev/disk/by-uuid/ebf3dd4d-a564-49cd-bd45-11a509ee41fd"; }
     ];
 
   networking.useDHCP = lib.mkDefault true;

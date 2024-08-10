@@ -7,10 +7,13 @@
 - [Misterio77's personal nix-config](https://github.com/Misterio77/nix-config)
 - https://nixos.wiki/wiki/Comparison_of_NixOS_setups
 - https://nixos.wiki/wiki/Configuration_Collection
+- https://github.com/sjcobb2022/nixos-config
 
 ### About mime and file association
 - https://wiki.archlinux.org/title/Default_applications#Resource_openers
 - ...
+
+# Please run 'nixos-generate-config --show-hardware-config' and copy the output into hardware-configuration.nix
 
 ```
 mkdir -p ~/src
@@ -44,7 +47,8 @@ home-manager switch --flake .#najib@khawlah
 home-manager switch --flake .#najib@khawlah -b backup
 
 sudo nixos-rebuild dry-build  --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
-sudo nixos-rebuild build      --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
+#sudo nixos-rebuild build      --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
+sudo nixos-rebuild build --flake .#zahrah --target-host naim@zahrah --use-remote-sudo
 sudo nixos-rebuild boot       --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
 sudo nixos-rebuild test       --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
 sudo nixos-rebuild switch     --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
@@ -55,11 +59,15 @@ nix shell nixpkgs#pulsar
 #------------------------------------------------------------------------------
 To show generations:
   nix-env --list-generations
+  sudo nix-env --list-generations --profile /nix/var/nix/profiles/system
 
-To delete generations number 23:
-  nix-env --delete-generations 23
+To delete generations number 23 42 43:
+  nix-env --delete-generations 23 42 43
+  sudo nix-env --delete-generations 42 43 --profile /nix/var/nix/profiles/system
 To delete all other generations, but keep 5 last generations:
   nix-env --delete-generations +5
+To delete old generations:
+  sudo nix-env --delete-generations old
 
 To run garbage collection:
   nix-store --gc

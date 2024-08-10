@@ -66,6 +66,14 @@
 
   #nix.trustedUsers = [ "root" "najib" ]; <-- moved to host-hostname.nix
 
+  # a workaround for error:
+  #   store path starts with illegal character '.'
+  # when running
+  #   nix-store --delete
+  #   nix-collect-garbage
+  #nix.package = pkgs.nixVersions.latest;
+  nix.package = lib.mkDefault pkgs.nixVersions.latest;
+
   # Binary Cache for Haskell.nix
   nix.settings.trusted-public-keys = [
     "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
@@ -191,11 +199,14 @@
   # $ nix search wget
   #
   environment.systemPackages = with pkgs; [
+    cachix
+
     #unstable.minetest
     #unstable.google-chrome
     google-chrome
 
     gptfdisk efibootmgr btrfs-progs btrbk #bcachefs-tools
+    fatresize	# The FAT16/FAT32 non-destructive resizer
     gsmartcontrol smartmontools
     #lizardfs                 # marked as broken?
     wget curl killall
@@ -347,6 +358,7 @@
     gnome3.adwaita-icon-theme
 
     niv
+    npins
 
     fontforge  # fontforge-gtk
     fontforge-fonttools
@@ -480,6 +492,8 @@
     libinput-gestures
     alsaUtils
     partclone           # Utilities to save and restore used blocks on a partition
+    hdparm
+    lsscsi
 
     diskonaut           # a terminal disk space navigator
     duf
@@ -597,10 +611,15 @@
     # Instant Messenger
     #---------------------------------------------------------------
 
-    tdesktop
+    telegram-desktop #tdesktop
     signal-desktop
     hexchat
     discord discord-ptb
+
+    simplex-chat-desktop
+    session-desktop
+
+    briar-desktop
 
     #---------------------------------------------------------------
     # File Sharing and Download Manager, File transfer
@@ -630,7 +649,7 @@
     clipgrab
     #dfilemanager # File manager written in Qt/C++
     pcmanfm # File manager with GTK interface
-    gnome.nautilus
+    #gnome.nautilus
     index-fm # Multi-platform file manager
     worker # A two-pane file manager with advanced file manipulation features
     #keepnote
@@ -722,7 +741,7 @@
 
     jdk #openjdk
 
-    libreoffice
+    #libreoffice
     #libreoffice-fresh
     #wpsoffice
 
@@ -730,8 +749,8 @@
 
     #aseprite   # disabled because always need recompile, and usually not being use
 
-    gimp-with-plugins
-    #gimp
+    #gimp-with-plugins
+    gimp
 
     drawing drawpile
 
@@ -871,8 +890,6 @@
     adwaita-qt
     gnome3.adwaita-icon-theme
 
-    niv
-
     fontforge   # fontforge-gtk
     fontforge-fonttools
 
@@ -918,7 +935,7 @@
     gitAndTools.git-hub
     gitg
 
-    seaweedfs
+    #seaweedfs
 
     # XXX
     maven
@@ -992,7 +1009,8 @@
     historyLimit = 10000;
 
     #prefix = "C-a";
-    shortcut = "a";
+    #shortcut = "a";
+    shortcut = "b";
 
     #keyMode = "vi";
     #customPaneNavigationAndResize = true;
@@ -1071,16 +1089,16 @@
       ];
     }; # End ohMyZsh
 
-  }; # End zsh
+  }; # End programs.zsh
 
-  programs.fish.enable = true;
+  #programs.fish.enable = true;
   programs.xonsh.enable = true;
 
   #users.users.najib.shell = pkgs.fish;    #pkgs.zsh; # pkgs.fish;
   #users.defaultUserShell = pkgs.fish;    #pkgs.zsh;
   #users.users.root.shell = pkgs.fish;    #pkgs.zsh;
 
-  services.clipcat.enable = true;         # clipboard manager daemon
+  #services.clipcat.enable = true;         # clipboard manager daemon
 
   services.urxvtd.enable = true;          # To use urxvtd, run "urxvtc".
 
@@ -1089,7 +1107,8 @@
   programs.mtr.enable = true;
   #programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
 
-  services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
+  # XXX:
+  #services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
 
   #services.glusterfs.enable = true;
 

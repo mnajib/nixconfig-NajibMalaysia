@@ -16,7 +16,8 @@ with lib;
 #with host;
 {
   nix = {
-    package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
+    #package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
+    #package = pkgs.nixVersions.latest;
     extraOptions = ''
         experimental-features = nix-command flakes
     '';
@@ -63,7 +64,7 @@ with lib;
     ./configuration.FULL.nix
 
     #./hosts.nix
-    ./hosts2.nix
+    #./hosts2.nix
 
     ./bootEFI.nix
     #./bootBIOS.nix
@@ -75,7 +76,7 @@ with lib;
     #./users-najib.nix
 
     ./nfs-client-automount.nix
-    ./nfs-client-automount-games.nix
+    #./nfs-client-automount-games.nix
     #./nfs-client.nix
 
     ./samba-client.nix
@@ -115,6 +116,9 @@ with lib;
     ./appimage.nix
 
     ./walkie-talkie.nix
+
+    ./ai.nix
+    ./barrier.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -165,7 +169,8 @@ with lib;
   # XXX: ???
   environment.systemPackages = with pkgs; [
     #tmux
-    nvtop
+    #nvtop # has been rename to nvtopPackages.full
+    nvtopPackages.full
     kdenlive
   ];
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
@@ -212,6 +217,8 @@ with lib;
   boot.loader.timeout = 120;             # in seconds
   #boot.loader.systemd-boot.enable = true;      # for efi boot, not bios?
   boot.loader.grub.useOSProber = true;
+
+  boot.loader.systemd-boot.netbootxyz.enable = true;
 
   # Setup keyfile
   #boot.initrd.secrets = {
@@ -316,7 +323,8 @@ with lib;
   services.xserver.displayManager.lightdm.enable = true;
   #services.xserver.displayManager.startx.enable = true;
 
-  services.xserver.displayManager.defaultSession = "none+xmonad";
+  #services.xserver.displayManager.defaultSession = "none+xmonad"; # Replaced by services.displayManager.defaultSession = "none+xmonad";
+  services.displayManager.defaultSession = "none+xmonad";
 
   #services.xserver.desktopManager.plasma5.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
@@ -326,17 +334,18 @@ with lib;
   #services.xserver.desktopManager.lxqt.enable = true;
   #services.xserver.desktopManager.lumina.enable = true;
 
-  services.xserver.windowManager.spectrwm.enable = true;
-  services.xserver.windowManager.qtile.enable = true;
-  services.xserver.windowManager.notion.enable = true;
-  services.xserver.windowManager.leftwm.enable = true;
-  services.xserver.windowManager.nimdow.enable = true;
-  services.xserver.windowManager.herbstluftwm.enable = true;
+  #services.xserver.windowManager.spectrwm.enable = true;
+  #services.xserver.windowManager.qtile.enable = true;
+  #services.xserver.windowManager.notion.enable = true;
+  #services.xserver.windowManager.leftwm.enable = true;
+  #services.xserver.windowManager.nimdow.enable = true;
+  #services.xserver.windowManager.herbstluftwm.enable = true;
 
   #----------------------------------------------------------------------------
 
   # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true; # XXX
+  #services.xserver.libinput.enable = true; # XXX replaced by services.libinput.enable = true;
+  services.libinput.enable = true;
   #services.xserver.libinput.disableWhileTyping = true;
   #services.xserver.libinput.tapping = false; # Default is 'true'
   #services.xserver.libinput.scrollMethod = "twofinger";

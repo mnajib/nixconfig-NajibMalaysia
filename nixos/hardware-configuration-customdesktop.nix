@@ -7,14 +7,34 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
+  #boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+  #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;  # Do not need it here; as I already define in zfs.nix
+
   boot.kernelModules =                 [ "kvm-intel" ];
   boot.extraModulePackages =           [ ];
-  boot.supportedFilesystems =          [ "btrfs" "ext4" "xfs" "vfat" "zfs" "ntfs" ];                              # "bcachefs"
+  boot.supportedFilesystems =          [
+    "btrfs" "ext4" "xfs" "vfat" "ntfs"
+    # "bcachefs"
+    "dm-crypt" "dm-snapshot" "dm-raid"
+    "zfs"
+  ];
 
   boot.initrd = {
-    availableKernelModules = [ "ehci_pci" "ahci" "xhci_pci" "ata_piix" "usbhid" "usb_storage" "sd_mod" "mpt3sas" ];
-    kernelModules =          [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ];            #"zfs" "bcachefs"
-    supportedFilesystems =   [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ];            #"zfs" "bcachefs"
+    availableKernelModules = [
+      "ehci_pci" "ahci" "xhci_pci" "ata_piix" "usbhid" "usb_storage" "sd_mod" "mpt3sas"
+      "uhci_hcd" "firewire_ohci" "sr_mod" "sdhci_pci"
+      "ums_realtek"
+      "mpt3sas"
+    ];
+    kernelModules = [
+      "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs"
+      #"ntfs"
+      "kvm-intel"
+    ];            #"zfs" "bcachefs"
+    supportedFilesystems = [
+      "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs"
+      #"ntfs"
+    ];            #"zfs" "bcachefs"
 
     #--------------------------------------------------------------------------
     # NOTES:
@@ -49,59 +69,73 @@
     #------------------
 
     # AGI SSD 256GB
-    luks.devices."luks-bcd7371c-c49a-4b74-a041-9cf9728cf395" = {
-      device = "/dev/disk/by-uuid/bcd7371c-c49a-4b74-a041-9cf9728cf395";
-      preLVM = true;
-    };   # xfs (nixos)
-    # swap
-    luks.devices."luks-781bbff1-508d-4287-a748-63d45d74b5e5" = {
-      device = "/dev/disk/by-uuid/781bbff1-508d-4287-a748-63d45d74b5e5";
-      preLVM = true;
-    };
+    #luks.devices."luks-bcd7371c-c49a-4b74-a041-9cf9728cf395" = {
+    #  device = "/dev/disk/by-uuid/bcd7371c-c49a-4b74-a041-9cf9728cf395";
+    #  #preLVM = true;
+    #};   # xfs (nixos)
+    # swap (AGI SSD)
+    #luks.devices."luks-781bbff1-508d-4287-a748-63d45d74b5e5" = {
+    #  device = "/dev/disk/by-uuid/781bbff1-508d-4287-a748-63d45d74b5e5";
+    #  #preLVM = true;
+    #};
+
+    #------------------
+    # NixOS (disk from sakinah)
+    # update on 2024-06-12: HDD ni ada problem IO error
+    #------------------
+    # For '/' partition
+    #luks.devices."luks-34a274e3-4353-430f-8ded-9354cd8acab5".device = "/dev/disk/by-uuid/34a274e3-4353-430f-8ded-9354cd8acab5";
+    # For swap partition
+    #luks.devices."luks-745aa30d-5f90-4d57-8193-c380ed2ece24".device = "/dev/disk/by-uuid/745aa30d-5f90-4d57-8193-c380ed2ece24";
 
     #------------------
     # For data storage (zfs pool: najibzfspool1)
     #------------------
 
     # najibzfspool1, mirror-0
-    luks.devices."luks-8a53d158-ba69-47a1-9329-2d07372949d6" = {
-      device = "/dev/disk/by-uuid/8a53d158-ba69-47a1-9329-2d07372949d6";
-      preLVM = true;
-    };
-    luks.devices."luks-3f373d53-ded5-481a-a6f2-c547a3593243" = {
-      device = "/dev/disk/by-uuid/3f373d53-ded5-481a-a6f2-c547a3593243";
-      preLVM = true;
-    };
+    #luks.devices."luks-8a53d158-ba69-47a1-9329-2d07372949d6" = {
+    #  device = "/dev/disk/by-uuid/8a53d158-ba69-47a1-9329-2d07372949d6";
+    #  #preLVM = true;
+    #};
+
+    # tak detect
+    #luks.devices."luks-3f373d53-ded5-481a-a6f2-c547a3593243" = {
+    #  device = "/dev/disk/by-uuid/3f373d53-ded5-481a-a6f2-c547a3593243";
+    #  #preLVM = true;
+    #};
+
     #luks.devices."luks-0de82803-40d1-4fdf-8841-6e4f79e0394c" = {
     #  device = "/dev/disk/by-uuid/0de82803-40d1-4fdf-8841-6e4f79e0394c";
     #  preLVM = true;
     #};
 
     # najibzfspool1, mirror-1
-    luks.devices."luks-b25e6a23-1c8b-4037-8f00-5e8c51fa2c27" = {
-      device = "/dev/disk/by-uuid/b25e6a23-1c8b-4037-8f00-5e8c51fa2c27";
-      preLVM = true;
-    };
+    #luks.devices."luks-b25e6a23-1c8b-4037-8f00-5e8c51fa2c27" = {
+    #  device = "/dev/disk/by-uuid/b25e6a23-1c8b-4037-8f00-5e8c51fa2c27";
+    #  #preLVM = true;
+    #};
 
     # najibzfspool1, mirror-2
-    luks.devices."luks-ec2dca2b-84e7-4d33-b6fd-7bdad06ec445" = {
-      device = "/dev/disk/by-uuid/ec2dca2b-84e7-4d33-b6fd-7bdad06ec445";
-      preLVM = true;
-    };                  # 1TB, bought used-hdd from Shopee on 2023-04.
-    luks.devices."luks-acfbbc38-c2c4-453f-b995-f02f8cf17bac" = {
-      device = "/dev/disk/by-uuid/acfbbc38-c2c4-453f-b995-f02f8cf17bac";
-      preLVM = true;
-    };                  # 1TB, bought used-hdd from Shopee on 2023-04.
-    luks.devices."luks-135621a1-9dfa-467a-a3fd-ab66b21e38d6" = {
-      device = "/dev/disk/by-uuid/135621a1-9dfa-467a-a3fd-ab66b21e38d6";
-      preLVM = true;
-    };
+    #luks.devices."luks-ec2dca2b-84e7-4d33-b6fd-7bdad06ec445" = {
+    #  device = "/dev/disk/by-uuid/ec2dca2b-84e7-4d33-b6fd-7bdad06ec445";
+    #  #preLVM = true;
+    #};                  # 1TB, bought used-hdd from Shopee on 2023-04.
+    #luks.devices."luks-acfbbc38-c2c4-453f-b995-f02f8cf17bac" = {
+    #  device = "/dev/disk/by-uuid/acfbbc38-c2c4-453f-b995-f02f8cf17bac";
+    #  #preLVM = true;
+    #};                  # 1TB, bought used-hdd from Shopee on 2023-04.
+    #luks.devices."luks-135621a1-9dfa-467a-a3fd-ab66b21e38d6" = {
+    #  device = "/dev/disk/by-uuid/135621a1-9dfa-467a-a3fd-ab66b21e38d6";
+    #  #preLVM = true;
+    #};
 
     # hot spare ?
     #...
 
   };
 
+  #------------------------------------
+  #------------------------------------
   fileSystems."/" = {
     #device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
     #fsType = "btrfs";
@@ -110,22 +144,44 @@
     #  "compress=zstd" "noatime" "autodefrag"
     #];
 
-    device = "/dev/disk/by-uuid/a64b6850-5e88-4cc3-b106-28a724c4b2cc";
-    #device = "/dev/mapper/luks-bcd7371c-c49a-4b74-a041-9cf9728cf395";
-    fsType = "xfs";
-  };
+    # SSD AGI customdesktop
+    #device = "/dev/disk/by-uuid/a64b6850-5e88-4cc3-b106-28a724c4b2cc";
+    #fsType = "xfs";
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/bdccf3bb-061c-40d5-82c3-d04ccf603485";
+    # HDD from sakinah
+    # Update on 2024-06-12, HDD ni ada masalah IO error
+    #device = "/dev/disk/by-uuid/606e7695-318c-4105-b4fe-ca0db0343b84";
+    #fsType = "ext4";
+
+    # 1TB HDD from hidayah (HP ProDesk Naqib)
+    device = "/dev/disk/by-uuid/f7dbf09e-c9b0-4e27-9ded-3a31b43760b0";
     fsType = "ext4";
   };
 
-  fileSystems."/home" = {
-    device = "najibzfspool1/home";
-    fsType = "zfs";
+  fileSystems."/boot" = {
+    # customdesktop
+    #device = "/dev/disk/by-uuid/bdccf3bb-061c-40d5-82c3-d04ccf603485";
+    #fsType = "ext4";
+
+    # hdd from sakinah
+    #device = "/dev/disk/by-uuid/FD6B-4835";
+    #fsType = "vfat";
+
+    # HDD from hidayah
+    device = "/dev/disk/by-uuid/E127-10B1";
+    fsType = "vfat";
   };
 
-  fileSystems."/root" = {
+  #fileSystems."/home" = {
+  #  device = "najibzfspool1/home";
+  #  fsType = "zfs";
+  #};
+  #fileSystems."/mnt/data" = {
+  #  device = "najibzfspool1/home";
+  #  fsType = "zfs";
+  #};
+
+  #fileSystems."/root" = {
     #device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
     #fsType = "btrfs";
     #options = [
@@ -133,9 +189,10 @@
     #  "compress=zstd" "noatime" "autodefrag"
     #];
 
-    device = "najibzfspool1/root";
-    fsType = "zfs";
-  };
+  #  device = "najibzfspool1/root";
+  #  fsType = "zfs";
+  #};
+  #------------------------------------
 
   #fileSystems."/nix" =
   #  {
@@ -250,8 +307,13 @@
     #{ device = "/dev/disk/by-uuid/54a11355-d334-46c5-8cbb-43369d08fd8a"; } # swap on 500GB HD. This HDD is failing
     #{ device = "/dev/disk/by-uuid/600ebd52-edd2-4c42-b3b1-b8d8a6cb5acf"; } # swap partition on 254GB SSD
 
-    { device = "/dev/disk/by-uuid/79d45678-d31b-4b39-851b-f00559ea8cc6"; }
+    #{ device = "/dev/disk/by-uuid/79d45678-d31b-4b39-851b-f00559ea8cc6"; } # AGI SSD customdesktop
     #{ device = "/dev/mapper/luks-781bbff1-508d-4287-a748-63d45d74b5e5"; }
+
+    #{ device = "/dev/disk/by-uuid/615add4b-eb31-4d5f-82e5-7f17387307c5"; } # HDD from sakinah
+
+    { device = "/dev/disk/by-uuid/1f6b478f-a5ad-4e66-aef8-951f340b7b78"; } # HDD from hidayah
+    #{ device = "/dev/disk/by-uuid/c367f2dc-b870-4675-a75a-8f0fd7e286b0"; } # HDD from hidayah
 
     #{
     #  device = "/swap/swapfile";

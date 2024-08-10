@@ -4,6 +4,7 @@
 }:
 {
   home.packages = [
-    pkgs.grapejuice
+    #pkgs.grapejuice
+    pkgs.vinegar
   ];
 }

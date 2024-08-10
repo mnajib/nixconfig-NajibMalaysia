@@ -59,12 +59,6 @@ let
   inherit (inputs.nix-colors.lib-contrib { inherit pkgs; }) colorschemeFromPicture nixWallpaperFromScheme;
 in
 {
-  nixpkgs.config = {
-    allowUnfree = true;
-    #firefox.enableAdobeFlash = false;
-    pulseaudio = true;
-  };
-
   # XXX: TODO: Better if not import here; but import from user specific file
   imports = [
     inputs.nix-colors.homeManagerModule
@@ -73,8 +67,22 @@ in
     ./rofi.nix
     #./nvim/lsp.nix
     #./nvim
-  ];
+    ./zsh.nix
+  ]
+  ++ (builtins.attrValues outputs.homeManagerModules);
   # XXX: TODO: Should be in seperate file packages.nix
+
+  nixpkgs.overlays = builtins.attrValues outputs.overlays;
+  nixpkgs.config = {
+    allowUnfree = true;
+    allowUnfreePredicate = _: true;
+    permittedInsecurePackages = [
+      #"nix-2.15.3"
+      #"electron-25.9.0"
+    ];
+    #firefox.enableAdobeFlash = false;
+    pulseaudio = true;
+  };
 
   colorscheme = lib.mkDefault colorSchemes.dracula;
   #colorscheme = lib.mkDefault colorSchemes.nord;
@@ -354,10 +362,10 @@ in
   programs.info.enable = true;
 
   #programs.exa = {
-  programs.eza = {
-    enable = true;
-    #enableAliases = true;
-  };
+  #programs.eza = {
+  #  enable = true;
+  #  #enableAliases = true;
+  #};
 
   programs.dircolors.enable = true;
 
@@ -503,7 +511,24 @@ in
                 new = "green bold";
               };
           };
-      };
+
+          # mkdir /srv/gitrepo/nixconfig-NajibMalaysia.git
+          # chgrp -R users nixconfig-NajibMalaysia.git
+          # git init --bare --shared=0664 /srv/gitrepo/nixconfig-NajibMalaysia.git
+          # git init --bare --shared=group mysharedgitrepo
+          #
+          # git clone --config core.sharedRepository=true
+          #
+          # setfacl -R -m g:<whatever group>:rwX gitrepo
+          # find gitrepo -type d | xargs setfacl -R -m d:g:<whatever group>:rwX
+          #
+          # chmod -vR g+swX /srv/gitrepo
+          safe = {
+            #directory = "/srv/gitrepo/nixconfig-NajibMalaysia.git";
+            #directory = "/srv/gitrepo";
+            directory = "*";
+          };
+      }; # End extraConfig
   };
 
 #------------------------------------------------------------------------------

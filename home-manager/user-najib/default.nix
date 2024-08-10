@@ -19,10 +19,10 @@ in
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
 
-    ./youtube.nix
+    ../youtube.nix
 
-    ./common-configs.nix
-    ./common-packages.nix
+    ../common-configs.nix
+    ../common-packages.nix
 
     # My attemp to use nix-doom-emacs
     #./emacs.nix
@@ -36,21 +36,22 @@ in
 
   nixpkgs = {
     # You can add overlays here
-    overlays = [
-      # Add overlays your own flake exports (from overlays and pkgs dir):
-      outputs.overlays.modifications
-      outputs.overlays.additions
+    #overlays = [
+    #  # Add overlays your own flake exports (from overlays and pkgs dir):
+    #  outputs.overlays.modifications
+    #  outputs.overlays.additions
+    #
+    #  # You can also add overlays exported from other flakes:
+    #  # neovim-nightly-overlay.overlays.default
+    #
+    #  # Or define it inline, for example:
+    #  # (final: prev: {
+    #  #   hi = final.hello.overrideAttrs (oldAttrs: {
+    #  #     patches = [ ./change-hello-to-hi.patch ];
+    #  #   });
+    #  # })
+    #];
 
-      # You can also add overlays exported from other flakes:
-      # neovim-nightly-overlay.overlays.default
-
-      # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
-      #   });
-      # })
-    ];
     # Configure your nixpkgs instance
     config = {
       # Disable if you don't want unfree packages
@@ -58,6 +59,12 @@ in
 
       # Workaround for https://github.com/nix-community/home-manager/issues/2942
       allowUnfreePredicate = (_: true);
+
+      # XXX:
+      permittedInsecurePackages = [
+        #"nix-2.15.3"
+        #"electron-25.9.0"
+      ];
     };
   };
 
@@ -90,6 +97,10 @@ in
     #xmind-8-update8
     xournalpp
     wpsoffice
+
+    libreoffice-fresh
+    #libreoffice-qt-fresh
+
     chemtool
     marvin
     smlnj
@@ -138,7 +149,7 @@ in
   programs.dircolors.enable = true;
   programs.htop.enable = true;
   programs.info.enable = true;
-  programs.eza.enable = true;
+  #programs.eza.enable = true;
 
   programs.ssh = {
     enable = true;
@@ -158,7 +169,7 @@ in
   # XXX:
   #programs.tmux.shell = "\${pkgs.zsh}/bin/zsh";
   #programs.tmux.shell = "${pkgs.zsh}/bin/zsh";
-  programs.tmux.shell = "/run/current-system/sw/bin/zsh";
+  #programs.tmux.shell = "/run/current-system/sw/bin/zsh";
 
   #programs.doom-emacs = {
   #  enable = true;
@@ -174,5 +185,5 @@ in
   systemd.user.startServices = "sd-switch";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "22.05";
+  #home.stateVersion = "22.05";
 }

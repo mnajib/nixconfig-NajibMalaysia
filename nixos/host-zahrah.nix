@@ -15,7 +15,7 @@
     #./hardware-storageSSD001.nix
     ./thinkpad.nix
 
-    ./hosts2.nix
+    #./hosts2.nix
     #./network-dns.nix
 
     #./users-anak2.nix
@@ -50,7 +50,9 @@
     ./nix-garbage-collector.nix
 
     ./flatpak.nix
-    ./emulationstation.nix
+    #./emulationstation.nix # freeimage no safe?
+
+    ./ai.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -129,22 +131,22 @@
   networking.firewall.enable = false;
   networking.firewall.allowedTCPPorts = [
     # Gluster
-    24007 # gluster daemon
-    24008 # management
-    #49152 # brick1
-    49153 # brick2
-    #38465-38467 # Gluster NFS
-    111 # portmapper
-    1110 # NFS cluster
-    4045    # NFS lock manager
+    24007         # gluster daemon
+    24008         # management
+    #49152        # brick1
+    49153         # brick2
+    #38465-38467  # Gluster NFS
+    111           # portmapper
+    1110          # NFS cluster
+    4045          # NFS lock manager
   ];
 
   networking.firewall.allowedUDPPorts = [
     # Gluster
-    111 # portmapper
-    3450 # for minetest server
-    1110 # NFS client
-    4045 # NFS lock manager
+    111           # portmapper
+    3450          # for minetest server
+    1110          # NFS client
+    4045          # NFS lock manager
   ];
 
   powerManagement.enable = true;
