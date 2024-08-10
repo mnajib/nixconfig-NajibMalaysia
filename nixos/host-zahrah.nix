@@ -51,6 +51,8 @@
 
     ./flatpak.nix
     #./emulationstation.nix # freeimage no safe?
+
+    ./ai.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
