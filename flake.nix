@@ -728,14 +728,15 @@
         "naqib@asmak" = mkHome [./home-manager/user-naqib/host-asmak] nixpkgs.legacyPackages."x86_64-linux";
 
         #----------------------------------------------------------------------
-        "naqib@sakinah" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            #./home-manager/home-naqib.nix
-            ./home-manager/user-naqib/host-sakinah/default.nix
-          ];
-        };
+        #"naqib@sakinah" = home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #  extraSpecialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    #./home-manager/home-naqib.nix
+        #    ./home-manager/user-naqib/host-sakinah/default.nix
+        #  ];
+        #};
+        "naqib@sakinah" = mkHome [./home-manager/user-naqib/host-sakinah] nixpkgs.legacyPackages."x86_64-linux";
 
         #----------------------------------------------------------------------
         "naqib@raudah" = home-manager.lib.homeManagerConfiguration {
@@ -766,14 +767,15 @@
         };
 
         #----------------------------------------------------------------------
-        "nurnasuha@sakinah" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            #./home-manager/home-nurnasuha.nix
-            ./home-manager/user-nurnasuha/host-sakinah/default.nix
-          ];
-        };
+        #"nurnasuha@sakinah" = home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #  extraSpecialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    #./home-manager/home-nurnasuha.nix
+        #    ./home-manager/user-nurnasuha/host-sakinah/default.nix
+        #  ];
+        #};
+        "nurnasuha@sakinah" = mkHome [./home-manager/user-nurnasuha/host-sakinah] nixpkgs.legacyPackages."x86_64-linux";
 
         #----------------------------------------------------------------------
         "nurnasuha@customdesktop" = home-manager.lib.homeManagerConfiguration {
