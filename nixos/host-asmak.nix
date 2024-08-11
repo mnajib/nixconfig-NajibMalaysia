@@ -35,7 +35,7 @@
     #./synergy-client.nix
     ./hardware-printer.nix
     ./zramSwap.nix
-    ./hosts2.nix
+    #./hosts2.nix
     ./configuration.FULL.nix
     ./nix-garbage-collector.nix
     ./flatpak.nix
@@ -160,7 +160,8 @@
   #services.xserver.desktopManager.plasma5.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
   #services.xserver.desktopManager.xfce.enable = true;
-  services.xserver.desktopManager.lxqt.enable = true;
+  services.xserver.desktopManager.mate.enable = true;
+  #services.xserver.desktopManager.lxqt.enable = true;
 
   services.xserver.windowManager.xmonad.enable = true;
   services.xserver.windowManager.jwm.enable = true;
