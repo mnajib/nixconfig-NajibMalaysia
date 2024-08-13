@@ -77,7 +77,7 @@ with lib;
     ./users-naim.nix
     ./users-nurnasuha.nix
     ./users-julia-wheel.nix
-    ./users-abdullah.nix
+    ./users-abdullah-wheel.nix
 
     ./nfs-client-automount.nix
     #./nfs-client-automount-games.nix
