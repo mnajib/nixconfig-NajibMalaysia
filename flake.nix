@@ -526,23 +526,38 @@
         #----------------------------------------------------------------------
         # Acer Aspire
         #leopard = nixpkgs.lib.nixosSystem {
-        taufiq = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [
-            #./nixos/host-leopard.nix
-            ./nixos/host-taufiq.nix
+        #taufiq = nixpkgs.lib.nixosSystem {
+        #  specialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    #./nixos/host-leopard.nix
+        #    ./nixos/host-taufiq.nix
+        #
+        #    nix-ld.nixosModules.nix-ld {
+        #      programs.nix-ld.dev.enable = true;
+        #    }
+        #
+        #    # Add your model from this list:
+        #    # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+        #    #hardware.nixosModules.lenovo-thinkpad-x220
+        #
+        #    expose-cuda.nixosModules.default
+        #  ]; # End 'modules'.
+        #}; #End: taufiq = nixpkgs.lib.nixosSystem
+        taufiq = mkNixos [
+          ./nixos/host-taufiq.nix
 
-            nix-ld.nixosModules.nix-ld {
-              programs.nix-ld.dev.enable = true;
-            }
+          #sops-nix.nixosModules.sops
 
-            # Add your model from this list:
-            # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
-            #hardware.nixosModules.lenovo-thinkpad-x220
+          nix-ld.nixosModules.nix-ld {
+            programs.nix-ld.dev.enable = true;
+          }
 
-            expose-cuda.nixosModules.default
-          ]; # End 'modules'.
-        }; #End: taufiq = nixpkgs.lib.nixosSystem
+          # Add your model from this list:
+          # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+          #hardware.nixosModules.lenovo-thinkpad-x220
+
+          expose-cuda.nixosModules.default
+        ];
 
         #----------------------------------------------------------------------
         # Laptop Thinkpad T410 (without nvidia) Julia
@@ -810,15 +825,20 @@
         };
 
         #----------------------------------------------------------------------
-        "julia@taufiq" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            #./home-manager/home-julia.nix
-            #./home-manager/julia-taufiq/default.nix
-            ./home-manager/user-julia/host-taufiq/default.nix
-          ];
-        };
+        #"julia@taufiq" = home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #  extraSpecialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    #./home-manager/home-julia.nix
+        #    #./home-manager/julia-taufiq/default.nix
+        #    ./home-manager/user-julia/host-taufiq/default.nix
+        #  ];
+        #};
+        "najib@taufiq"      = mkHome [./home-manager/user-najib/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
+        "julia@taufiq"      = mkHome [./home-manager/user-julia/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
+        "naqib@taufiq"      = mkHome [./home-manager/user-naqib/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
+        "nurnasuha@taufiq"  = mkHome [./home-manager/user-nurnasuha/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
+        "naim@taufiq"       = mkHome [./home-manager/user-naim/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
 
       }; # End homeConfiguration
     }; # End let ... in ... rec
