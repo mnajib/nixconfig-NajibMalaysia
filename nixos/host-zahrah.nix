@@ -225,17 +225,19 @@
   # Custom script to decrease trackpoint sensitivity
   #...
 
-  services.xserver.libinput.enable = true;
-  services.xserver.libinput.touchpad.disableWhileTyping = true;
-  services.xserver.libinput.touchpad.scrollMethod = "twofinger";
-  services.xserver.libinput.touchpad.tapping = true; #false;
+  services.libinput.enable = true;
+  services.libinput.touchpad = {
+    disableWhileTyping = true;
+    scrollMethod = "twofinger";
+    tapping = true; #false;
+  };
+
+  services.displayManager.defaultSession = "none+xmonad";
 
   #services.xserver.displayManager.sddm.enable = true;
   #services.xserver.displayManager.gdm.enable = true;
   #services.xserver.displayManager.startx.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
-
-  services.xserver.displayManager.defaultSession = "none+xmonad";
 
   #services.xserver.desktopManager.plasma5.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
