@@ -132,6 +132,8 @@ in
 
     #zeroad
     minetest
+    hedgewars
+    openttd
 
     fluxbox                             # need fbsetroot to set desktop background color
   ];
