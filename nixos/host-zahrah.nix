@@ -245,9 +245,9 @@
   #services.xserver.desktopManager.pantheon.enable = true;
   #services.xserver.desktopManager.enlightenment.enable = true;
   #services.xserver.desktopManager.lumina.enable = true;
-  #services.xserver.desktopManager.mate.enable = true;
+  services.xserver.desktopManager.mate.enable = true;
   #services.xserver.desktopManager.cinnamon.enable = true;
-  services.xserver.desktopManager.lxqt.enable = true;
+  #services.xserver.desktopManager.lxqt.enable = true;
 
   services.xserver.windowManager = {
     berry.enable = true;
