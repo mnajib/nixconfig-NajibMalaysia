@@ -121,9 +121,24 @@ in
     #gimp
     inkscape
     #libreoffice
+
     #firefox
-    #brave
+    #chromium
+    #ungoogled-chromium
+    #palemoon-bin
     qutebrowser
+    netsurf.browser
+    midori
+    epiphany
+    ephemeral
+    eolie
+    surf
+    #dillo
+    dillong
+    #brave
+    #opera
+    #google-chrome
+
     ranger
     #nnn
     nano
