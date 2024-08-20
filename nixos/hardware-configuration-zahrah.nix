@@ -30,6 +30,10 @@
                       # GPU to cooperate to maximize performance within a given
                       # TDP (thermal design point).
   ];
+  boot.kernelParams = [
+    "module_blacklist=i915"           # intel
+    #"module_blacklist=amdgpu"         # AMD
+  ];
 
   boot.initrd.supportedFilesystems = [
     "ext4" "btrfs" "xfs" "vfat" "ntfs"

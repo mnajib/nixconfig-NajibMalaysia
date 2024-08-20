@@ -52,7 +52,7 @@
     ./flatpak.nix
     #./emulationstation.nix # freeimage no safe?
 
-    ./ai.nix
+    #./ai.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -70,19 +70,31 @@
   #  nvtop
   #];
 
+  #
+  # NOTE:
+  #   01:00.0 VGA compatible controller: NVIDIA Corporation GT218M [NVS 3100M] (rev a2)
+  #
   #services.xserver.videoDrivers = [ "nouveau" ];
   #services.xserver.videoDrivers = [ "nvidia" ];
   #services.xserver.videoDrivers = [ "nvidia" "nvidiaLegacy340" "nouveau" "fbdev" ];
   #services.xserver.videoDrivers = [ "nvidiaLegacy340" "fbdev" ];
   #services.xserver.videoDrivers = [ "fbdev" ];
-  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_340;
-  #hardware.nvidia.nvidiaSettings = true;
-  #hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
-  #hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
-  #hardware.nvidia.prime.sync.enable = true;
-  #hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia = {
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_340;
+    nvidiaSettings = true;
+
+    prime = {
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
+      #sync.enable = true;
+    };
+
+    modesetting.enable = true;
+    open = false; # true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+  };
   #hardware.nvidiaOptimus.disable = true; # Completely disable the NVIDIA graphics card and use the integrated graphics processor instead.
-  #hardware.nvidia.open = true;
 
   #boot.loader.systemd-boot.enable = true; # gummi-boot for EFI
   #boot.loader.efi.canTouchEfiVariables = true;
