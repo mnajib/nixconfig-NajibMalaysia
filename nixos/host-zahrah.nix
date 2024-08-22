@@ -53,6 +53,8 @@
     #./emulationstation.nix # freeimage no safe?
 
     #./ai.nix
+
+    ./inspircd.nix # IRC server
   ];
 
   # For the value of 'networking.hostID', use the following command:
