@@ -171,20 +171,28 @@
     }
     ];
 
-    services.xserver.libinput.enable = true;
-    services.xserver.libinput.touchpad.disableWhileTyping = true;
-    services.xserver.libinput.touchpad.scrollMethod = "twofinger";
-    services.xserver.libinput.touchpad.tapping = true; #false;
+    services.libinput = {
+        enable = true;
+        touchpad.disableWhileTyping = true;
+        touchpad.scrollMethod = "twofinger";
+        touchpad.tapping = true; #false;
+    };
 
-    #services.xserver.displayManager.sddm.enable = true;
-    services.xserver.displayManager.defaultSession = "none+xmonad";
-    services.xserver.desktopManager.plasma5.enable = false;
-    services.xserver.desktopManager.gnome.enable = false;
-    services.xserver.desktopManager.xfce.enable = true;
+    service.desktopManager.plasma6.enable = true;
 
-    #services.xserver.windowManager.jwm.enable = true;
-    #services.xserver.windowManager.icewm.enable = true;
-    #services.xserver.windowManager.fluxbox.enable = true;
+    service.xserver = {
+        #displayManager.sddm.enable = true;
+        displayManager.defaultSession = "none+xmonad";
+
+        #desktopManager.plasma5.enable = false;
+        #desktopManager.gnome.enable = false;
+        #desktopManager.xfce.enable = true;
+        desktopManager.mate.enable = true;
+
+        windowManager.jwm.enable = true;
+        windowManager.icewm.enable = true;
+        windowManager.fluxbox.enable = true;
+    };
 
     system.stateVersion = "22.05";
 }
