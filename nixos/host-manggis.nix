@@ -144,14 +144,6 @@
     };
     #services.tlp.extraConfig = ;
 
-    services.xserver.displayManager.sessionCommands = ''
-        xset -dpms                      # Disable Energy Star, as we are going to suspend anyway and it may hide "success" on that
-        xset s blank                    # `noblank` may be useful for debugging
-        xset s 120                      # in seconds
-        #xset s 300                     # in seconds
-        #${pkgs.lightlocker}/bin/light-locker --idle-hint &
-    '';
-
     hardware.trackpoint.enable = true;
     hardware.trackpoint.device = "TPPS/2 IBM TrackPoint";
     hardware.trackpoint.speed = 97;
@@ -171,20 +163,37 @@
     }
     ];
 
-    services.xserver.libinput.enable = true;
-    services.xserver.libinput.touchpad.disableWhileTyping = true;
-    services.xserver.libinput.touchpad.scrollMethod = "twofinger";
-    services.xserver.libinput.touchpad.tapping = true; #false;
+    services.libinput = {
+        enable = true;
+        touchpad.disableWhileTyping = true;
+        touchpad.scrollMethod = "twofinger";
+        touchpad.tapping = true; #false;
+    };
 
-    #services.xserver.displayManager.sddm.enable = true;
-    services.xserver.displayManager.defaultSession = "none+xmonad";
-    services.xserver.desktopManager.plasma5.enable = false;
-    services.xserver.desktopManager.gnome.enable = false;
-    services.xserver.desktopManager.xfce.enable = true;
+    services.desktopManager.plasma6.enable = true;
 
-    #services.xserver.windowManager.jwm.enable = true;
-    #services.xserver.windowManager.icewm.enable = true;
-    #services.xserver.windowManager.fluxbox.enable = true;
+    services.displayManager.defaultSession = "none+xmonad";
+
+    services.xserver = {
+        #displayManager.sddm.enable = true;
+
+        displayManager.sessionCommands = ''
+            xset -dpms                      # Disable Energy Star, as we are going to suspend anyway and it may hide "success" on that
+            xset s blank                    # `noblank` may be useful for debugging
+            xset s 120                      # in seconds
+            #xset s 300                     # in seconds
+            #${pkgs.lightlocker}/bin/light-locker --idle-hint &
+        '';
+
+        #desktopManager.plasma5.enable = false;
+        #desktopManager.gnome.enable = false;
+        #desktopManager.xfce.enable = true;
+        desktopManager.mate.enable = true;
+
+        windowManager.jwm.enable = true;
+        windowManager.icewm.enable = true;
+        windowManager.fluxbox.enable = true;
+    };
 
     system.stateVersion = "22.05";
 }
