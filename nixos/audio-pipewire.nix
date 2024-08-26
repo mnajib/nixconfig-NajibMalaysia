@@ -24,4 +24,8 @@
   environment.systemPackages = with pkgs; [
     pulseaudioFull
   ];
+
+  networking.firewall = {
+    allowedTCPPorts = [ 4656 ];
+  };
 }
