@@ -19,7 +19,7 @@
         ./thinkpad.nix
         #./touchpad-scrollTwofinger-TapTrue.nix
 
-        ./hosts2.nix
+        #./hosts2.nix
         #./network-dns.nix
 
         #./users-najib.nix
