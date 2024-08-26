@@ -144,14 +144,6 @@
     };
     #services.tlp.extraConfig = ;
 
-    services.xserver.displayManager.sessionCommands = ''
-        xset -dpms                      # Disable Energy Star, as we are going to suspend anyway and it may hide "success" on that
-        xset s blank                    # `noblank` may be useful for debugging
-        xset s 120                      # in seconds
-        #xset s 300                     # in seconds
-        #${pkgs.lightlocker}/bin/light-locker --idle-hint &
-    '';
-
     hardware.trackpoint.enable = true;
     hardware.trackpoint.device = "TPPS/2 IBM TrackPoint";
     hardware.trackpoint.speed = 97;
@@ -178,11 +170,20 @@
         touchpad.tapping = true; #false;
     };
 
-    service.desktopManager.plasma6.enable = true;
+    services.desktopManager.plasma6.enable = true;
 
-    service.xserver = {
+    services.displayManager.defaultSession = "none+xmonad";
+
+    services.xserver = {
         #displayManager.sddm.enable = true;
-        displayManager.defaultSession = "none+xmonad";
+
+        displayManager.sessionCommands = ''
+            xset -dpms                      # Disable Energy Star, as we are going to suspend anyway and it may hide "success" on that
+            xset s blank                    # `noblank` may be useful for debugging
+            xset s 120                      # in seconds
+            #xset s 300                     # in seconds
+            #${pkgs.lightlocker}/bin/light-locker --idle-hint &
+        '';
 
         #desktopManager.plasma5.enable = false;
         #desktopManager.gnome.enable = false;
