@@ -533,6 +533,30 @@
         "type": "github"
       }
     },
+    "kmonad": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "dir": "nix",
+        "lastModified": 1724217668,
+        "narHash": "sha256-FhZB47K2N62efA5VLIdVz4DEODERyKS23NzJGHqUjl0=",
+        "ref": "refs/heads/master",
+        "rev": "4c324f1631b3b2f7e17e804b0ed3ac314e57bcb8",
+        "revCount": 841,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/kmonad/kmonad?dir=nix"
+      },
+      "original": {
+        "dir": "nix",
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/kmonad/kmonad?dir=nix"
+      }
+    },
     "nh": {
       "inputs": {
         "nixpkgs": [
@@ -950,6 +974,7 @@
         "hyprland": "hyprland",
         "hyprwn-contrib": "hyprwn-contrib",
         "impermanence": "impermanence",
+        "kmonad": "kmonad",
         "nh": "nh",
         "nix-colors": "nix-colors",
         "nix-doom-emacs": "nix-doom-emacs",

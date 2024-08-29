@@ -141,6 +141,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    kmonad = {
+      url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   }; # End 'inputs'.
 
   outputs = {
@@ -169,6 +174,7 @@
     nix-doom-emacs,
     nix-ld,
     expose-cuda,
+    kmonad,
     ...
   }@inputs:
     let
@@ -477,6 +483,8 @@
           #hardware.nixosModules.common-pc-laptop
           #hardware.nixosModules.common-pc-ssd
           hardware.nixosModules.common-pc-laptop-ssd
+
+          kmonad.nixosModules.default
         ];
 
         #----------------------------------------------------------------------

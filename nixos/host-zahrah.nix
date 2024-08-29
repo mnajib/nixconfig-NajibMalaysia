@@ -29,8 +29,9 @@
     ./nfs-client-automount.nix
 
     ./console-keyboard-dvorak.nix
-    ./keyboard-with-msa.nix
-    #./keyboard-without-msa.nix
+    #./keyboard-with-msa.nix
+    ./keyboard-kmonad.nix
+    ##./keyboard-without-msa.nix
 
     #./audio-pulseaudio.nix
     ./audio-pipewire.nix

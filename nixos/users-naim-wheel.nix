@@ -20,6 +20,7 @@
       "istana46" "naim"
       "dialout"
       "wheel"
+      "input" "uinput" # kmonad keyboard
     ];
 
     #packages = with pkgs; [
