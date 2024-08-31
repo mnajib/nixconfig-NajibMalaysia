@@ -628,7 +628,8 @@
         #  ];
         #};
         #
-        "najib@khawlah" = mkHome [./home-manager/home-najib.nix] nixpkgs.legacyPackages."x86_64-linux";
+        #"najib@khawlah" = mkHome [./home-manager/home-najib.nix] nixpkgs.legacyPackages."x86_64-linux";
+        "najib@khawlah" = mkHome [./home-manager/user-najib/host-khawlah] nixpkgs.legacyPackages."x86_64-linux";
 
         #----------------------------------------------------------------------
         "najib@raudah" = home-manager.lib.homeManagerConfiguration {
