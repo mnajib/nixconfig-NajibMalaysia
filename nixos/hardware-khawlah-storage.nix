@@ -103,15 +103,17 @@
         ];
     };
 
-    # XXX: try disable this because /nix/store mounted twise
-    #fileSystems."/nix/store" = {
-    #    device = "/dev/disk/by-uuid/33b059ad-860f-4ebd-a44b-e0544ac30b82";
-    #    fsType = "btrfs";
-    #    options = [
-    #        "subvol=nix-store"
-    #        "compress=zstd" "autodefrag" "noatime"
-    #    ];
-    #};
+    # XXX: try disable this because /nix/store mounted twise;
+    # but actually is a must need this or it will not start
+    # ???
+    fileSystems."/nix/store" = {
+        device = "/dev/disk/by-uuid/33b059ad-860f-4ebd-a44b-e0544ac30b82";
+        fsType = "btrfs";
+        options = [
+            "subvol=nix-store"
+            "compress=zstd" "autodefrag" "noatime"
+        ];
+    };
 
     fileSystems."/root" = {
         device = "/dev/disk/by-uuid/33b059ad-860f-4ebd-a44b-e0544ac30b82";
