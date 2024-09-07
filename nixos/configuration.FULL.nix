@@ -1157,7 +1157,7 @@
   hardware.sane.extraBackends = [ pkgs.hplip ]; # [ pkgs.hplipWithPlugin ];
 
   hardware.opengl.enable = true;
-  hardware.opengl.driSupport = true;
+  #hardware.opengl.driSupport = true; # no longer has any effect, please remove it
   hardware.opengl.driSupport32Bit = true;
   #hardware.opengl.extraPackages = with pkgs.
   #hardware.opengl.extraPackages = [ pkgs.mesa.drivers ];
