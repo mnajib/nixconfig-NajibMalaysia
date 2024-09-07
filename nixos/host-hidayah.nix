@@ -187,6 +187,7 @@ with lib;
     xournalpp
     gparted
     rofi
+    pcsx2 # games
   ];
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
   #  environment.systemPackages = [

@@ -172,6 +172,7 @@ with lib;
     #nvtop # has been rename to nvtopPackages.full
     nvtopPackages.full
     kdenlive
+    pcsx2 # games emulator
   ];
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
   #  environment.systemPackages = [
