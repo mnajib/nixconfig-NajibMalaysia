@@ -22,7 +22,7 @@ in
 
     ../common-configs.nix
     ../common-packages.nix
-    ../roblox.nix
+    #../roblox.nix
     #../wesnoth.nix
     #./system-benchmark.nix
     #./minecraft.nix
@@ -121,9 +121,24 @@ in
     #gimp
     inkscape
     #libreoffice
+
     #firefox
-    #brave
+    #chromium
+    #ungoogled-chromium
+    #palemoon-bin
     qutebrowser
+    netsurf.browser
+    midori
+    epiphany
+    ephemeral
+    eolie
+    surf
+    #dillo
+    dillong
+    #brave
+    #opera
+    #google-chrome
+
     ranger
     #nnn
     nano
@@ -132,6 +147,8 @@ in
 
     #zeroad
     minetest
+    hedgewars
+    openttd
 
     fluxbox                             # need fbsetroot to set desktop background color
   ];

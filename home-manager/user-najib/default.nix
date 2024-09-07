@@ -164,6 +164,11 @@ in
       #};
       #------------------------------------------------------------------------
     };
+
+    #".ssh/config_source" = {
+    #  source = ../shared/config/ssh/config-cmt;
+    #  onChange = ''cat ~/.ssh/config_source > ~/.ssh/config && chmod 600 ~/.ssh/config'';
+    #};
   };
 
   # XXX:

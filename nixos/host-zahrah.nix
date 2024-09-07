@@ -15,7 +15,7 @@
     #./hardware-storageSSD001.nix
     ./thinkpad.nix
 
-    ./hosts2.nix
+    #./hosts2.nix
     #./network-dns.nix
 
     #./users-anak2.nix
@@ -29,8 +29,9 @@
     ./nfs-client-automount.nix
 
     ./console-keyboard-dvorak.nix
-    ./keyboard-with-msa.nix
-    #./keyboard-without-msa.nix
+    #./keyboard-with-msa.nix
+    ./keyboard-kmonad.nix
+    ##./keyboard-without-msa.nix
 
     #./audio-pulseaudio.nix
     ./audio-pipewire.nix
@@ -50,7 +51,11 @@
     ./nix-garbage-collector.nix
 
     ./flatpak.nix
-    ./emulationstation.nix
+    #./emulationstation.nix # freeimage no safe?
+
+    #./ai.nix
+
+    ./inspircd.nix # IRC server
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -68,19 +73,31 @@
   #  nvtop
   #];
 
+  #
+  # NOTE:
+  #   01:00.0 VGA compatible controller: NVIDIA Corporation GT218M [NVS 3100M] (rev a2)
+  #
   #services.xserver.videoDrivers = [ "nouveau" ];
   #services.xserver.videoDrivers = [ "nvidia" ];
   #services.xserver.videoDrivers = [ "nvidia" "nvidiaLegacy340" "nouveau" "fbdev" ];
   #services.xserver.videoDrivers = [ "nvidiaLegacy340" "fbdev" ];
   #services.xserver.videoDrivers = [ "fbdev" ];
-  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_340;
-  #hardware.nvidia.nvidiaSettings = true;
-  #hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
-  #hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
-  #hardware.nvidia.prime.sync.enable = true;
-  #hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia = {
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_340;
+    nvidiaSettings = true;
+
+    prime = {
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
+      #sync.enable = true;
+    };
+
+    modesetting.enable = true;
+    open = false; # true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+  };
   #hardware.nvidiaOptimus.disable = true; # Completely disable the NVIDIA graphics card and use the integrated graphics processor instead.
-  #hardware.nvidia.open = true;
 
   #boot.loader.systemd-boot.enable = true; # gummi-boot for EFI
   #boot.loader.efi.canTouchEfiVariables = true;
@@ -129,22 +146,22 @@
   networking.firewall.enable = false;
   networking.firewall.allowedTCPPorts = [
     # Gluster
-    24007 # gluster daemon
-    24008 # management
-    #49152 # brick1
-    49153 # brick2
-    #38465-38467 # Gluster NFS
-    111 # portmapper
-    1110 # NFS cluster
-    4045    # NFS lock manager
+    24007         # gluster daemon
+    24008         # management
+    #49152        # brick1
+    49153         # brick2
+    #38465-38467  # Gluster NFS
+    111           # portmapper
+    1110          # NFS cluster
+    4045          # NFS lock manager
   ];
 
   networking.firewall.allowedUDPPorts = [
     # Gluster
-    111 # portmapper
-    3450 # for minetest server
-    1110 # NFS client
-    4045 # NFS lock manager
+    111           # portmapper
+    3450          # for minetest server
+    1110          # NFS client
+    4045          # NFS lock manager
   ];
 
   powerManagement.enable = true;
@@ -223,17 +240,19 @@
   # Custom script to decrease trackpoint sensitivity
   #...
 
-  services.xserver.libinput.enable = true;
-  services.xserver.libinput.touchpad.disableWhileTyping = true;
-  services.xserver.libinput.touchpad.scrollMethod = "twofinger";
-  services.xserver.libinput.touchpad.tapping = true; #false;
+  services.libinput.enable = true;
+  services.libinput.touchpad = {
+    disableWhileTyping = true;
+    scrollMethod = "twofinger";
+    tapping = true; #false;
+  };
+
+  services.displayManager.defaultSession = "none+xmonad";
 
   #services.xserver.displayManager.sddm.enable = true;
   #services.xserver.displayManager.gdm.enable = true;
   #services.xserver.displayManager.startx.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
-
-  services.xserver.displayManager.defaultSession = "none+xmonad";
 
   #services.xserver.desktopManager.plasma5.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
@@ -241,9 +260,9 @@
   #services.xserver.desktopManager.pantheon.enable = true;
   #services.xserver.desktopManager.enlightenment.enable = true;
   #services.xserver.desktopManager.lumina.enable = true;
-  #services.xserver.desktopManager.mate.enable = true;
+  services.xserver.desktopManager.mate.enable = true;
   #services.xserver.desktopManager.cinnamon.enable = true;
-  services.xserver.desktopManager.lxqt.enable = true;
+  #services.xserver.desktopManager.lxqt.enable = true;
 
   services.xserver.windowManager = {
     berry.enable = true;

@@ -49,6 +49,13 @@ home-manager switch --flake .#najib@khawlah -b backup
 sudo nixos-rebuild dry-build  --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
 #sudo nixos-rebuild build      --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
 sudo nixos-rebuild build --flake .#zahrah --target-host naim@zahrah --use-remote-sudo
+#
+# XXX: tested, worked only halfway
+# From manggis;
+nixos-rebuild build --flake .#manggis --build-host naqib@sakinah.localdomain --use-remote-sudo
+#sudo su
+#NIX_SSHOPTS="-o RequestTTY=force" nixos-rebuild boot --flake .#manggis --build-host naqib@sakinah.localdomain
+#
 sudo nixos-rebuild boot       --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
 sudo nixos-rebuild test       --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
 sudo nixos-rebuild switch     --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo

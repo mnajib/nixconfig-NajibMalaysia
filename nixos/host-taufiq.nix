@@ -77,7 +77,7 @@ with lib;
     ./users-naim.nix
     ./users-nurnasuha.nix
     ./users-julia-wheel.nix
-    ./users-abdullah.nix
+    ./users-abdullah-wheel.nix
 
     ./nfs-client-automount.nix
     #./nfs-client-automount-games.nix
@@ -174,7 +174,7 @@ with lib;
   # XXX: ???
   environment.systemPackages = with pkgs; [
     #tmux
-    nvtop
+    nvtopPackages.full #nvtop
     cudatoolkit
     pciutils
     file
@@ -384,7 +384,8 @@ with lib;
   services.xserver.displayManager.lightdm.enable = true;
   #services.xserver.displayManager.startx.enable = true;
 
-  services.xserver.displayManager.defaultSession = "none+xmonad";
+  #services.xserver.displayManager.defaultSession = "none+xmonad";
+  services.displayManager.defaultSession = "none+xmonad";
 
   #services.xserver.desktopManager.plasma5.enable = true;
   #services.xserver.desktopManager.plasma6.enable = true;
@@ -405,7 +406,8 @@ with lib;
   #----------------------------------------------------------------------------
 
   # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true; # XXX
+  #services.xserver.libinput.enable = true; # XXX
+  services.libinput.enable = true; # XXX
   #services.xserver.libinput.disableWhileTyping = true;
   #services.xserver.libinput.tapping = false; # Default is 'true'
   #services.xserver.libinput.scrollMethod = "twofinger";

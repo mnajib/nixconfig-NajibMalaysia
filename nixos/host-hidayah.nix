@@ -66,7 +66,7 @@ with lib;
     #./touchpad-scrollTwofinger-TapTrue.nix
     #./network-dns.nix
 
-    ./users-abdullah-wheels.nix
+    ./users-abdullah-wheel.nix
     #./users-anak2.nix
     ./users-naqib-wheel.nix
     ./users-naim.nix

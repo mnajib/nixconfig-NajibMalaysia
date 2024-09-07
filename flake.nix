@@ -141,6 +141,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    kmonad = {
+      url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   }; # End 'inputs'.
 
   outputs = {
@@ -169,6 +174,7 @@
     nix-doom-emacs,
     nix-ld,
     expose-cuda,
+    kmonad,
     ...
   }@inputs:
     let
@@ -295,6 +301,7 @@
       # Available through 'nixos-rebuild --flake .#your-hostname'
       nixosConfigurations = {
 
+        #----------------------------------------------------------------------
         # Laptop Thinkpad X230
         #khawlah = nixpkgs.lib.nixosSystem {
         #  specialArgs = { inherit inputs outputs; };
@@ -307,76 +314,77 @@
         #
         khawlah = mkNixos [./nixos/host-khawlah.nix];
 
+        #----------------------------------------------------------------------
         # Laptop Dell Najib
-#        khadijah = nixpkgs.lib.nixosSystem {
-#          specialArgs = { inherit inputs outputs; };
-#
-#          #system = "x86_64-linux";
-#
-#          modules = [
-#            # system-wide doom-emacs
-#            #environment.systemPackages =
-#            #let
-#            #  doom-emacs = nix-doom-emacs.packages.${system}.default.override {
-#            #    doomPrivateDir = ./doom.d;
-#            #  };
-#            #in [
-#            #  doom-emacs
-#            #];environment.systemPackages =
-#            #let
-#            #  doom-emacs = nix-doom-emacs.packages.${system}.default.override {
-#            #    doomPrivateDir = ./doom.d;
-#            #  };
-#            #in [
-#            #  doom-emacs
-#            #];
-#
-#            #------------------------------------------------------------------
-#            # nix-ld
-#            # Ref:
-#            #   - https://github.com/Mic92/nix-ld
-#            #   - https://unix.stackexchange.com/questions/522822/different-methods-to-run-a-non-nixos-executable-on-nixos
-#            #------------------------------------------------------------------
-#            nix-ld.nixosModules.nix-ld
-#            #
-#            # The module in this repositiry defines a new module under
-#            # (prgrams.nix-ld.dev) instead of (programs.nix-ld) to not
-#            # collide with the nixpkgs version.
-#            { programs.nix-ld.dev.enable = true; }
-#            #
-#            # Usage: After setting up the nix-ld symlink as described above, one
-#            # needs to set NIX_LD and NIX_LD_LIBRARY_PATH to run executables.
-#            # For example, this can be done with a shell.nix in a nix-shell like this:
-#            #with import <nixpkgs> {};
-#            #mkShell {
-#            # NIX_LD_LIBRARY_PATH = lib.makeLibraryPath [
-#            #   stdev.cc.cc
-#            #   openssl
-#            #   #...
-#            # ]
-#            # NIX_LD = lib.fileContents "${stdenv.cc}/nix-support/dynamic-linker";
-#            #}
-#            #------------------------------------------------------------------
-#
-#            #./machines/host-khadijah.nix
-#            ./nixos/host-khadijah.nix
-#
-#            #pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-#            #extraSpecialArgs = { inherit inputs outputs; };
-#            #home-manager.nixosModules.home-manager {
-#            #  home-manager = {
-#            #    useGlobalPkgs = true;
-#            #    useUserPackages = true;
-#            #    users.najib = import ./home-manager/home-najib.nix {
-#            #      inherit pkgs;
-#            #      inherit pkgsUnstable;
-#            #      inherit impermanence;
-#            #      inherit nur;
-#            #    };
-#            #  };
-#            #}
-#          ];
-#        };
+        #khadijah = nixpkgs.lib.nixosSystem {
+        #  specialArgs = { inherit inputs outputs; };
+        #
+        #  #system = "x86_64-linux";
+        #
+        #  modules = [
+        #    # system-wide doom-emacs
+        #    #environment.systemPackages =
+        #    #let
+        #    #  doom-emacs = nix-doom-emacs.packages.${system}.default.override {
+        #    #    doomPrivateDir = ./doom.d;
+        #    #  };
+        #    #in [
+        #    #  doom-emacs
+        #    #];environment.systemPackages =
+        #    #let
+        #    #  doom-emacs = nix-doom-emacs.packages.${system}.default.override {
+        #    #    doomPrivateDir = ./doom.d;
+        #    #  };
+        #    #in [
+        #    #  doom-emacs
+        #    #];
+        #
+        #    #------------------------------------------------------------------
+        #    # nix-ld
+        #    # Ref:
+        #    #   - https://github.com/Mic92/nix-ld
+        #    #   - https://unix.stackexchange.com/questions/522822/different-methods-to-run-a-non-nixos-executable-on-nixos
+        #    #------------------------------------------------------------------
+        #    nix-ld.nixosModules.nix-ld
+        #    #
+        #    # The module in this repositiry defines a new module under
+        #    # (prgrams.nix-ld.dev) instead of (programs.nix-ld) to not
+        #    # collide with the nixpkgs version.
+        #    { programs.nix-ld.dev.enable = true; }
+        #    #
+        #    # Usage: After setting up the nix-ld symlink as described above, one
+        #    # needs to set NIX_LD and NIX_LD_LIBRARY_PATH to run executables.
+        #    # For example, this can be done with a shell.nix in a nix-shell like this:
+        #    #with import <nixpkgs> {};
+        #    #mkShell {
+        #    # NIX_LD_LIBRARY_PATH = lib.makeLibraryPath [
+        #    #   stdev.cc.cc
+        #    #   openssl
+        #    #   #...
+        #    # ]
+        #    # NIX_LD = lib.fileContents "${stdenv.cc}/nix-support/dynamic-linker";
+        #    #}
+        #    #------------------------------------------------------------------
+        #
+        #    #./machines/host-khadijah.nix
+        #    ./nixos/host-khadijah.nix
+        #
+        #    #pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #    #extraSpecialArgs = { inherit inputs outputs; };
+        #    #home-manager.nixosModules.home-manager {
+        #    #  home-manager = {
+        #    #    useGlobalPkgs = true;
+        #    #    useUserPackages = true;
+        #    #    users.najib = import ./home-manager/home-najib.nix {
+        #    #      inherit pkgs;
+        #    #      inherit pkgsUnstable;
+        #    #      inherit impermanence;
+        #    #      inherit nur;
+        #    #    };
+        #    #  };
+        #    #}
+        #  ];
+        #};
         #
         khadijah = mkNixos [
           nix-ld.nixosModules.nix-ld
@@ -386,6 +394,7 @@
           #{ environment.systemPackages = [ fh.packages.x86_64-linux.default ]; }
         ];
 
+        #----------------------------------------------------------------------
         # Laptop Thinkpad T400 (dalam bilik tidur)
         raudah = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
@@ -394,6 +403,7 @@
           ];
         };
 
+        #----------------------------------------------------------------------
         # Laptop Thinkpad T400 (sebelah tv)
         mahirah = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
@@ -402,6 +412,7 @@
           ];
         };
 
+        #----------------------------------------------------------------------
         # Najib's Dell Desktop (formerly used as firewall/router; currently being use as TV/media player)
         delldesktop = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
@@ -410,6 +421,7 @@
           ];
         };
 
+        #----------------------------------------------------------------------
         # Najib's Main Desktop
         #customdesktop = nixpkgs.lib.nixosSystem {
         #  specialArgs = { inherit inputs outputs; };
@@ -419,37 +431,63 @@
         #  ];
         #};
         customdesktop = mkNixos [
-	  ./nixos/host-customdesktop.nix
+          ./nixos/host-customdesktop.nix
           sops-nix.nixosModules.sops
-	];
+        ];
 
-        asmak = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [
-            ./nixos/host-asmak.nix
-          ];
-        };
+        #----------------------------------------------------------------------
+        # Thinkpad Farid bagi, problem
+        # dah baiki; keyboard, ram, ssd, screen
+        #asmak = nixpkgs.lib.nixosSystem {
+        #  specialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    ./nixos/host-asmak.nix
+        #  ];
+        #};
+        asmak = mkNixos [
+          ./nixos/host-asmak.nix
+          #sops-nix.nixosModules.sops
+        ];
 
+        #----------------------------------------------------------------------
         # Laptop Thinkpad T410 (with nvidia) Naim
-        zahrah = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [
-            ./nixos/host-zahrah.nix
+        #zahrah = nixpkgs.lib.nixosSystem {
+        #  specialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    ./nixos/host-zahrah.nix
+        #
+        #    # Roferences:
+        #    #   http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+        #    hardware.nixosModules.lenovo-thinkpad-t410
+        #    hardware.nixosModules.common-cpu-intel
+        #    hardware.nixosModules.common-gpu-intel
+        #    #hardware.nixosModules.common-gpu-nvidia
+        #    #hardware.nixosModules.common-gpu-nvidia-disable
+        #    #hardware.nixosModules.common-gpi-nvidia-nonprime
+        #    #hardware.nixosModules.common-pc-laptop
+        #    #hardware.nixosModules.common-pc-ssd
+        #    hardware.nixosModules.common-pc-laptop-ssd
+        #  ];
+        #};
+        zahrah = mkNixos [
+          ./nixos/host-zahrah.nix
 
-            # Roferences:
-            #   http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
-            hardware.nixosModules.lenovo-thinkpad-t410
-            hardware.nixosModules.common-cpu-intel
-            hardware.nixosModules.common-gpu-intel
-            #hardware.nixosModules.common-gpu-nvidia
-            #hardware.nixosModules.common-gpu-nvidia-disable
-            #hardware.nixosModules.common-gpi-nvidia-nonprime
-            #hardware.nixosModules.common-pc-laptop
-            #hardware.nixosModules.common-pc-ssd
-            hardware.nixosModules.common-pc-laptop-ssd
-          ];
-        };
+          # Roferences:
+          #   http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+          hardware.nixosModules.lenovo-thinkpad-t410
+          hardware.nixosModules.common-cpu-intel
+          #hardware.nixosModules.common-gpu-intel
+          #hardware.nixosModules.common-gpu-nvidia
+          #hardware.nixosModules.common-gpu-nvidia-disable
+          #hardware.nixosModules.common-gpi-nvidia-nonprime
+          #hardware.nixosModules.common-pc-laptop
+          #hardware.nixosModules.common-pc-ssd
+          hardware.nixosModules.common-pc-laptop-ssd
 
+          kmonad.nixosModules.default
+        ];
+
+        #----------------------------------------------------------------------
         # Laptop Thinkpad x220 Nur Nasuha
         sakinah = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
@@ -462,6 +500,7 @@
           ];
         };
 
+        #----------------------------------------------------------------------
         # Laptop Thinkpad x220 Julia
         manggis = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
@@ -474,6 +513,7 @@
           ];
         };
 
+        #----------------------------------------------------------------------
         # HP DeskPro
         #cheetah = nixpkgs.lib.nixosSystem {
         hidayah = nixpkgs.lib.nixosSystem {
@@ -491,26 +531,43 @@
           ];
         };
 
+        #----------------------------------------------------------------------
         # Acer Aspire
         #leopard = nixpkgs.lib.nixosSystem {
-        taufiq = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [
-            #./nixos/host-leopard.nix
-            ./nixos/host-taufiq.nix
+        #taufiq = nixpkgs.lib.nixosSystem {
+        #  specialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    #./nixos/host-leopard.nix
+        #    ./nixos/host-taufiq.nix
+        #
+        #    nix-ld.nixosModules.nix-ld {
+        #      programs.nix-ld.dev.enable = true;
+        #    }
+        #
+        #    # Add your model from this list:
+        #    # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+        #    #hardware.nixosModules.lenovo-thinkpad-x220
+        #
+        #    expose-cuda.nixosModules.default
+        #  ]; # End 'modules'.
+        #}; #End: taufiq = nixpkgs.lib.nixosSystem
+        taufiq = mkNixos [
+          ./nixos/host-taufiq.nix
 
-            nix-ld.nixosModules.nix-ld {
-              programs.nix-ld.dev.enable = true;
-            }
+          #sops-nix.nixosModules.sops
 
-            # Add your model from this list:
-            # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
-            #hardware.nixosModules.lenovo-thinkpad-x220
+          nix-ld.nixosModules.nix-ld {
+            programs.nix-ld.dev.enable = true;
+          }
 
-            expose-cuda.nixosModules.default
-          ]; # End 'modules'.
-        }; #End: taufiq = nixpkgs.lib.nixosSystem
+          # Add your model from this list:
+          # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+          #hardware.nixosModules.lenovo-thinkpad-x220
 
+          expose-cuda.nixosModules.default
+        ];
+
+        #----------------------------------------------------------------------
         # Laptop Thinkpad T410 (without nvidia) Julia
         keira = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
@@ -547,6 +604,7 @@
           ];
         };
 
+        #----------------------------------------------------------------------
         # Laptop Thinkpad T61/R61 (dalam bilik tidur)
         maryam = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
@@ -555,12 +613,13 @@
           ];
         };
 
-      };
+      }; # End nixosConfigurations
 
       # Standalone home-manager configuration entrypoint
       # Available through 'home-manager --flake .#your-username@your-hostname'
       homeConfigurations = {
 
+        #----------------------------------------------------------------------
         #"najib@khawlah" = home-manager.lib.homeManagerConfiguration {
         #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
         #  extraSpecialArgs = { inherit inputs outputs; };
@@ -569,8 +628,10 @@
         #  ];
         #};
         #
-        "najib@khawlah" = mkHome [./home-manager/home-najib.nix] nixpkgs.legacyPackages."x86_64-linux";
+        #"najib@khawlah" = mkHome [./home-manager/home-najib.nix] nixpkgs.legacyPackages."x86_64-linux";
+        "najib@khawlah" = mkHome [./home-manager/user-najib/host-khawlah] nixpkgs.legacyPackages."x86_64-linux";
 
+        #----------------------------------------------------------------------
         "najib@raudah" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
@@ -579,6 +640,7 @@
           ];
         };
 
+        #----------------------------------------------------------------------
         "najib@zahrah" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
@@ -587,6 +649,7 @@
           ];
         };
 
+        #----------------------------------------------------------------------
         #"najib@customdesktop" = home-manager.lib.homeManagerConfiguration {
         #  pkgs = nixpkgs.legacyPackages.x86_64-linux;
         #  extraSpecialArgs = { inherit inputs outputs; };
@@ -597,6 +660,7 @@
         #};
         "najib@customdesktop" = mkHome [./home-manager/user-najib/host-customdesktop/default.nix] nixpkgs.legacyPackages."x86_64-linux";
 
+        #----------------------------------------------------------------------
         #"najib@khadijah" = home-manager.lib.homeManagerConfiguration {
         #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
         #  extraSpecialArgs = { inherit inputs outputs; };
@@ -617,6 +681,7 @@
         #"najib@khadijah" = mkHome [./home-manager/user-najib/host-khadijah/default.nix] nixpkgs.legacyPackages."x86_64-linux";
         "najib@khadijah" = mkHome [./home-manager/user-najib/host-khadijah] nixpkgs.legacyPackages."x86_64-linux";
 
+        #----------------------------------------------------------------------
         "najib@maryam" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
@@ -625,6 +690,7 @@
           ];
         };
 
+        #----------------------------------------------------------------------
         "najib@mahirah" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
@@ -633,6 +699,7 @@
           ];
         };
 
+        #----------------------------------------------------------------------
         "najib@delldesktop" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
@@ -641,6 +708,7 @@
           ];
         };
 
+        #----------------------------------------------------------------------
         "root@customdesktop" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
@@ -649,15 +717,18 @@
           ];
         };
 
-        "naim@zahrah" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            #hyprland.homeManagerModules.default
-            ./home-manager/home-naim.nix
-          ];
-        };
+        #----------------------------------------------------------------------
+        #"naim@zahrah" = home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #  extraSpecialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    #hyprland.homeManagerModules.default
+        #    ./home-manager/home-naim.nix
+        #  ];
+        #};
+        "naim@zahrah" = mkHome [./home-manager/user-naim/host-zahrah] nixpkgs.legacyPackages."x86_64-linux";
 
+        #----------------------------------------------------------------------
         "naim@khadijah" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
@@ -667,25 +738,31 @@
           ];
         };
 
+        #----------------------------------------------------------------------
         "naim@sakinah" = mkHome [./home-manager/user-naim/host-sakinah] nixpkgs.legacyPackages."x86_64-linux";
 
-        "naqib@asmak" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            ./home-manager/home-naqib.nix
-          ];
-        };
+        #----------------------------------------------------------------------
+        #"naqib@asmak" = home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #  extraSpecialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    ./home-manager/home-naqib.nix
+        #  ];
+        #};
+        "naqib@asmak" = mkHome [./home-manager/user-naqib/host-asmak] nixpkgs.legacyPackages."x86_64-linux";
 
-        "naqib@sakinah" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            #./home-manager/home-naqib.nix
-            ./home-manager/user-naqib/host-sakinah/default.nix
-          ];
-        };
+        #----------------------------------------------------------------------
+        #"naqib@sakinah" = home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #  extraSpecialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    #./home-manager/home-naqib.nix
+        #    ./home-manager/user-naqib/host-sakinah/default.nix
+        #  ];
+        #};
+        "naqib@sakinah" = mkHome [./home-manager/user-naqib/host-sakinah] nixpkgs.legacyPackages."x86_64-linux";
 
+        #----------------------------------------------------------------------
         "naqib@raudah" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
@@ -694,6 +771,7 @@
           ];
         };
 
+        #----------------------------------------------------------------------
         "najib@asmak" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
@@ -702,6 +780,7 @@
           ];
         };
 
+        #----------------------------------------------------------------------
         "naqib@hidayah" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
@@ -711,15 +790,18 @@
           ];
         };
 
-        "nurnasuha@sakinah" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            #./home-manager/home-nurnasuha.nix
-            ./home-manager/user-nurnasuha/host-sakinah/default.nix
-          ];
-        };
+        #----------------------------------------------------------------------
+        #"nurnasuha@sakinah" = home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #  extraSpecialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    #./home-manager/home-nurnasuha.nix
+        #    ./home-manager/user-nurnasuha/host-sakinah/default.nix
+        #  ];
+        #};
+        "nurnasuha@sakinah" = mkHome [./home-manager/user-nurnasuha/host-sakinah] nixpkgs.legacyPackages."x86_64-linux";
 
+        #----------------------------------------------------------------------
         "nurnasuha@customdesktop" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
@@ -729,6 +811,7 @@
           ];
         };
 
+        #----------------------------------------------------------------------
         "julia@keira" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
@@ -739,6 +822,7 @@
           ];
         };
 
+        #----------------------------------------------------------------------
         "julia@manggis" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
@@ -749,16 +833,22 @@
           ];
         };
 
-        "julia@taufiq" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            #./home-manager/home-julia.nix
-            #./home-manager/julia-taufiq/default.nix
-            ./home-manager/user-julia/host-taufiq/default.nix
-          ];
-        };
+        #----------------------------------------------------------------------
+        #"julia@taufiq" = home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #  extraSpecialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    #./home-manager/home-julia.nix
+        #    #./home-manager/julia-taufiq/default.nix
+        #    ./home-manager/user-julia/host-taufiq/default.nix
+        #  ];
+        #};
+        "najib@taufiq"      = mkHome [./home-manager/user-najib/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
+        "julia@taufiq"      = mkHome [./home-manager/user-julia/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
+        "naqib@taufiq"      = mkHome [./home-manager/user-naqib/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
+        "nurnasuha@taufiq"  = mkHome [./home-manager/user-nurnasuha/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
+        "naim@taufiq"       = mkHome [./home-manager/user-naim/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
 
-      };
-    };
+      }; # End homeConfiguration
+    }; # End let ... in ... rec
 }
