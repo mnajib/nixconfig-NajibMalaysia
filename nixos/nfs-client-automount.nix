@@ -47,7 +47,8 @@
   #};
 
   fileSystems."/mnt/nfsshare2" = {
-    device = "customdesktop:/nfsshare2";
+    #device = "customdesktop:/nfsshare2";
+    device = "customdesktop.localdomain:/nfsshare2";
     fsType = "nfs";
     options = [
       #"nfsvers=3"
@@ -66,7 +67,7 @@
 
   # mkdir -p /mnt/home/najib
   fileSystems."/mnt/home/najib" = {
-    device = "customdesktop:/najib";
+    device = "customdesktop.localdomain:/najib";
     fsType = "nfs";
     options = [
       #"nfsvers=3"
@@ -79,7 +80,7 @@
 
   # mkdir -p /mnt/home/julia
   fileSystems."/mnt/home/julia" = {
-    device = "customdesktop:/julia";
+    device = "customdesktop.localdomain:/julia";
     fsType = "nfs";
     options = [
       #"nfsvers=3"
@@ -92,7 +93,7 @@
 
   # mkdir -p /mnt/home/naqib
   fileSystems."/mnt/home/naqib" = {
-    device = "customdesktop:/naqib";
+    device = "customdesktop.localdomain:/naqib";
     fsType = "nfs";
     options = [
       #"nfsvers=3"
@@ -105,7 +106,7 @@
 
   # mkdir -p /mnt/home/nurnasuha
   fileSystems."/mnt/home/nurnasuha" = {
-    device = "customdesktop:/nurnasuha";
+    device = "customdesktop.localdomain:/nurnasuha";
     fsType = "nfs";
     options = [
       #"nfsvers=3"
@@ -118,7 +119,7 @@
 
   # mkdir -p /mnt/home/naim
   fileSystems."/mnt/home/naim" = {
-    device = "customdesktop:/naim";
+    device = "customdesktop.localdomain:/naim";
     fsType = "nfs";
     options = [
       #"nfsvers=3"
