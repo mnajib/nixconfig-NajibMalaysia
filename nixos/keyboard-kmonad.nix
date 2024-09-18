@@ -36,20 +36,19 @@
     };
   }; # End services.xserver.xkb
 
-  services.kmonad = {
-    #enable = true;
-    enable = false;
-
-    keyboards = {
-      myKMonadOutput = {
-        #device = "/dev/input/by-id/my-keyboard-kbd";
-        #config = builtins.readFile ~/.config/kmonad/config.kbd;
-        device = "/dev/input/by-path/platform-i8042-serio-0-event-kbd";
-        #config = builtins.readFile "${config.users.users.username.home}/.config/kmonad/config.kbd";
-        config = builtins.readFile "${config.users.users.username.home}/.config/kmonad/config.kbd";
-      };
-    };
-  };
+  #services.kmonad = {
+  #  #enable = true;
+  #  enable = false;
+  #
+  #  keyboards = {
+  #    myKMonadOutput = {
+  #      #device = "/dev/input/by-id/my-keyboard-kbd";
+  #      #config = builtins.readFile ~/.config/kmonad/config.kbd;
+  #      device = "/dev/input/by-path/platform-i8042-serio-0-event-kbd";
+  #      #config = builtins.readFile "${config.users.users.username.home}/.config/kmonad/config.kbd";
+  #    };
+  #  };
+  #};
   # NOTE:
   # If you just enable the service and don't specify a keyboard, you may have to add
   #   users.users.«userName».extraGroups = [ "input" "uinput" ];
