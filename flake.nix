@@ -236,17 +236,17 @@
       #);
       #
       # Also setup iso installs with nixos generators
-      packages = forEachPkgs (
-        pkgs:
-          (import ./pkgs {
-            inherit pkgs;
-          })
-          //
-          (import ./generators {
-            inherit pkgs inputs outputs;
-            specialArgs = {inherit inputs outputs;};
-          })
-      );
+      #packages = forEachPkgs (
+      #  pkgs:
+      #    (import ./pkgs {
+      #      inherit pkgs;
+      #    })
+      #    //
+      #    (import ./generators {
+      #      inherit pkgs inputs outputs;
+      #      specialArgs = {inherit inputs outputs;};
+      #    })
+      #);
 
       # Devshell for bootstrapping
       # Acessible through 'nix develop' or 'nix-shell' (legacy)
