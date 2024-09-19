@@ -279,10 +279,16 @@ in
     # Note that these commands will be run even in non-interactive shells.
     bashrcExtra = ''
       umask 0002
+    '';
       #. ~/.bashrc
       #eval "$(direnv hook bash)"
       #colorscript random
-    '';
+
+      #if [[ -n "$CUSTOM_PS1" ]]; then
+      #  #PS1='$CUSTOM_PS1 $PS1'
+      #  PS1="$CUSTOM_PS1"
+      #fi
+    #'';
 
     #logoutExtra = ''
     #'';
