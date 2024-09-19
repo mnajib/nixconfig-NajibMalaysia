@@ -1,7 +1,12 @@
 #
 # NOTES:
 #
+#  nix flake info                       # will show all inputs and what revision (or other flake's inputs) are being tracked!
 #  nix flake show
+#  nix flake update                     # will try to update all inputs where possible. Inputs pinned to specific revisions will, of course, remain pinned.
+#  nix flake lock --update-input $NAME  # will only try to update the $NAME input.
+#  nix flake check                      # is a great way to ensure that the entire flake configuration is up to snuff with a single invocation.
+#  nix repl
 #
 
 {
@@ -58,7 +63,7 @@
     # Home manager
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";                   # Forcing another flake (github nix-community home-manager) to use one of our inputs (nixpkgs).
     };
 
     #nixos-mailserver = {
@@ -264,7 +269,7 @@
 
       # A couple project templates for different languages.
       # Accessible via `nix init`.
-      templates = import ./templates;
+      #templates = import ./templates;
 
       formatter = forEachPkgs (pkgs: pkgs.alejandra);
 
