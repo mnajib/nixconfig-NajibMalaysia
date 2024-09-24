@@ -488,6 +488,7 @@
     lshw
     hwinfo
     neofetch
+    cpufetch
     acpi
     libinput
     libinput-gestures
