@@ -119,6 +119,8 @@ with lib;
 
     ./ai.nix
     ./barrier.nix
+
+    ./jupyter.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
