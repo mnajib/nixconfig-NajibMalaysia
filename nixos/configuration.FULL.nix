@@ -254,7 +254,8 @@
 
     #stack
 
-    #ripgrep
+    ripgrep
+
     #qgis
     #obs-studio #obs-linuxbrowser
     vokoscreen #vokoscreen-ng

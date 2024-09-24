@@ -38,6 +38,7 @@
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     #nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
+    #nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/*.tar.gz";   # TODO: use flake hub as much as possible
     #
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
