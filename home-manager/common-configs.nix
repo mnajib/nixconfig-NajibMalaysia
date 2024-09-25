@@ -68,6 +68,7 @@ in
     #./nvim/lsp.nix
     #./nvim
     ./zsh.nix
+    ./bash.nix # bash shell
   ]
   ++ (builtins.attrValues outputs.homeManagerModules);
   # XXX: TODO: Should be in seperate file packages.nix
@@ -231,68 +232,6 @@ in
   #  enable = true;
   #  #packages =
   #};
-
-  # SessionPath and sessionVariables creates a hm-session file that must be sourced:
-  # Beware, it puts it in .profile, not in the .bashrc!
-  programs.bash = {
-    enable = true;
-    enableCompletion = true;
-
-    #shellOptions = [
-    #];
-
-    # Environment variable t...
-    #sessionVariables = {
-    #};
-
-    shellAliases = {
-      aoeu = "setxkbmap us";
-      asdf = "setxkbmap dvorak";
-      oeu = "loadkeys us";
-      sdf = "loadkeys dvorak";
-
-      l = "ls -alhF";
-      #ll = "ls --color=tty -Filah";
-      j = "jobs";
-      s = "sync";
-      #emacs = "emacs -nw";
-      #la = "ls -Fa";
-      p = "pwd";
-      a = "alias";
-
-      yi = "yi -k vim";
-    };
-
-    # Extra commands that should be run when initializing a login shell.
-    # This will append to ~/.profile
-    profileExtra = ''
-      umask 0002
-    '';
-
-    # Extra commands that should be run when initializing an interactive shell.
-    #initExtra = ''
-      #umask 0002
-      #"$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
-    #'';
-
-    # Extra commands that should be placed in ~/.bashrc.
-    # Note that these commands will be run even in non-interactive shells.
-    bashrcExtra = ''
-      umask 0002
-    '';
-      #. ~/.bashrc
-      #eval "$(direnv hook bash)"
-      #colorscript random
-
-      #if [[ -n "$CUSTOM_PS1" ]]; then
-      #  #PS1='$CUSTOM_PS1 $PS1'
-      #  PS1="$CUSTOM_PS1"
-      #fi
-    #'';
-
-    #logoutExtra = ''
-    #'';
-  };
 
   programs.fish = {
     enable = true;
