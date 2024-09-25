@@ -63,7 +63,17 @@
       #unbind %
 
       # Easy config reloads: reload config file with 'C-b r'
-      bind r source-file ~/.config/tmux/tmux.conf
+      #bind r source-file ~/.config/tmux/tmux.conf
+      bind r source-file ~/.config/tmux/tmux.conf \; display-message "Config reloaded!"
+
+      # Cycle Through Windows: Cycle through your open windows without having to manually select them by number.
+      # This lets you switch between windows using Ctrl+l and Ctrl+h for next and previous windows, respectively.
+      bind C-l next-window
+      bind C-h previous-window
+
+      # Jump to Last Active Window. Quickly switch to the last active window (useful when you're flipping between two tasks).
+      # Now, pressing prefix + Tab will jump to the most recently active window.
+      bind Tab last-window
 
       ## Join windows: <prefix> s, <prefix> j
       #bind-key j command-prompt -p "join pane from:"  "join-pane -s '%%'"
@@ -83,6 +93,28 @@
       bind -n S-Right move-pane -t '.{right-of}'            # S-Right
       bind -n S-Left move-pane -t '.{left-of}'              # S-Left
       bind -n S-down move-pane -h -t '.{down-of}'           # S-Down
+
+      # Resizing Panes with Easy Key Bindings
+      # You can create custom key bindings to quickly resize panes in all directions. This can save time compared to manually resizing panes.
+      # Currently not using this because can using '<prefix> <arrow>'
+      #bind -r C-Up resize-pane -U 1    #5
+      #bind -r C-Down resize-pane -D 1  #5
+      #bind -r C-Left resize-pane -L 1  #5
+      #bind -r C-Right resize-pane -R 1 #5
+
+      # Synchronize Panes
+      # Sometimes you want to run the same command in all panes simultaneously. This setting lets you do that.
+      # Press prefix + s to toggle synchronized input to all panes.
+      #bind s setw synchronize-panes
+
+      # ctrl-r to search the zsh-history in reverse, like emacs style
+      #bind-key '^R' history-incremental-search-backward
+
+      # Copy Mode Improvements. Enhance tmux copy mode (especially if you're using Vim keybindings) by setting up a more Vim-like behavior for selecting and copying text.
+      #setw -g mode-keys vi   # Enable vim keybindings for copy mode
+      #bind -T copy-mode-vi v send-keys -X begin-selection  # Start selection with 'v'
+      #bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -in -selection clipboard"  # Yank text with 'y'
+      # Now you can use v to start selection and y to copy to the system clipboard using xclip. You can change xclip to wl-copy if you're on Wayland.
 
       # Do not rename windows automatically, I like to give my tmux windows custom names using the , key.
       set-option -g allow-rename off
@@ -106,23 +138,43 @@
       set -g status-right-length 60
       set -g status-right " \"#{client_user}@#{host_short}\" %A %Y-%m-%d %H:%M:%S "
 
-      # ctrl-r to search the zsh-history in reverse, like emacs style
-      #bind-key '^R' history-incremental-search-backward
+      # Advanced Status Bar Customization
+      # Display network statistics, memory usage, or other system info in the status bar. Here's an example for network bandwidth and free memory:
+      # This adds download/upload speeds and memory usage to the status bar, making it easy to monitor system performance at a glance.
+      #set -g status-right "#(ifstat -i eth0 0.1 1 | tail -1 | awk '{print \"DL: \" $1 \" KB/s UL: \" $2 \" KB/s\"}') | RAM: #(free -h | grep Mem | awk '{print $3 \"/\" $2}') | %H:%M %d-%b-%Y"
+
+      # Display Active Processes in Status Bar
+      # You can also display the current top active processes or track resource-heavy commands:
+      # This shows the most CPU-intensive process in real-time on the right side of the status bar.
+      #set -g status-right "#(ps --no-headers -eo comm,%cpu --sort=-%cpu | head -n 1) | %H:%M %d-%b-%Y"
+
+      # Status bar with system info
+      #set -g status-interval 5
+      #set -g status-right "#(ps --no-headers -eo comm,%cpu --sort=-%cpu | head -n 1) | DL: #(ifstat -i eth0 0.1 1 | tail -1 | awk '{print $1 \" KB/s\"}') | RAM: #(free -h | grep Mem | awk '{print $3 \"/\" $2}') | %H:%M %d-%b-%Y"
+      #set -g status-left '#S '
     '';
 
     #tmuxinator.enable = true;
 
     plugins = with pkgs; [
+      # ??? To install plugin in tmux using tmux-plugin-manager (TPM)? : prefix + I
       tmuxPlugins.cpu
       {
+        # To manually save session, press: prefix + Ctrl+s
+        # To manually restore session, press: prefix + Ctrl+r
         plugin = tmuxPlugins.resurrect;
-        extraConfig = "set -g @resurrect-strategy-nvim 'session'";
+        extraConfig = ''
+          set -g @resurrect-strategy-nvim 'session'
+          set -g @resurrect-capture-pane-contents 'on'
+          set -g @resurrect-save-layouts 'on'
+        '';
       }
       {
         plugin = tmuxPlugins.continuum;
         extraConfig = ''
+          set -g @continuum-boot 'on' # Not sure this will work in NixOS.
           set -g @continuum-restore 'on'
-          set -g @continuum-save-interval '5' # in minutes
+          set -g @continuum-save-interval '5' # Save every 5 minutes.
         '';
       }
     ];
