@@ -188,6 +188,9 @@
 
       #lib = nixpkgs.lib // home-manager.lib;
 
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+
       # Supported systems for your flake packages, shell, etc.
       #forAllSystems = nixpkgs.lib.genAttrs [
       #  "aarch64-linux"
@@ -253,6 +256,10 @@
       #      specialArgs = {inherit inputs outputs;};
       #    })
       #);
+      #
+      packages.${system} = {
+        default = pkgs.hello; # custom package ???
+      };
 
       # Devshell for bootstrapping
       # Acessible through 'nix develop' or 'nix-shell' (legacy)
