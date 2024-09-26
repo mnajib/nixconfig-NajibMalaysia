@@ -80,18 +80,66 @@ To run garbage collection:
   nix-store --gc
 
 #------------------------------------------------------------------------------
+# To remove all NixOS generations older than 30 days. You can adjust the time window, e.g., 90d for 90 days.
+  sudo nix-collect-garbage --delete-older-than 30d
+
+# To lists your Home Manager generations
+  home-manager generations
+# To removes (clean up) Home Manager generations that older than 30 days.
+  home-manager expire-generations -t 30d
+
+#------------------------------------------------------------------------------
 To show derivations:
   nix derivation show
 
-To perform garbage collect:
+To perform garbage collect for user's environment:
   nix store gc
+Thin removes / clears-up the Nix store for the current user (useful if you're using Nix in multi-user mode).
+
+To perform garbage collect for system-wide:
+  sudo nix store gc
+This removes all unused paths from the Nix store.
+
 #------------------------------------------------------------------------------
 To show generations:
   home-manager generations
 To remove generation:
   home-manager remove-generations 2
   home-manager remove-generations 3
+
 #------------------------------------------------------------------------------
+Delete old profiles
+
+If you have old Nix profiles (related to package installations for users or environments), they can consume space over time. Profiles are kept in ~/.nix-profile or /nix/var/nix/profiles.
+
+To list profiles:
+  nix profile list
+
+To remove older profiles:
+  nix profile remove <profile-name>
+
+
+#------------------------------------------------------------------------------
+Prune Flake-Related Cache
+
+When using flakes, the flake cache can accumulate over time. To clean it up, run:
+  nix flake archive --gc
+This garbage-collects flake archives (compressed snapshots of repositories) that are no longer needed.
+
+XXX: Not working
+
+
+#------------------------------------------------------------------------------
+Clear the Nix Log Files
+
+Nix maintains build logs in /nix/var/log/nix/drvs. If you're sure you don't need these logs, they can be removed to save space:
+  sudo rm -rf /nix/var/log/nix/drvs/*
+
+
+
+#------------------------------------------------------------------------------
+
+
 ```
 
 
