@@ -35,8 +35,8 @@
 
     resizeAmount = 1;
     baseIndex = 1;
-    escapeTime = 10;
-    historyLimit = 10000;
+    escapeTime = 10;  # 0 # use '0' to zero-out escape time delay
+    historyLimit = 10000; # 1000000
     keyMode = "vi";
     terminal = "screen-256color";
 
@@ -53,6 +53,11 @@
       set -g mouse on                                       # Tmux 2.1 and above, need only this one line
 
       set -g default-terminal "screen-256color"
+      #set -g terminal-overrides ',xterm-256color:RGB'
+      set -g detach-on-destroy off  # Do not exit from tmux when closing a session
+      set -g renumber-windows on # renumber all windows when any window is closed
+      set -g set-clipboard on # use system clipboard
+      set -g default-terminal "$\{TERM}"
 
       #set -g bell-action none
 
@@ -82,13 +87,13 @@
       bind-key S-j command-prompt -p "join pane from:"  "join-pane -s '%%'"
       bind-key S-s command-prompt -p "send pane to:"  "join-pane -t '%%'"
 
-      # Fast pane-switching: switch panes using Alt-arrow without prefix
+      # Fast pane-switching / switch focus to another pane : switch panes using Alt-arrow without prefix
       bind -n M-Up select-pane -U                           # Alt-Up
       bind -n M-Right select-pane -R                        # Alt-Right
       bind -n M-Left select-pane -L                         # Alt-Left
       bind -n M-Down select-pane -D                         # Alt-Down
 
-      # Flipping the orientation of the current pane with the pane using Shift-arrow without prefix
+      # Flipping the orientation (horizontal/vertical???) of the current pane with the pane using Shift-arrow without prefix
       bind -n S-Up move-pane -h -t '.{up-of}'               # S-Up
       bind -n S-Right move-pane -t '.{right-of}'            # S-Right
       bind -n S-Left move-pane -t '.{left-of}'              # S-Left
@@ -96,11 +101,11 @@
 
       # Resizing Panes with Easy Key Bindings
       # You can create custom key bindings to quickly resize panes in all directions. This can save time compared to manually resizing panes.
-      # Currently not using this because can using '<prefix> <arrow>'
-      #bind -r C-Up resize-pane -U 1    #5
-      #bind -r C-Down resize-pane -D 1  #5
-      #bind -r C-Left resize-pane -L 1  #5
-      #bind -r C-Right resize-pane -R 1 #5
+      # Before this, resize pane using '<prefix> <arrow>'
+      bind -r C-Up resize-pane -U 1    #5
+      bind -r C-Down resize-pane -D 1  #5
+      bind -r C-Left resize-pane -L 1  #5
+      bind -r C-Right resize-pane -R 1 #5
 
       # Synchronize Panes
       # Sometimes you want to run the same command in all panes simultaneously. This setting lets you do that.
@@ -123,20 +128,27 @@
       COLOR1=color233                   # light-black / dark-grey
       COLOR2=black                      # black
       COLOR3=color252                   # white
-      set -g pane-border-style bg=$COLOR1,fg=$COLOR3
-      set -g pane-active-border-style bg=$COLOR1,fg=$COLOR3
+      set -g pane-border-style bg=$COLOR1,fg=$COLOR3 # 'fg=brightblack,bg=default'
+      set -g pane-active-border-style bg=$COLOR1,fg=$COLOR3 # 'fg=magenta,bg=default'
       set -g window-style bg=$COLOR1
       set -g window-active-style bg=$COLOR2
 
       # Change colors to easier to see how many windows have open and which one is active
-      set -g status-bg cyan                                 # Change the status bar background color
       set -g window-status-style bg=yellow                  # Change inactive window color
       set -g window-status-current-style bg=green,fg=black  # Change active window color
+      set -g status-position top
+      set -g status-style 'bg=#1e1e2e'  # transparent
+      set -g status-fg black                                # Change the status bar fg
+      set -g status-bg cyan                                 # Change the status bar background color
+      set -g status-justify left
+
+      #set -g status-left-length 200 #
 
       # Change date and time formating
       set -g status-right ""
-      set -g status-right-length 60
-      set -g status-right " \"#{client_user}@#{host_short}\" %A %Y-%m-%d %H:%M:%S "
+      set -g status-right-length 60 # 200
+      #set -g status-right " \"#{client_user}@#{host_short}\" %A %Y-%m-%d %H:%M:%S "
+      set -g status-right " #{prefix_highlight} \"#{client_user}@#{host_short}\" %A %Y-%m-%d %H:%M:%S "
 
       # Advanced Status Bar Customization
       # Display network statistics, memory usage, or other system info in the status bar. Here's an example for network bandwidth and free memory:
@@ -158,6 +170,7 @@
 
     plugins = with pkgs; [
       # ??? To install plugin in tmux using tmux-plugin-manager (TPM)? : prefix + I
+
       tmuxPlugins.cpu
       {
         # To manually save session, press: prefix + Ctrl+s
@@ -169,6 +182,7 @@
           set -g @resurrect-save-layouts 'on'
         '';
       }
+
       {
         plugin = tmuxPlugins.continuum;
         extraConfig = ''
@@ -177,6 +191,77 @@
           set -g @continuum-save-interval '5' # Save every 5 minutes.
         '';
       }
+
+      {
+        # Highlights when the prefix key has been pressed, helpful for visibility.
+        # https://github.com/tmux-plugins/tmux-prefix-highlight
+        plugin = tmuxPlugins.prefix-highlight;
+        extraConfig = ''
+          set -g @prefix_highlight_fg 'yellow'
+          set -g @prefix_highlight_bg 'red'
+
+          set -g @prefix_highlight_show_copy_mode 'on'
+          set -g @prefix_highlight_show_sync_mode 'on'
+          #set -g @prefix_highlight_copy_mode_attr 'fg=black,bg=yellow,bold' # default is 'fg=default,bg=yellow'
+          #set -g @prefix_highlight_sync_mode_attr 'fg=black,bg=green' # default is 'fg=default,bg=yellow'
+          #set -g @prefix_highlight_prefix_prompt 'Wait'
+          #set -g @prefix_highlight_copy_prompt 'Copy'
+          #set -g @prefix_highlight_sync_prompt 'Sync'
+        '';
+      }
+
+      {
+        plugin = tmuxPlugins.yank;
+      }
+
+      {
+        plugin = tmuxPlugins.tmux-thumbs;
+      }
+
+      {
+        plugin = tmuxPlugins.tmux-fzf;
+      }
+
+      {
+        plugin = tmuxPlugins.fzf-tmux-url;
+      }
+
+      #{
+      #  plugin = tmuxPlugins.tmux-floax;
+      #  extraConfig = ''
+      #    set -g @floax-bind 'p'
+      #    set -g @floax-width '80%'
+      #    set -g @floax-height '80%'
+      #    set -g @floax-border-color 'magenta'
+      #    set -g @floax-text-color 'blue'
+      #    set -g @floax-change-path 'true'
+      #  '';
+      #}
+
+      {
+        plugin = tmuxPlugins.catppuccin;
+        extraConfig = ''
+          set -g @catppuccin_window_left_separator ""
+          set -g @catppuccin_window_right_separator " "
+          set -g @catppuccin_window_middle_separator " █"
+          set -g @catppuccin_window_number_position "right"
+          set -g @catppuccin_window_default_fill "number"
+          set -g @catppuccin_window_default_text "#W"
+          set -g @catppuccin_window_current_fill "number"
+          set -g @catppuccin_window_current_text "#W#{?window_zoomed_flag,(),}"
+          set -g @catppuccin_status_modules_right "directory date_time"
+          set -g @catppuccin_status_modules_left "session"
+          set -g @catppuccin_status_left_separator  " "
+          set -g @catppuccin_status_right_separator " "
+          set -g @catppuccin_status_right_separator_inverse "no"
+          set -g @catppuccin_status_fill "icon"
+          set -g @catppuccin_status_connect_separator "no"
+          set -g @catppuccin_directory_text "#{b:pane_current_path}"
+          set -g @catppuccin_meetings_text "#($HOME/.config/tmux/scripts/cal.sh)"
+          set -g @catppuccin_date_time_text "%H:%M"
+        '';
+      }
+
     ];
   };
 
