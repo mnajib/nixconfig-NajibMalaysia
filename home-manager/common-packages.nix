@@ -21,7 +21,7 @@
     pkgs.gnupg
     pkgs.translate-shell                # CLI translator using Google Translate, Bing Translator, ...
     pkgs.whois
-    pkgs.youtube-dl
+    #pkgs.youtube-dl # insecure package
     pkgs.coreutils
     pkgs.dzen2                          # A general purpose messaging, notification and menuing program for X11
     pkgs.vis
