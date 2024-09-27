@@ -69,6 +69,7 @@ in
     #./nvim
     ./zsh.nix
     ./bash.nix # bash shell
+    ./garbage-collect.nix
   ]
   ++ (builtins.attrValues outputs.homeManagerModules);
   # XXX: TODO: Should be in seperate file packages.nix
