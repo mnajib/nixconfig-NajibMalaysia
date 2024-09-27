@@ -65,8 +65,12 @@ in
     ./screen.nix
     ./tmux.nix
     ./rofi.nix
+
     #./nvim/lsp.nix
     #./nvim
+    ./neovim
+    #./neovide
+
     ./zsh.nix
     ./bash.nix # bash shell
     ./garbage-collect.nix
@@ -318,34 +322,34 @@ in
   programs.fzf.enable = true;           # fuzzy finder
   programs.skim.enable = true;          # fuzzy finder
 
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    #viAlias = true;
-    #vimAlias = true;
-    #vimdiffAlias = true;
-
-    # Use Nix Package search engine to find even more plugins:
-    # https://search.nixos.org/packages
-    plugins = with pkgs.vimPlugins; [
-      ##nvim-lspconfig
-      #nvim-treesitter.withAllGrammars
-      #plenary-nvim
-      #gruvbox-material
-      #mini-nvim
-      #nvim-tree-lua
-      #vim-illuminate
-      #vim-numbertoggle
-
-      #{
-      #plugin = vim-startify;
-      #config = "let g:startify_change_to_vcs_root = 0";
-      #}
-
-    ];
-
-    extraConfig = builtins.readFile ./src/.config/nvim/init.vim;
-  };
+# programs.neovim = {
+#   enable = true;
+#   defaultEditor = true;
+#   #viAlias = true;
+#   #vimAlias = true;
+#   #vimdiffAlias = true;
+#
+#   # Use Nix Package search engine to find even more plugins:
+#   # https://search.nixos.org/packages
+#   plugins = with pkgs.vimPlugins; [
+#     ##nvim-lspconfig
+#     #nvim-treesitter.withAllGrammars
+#     #plenary-nvim
+#     #gruvbox-material
+#     #mini-nvim
+#     #nvim-tree-lua
+#     #vim-illuminate
+#     #vim-numbertoggle
+#
+#     #{
+#     #plugin = vim-startify;
+#     #config = "let g:startify_change_to_vcs_root = 0";
+#     #}
+#
+#   ];
+#
+#   extraConfig = builtins.readFile ./src/.config/nvim/init.vim;
+# };
 
 # programs.vim = {
 #   enable = true;
