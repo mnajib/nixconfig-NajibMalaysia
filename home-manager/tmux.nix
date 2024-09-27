@@ -57,7 +57,7 @@
       set -g detach-on-destroy off  # Do not exit from tmux when closing a session
       set -g renumber-windows on # renumber all windows when any window is closed
       set -g set-clipboard on # use system clipboard
-      set -g default-terminal "$\{TERM}"
+      #set -g default-terminal "$\{TERM}"
 
       #set -g bell-action none
 
