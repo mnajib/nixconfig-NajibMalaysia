@@ -136,7 +136,7 @@
       # Change colors to easier to see how many windows have open and which one is active
       set -g window-status-style bg=yellow                  # Change inactive window color
       set -g window-status-current-style bg=green,fg=black  # Change active window color
-      set -g status-position top
+      set -g status-position bottom # top
       set -g status-style 'bg=#1e1e2e'  # transparent
       set -g status-fg black                                # Change the status bar fg
       set -g status-bg cyan                                 # Change the status bar background color
