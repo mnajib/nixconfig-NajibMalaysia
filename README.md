@@ -26,7 +26,7 @@ git checkout origin/nixos-unstable
 git branch nixos-unstable
 
 nix flake check
-nix flake info
+nix flake metadata
 nix flake show
 nix flake update
 
