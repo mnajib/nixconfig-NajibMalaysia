@@ -190,7 +190,7 @@
         extraConfig = ''
           set -g @continuum-boot 'on' # Not sure this will work in NixOS.
           set -g @continuum-restore 'on'
-          set -g @continuum-save-interval '5' # Save every 5 minutes.
+          set -g @continuum-save-interval '0' # '5' to save every 5 minutes. '0' to disable autosave.
         '';
       }
 
