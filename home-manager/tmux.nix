@@ -148,7 +148,14 @@
       set -g status-justify left
 
       set -g status-left-length 200 #
-      set -g status-left "#{?client_prefix,#[bg=#ff0000],} #{session_name} "
+      #set -g status-left "#{?client_prefix,#[bg=#ff0000],} #{session_name} "
+      # Turns status-left blue if the window is zoomed, pink if the prefix is active, and yellow in copy mode.
+      set -g status-left "\
+      #[fg=colour235,bg=colour248,bold]\
+      #{?window_zoomed_flag,#[bg=colour39],}\
+      #{?client_prefix,#[bg=colour167],}\
+      #{?pane_in_mode,#[bg=colour214],}\
+      #{session_name} "
 
       # Change date and time formating
       set -g status-right ""
