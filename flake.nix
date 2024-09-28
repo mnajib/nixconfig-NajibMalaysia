@@ -295,7 +295,7 @@
 
       # Reusable home-manager modules you might want to export
       # These are usually stuff you would upstream into home-manager
-      #homeManagerModules = import ./modules/home-manager;
+      homeManagerModules = import ./modules/home-manager;
 
       # Me (Najib) try to include nixos-generators.
       #isoSimple = nixos-generators.nixosGenerate {
