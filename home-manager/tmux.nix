@@ -134,21 +134,21 @@
       set -g window-active-style bg=$COLOR2
 
       # Change colors to easier to see how many windows have open and which one is active
-      #set -g window-status-style bg=yellow                 # Change inactive window color
-      #set -g window-status-current-style bg=green,fg=black # Change active window color
-      set -g window-status-style bg=cyan                    # Change inactive window color
-      set -g window-status-current-style bg=cyan,fg=black   # Change active window color
+      set -g window-status-style bg=yellow                 # Change inactive window color
+      set -g window-status-current-style bg=green,fg=black # Change active window color
+      #set -g window-status-style bg=cyan                    # Change inactive window color
+      #set -g window-status-current-style bg=cyan,fg=black   # Change active window color
       set -g status-position bottom                         # top
       set -g status-style 'bg=#1e1e2e'                      # transparent
       set -g status-fg black                                # Change the status bar fg
       set -g status-bg cyan                                 # Change the status bar background color
       set -g status-justify left
 
-      #set -g status-left-length 200 #
+      set -g status-left-length 200 #
 
       # Change date and time formating
       set -g status-right ""
-      set -g status-right-length 60 # 200
+      set -g status-right-length 200 # 60 # 200
       #set -g status-right " \"#{client_user}@#{host_short}\" %A %Y-%m-%d %H:%M:%S "
       set -g status-right " #{prefix_highlight} \"#{client_user}@#{host_short}\" %A %Y-%m-%d %H:%M:%S "
 
@@ -200,10 +200,10 @@
         plugin = tmuxPlugins.prefix-highlight;
         extraConfig = ''
           set -g @prefix_highlight_fg 'yellow'
-          set -g @prefix_highlight_bg 'red'
+          set -g @prefix_highlight_bg '#ff0000' # 'red'
 
-          set -g @prefix_highlight_show_copy_mode 'on'
-          set -g @prefix_highlight_show_sync_mode 'on'
+          #set -g @prefix_highlight_show_copy_mode 'on'
+          #set -g @prefix_highlight_show_sync_mode 'on'
           #set -g @prefix_highlight_copy_mode_attr 'fg=black,bg=yellow,bold' # default is 'fg=default,bg=yellow'
           #set -g @prefix_highlight_sync_mode_attr 'fg=black,bg=green' # default is 'fg=default,bg=yellow'
           #set -g @prefix_highlight_prefix_prompt 'Wait'
@@ -240,57 +240,57 @@
       #  '';
       #}
 
-      {
-        plugin = tmuxPlugins.catppuccin;
-        extraConfig = ''
-          set -g @catppuccin_flavor "latte"
-
-          #-----------------------------------------------
-          # session
-          #-----------------------------------------------
-          set -g @catppuccin_session_icon "null" # ""
-          #set -g @catppuccin_session_color "#{?client_prefix,$thm_red,$thm_green}"
-          set -g @catppuccin_session_text "#S "
-
-          #-----------------------------------------------
-          # window
-          #-----------------------------------------------
-          set -g @catppuccin_window_separator "null"
-          set -g @catppuccin_window_left_separator " " # " "
-          set -g @catppuccin_window_right_separator " " # ""
-          set -g @catppuccin_window_middle_separator ":"    # "█"
-
-          set -g @catppuccin_window_number_position "left"  # "right"
-
-          set -g @catppuccin_window_default_color  "#c6c6c6"          # "#{thm_blue}"           # warna bg bila tak aktif
-          set -g @catppuccin_window_default_background "#757575"      # "#{thm_gray}"           # warna tulisan bila tak aktif
-          set -g @catppuccin_window_current_color  "#7c7f93"          # "#{thm_blue}"           # warna bg bila aktif
-          set -g @catppuccin_window_current_background "#ffffff"      # "#{thm_gray}"           # warna tulisan bila aktif
-
-          set -g @catppuccin_window_default_fill "all"                          # "number"
-          set -g @catppuccin_window_default_text "#W"
-          set -g @catppuccin_window_current_fill "all"                          # "number"
-          #set -g @catppuccin_window_current_text "#W#{?window_zoomed_flag,(),}"
-          set -g @catppuccin_window_current_text "#W#{?window_zoomed_flag,*Z,*}"
-
-          #-----------------------------------------------
-          # status
-          #-----------------------------------------------
-          set -g @catppuccin_status_modules_left "session"
-          set -g @catppuccin_status_modules_right "directory date_time"
-
-          set -g @catppuccin_status_left_separator "null"                       # " "
-          set -g @catppuccin_status_right_separator "null"                      # " "
-          set -g @catppuccin_status_right_separator_inverse "no"
-
-          set -g @catppuccin_status_fill "all"                                  # "icon"
-          set -g @catppuccin_status_connect_separator "yes"                     # "no"
-
-          set -g @catppuccin_directory_text "#{b:pane_current_path}"
-          #set -g @catppuccin_meetings_text "#($HOME/.config/tmux/scripts/cal.sh)"
-          set -g @catppuccin_date_time_text "%H:%M"
-        '';
-      }
+      #{
+      #  plugin = tmuxPlugins.catppuccin;
+      #  extraConfig = ''
+      #    set -g @catppuccin_flavor "latte"
+      #
+      #    #-----------------------------------------------
+      #    # session
+      #    #-----------------------------------------------
+      #    set -g @catppuccin_session_icon "null" # ""
+      #    #set -g @catppuccin_session_color "#{?client_prefix,$thm_red,$thm_green}"
+      #    set -g @catppuccin_session_text "#S "
+      #
+      #    #-----------------------------------------------
+      #    # window
+      #    #-----------------------------------------------
+      #    #set -g @catppuccin_window_separator "null"
+      #    #set -g @catppuccin_window_left_separator " " # " "
+      #    #set -g @catppuccin_window_right_separator " " # ""
+      #    #set -g @catppuccin_window_middle_separator ":"    # "█"
+      #
+      #    #set -g @catppuccin_window_number_position "left"  # "right"
+      #
+      #    #set -g @catppuccin_window_default_color  "#c6c6c6"          # "#{thm_blue}"           # warna bg bila tak aktif
+      #    #set -g @catppuccin_window_default_background "#757575"      # "#{thm_gray}"           # warna tulisan bila tak aktif
+      #    #set -g @catppuccin_window_current_color  "#7c7f93"          # "#{thm_blue}"           # warna bg bila aktif
+      #    #set -g @catppuccin_window_current_background "#ffffff"      # "#{thm_gray}"           # warna tulisan bila aktif
+      #
+      #    #set -g @catppuccin_window_default_fill "all"                          # "number"
+      #    ##set -g @catppuccin_window_default_text "#W"
+      #    #set -g @catppuccin_window_current_fill "all"                          # "number"
+      #    ##set -g @catppuccin_window_current_text "#W#{?window_zoomed_flag,(),}"
+      #    #set -g @catppuccin_window_current_text "#W#{?window_zoomed_flag,*Z,*}"
+      #
+      #    #-----------------------------------------------
+      #    # status
+      #    #-----------------------------------------------
+      #    set -g @catppuccin_status_modules_left "session"
+      #    #set -g @catppuccin_status_modules_right "directory date_time"
+      #
+      #    #set -g @catppuccin_status_left_separator "null"                       # " "
+      #    #set -g @catppuccin_status_right_separator "null"                      # " "
+      #    #set -g @catppuccin_status_right_separator_inverse "no"
+      #
+      #    #set -g @catppuccin_status_fill "all"                                  # "icon"
+      #    #set -g @catppuccin_status_connect_separator "yes"                     # "no"
+      #
+      #    ##set -g @catppuccin_directory_text "#{b:pane_current_path}"
+      #    ##set -g @catppuccin_meetings_text "#($HOME/.config/tmux/scripts/cal.sh)"
+      #    ##set -g @catppuccin_date_time_text "%H:%M"
+      #  '';
+      #}
 
     ];
   };
