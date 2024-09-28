@@ -295,9 +295,9 @@
 
       # Reusable home-manager modules you might want to export
       # These are usually stuff you would upstream into home-manager
-      homeManagerModules = import ./modules/home-manager;
+      #homeManagerModules = import ./modules/home-manager;
 
-      # XXX: Me (Najib) try to include nixos-generators.
+      # Me (Najib) try to include nixos-generators.
       #isoSimple = nixos-generators.nixosGenerate {
       #  pkgs = nixpkgs.legacyPackages.x86_64-linux;
       #  modules = [
@@ -626,11 +626,38 @@
           ];
         };
 
+        #----------------------------------------------------------------------
+        # !!! test test test
+        #----------------------------------------------------------------------
+        #"najib@khawlah" = inputs.home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        #  extraSpecialArgs = { inherit inputs outputs; };
+        #  configuration = {
+        #    "najib@khawlah" = mkHome [./home-manager/user-najib/host-khawlah] nixpkgs.legacyPackages.x86_64-linux;
+        #  };
+        #};
+        #
+        #"najib@customdesktop" = inputs.home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        #  extraSpecialArgs = { inherit inputs outputs; };
+        #  configuration = {
+        #    "najib@customdesktop" = mkHome [./home-manager/user-najib/host-customdesktop] nixpkgs.legacyPackages.x86_64-linux;
+        #  };
+        #};
+        #----------------------------------------------------------------------
+
       }; # End nixosConfigurations
 
       # Standalone home-manager configuration entrypoint
       # Available through 'home-manager --flake .#your-username@your-hostname'
+      #home-manager = inputs.home-manager.lib.homeManagerConfiguration { # XXX: Reserved for home-manager
+      #hmConfigs = inputs.home-manager.lib.homeManagerConfiguration {
+      #myHmConfigs = inputs.home-manager.lib.homeManagerConfiguration {
+      #  pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      #  extraSpecialArgs = { inherit inputs outputs; };
       homeConfigurations = {
+        #hmConfigs = {
+        #configurations = {
 
         #----------------------------------------------------------------------
         #"najib@khawlah" = home-manager.lib.homeManagerConfiguration {
@@ -863,5 +890,7 @@
         "naim@taufiq"       = mkHome [./home-manager/user-naim/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
 
       }; # End homeConfiguration
+      #}; # XXX:reserved for home-manager
+
     }; # End let ... in ... rec
 }
