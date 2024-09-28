@@ -1,4 +1,7 @@
-{ pkgs, ... }: {
+{
+  pkgs,
+  ...
+}: {
 
   #home.packages = [ pkgs.tmux ];
 
@@ -145,12 +148,13 @@
       set -g status-justify left
 
       set -g status-left-length 200 #
+      set -g status-left "#{?client_prefix,#[bg=#ff0000],} #{session_name} "
 
       # Change date and time formating
       set -g status-right ""
       set -g status-right-length 200 # 60 # 200
-      #set -g status-right " \"#{client_user}@#{host_short}\" %A %Y-%m-%d %H:%M:%S "
-      set -g status-right " #{prefix_highlight} \"#{client_user}@#{host_short}\" %A %Y-%m-%d %H:%M:%S "
+      set -g status-right " \"#{client_user}@#{host_short}\" %A %Y-%m-%d %H:%M:%S "
+      #set -g status-right " #{prefix_highlight} \"#{client_user}@#{host_short}\" %A %Y-%m-%d %H:%M:%S "
 
       # Advanced Status Bar Customization
       # Display network statistics, memory usage, or other system info in the status bar. Here's an example for network bandwidth and free memory:
@@ -194,23 +198,24 @@
         '';
       }
 
-      {
-        # Highlights when the prefix key has been pressed, helpful for visibility.
-        # https://github.com/tmux-plugins/tmux-prefix-highlight
-        plugin = tmuxPlugins.prefix-highlight;
-        extraConfig = ''
-          set -g @prefix_highlight_fg 'yellow'
-          set -g @prefix_highlight_bg '#ff0000' # 'red'
-
-          #set -g @prefix_highlight_show_copy_mode 'on'
-          #set -g @prefix_highlight_show_sync_mode 'on'
-          #set -g @prefix_highlight_copy_mode_attr 'fg=black,bg=yellow,bold' # default is 'fg=default,bg=yellow'
-          #set -g @prefix_highlight_sync_mode_attr 'fg=black,bg=green' # default is 'fg=default,bg=yellow'
-          #set -g @prefix_highlight_prefix_prompt 'Wait'
-          #set -g @prefix_highlight_copy_prompt 'Copy'
-          #set -g @prefix_highlight_sync_prompt 'Sync'
-        '';
-      }
+      #{
+      #  # Highlights when the prefix key has been pressed, helpful for visibility.
+      #  # https://github.com/tmux-plugins/tmux-prefix-highlight
+      #  plugin = tmuxPlugins.prefix-highlight;
+      #  #plugin = ${tmux-prefix-highlight.outPath}; # XXX: test
+      #  extraConfig = ''
+      #    set -g @prefix_highlight_fg 'yellow'
+      #    set -g @prefix_highlight_bg '#ff0000' # 'red'
+      #
+      #    #set -g @prefix_highlight_show_copy_mode 'on'
+      #    #set -g @prefix_highlight_show_sync_mode 'on'
+      #    #set -g @prefix_highlight_copy_mode_attr 'fg=black,bg=yellow,bold' # default is 'fg=default,bg=yellow'
+      #    #set -g @prefix_highlight_sync_mode_attr 'fg=black,bg=green' # default is 'fg=default,bg=yellow'
+      #    #set -g @prefix_highlight_prefix_prompt 'Wait'
+      #    #set -g @prefix_highlight_copy_prompt 'Copy'
+      #    #set -g @prefix_highlight_sync_prompt 'Sync'
+      #  '';
+      #}
 
       {
         plugin = tmuxPlugins.yank;
