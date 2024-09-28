@@ -258,7 +258,7 @@
           set -g @catppuccin_window_separator "null"
           set -g @catppuccin_window_left_separator " " # " "
           set -g @catppuccin_window_right_separator " " # ""
-          set -g @catppuccin_window_middle_separator " "    # "█"
+          set -g @catppuccin_window_middle_separator ":"    # "█"
 
           set -g @catppuccin_window_number_position "left"  # "right"
 
@@ -271,7 +271,7 @@
           set -g @catppuccin_window_default_text "#W"
           set -g @catppuccin_window_current_fill "all"                          # "number"
           #set -g @catppuccin_window_current_text "#W#{?window_zoomed_flag,(),}"
-          set -g @catppuccin_window_current_text "#W#{?window_zoomed_flag,(z),}"
+          set -g @catppuccin_window_current_text "#W#{?window_zoomed_flag,*Z,*}"
 
           #-----------------------------------------------
           # status
