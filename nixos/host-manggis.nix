@@ -54,6 +54,8 @@
 
         ./nix-garbage-collector.nix
         ./teamviewer.nix
+
+        ./lutris.nix
     ];
 
     environment.systemPackages = with pkgs; [
