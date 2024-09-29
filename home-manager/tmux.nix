@@ -225,12 +225,29 @@
       #}
 
       {
+        # For copying to system clipboard
+        # Need a program that store data in the system clipboard (xsel, wl-copy, xclip, ...)
         plugin = tmuxPlugins.yank;
+
+        # Linux has several cut-and-paste clipboards: primary, secondary, and clipboard (default in tmux-yank is clipboard).
+        set -g @yank_selection_mouse 'clipboard' # or 'primary' or 'secondary'
       }
 
+      #--------------------------------
+      #{
+      #  plugin = tmuxPlugins.fingers;
+      #  extraConfig = ''
+      #    set -g @thumbs-key T
+      #  '';
+      #}
+      #
       {
         plugin = tmuxPlugins.tmux-thumbs;
+        extraConfig = ''
+          set -g @thumbs-key T
+        '';
       }
+      #--------------------------------
 
       {
         plugin = tmuxPlugins.tmux-fzf;
