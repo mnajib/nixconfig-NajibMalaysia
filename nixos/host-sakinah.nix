@@ -56,7 +56,7 @@
 
     # Games
     ./openra.nix
-
+    ./lutris.nix
     ./steam.nix
 
     ./nix-garbage-collector.nix

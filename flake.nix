@@ -232,6 +232,9 @@
           extraSpecialArgs = {inherit inputs outputs;};
         };
 
+        #home-manager.useGlobalPkgs = true; # Use nixpkgs globally
+        #home-manager.useUserPackages = true; # Use user-specific packages for this config
+
     in
     rec {
 

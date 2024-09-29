@@ -148,7 +148,14 @@
       set -g status-justify left
 
       set -g status-left-length 200 #
-      set -g status-left "#{?client_prefix,#[bg=#ff0000],} #{session_name} "
+      #set -g status-left "#{?client_prefix,#[bg=#ff0000],} #{session_name} "
+      # Turns status-left blue if the window is zoomed, pink if the prefix is active, and yellow in copy mode.
+      set -g status-left "\
+      #[fg=colour235,bg=colour248,bold]\
+      #{?window_zoomed_flag,#[bg=colour39],}\
+      #{?client_prefix,#[bg=colour167],}\
+      #{?pane_in_mode,#[bg=colour214],}\
+      #{session_name} "
 
       # Change date and time formating
       set -g status-right ""
@@ -218,12 +225,30 @@
       #}
 
       {
+        # For copying to system clipboard
+        # Need a program that store data in the system clipboard (xsel, wl-copy, xclip, ...)
+        # Linux has several cut-and-paste clipboards: primary, secondary, and clipboard (default in tmux-yank is clipboard).
         plugin = tmuxPlugins.yank;
+        extraConfig = ''
+          #set -g @yank_selection_mouse 'clipboard' # or 'primary' or 'secondary'
+        '';
       }
 
+      #--------------------------------
+      #{
+      #  plugin = tmuxPlugins.fingers;
+      #  extraConfig = ''
+      #    set -g @thumbs-key T
+      #  '';
+      #}
+      #
       {
         plugin = tmuxPlugins.tmux-thumbs;
+        extraConfig = ''
+          set -g @thumbs-key T
+        '';
       }
+      #--------------------------------
 
       {
         plugin = tmuxPlugins.tmux-fzf;
