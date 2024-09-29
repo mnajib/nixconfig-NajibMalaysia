@@ -83,11 +83,6 @@ To run garbage collection:
 # To remove all NixOS generations older than 30 days. You can adjust the time window, e.g., 90d for 90 days.
   sudo nix-collect-garbage --delete-older-than 30d
 
-# To lists your Home Manager generations
-  home-manager generations
-# To removes (clean up) Home Manager generations that older than 30 days.
-  home-manager expire-generations -t 30d
-
 #------------------------------------------------------------------------------
 To show derivations:
   nix derivation show
@@ -103,9 +98,12 @@ This removes all unused paths from the Nix store.
 #------------------------------------------------------------------------------
 To show generations:
   home-manager generations
+
 To remove generation:
   home-manager remove-generations 2
   home-manager remove-generations 3
+# To removes (clean up) Home Manager generations that older than 30 days.
+  home-manager expire-generations "-30 days"
 
 #------------------------------------------------------------------------------
 Delete old profiles
