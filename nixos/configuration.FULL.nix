@@ -91,6 +91,7 @@
   imports = [
     ./users-najib.nix
     ./garbage-collect.nix
+    ./sqlite.nix
   ];
 
   # Q: Each time I change my configuration.nix and run nixos-rebuild switch,
