@@ -11,11 +11,15 @@ in
 {
   programs.neovim = {
     enable = true;
+
     defaultEditor = true;
     #viAlias = true;
     #vimAlias = true;
     #vimdiffAlias = true;
 
+    extraPackages = [];
+
+    # Custom vimrc lines
     #extraConfig = builtins.readFile ../src/.config/nvim/init.vim;
     extraConfig = ''
       set nocompatible            " disable compatibility to old-time vi
@@ -30,12 +34,12 @@ in
       set background=dark
       highlight Normal ctermbg=black ctermfg=lightgrey guibg=black guifg=lightgrey
 
-      "set number                  " add line numbers
-      set relativenumber                  " add line numbers
-      "highlight LineNr ctermfg=11 guifg=Yellow ctermbg=DarkGrey guibg=DarkGrey
-      "highlight LineNr ctermfg=11 guifg=Yellow ctermbg=237 guibg=#100c08
-      highlight LineNr ctermfg=11   ctermbg=237
-      highlight LineNr guifg=#525252 guibg=#333333
+      ""set number                  " add line numbers
+      "set relativenumber                  " add line numbers
+      ""highlight LineNr ctermfg=11 guifg=Yellow ctermbg=DarkGrey guibg=DarkGrey
+      ""highlight LineNr ctermfg=11 guifg=Yellow ctermbg=237 guibg=#100c08
+      "highlight LineNr ctermfg=11   ctermbg=237
+      "highlight LineNr guifg=#525252 guibg=#333333
 
       filetype plugin indent on   " allow auto-indenting depending on file type
       syntax on                   " syntax highlighting
@@ -192,6 +196,24 @@ in
       "call plug#end()
     '';
 
+    extraLuaPackages = [];
+
+    # Custom lua lines
+    extraLuaConfig = ''
+      -- Enable absolute line numbers for the current line
+      vim.wo.number = true
+
+      -- Enable relative line numbers for other lines
+      -- vim.wo.relativenumber = true
+
+      -- Set the width of the number column (optional)
+      -- vim.wo.numberwidth = 4  -- Adjust as needed for your line numbers
+
+      -- Highlight settings for line numbers
+      vim.cmd([[highlight LineNr ctermfg=11 ctermbg=237]])
+      vim.cmd([[highlight LineNr guifg=#525252 guibg=#333333]])
+    '';
+
     # Use Nix Package search engine to find even more plugins:
     # https://search.nixos.org/packages
     plugins = with pkgs.vimPlugins; [
@@ -203,6 +225,8 @@ in
       #nvim-tree-lua
       #vim-illuminate
       #vim-numbertoggle
+      #yankring
+      #vim-nix
 
       #{
       #  plugin = vim-startify;
