@@ -29,7 +29,7 @@ in
       set hlsearch                " highlight search
       set incsearch               " incremental search
       set wildmode=longest,list   " get bash-like tab completions
-      set termguicolors           " enabling true color
+      "set termguicolors           " enabling true color; Comment this out for use only ANSI colors
 
       set background=dark
       highlight Normal ctermbg=black ctermfg=lightgrey guibg=black guifg=lightgrey
@@ -49,7 +49,7 @@ in
 
       " set an 80 column border for good coding style
       "set colorcolumn=80
-      set colorcolumn=40,60,80
+      "set colorcolumn=40,60,80 " disable this when use only ANSI colors
       " if using ANSI-16
       "highlight ColorColumn ctermbg=16
       " if using 256 color terminal
@@ -196,7 +196,7 @@ in
       "call plug#end()
     '';
 
-    extraLuaPackages = [];
+    #extraLuaPackages = [];
 
     # Custom lua lines
     extraLuaConfig = ''
