@@ -64,6 +64,14 @@
 
       #set -g bell-action none
 
+      # '<c-b>:resize-window -a' will resize to the smallest session.
+      # '<c-b>:resize-window -A' will set it to 'manual'.
+      # '<c-b>:attach-session -d' will redraw the tmux window ???.
+      set -g window-size smallest # 'largest' 'manual'.
+
+      #setw -g aggressive-resive on
+      #set-window-option -g aggressive-resize
+
       # Sano split commands: Split panes using | and -
       bind | split-window -h
       bind - split-window -v
@@ -96,7 +104,7 @@
       bind -n M-Left select-pane -L                         # Alt-Left
       bind -n M-Down select-pane -D                         # Alt-Down
 
-      # Flipping the orientation (horizontal/vertical???) of the current pane with the pane using Shift-arrow without prefix
+      # Flipping the orientation (horizontal <-> vertical ???) of the current pane with the pane using Shift-arrow without prefix
       bind -n S-Up move-pane -h -t '.{up-of}'               # S-Up
       bind -n S-Right move-pane -t '.{right-of}'            # S-Right
       bind -n S-Left move-pane -t '.{left-of}'              # S-Left
