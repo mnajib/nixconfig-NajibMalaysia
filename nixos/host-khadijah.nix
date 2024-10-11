@@ -188,6 +188,8 @@ with lib;
     haskellPackages.xmobar
     haskellPackages.X11
     haskellPackages.X11-xft
+
+    nitter # alternative Twitter front-end
   ];
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
   #  environment.systemPackages = [
