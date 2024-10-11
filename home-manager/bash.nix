@@ -25,7 +25,6 @@
       asdf = "setxkbmap dvorak";
       oeu = "loadkeys us";
       sdf = "loadkeys dvorak";
-
       l = "ls -alhF";
       #ll = "ls --color=tty -Filah";
       j = "jobs";
@@ -34,8 +33,8 @@
       #la = "ls -Fa";
       p = "pwd";
       a = "alias";
-
       yi = "yi -k vim";
+      grep = "grep --color";
     };
 
     # Extra commands that should be run when initializing a login shell.

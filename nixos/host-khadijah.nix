@@ -56,7 +56,7 @@ with lib;
   nixpkgs.config = {
     allowUnfree = true;
     #allowBroken = true;
-    cudaSupport = true;                 # May cause a mass rebuild
+    # cudaSupport = true;                 # May cause a mass rebuild
   };
 
   imports = [
@@ -171,10 +171,21 @@ with lib;
   # XXX: ???
   environment.systemPackages = with pkgs; [
     #tmux
+
     #nvtop # has been rename to nvtopPackages.full
     nvtopPackages.full
+
     kdenlive
     pcsx2 # games emulator
+
+    #----------------------------------
+    # haskell tools
+    #----------------------------------
+    stack
+    cabal-install
+    haskellPackages.xmobar
+    haskellPackages.X11
+    haskellPackages.X11-xft
   ];
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
   #  environment.systemPackages = [
@@ -323,7 +334,7 @@ with lib;
   #----------------------------------------------------------------------------
 
   #services.xserver.displayManager.sddm.enable = true;
-  services.xserver.displayManager.lightdm.enable = true;
+  #services.xserver.displayManager.lightdm.enable = true;
   #services.xserver.displayManager.startx.enable = true;
 
   #services.xserver.displayManager.defaultSession = "none+xmonad"; # Replaced by services.displayManager.defaultSession = "none+xmonad";
@@ -332,7 +343,8 @@ with lib;
   #services.xserver.desktopManager.plasma5.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
   #services.xserver.desktopManager.mate.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
+  #services.xserver.desktopManager.xfce.enable = true;
+  services.desktopManager.plasma6.enable = true;
   #services.xserver.desktopManager.enlightenment.enable = true;
   #services.xserver.desktopManager.lxqt.enable = true;
   #services.xserver.desktopManager.lumina.enable = true;

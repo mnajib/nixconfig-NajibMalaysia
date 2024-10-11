@@ -178,26 +178,6 @@
         "type": "github"
       }
     },
-    "expose-cuda": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1689811391,
-        "narHash": "sha256-+tOyPIVwEaFYFQ3EzEPCqdXPU+kDJinlNOBnOek+hlo=",
-        "owner": "ogoid",
-        "repo": "nixos-expose-cuda",
-        "rev": "e5ddcc0085bf4f9bccbd63da53dc09d77114c106",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ogoid",
-        "repo": "nixos-expose-cuda",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -966,7 +946,6 @@
     "root": {
       "inputs": {
         "dnsblacklist": "dnsblacklist",
-        "expose-cuda": "expose-cuda",
         "flake-utils": "flake-utils",
         "hardware": "hardware",
         "home-manager": "home-manager",
