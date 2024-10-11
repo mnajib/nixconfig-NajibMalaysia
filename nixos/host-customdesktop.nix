@@ -108,6 +108,8 @@
     ./appimage.nix
 
     ./walkie-talkie.nix
+
+    #./jupyter.nix # jupyter-hub? jupyter-notebook?
   ];
 
   # For the value of 'networking.hostID', use the following command:
