@@ -70,7 +70,7 @@
 
     # TUI E-mail Client
     pkgs.neomutt
-    pkgs.mutt
+    #pkgs.mutt
     #pkgs.meli
     #pkgs.lumail
     pkgs.aerc

@@ -88,7 +88,7 @@ with lib;
     #./waydroid.nix
 
     ./3D.nix                            # freecad, qcad, ...
-    ./steam.nix                         # steam for game, blender-LTS, ...
+    #./steam.nix                         # steam for game, blender-LTS, ...
 
     ./mame.nix
     #./emulationstation.nix
@@ -121,6 +121,8 @@ with lib;
     ./barrier.nix
 
     ./jupyter.nix
+
+    ./xdg-kde.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -301,15 +303,6 @@ with lib;
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".device = "/dev/disk/by-uuid/a5172078-045e-4b03-abbc-32a86dfe0d06";
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".keyFile = "/crypto_keyfile.bin";
 
-  services.xserver.dpi = 96;
-
-  #services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
-  #services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
-  services.xserver.videoDrivers = [ "nvidia" ];
-  # OR
-  # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
-  #services.xserver.videoDrivers = [ "nvidiaLegacy390" ]; #
-
   # 01:00.0 VGA compatible controller: NVIDIA Corporation GK106GLM [Quadro K2100M] (rev a1)
   # For GK106GLM [Quadro K2100M] in Dell Precision M4800
   # Legacy driver
@@ -333,28 +326,98 @@ with lib;
 
   #----------------------------------------------------------------------------
 
-  #services.xserver.displayManager.sddm.enable = true;
-  #services.xserver.displayManager.lightdm.enable = true;
-  #services.xserver.displayManager.startx.enable = true;
+  services.xserver = {
+    enable = true;
+    dpi = 96;
 
-  #services.xserver.displayManager.defaultSession = "none+xmonad"; # Replaced by services.displayManager.defaultSession = "none+xmonad";
-  services.displayManager.defaultSession = "none+xmonad";
+    #videoDrivers = [ "modesetting" "nvidia" ];
+    #videoDrivers = [ "nvidia" "modesetting" ];
+    videoDrivers = [ "nvidia" ];
+    # OR
+    # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
+    #videoDrivers = [ "nvidiaLegacy390" ]; #
 
-  #services.xserver.desktopManager.plasma5.enable = true;
-  #services.xserver.desktopManager.gnome.enable = true;
-  #services.xserver.desktopManager.mate.enable = true;
-  #services.xserver.desktopManager.xfce.enable = true;
-  services.desktopManager.plasma6.enable = true;
-  #services.xserver.desktopManager.enlightenment.enable = true;
-  #services.xserver.desktopManager.lxqt.enable = true;
-  #services.xserver.desktopManager.lumina.enable = true;
+    windowManager = {
+      xmonad = {
+        enable = true;
+        enableContribAndExtras = true;
+        extraPackages = haskellPackages: [
+          haskellPackages.xmonad
+          haskellPackages.xmonad-extras
+          haskellPackages.xmonad-contrib
+          haskellPackages.dbus
+          haskellPackages.List
+          haskellPackages.monad-logger
+          haskellPackages.xmobar
+        ];
+      };
 
-  #services.xserver.windowManager.spectrwm.enable = true;
-  #services.xserver.windowManager.qtile.enable = true;
-  #services.xserver.windowManager.notion.enable = true;
-  #services.xserver.windowManager.leftwm.enable = true;
-  #services.xserver.windowManager.nimdow.enable = true;
-  #services.xserver.windowManager.herbstluftwm.enable = true;
+      awesome = {
+        enable = true;
+      };
+
+      #spectrwm.enable = true;
+      #qtile.enable = true;
+      #notion.enable = true;
+      #leftwm.enable = true;
+      #nimdow.enable = true;
+      #herbstluftwm.enable = true;
+    };
+
+    desktopManager = {
+      xterm.enable = false;
+      #plasma5.enable = true;
+      #gnome.enable = true;
+      #mate.enable = true;
+      #cinnamon.enable = true;
+      #xfce.enable = true;
+      #enlightenment.enable = true;
+      #lxqt.enable = true;
+      #lumina.enable = true;
+    };
+
+    #displayManager = {
+      #lightdm = {
+      #  enable = true;
+      #};
+
+      #gdm = {
+      #  enable = true;
+      #  autoSuspend = false;
+      #};
+
+    #  startx.enable = false;
+    #};
+
+  }; # End services.xserver
+
+  services.displayManager = {
+    enable = true;
+
+    sddm = {
+      enable = true;
+      wayland.enable = true; # XXX: Experimental
+    };
+
+    defaultSession = "none+xmonad";
+  };
+
+  services.desktopManager = {
+    plasma6.enable = true;
+    #lomiri.enable = true;
+  };
+
+  # Excluding some KDE Plasma applications from the default install
+  environment.plasma5.excludePackages = with pkgs.libsForQt5; [
+    plasma-browser-integration
+    #konsole
+    #oxygen
+  ];
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [
+    plasma-browser-integration
+    #konsole
+    #oxygen
+  ];
 
   #----------------------------------------------------------------------------
 
