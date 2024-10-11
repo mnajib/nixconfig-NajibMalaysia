@@ -121,6 +121,7 @@ with lib;
     ./barrier.nix
 
     ./jupyter.nix
+    #./nitter.nix
 
     ./xdg-kde.nix
   ];
@@ -189,7 +190,7 @@ with lib;
     haskellPackages.X11
     haskellPackages.X11-xft
 
-    nitter # alternative Twitter front-end
+    #nitter # alternative Twitter front-end
   ];
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
   #  environment.systemPackages = [
