@@ -1,13 +1,21 @@
+#
+# NOTE:
+#  systemctl --user status xdg-desktop-portal xdg-desktop-portal-shana
+#  systemctl --user start xdg-desktop-portal xdg-desktop-portal-shana
+#  systemctl --user enable xdg-desktop-portal xdg-desktop-portal-shana
+#  while true; do systemctl --user status xdg-desktop-portal xdg-desktop-portal-shana; sleep 3; done
+#  while true; do systemctl --user status xdg-desktop-portal xdg-desktop-portal-shana xdg-desktop-portal-kde xdg-desktop-portal-gtk; sleep 3; done
+#  journalctl --user -xe -u xdg-desktop-portal -u xdg-desktop-portal-shana
+#
 {
   pkgs,
   config,
   ...
 }:
 {
-
   xdg.portal = {
-    enable = false;
-    xdgOpenUsePortal = true; # This will make xdg-open use the portal to open programs.
+    enable = true;
+    #xdgOpenUsePortal = true; # This will make xdg-open use the portal to open programs.
 
     #lxqt = {
     #  enable = true;
@@ -16,7 +24,8 @@
 
     configPackages = with pkgs; [
       #gnome-session
-      xdg-desktop-portal-gtk
+      #xdg-desktop-portal-gtk
+      xdg-desktop-portal-shana
     ];
 
     config = {
@@ -26,7 +35,8 @@
         #
         default = [
           #"kde"
-          "gtk"
+          #"gtk"
+          "shana"
         ];
       };
     }; # End xdg.portal.config
@@ -34,21 +44,25 @@
     ##key = if builtins.pathExists ./path then "woot" else "bummer";
     extraPortals = with pkgs; [
       #xdg-desktop-portal-kde
-      xdg-desktop-portal-gtk
-      #xdg-desktop-portal
+      #xdg-desktop-portal-gtk
+      #xdg-desktop-portal-xapp
+      #lxqt.xdg-desktop-portal-lxqt
+      xdg-desktop-portal-shana
     ];
   }; # End xdg.portal
 
   environment.systemPackages = with pkgs; with kdePackages; [ # look in kdePackages first, if it's not found there, it then looks in pkgs.
     #zenity
     #xdg-utils
-    xdg-desktop-portal-gtk
+    #xdg-desktop-portal-gtk
     #xdg-desktop-portal
     kdialog
+    zathura # pdf viewer?
     #xdg-desktop-portal-kde
     #xdg-desktop-portal-xapp # for cinnamon, MATE, Xfce
-    #xdg-desktop-portal-shana # filechooser portal backend for any desktop environment
+    xdg-desktop-portal-shana # filechooser portal backend for any desktop environment
     #lxqt.xdg-desktop-portal-lxqt # backend implementation for xdg-desktop-portal that is using Qt/KF5/libfm-qt
+    dunst # notification daemon for handling notifications
 
     #kdePackages.neochat # A client for matrix, the decentralized communication protocol.
     #neochat # disable: marked unsecured because olm
@@ -77,14 +91,30 @@
     kalm # learn different breathing techniques
   ];
 
-  #environment.variables = {
+  environment.variables = {
     #XDG_CURRENT_DESKTOP = "GNOME"; # Default: "none+xmonad"
     #XDG_CURRENT_DESKTOP = "KDE"; # Default: "none+xmonad"
-  #};
+    XDG_CURRENT_DESKTOP = "shana"; # Default: "none+xmonad"
+  };
 
   #environment.sessionVariables = {
   #  #XDG_CURRENT_DESKTOP = "KDE"; # Default: "none+xmonad"
   #  XDG_SESSION_DESKTOP = "KDE";
+  #};
+
+  systemd.user.services = {
+    #"xdg-desktop-portal-shana" = {
+    #  enable =true;
+    #  wantedBy = [ "default.target" ];
+    #};
+
+    #"xdg-desktop-portal".enable = true;
+    #"xdg-desktop-portal-kde".enable = false;
+    #"xdg-desktop-portal-gtk".enable = false;
+  };
+
+  #home-manager.users.najib = {
+  #  services.dunst.enable =true;
   #};
 
 }

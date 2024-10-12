@@ -112,18 +112,19 @@ with lib;
 
     #./nix-garbage-collector.nix
 
-    ./flatpak.nix
-    ./appimage.nix
+    #./flatpak.nix
+    #./appimage.nix
 
     ./walkie-talkie.nix
 
-    ./ai.nix
+    #./ai.nix
     ./barrier.nix
 
     ./jupyter.nix
     #./nitter.nix
 
-    ./xdg-kde.nix
+    #./xdg-kde.nix
+    ./xdg.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -340,6 +341,42 @@ with lib;
     # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
     #videoDrivers = [ "nvidiaLegacy390" ]; #
 
+    displayManager = {
+      defaultSession = "none+xmonad";
+
+      lightdm = {
+        enable = true;
+        greeters = {
+          gtk = {
+            enable = false;
+          };
+          slick = {
+            enable = true;
+          };
+          enso.enable = false;
+        };
+      };
+
+      #gdm = {
+      #  enable = false; #true;
+      #  autoSuspend = false;
+      #};
+
+      startx.enable = false;
+    };
+
+    desktopManager = {
+      xterm.enable = false;
+      #plasma5.enable = true;
+      #gnome.enable = true;
+      #mate.enable = true;
+      #cinnamon.enable = true;
+      #xfce.enable = true;
+      #enlightenment.enable = true;
+      #lxqt.enable = true;
+      #lumina.enable = true;
+    };
+
     windowManager = {
       xmonad = {
         enable = true;
@@ -367,60 +404,35 @@ with lib;
       #herbstluftwm.enable = true;
     };
 
-    desktopManager = {
-      xterm.enable = false;
-      #plasma5.enable = true;
-      #gnome.enable = true;
-      #mate.enable = true;
-      #cinnamon.enable = true;
-      #xfce.enable = true;
-      #enlightenment.enable = true;
-      #lxqt.enable = true;
-      #lumina.enable = true;
-    };
-
-    #displayManager = {
-      #lightdm = {
-      #  enable = true;
-      #};
-
-      #gdm = {
-      #  enable = true;
-      #  autoSuspend = false;
-      #};
-
-    #  startx.enable = false;
-    #};
-
   }; # End services.xserver
 
-  services.displayManager = {
-    enable = true;
+  #services.displayManager = {
+    #enable = false; # true;
 
-    sddm = {
-      enable = true;
-      wayland.enable = true; # XXX: Experimental
-    };
+    #sddm = {
+    #  enable = true;
+    #  wayland.enable = false; #true; # XXX: Experimental
+    #};
 
-    defaultSession = "none+xmonad";
-  };
+  #  defaultSession = "none+xmonad";
+  #};
 
-  services.desktopManager = {
-    plasma6.enable = true;
+  #services.desktopManager = {
+    #plasma6.enable = true;
     #lomiri.enable = true;
-  };
+  #};
 
   # Excluding some KDE Plasma applications from the default install
-  environment.plasma5.excludePackages = with pkgs.libsForQt5; [
-    plasma-browser-integration
-    #konsole
-    #oxygen
-  ];
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [
-    plasma-browser-integration
-    #konsole
-    #oxygen
-  ];
+  #environment.plasma5.excludePackages = with pkgs.libsForQt5; [
+  #  plasma-browser-integration
+  #  #konsole
+  #  #oxygen
+  #];
+  #environment.plasma6.excludePackages = with pkgs.kdePackages; [
+  #  plasma-browser-integration
+  #  #konsole
+  #  #oxygen
+  #];
 
   #----------------------------------------------------------------------------
 
