@@ -1,6 +1,7 @@
 { pkgs, config, ... }:
 {
-  environment.systemPackages = [
-    pkgs.lutris
+  environment.systemPackages = with pkgs; [
+    lutris
+    dxvk
   ];
 }
