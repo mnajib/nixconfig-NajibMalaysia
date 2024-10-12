@@ -50,6 +50,7 @@
     pkgs.vlc
     pkgs.shutter                        # Screenshots
     #pkgs.zathura                        # Document viewer
+    pkgs.kdePackages.okular # KDE document viewer
     pkgs.dropbox                        #pkgs.unstable.dropbox
     pkgs.wpa_supplicant_gui
     pkgs.qucs-s #pkgs.qucs                           # Integrated circuit simulator. qucs has been removed because it depended on qt4. Try using qucs-s
