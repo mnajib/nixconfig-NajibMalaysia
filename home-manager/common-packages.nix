@@ -74,7 +74,7 @@
 
     # TUI E-mail Client
     neomutt
-    mutt
+    #mutt
     #meli
     #lumail
     aerc

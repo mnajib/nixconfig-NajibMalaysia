@@ -25,6 +25,7 @@ in
     #./system-benchmark.nix
     #./minecraft.nix
     ../youtube.nix
+    ../evince.nix
   ];
 
   nixpkgs = {

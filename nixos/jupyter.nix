@@ -10,4 +10,10 @@
 
     #vscode
   ];
+
+  networking.firewall = {
+    allowedTCPPorts = [
+      8888 # jupyter-lab, jupyter-notebook
+    ];
+  };
 }

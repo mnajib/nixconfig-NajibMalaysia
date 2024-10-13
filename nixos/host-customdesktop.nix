@@ -108,6 +108,9 @@
     ./appimage.nix
 
     ./walkie-talkie.nix
+
+    #./jupyter.nix # jupyter-hub? jupyter-notebook?
+    #./invidious.nix # for watch youtube. Need postgresql database
   ];
 
   # For the value of 'networking.hostID', use the following command:
