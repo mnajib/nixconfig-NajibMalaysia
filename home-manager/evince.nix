@@ -32,7 +32,7 @@ in
       ];
       terminal = false;
       type = "Application";
-      categories = [ "Utility" "DocumentViewer" ];
+      categories = [ "Utility" ];
     };
   };
 

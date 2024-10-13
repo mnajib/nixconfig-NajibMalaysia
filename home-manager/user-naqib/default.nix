@@ -93,7 +93,7 @@ in
     xarchiver
     #xmind-8-update8
     xournalpp
-    evince
+    #evince
     gnome.gnome-clocks
     smlnj
     waydroid
