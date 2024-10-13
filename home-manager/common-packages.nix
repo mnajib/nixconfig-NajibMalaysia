@@ -1,98 +1,101 @@
 { pkgs, config, ... }:
 {
-  home.packages = [
-    pkgs.atop
-    pkgs.btop
-    pkgs.htop
-    pkgs.gnome.gnome-disk-utility
-    pkgs.fortune
-    #pkgs.mgba
-    pkgs.zeal                           # Offline API documentation browser for software developers
-    #pkgs.broot                          # something like tree command
-    pkgs.xorg.xdpyinfo
-    pkgs.xorg.xwininfo
-    pkgs.mc
-    pkgs.ncdu                           # Disc space usage analyzer
-    pkgs.diskonaut                      # Disk space usage analyzer
-    pkgs.bc
-    pkgs.rlwrap                         # A readline wrapper
-    pkgs.unzip
-    pkgs.wget
-    pkgs.gnupg
-    pkgs.translate-shell                # CLI translator using Google Translate, Bing Translator, ...
-    pkgs.whois
-    #pkgs.youtube-dl # insecure package
-    pkgs.coreutils
-    pkgs.dzen2                          # A general purpose messaging, notification and menuing program for X11
-    pkgs.vis
-    pkgs.handlr
-    pkgs.ranger
-    #pkgs.termonad
-    pkgs.tmux
-    pkgs.mosh
-    pkgs.pavucontrol
-    #pkgs.libreoffice-still #pkgs.libreoffice
-    #pkgs.libreoffice-fresh #pkgs.libreoffice-qt
-    #pkgs.libreoffice-bin
-    #pkgs.xournal
-    pkgs.xournalpp
-    pkgs.inkscape                       #pkgs.unstable.inkscape
-    pkgs.imagemagick
-    pkgs.pandoc
-    #pkgs.texlive.combined.scheme-tetex
-    #pkgs.ardour                         #pkgs.unstable.ardour
-    pkgs.simplescreenrecorder
-    #pkgs.obs-studio
-    #pkgs.tuir                           #pkgs.rtv # Browse Reddit from terminal
-    pkgs.qtox
-    pkgs.zoom-us
-    pkgs.pass                           # CLI password manager
-    pkgs.vlc
-    pkgs.shutter                        # Screenshots
-    #pkgs.zathura                        # Document viewer
-    pkgs.kdePackages.okular # KDE document viewer
-    pkgs.dropbox                        #pkgs.unstable.dropbox
-    pkgs.wpa_supplicant_gui
-    pkgs.qucs-s #pkgs.qucs                           # Integrated circuit simulator. qucs has been removed because it depended on qt4. Try using qucs-s
-    #pkgs.ngspice                        # The Next Generation Spice (Electronic Circuit Simulator)
-    #pkgs.fritzing
-    #pkgs.dt-shell-color-scripts         #
+  imports = [
+    ./evince.nix
+  ];
 
-    #pkgs.sameboy                       # gameboy emulator
+  home.packages = with pkgs; [
+    atop
+    btop
+    htop
+    gnome.gnome-disk-utility
+    fortune
+    #mgba
+    zeal                           # Offline API documentation browser for software developers
+    #broot                          # something like tree command
+    xorg.xdpyinfo
+    xorg.xwininfo
+    mc
+    ncdu                           # Disc space usage analyzer
+    diskonaut                      # Disk space usage analyzer
+    bc
+    rlwrap                         # A readline wrapper
+    unzip
+    wget
+    gnupg
+    translate-shell                # CLI translator using Google Translate, Bing Translator, ...
+    whois
+    #youtube-dl # insecure package
+    coreutils
+    dzen2                          # A general purpose messaging, notification and menuing program for X11
+    vis
+    handlr
+    ranger
+    #termonad
+    tmux
+    mosh
+    pavucontrol
+    #libreoffice-still #libreoffice
+    #libreoffice-fresh #libreoffice-qt
+    #libreoffice-bin
+    #xournal
+    xournalpp
+    inkscape                       #unstable.inkscape
+    imagemagick
+    pandoc
+    #texlive.combined.scheme-tetex
+    #ardour                         #unstable.ardour
+    simplescreenrecorder
+    #obs-studio
+    #tuir                           #rtv # Browse Reddit from terminal
+    qtox
+    zoom-us
+    pass                           # CLI password manager
+    vlc
+    shutter                        # Screenshots
+    #zathura                        # Document viewer
+    dropbox                        #unstable.dropbox
+    wpa_supplicant_gui
+    qucs-s #qucs                           # Integrated circuit simulator. qucs has been removed because it depended on qt4. Try using qucs-s
+    #ngspice                        # The Next Generation Spice (Electronic Circuit Simulator)
+    #fritzing
+    #dt-shell-color-scripts         #
+
+    #sameboy                       # gameboy emulator
 
     # TUI Web Browser
-    pkgs.links2                         # cli webbrowser
-    pkgs.lynx                           # cli webbrowser
+    links2                         # cli webbrowser
+    lynx                           # cli webbrowser
 
     # GUI Web Browser
-    #pkgs.firefox
-    pkgs.qutebrowser
-    #pkgs.brave                          #pkgs.unstable.brave # web browser
+    #firefox
+    qutebrowser
+    #brave                          #unstable.brave # web browser
 
     # TUI E-mail Client
-    pkgs.neomutt
-    #pkgs.mutt
-    #pkgs.meli
-    #pkgs.lumail
-    pkgs.aerc
-    pkgs.himalaya
-    pkgs.deltachat-cursed
+    neomutt
+    mutt
+    #meli
+    #lumail
+    aerc
+    himalaya
+    deltachat-cursed
 
     # GUI E-mail Client
-    pkgs.sylpheed
-    pkgs.thunderbird
-    #pkgs.mailspring                    # is marked as insecure
-    pkgs.gnome.geary
-    pkgs.balsa
-    #pkgs.deltachat-desktop             # used electron version that marked as unsecured?
+    sylpheed
+    thunderbird
+    #mailspring                    # is marked as insecure
+    gnome.geary
+    balsa
+    #deltachat-desktop             # used electron version that marked as unsecured?
 
-    pkgs.fzy                            # CLI fuzzy finder
+    fzy                            # CLI fuzzy finder
 
     # GUI Games
-    #pkgs.zeroad
+    #zeroad
 
-    pkgs.ed # text editor
+    ed # text editor
 
-    pkgs.timeline # Display and navigate information on a timeline
+    timeline # Display and navigate information on a timeline
   ];
 }

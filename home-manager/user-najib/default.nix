@@ -32,7 +32,7 @@ in
     #./emacs-with-doom.nix
 
     #./hyprland.nix
-    ../evince.nix
+    #../evince.nix
   ];
 
   nixpkgs = {
