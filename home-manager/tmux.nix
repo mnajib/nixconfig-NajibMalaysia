@@ -136,13 +136,21 @@
       set-option -g allow-rename off
 
       # Change background color of pane; differenciate background color between non-active-pane and active-pane.
+      #COLOR1=color233                   # light-black / dark-grey
+      #COLOR2=black                      # black
+      #COLOR3=color252                   # white
+      #set -g pane-border-style bg=$COLOR1,fg=$COLOR3 # 'fg=brightblack,bg=default'
+      #set -g pane-active-border-style bg=$COLOR1,fg=$COLOR3 # 'fg=magenta,bg=default'
+      #set -g window-style bg=$COLOR1
+      #set -g window-active-style bg=$COLOR2
+      #
       COLOR1=color233                   # light-black / dark-grey
       COLOR2=black                      # black
       COLOR3=color252                   # white
-      set -g pane-border-style bg=$COLOR1,fg=$COLOR3 # 'fg=brightblack,bg=default'
-      set -g pane-active-border-style bg=$COLOR1,fg=$COLOR3 # 'fg=magenta,bg=default'
-      set -g window-style bg=$COLOR1
-      set -g window-active-style bg=$COLOR2
+      set -g pane-border-style 'bg=black,fg=white'
+      set -g pane-active-border-style 'bg=black,fg=magenta'
+      set -g window-style  'bg=black,fg=default'
+      set -g window-active-style 'bg=black,fg=default'
 
       # Change colors to easier to see how many windows have open and which one is active
       set -g window-status-style bg=yellow                 # Change inactive window color
