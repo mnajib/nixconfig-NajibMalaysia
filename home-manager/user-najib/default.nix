@@ -79,6 +79,10 @@ in
   # programs.neovim.enable = true;
 
   home.packages = with pkgs; [
+    #tmux
+    mtm
+    dvtm-unstable abduco
+
     btop
     #steam
     almanah
