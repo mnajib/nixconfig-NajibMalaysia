@@ -17,6 +17,7 @@ in
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
+    #../neovim/lazyvim.nix
 
     ../common-configs.nix
     ../common-packages.nix
@@ -127,7 +128,7 @@ in
     pixelorama
 
     godot_4
-    gdtoolkit #gdtoolkit_4
+    gdtoolkit_4
     godot_4-export-templates
 
     #firefox
@@ -137,14 +138,18 @@ in
     ranger
     #nnn
     nano
-    #neovim
+    neovim # plus manually install LazyVim in ~/.config/nvim from git repo
+    micro
     emacs
+    #haskellPackages.yi # marked as broken
 
     #zeroad
     minetest
     _4d-minesweeper
 
     fluxbox                             # need fbsetroot to set desktop background color
+
+    clang
   ];
 
   # Enable home-manager and git
