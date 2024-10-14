@@ -52,6 +52,10 @@
 
     ./flatpak.nix
 
+    ./xdg.nix
+    #./xdg-gtk.nix
+    #./xdg-kde.nix
+
     ./typesetting.nix
 
     # Games
@@ -60,7 +64,7 @@
     ./steam.nix
 
     ./nix-garbage-collector.nix
-    ./teamviewer.nix
+    #./teamviewer.nix
   ];
 
   # Booting
@@ -86,6 +90,23 @@
   nix.settings.trusted-users = [ "root" "najib" "naqib" "nurnasuha" ];
 
   hardware.enableAllFirmware = true;
+
+  hardware.opengl = {
+    enable = true;
+    driSupport32Bit = true;
+    extraPackages = with pkgs; [
+      #vaapiIntel # conflic with nixos-hardware config
+      libvdpau-va-gl
+      vaapiVdpau
+      mesa.drivers
+    ];
+    extraPackages32 = with pkgs.pkgsi686Linux; [
+      libva
+      #vaapiIntel # conflic with nixos-hardware config
+      libvdpau-va-gl
+      vaapiVdpau
+    ];
+  };
 
   #services.fstrim.enable = true;
 
@@ -150,7 +171,7 @@
     #autoLogin = {};
   };
 
-  services.desktopManager.plasma6.enable = true;
+  #services.desktopManager.plasma6.enable = true;
 
   services.xserver = {
     enable = true;
@@ -167,7 +188,7 @@
     };
 
     #desktopManager.xfce.enable = true;
-    desktopManager.mate.enable = true;
+    #desktopManager.mate.enable = true;
     #desktopManager.gnome.enable = true;
 
     windowManager.jwm.enable = true;

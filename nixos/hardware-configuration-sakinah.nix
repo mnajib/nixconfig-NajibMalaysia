@@ -8,7 +8,7 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+  #boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
   #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;         # Do not neet it here as I already define this in zfs.nix
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];

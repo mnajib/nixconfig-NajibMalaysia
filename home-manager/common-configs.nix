@@ -68,7 +68,7 @@ in
 
     #./nvim/lsp.nix
     #./nvim
-    ./neovim
+    #./neovim # lets put this per-user
     #./neovide
 
     ./zsh.nix

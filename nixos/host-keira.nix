@@ -72,6 +72,8 @@
     ./monitoring-tools.nix
 
     ./flatpak.nix
+    ./xdg.nix
+    ./opengl.nix
   ];
 
   # For Thinkpad T410

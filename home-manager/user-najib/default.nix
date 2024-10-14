@@ -24,6 +24,8 @@ in
     ../common-configs.nix
     ../common-packages.nix
 
+    ../neovim
+
     # My attemp to use nix-doom-emacs
     #./emacs.nix
     #

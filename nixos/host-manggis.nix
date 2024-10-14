@@ -56,6 +56,9 @@
         ./teamviewer.nix
 
         ./lutris.nix
+
+        ./xdg.nix
+        ./opengl.nix
     ];
 
     environment.systemPackages = with pkgs; [
