@@ -307,6 +307,23 @@ with lib;
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".device = "/dev/disk/by-uuid/a5172078-045e-4b03-abbc-32a86dfe0d06";
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".keyFile = "/crypto_keyfile.bin";
 
+  hardware.opengl = {
+    enable = true;
+    driSupport32Bit = true;
+    extraPackages = with pkgs; [
+      vaapiIntel # conflic with nixos-hardware config (for sakinah)
+      libvdpau-va-gl
+      vaapiVdpau
+      mesa.drivers
+    ];
+    extraPackagse32 = with pkgs.pkgsi686Linux; [
+      libva
+      vaapiIntel
+      libvdpau-va-gl
+      vaapiVdpau
+    ];
+  };
+
   # 01:00.0 VGA compatible controller: NVIDIA Corporation GK106GLM [Quadro K2100M] (rev a1)
   # For GK106GLM [Quadro K2100M] in Dell Precision M4800
   # Legacy driver

@@ -1165,17 +1165,17 @@
   hardware.sane.enable = true;
   hardware.sane.extraBackends = [ pkgs.hplip ]; # [ pkgs.hplipWithPlugin ];
 
-  hardware.opengl.enable = true;
-  #hardware.opengl.driSupport = true; # no longer has any effect, please remove it
-  hardware.opengl.driSupport32Bit = true;
-  #hardware.opengl.extraPackages = with pkgs.
-  #hardware.opengl.extraPackages = [ pkgs.mesa.drivers ];
-  #hardware.opengl.extraPackages = with pkgs; [ vaapiIntel libvdpau-va-gl vaapiVdpau intel-ocl ];
-  #hardware.opengl.extraPackages = with pkgs; [ vaapiIntel libvdpau-va-gl vaapiVdpau intel-ocl mesa.drivers ];
-  hardware.opengl.extraPackages = with pkgs; [ vaapiIntel libvdpau-va-gl vaapiVdpau mesa.drivers ]; # intel-ocl cannot be downloaded source from any mirror
-  #hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva  ];
-  #hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ vaapiIntel libvdpau-va-gl vaapiVdpau ];
-  hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva vaapiIntel libvdpau-va-gl vaapiVdpau ];
+# hardware.opengl.enable = true;
+# #hardware.opengl.driSupport = true; # no longer has any effect, please remove it
+# hardware.opengl.driSupport32Bit = true;
+# #hardware.opengl.extraPackages = with pkgs.
+# #hardware.opengl.extraPackages = [ pkgs.mesa.drivers ];
+# #hardware.opengl.extraPackages = with pkgs; [ vaapiIntel libvdpau-va-gl vaapiVdpau intel-ocl ];
+# #hardware.opengl.extraPackages = with pkgs; [ vaapiIntel libvdpau-va-gl vaapiVdpau intel-ocl mesa.drivers ];
+# hardware.opengl.extraPackages = with pkgs; [ vaapiIntel libvdpau-va-gl vaapiVdpau mesa.drivers ]; # intel-ocl cannot be downloaded source from any mirror
+# #hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva  ];
+# #hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ vaapiIntel libvdpau-va-gl vaapiVdpau ];
+# hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva vaapiIntel libvdpau-va-gl vaapiVdpau ];
 
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;

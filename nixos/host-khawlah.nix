@@ -36,6 +36,8 @@
     #./hyprland.nix
 
     ./logitech-unifying.nix
+    ./xdg.nix
+    ./opengl.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:

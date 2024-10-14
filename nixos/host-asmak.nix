@@ -40,6 +40,8 @@
     ./nix-garbage-collector.nix
     ./flatpak.nix
     ./steam.nix
+    ./xdg.nix
+    ./opengl.nix
   ];
 
   environment.systemPackages = with pkgs; [
