@@ -53,7 +53,8 @@
 
   environment.systemPackages = with pkgs; with kdePackages; [ # look in kdePackages first, if it's not found there, it then looks in pkgs.
     #zenity
-    #xdg-utils
+    xdg-utils # Set of command line tools that assist applications with a variety of desktop integration tasks
+    perl538Packages.FileMimeInfo # Determine file type from the file name
     #xdg-desktop-portal-gtk
     #xdg-desktop-portal
     kdialog
