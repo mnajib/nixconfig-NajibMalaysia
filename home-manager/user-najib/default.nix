@@ -35,6 +35,8 @@ in
 
     #./hyprland.nix
     #../evince.nix
+
+    ../cmus.nix
   ];
 
   nixpkgs = {
