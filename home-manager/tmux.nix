@@ -30,6 +30,15 @@
   # You can also use
   # "mysession:progname" if the program running in that pane is unique
   #
+  # :show-options -g
+  # :show-options
+  # :list-options -g
+  # :list-options
+  # :show <option-name>
+  # :show default-terminal
+  # :show terminal-overrides
+  # :show terminal-features
+  #
   programs.tmux = {
     enable = true;
     #packages =  pkgs.tumx;
@@ -55,8 +64,24 @@
       #set -g mouse-resize-pane on
       set -g mouse on                                       # Tmux 2.1 and above, need only this one line
 
-      set -g default-terminal "screen-256color"
-      #set -g terminal-overrides ',xterm-256color:RGB'
+      # Check if running in a graphical environment
+      #if-shell '[[ $TERM == *xterm* || $TERM == *screen* ]]' {
+      if-shell '[[ $TERM == screen-256color ]]' {
+        set -g default-terminal "screen-256color"
+        set-option -ga terminal-overrides ",screen-256color:Tc"
+        set-option -sa terminal-features ",screen-256color:RGB"
+      } {
+        if-shell '[[ $TERM == xterm-256color ]]' {
+          set -g default-terminal "xterm-256color"
+          set-option -ga terminal-overrides ",xterm-256color:Tc"
+          set-option -sa terminal-features ",xterm-256color:RGB"
+        } {
+          set -g default-terminal "screen"
+          set-option -ga terminal-overrides ",screen:Tc"
+          set-option -sa terminal-features ",screen:RGB"
+        }
+      }
+
       set -g detach-on-destroy off  # Do not exit from tmux when closing a session
       set -g renumber-windows on # renumber all windows when any window is closed
       set -g set-clipboard on # use system clipboard
@@ -153,14 +178,12 @@
       set -g window-active-style 'bg=black,fg=default'
 
       # Change colors to easier to see how many windows have open and which one is active
-      set -g window-status-style bg=yellow                 # Change inactive window color
-      set -g window-status-current-style bg=green,fg=black # Change active window color
-      #set -g window-status-style bg=cyan                    # Change inactive window color
-      #set -g window-status-current-style bg=cyan,fg=black   # Change active window color
-      set -g status-position bottom                         # top
-      set -g status-style 'bg=#1e1e2e'                      # transparent
+      set -g window-status-style bg=green,fg=brightblack
+      set -g window-status-current-style bg=brightgreen,fg=black
       set -g status-fg black                                # Change the status bar fg
       set -g status-bg cyan                                 # Change the status bar background color
+      set -g status-position bottom                         # top
+      set -g status-style 'bg=#1e1e2e'                      # transparent
       set -g status-justify left
 
       set -g status-left-length 200 #
