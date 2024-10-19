@@ -179,7 +179,7 @@
 
       # Change colors to easier to see how many windows have open and which one is active
       set -g window-status-style bg=green,fg=brightblack
-      set -g window-status-current-style bg=brightgreen,fg=black
+      set -g window-status-current-style bg=green,fg=black
       set -g status-fg black                                # Change the status bar fg
       set -g status-bg cyan                                 # Change the status bar background color
       set -g status-position bottom                         # top
@@ -189,12 +189,13 @@
       set -g status-left-length 200 #
       #set -g status-left "#{?client_prefix,#[bg=#ff0000],} #{session_name} "
       # Turns status-left blue if the window is zoomed, pink if the prefix is active, and yellow in copy mode.
-      set -g status-left "#[bg=cyan] \
-      #[fg=colour235,bg=colour248,bold]\
-      #{?window_zoomed_flag,#[bg=colour39],}\
-      #{?client_prefix,#[bg=colour167],}\
-      #{?pane_in_mode,#[bg=colour214],}\
-      #{session_name}\
+      set -g status-left "\
+      #[bg=cyan] \
+      #[bg=cyan,fg=brightgreen]\
+      #{?window_zoomed_flag,#[bg=blue],}\
+      #{?client_prefix,#[bg=red],}\
+      #{?pane_in_mode,#[bg=yellow],}\
+       #{session_name} \
       #[bg=cyan] "
 
       # Change date and time formating
