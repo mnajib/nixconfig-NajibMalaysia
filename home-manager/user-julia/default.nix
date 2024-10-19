@@ -17,6 +17,7 @@ in
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
+    ../neovim/lazyvim.nix
     #./roblox.nix
     #./wesnoth.nix
 

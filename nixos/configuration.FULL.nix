@@ -91,6 +91,12 @@
   imports = [
     ./users-najib.nix
     ./garbage-collect.nix
+    ./sqlite.nix
+
+    # Check: load in per-host config
+    #./xdg.nix
+    #./xdg-gtk.nix
+    #./xdg-kde.nix
   ];
 
   # Q: Each time I change my configuration.nix and run nixos-rebuild switch,
@@ -212,7 +218,7 @@
     #lizardfs                 # marked as broken?
     wget curl killall
     mtr iproute # busybox
-    htop mc irssi most mosh coreutils mutt
+    htop mc irssi most mosh coreutils
     nload
     zenith                    # Sort of like top or htop but with zoom-able charts, network, and disk usage
     bmon                      # Network bandwidth monitor
@@ -608,7 +614,7 @@
     # E-mail Client
     #---------------------------------------------------------------
 
-    mutt
+    neomutt # mutt
 
     #---------------------------------------------------------------
     # Instant Messenger
@@ -657,7 +663,7 @@
     worker # A two-pane file manager with advanced file manipulation features
     #keepnote
     #planner <-- removed from nixpkgs
-    gqview
+    #gqview # 'gqview' has been removed due to lack of maintenance upstream and depending on gtk2. Consider using 'gthumb' instead
     enlightenment.ephoto
     gtkimageview
     gthumb
@@ -948,7 +954,7 @@
     jetty
     mono
     samba
-    steam-run
+    #steam-run # look at nixos/steam.nix
     tabula-java
 
     #-------------------------------------------
@@ -986,7 +992,7 @@
     #jami-daemon
     #jami-client-gnome
     jitsi
-    jitsi-meet
+    #jitsi-meet
 
     # GAMES
     #teeworlds
@@ -1159,17 +1165,17 @@
   hardware.sane.enable = true;
   hardware.sane.extraBackends = [ pkgs.hplip ]; # [ pkgs.hplipWithPlugin ];
 
-  hardware.opengl.enable = true;
-  #hardware.opengl.driSupport = true; # no longer has any effect, please remove it
-  hardware.opengl.driSupport32Bit = true;
-  #hardware.opengl.extraPackages = with pkgs.
-  #hardware.opengl.extraPackages = [ pkgs.mesa.drivers ];
-  #hardware.opengl.extraPackages = with pkgs; [ vaapiIntel libvdpau-va-gl vaapiVdpau intel-ocl ];
-  #hardware.opengl.extraPackages = with pkgs; [ vaapiIntel libvdpau-va-gl vaapiVdpau intel-ocl mesa.drivers ];
-  hardware.opengl.extraPackages = with pkgs; [ vaapiIntel libvdpau-va-gl vaapiVdpau mesa.drivers ]; # intel-ocl cannot be downloaded source from any mirror
-  #hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva  ];
-  #hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ vaapiIntel libvdpau-va-gl vaapiVdpau ];
-  hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva vaapiIntel libvdpau-va-gl vaapiVdpau ];
+# hardware.opengl.enable = true;
+# #hardware.opengl.driSupport = true; # no longer has any effect, please remove it
+# hardware.opengl.driSupport32Bit = true;
+# #hardware.opengl.extraPackages = with pkgs.
+# #hardware.opengl.extraPackages = [ pkgs.mesa.drivers ];
+# #hardware.opengl.extraPackages = with pkgs; [ vaapiIntel libvdpau-va-gl vaapiVdpau intel-ocl ];
+# #hardware.opengl.extraPackages = with pkgs; [ vaapiIntel libvdpau-va-gl vaapiVdpau intel-ocl mesa.drivers ];
+# hardware.opengl.extraPackages = with pkgs; [ vaapiIntel libvdpau-va-gl vaapiVdpau mesa.drivers ]; # intel-ocl cannot be downloaded source from any mirror
+# #hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva  ];
+# #hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ vaapiIntel libvdpau-va-gl vaapiVdpau ];
+# hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva vaapiIntel libvdpau-va-gl vaapiVdpau ];
 
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
@@ -1191,7 +1197,7 @@
 
   #services.ddclient.configFile = "/root/nixos/secrets/ddclient.conf"; # default "/etc/ddclient.conf"
 
-  services.xserver.enable = true;
+  #services.xserver.enable = true;
   #services.xserver.xautolock.enable = true;
 
   # Keyboard: setxkbmap -layout us,us,ara,my -variant dvorak,,,

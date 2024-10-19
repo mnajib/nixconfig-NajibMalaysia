@@ -68,7 +68,7 @@ in
 
     #./nvim/lsp.nix
     #./nvim
-    ./neovim
+    #./neovim # lets put this per-user
     #./neovide
 
     ./zsh.nix
@@ -482,17 +482,17 @@ in
   };
 
 #------------------------------------------------------------------------------
-  wayland.windowManager.sway = {
-    enable = true;
-    config = {
-      input = {
-        "*" = {
-          xkb_layout = "us";
-          xkb_variant = "dvorak";
-        };
-      };
-    };
-  };
+  #wayland.windowManager.sway = {
+  #  enable = true;
+  #  config = {
+  #    input = {
+  #      "*" = {
+  #        xkb_layout = "us";
+  #        xkb_variant = "dvorak";
+  #      };
+  #    };
+  #  };
+  #};
 
   #xsession = {
   #    enable = true;

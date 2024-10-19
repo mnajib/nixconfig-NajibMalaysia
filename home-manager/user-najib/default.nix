@@ -24,6 +24,8 @@ in
     ../common-configs.nix
     ../common-packages.nix
 
+    ../neovim
+
     # My attemp to use nix-doom-emacs
     #./emacs.nix
     #
@@ -32,6 +34,9 @@ in
     #./emacs-with-doom.nix
 
     #./hyprland.nix
+    #../evince.nix
+
+    ../cmus.nix
   ];
 
   nixpkgs = {
@@ -78,6 +83,10 @@ in
   # programs.neovim.enable = true;
 
   home.packages = with pkgs; [
+    #tmux
+    mtm
+    dvtm-unstable abduco
+
     btop
     #steam
     almanah

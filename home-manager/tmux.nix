@@ -30,6 +30,15 @@
   # You can also use
   # "mysession:progname" if the program running in that pane is unique
   #
+  # :show-options -g
+  # :show-options
+  # :list-options -g
+  # :list-options
+  # :show <option-name>
+  # :show default-terminal
+  # :show terminal-overrides
+  # :show terminal-features
+  #
   programs.tmux = {
     enable = true;
     #packages =  pkgs.tumx;
@@ -55,14 +64,38 @@
       #set -g mouse-resize-pane on
       set -g mouse on                                       # Tmux 2.1 and above, need only this one line
 
-      set -g default-terminal "screen-256color"
-      #set -g terminal-overrides ',xterm-256color:RGB'
+      # Check if running in a graphical environment
+      #if-shell '[[ $TERM == *xterm* || $TERM == *screen* ]]' {
+      if-shell '[[ $TERM == screen-256color ]]' {
+        set -g default-terminal "screen-256color"
+        set-option -ga terminal-overrides ",screen-256color:Tc"
+        set-option -sa terminal-features ",screen-256color:RGB"
+      } {
+        if-shell '[[ $TERM == xterm-256color ]]' {
+          set -g default-terminal "xterm-256color"
+          set-option -ga terminal-overrides ",xterm-256color:Tc"
+          set-option -sa terminal-features ",xterm-256color:RGB"
+        } {
+          set -g default-terminal "screen"
+          set-option -ga terminal-overrides ",screen:Tc"
+          set-option -sa terminal-features ",screen:RGB"
+        }
+      }
+
       set -g detach-on-destroy off  # Do not exit from tmux when closing a session
       set -g renumber-windows on # renumber all windows when any window is closed
       set -g set-clipboard on # use system clipboard
       #set -g default-terminal "$\{TERM}"
 
       #set -g bell-action none
+
+      # '<c-b>:resize-window -a' will resize to the smallest session.
+      # '<c-b>:resize-window -A' will set it to 'manual'.
+      # '<c-b>:attach-session -d' will redraw the tmux window ???.
+      set -g window-size smallest # 'largest' 'manual'.
+
+      #setw -g aggressive-resive on
+      #set-window-option -g aggressive-resize
 
       # Sano split commands: Split panes using | and -
       bind | split-window -h
@@ -96,7 +129,7 @@
       bind -n M-Left select-pane -L                         # Alt-Left
       bind -n M-Down select-pane -D                         # Alt-Down
 
-      # Flipping the orientation (horizontal/vertical???) of the current pane with the pane using Shift-arrow without prefix
+      # Flipping the orientation (horizontal <-> vertical ???) of the current pane with the pane using Shift-arrow without prefix
       bind -n S-Up move-pane -h -t '.{up-of}'               # S-Up
       bind -n S-Right move-pane -t '.{right-of}'            # S-Right
       bind -n S-Left move-pane -t '.{left-of}'              # S-Left
@@ -128,34 +161,42 @@
       set-option -g allow-rename off
 
       # Change background color of pane; differenciate background color between non-active-pane and active-pane.
+      #COLOR1=color233                   # light-black / dark-grey
+      #COLOR2=black                      # black
+      #COLOR3=color252                   # white
+      #set -g pane-border-style bg=$COLOR1,fg=$COLOR3 # 'fg=brightblack,bg=default'
+      #set -g pane-active-border-style bg=$COLOR1,fg=$COLOR3 # 'fg=magenta,bg=default'
+      #set -g window-style bg=$COLOR1
+      #set -g window-active-style bg=$COLOR2
+      #
       COLOR1=color233                   # light-black / dark-grey
       COLOR2=black                      # black
       COLOR3=color252                   # white
-      set -g pane-border-style bg=$COLOR1,fg=$COLOR3 # 'fg=brightblack,bg=default'
-      set -g pane-active-border-style bg=$COLOR1,fg=$COLOR3 # 'fg=magenta,bg=default'
-      set -g window-style bg=$COLOR1
-      set -g window-active-style bg=$COLOR2
+      set -g pane-border-style 'bg=black,fg=white'
+      set -g pane-active-border-style 'bg=black,fg=magenta'
+      set -g window-style  'bg=black,fg=default'
+      set -g window-active-style 'bg=black,fg=default'
 
       # Change colors to easier to see how many windows have open and which one is active
-      set -g window-status-style bg=yellow                 # Change inactive window color
-      set -g window-status-current-style bg=green,fg=black # Change active window color
-      #set -g window-status-style bg=cyan                    # Change inactive window color
-      #set -g window-status-current-style bg=cyan,fg=black   # Change active window color
-      set -g status-position bottom                         # top
-      set -g status-style 'bg=#1e1e2e'                      # transparent
+      set -g window-status-style bg=green,fg=brightblack
+      set -g window-status-current-style bg=green,fg=black
       set -g status-fg black                                # Change the status bar fg
       set -g status-bg cyan                                 # Change the status bar background color
+      set -g status-position bottom                         # top
+      set -g status-style 'bg=#1e1e2e'                      # transparent
       set -g status-justify left
 
       set -g status-left-length 200 #
       #set -g status-left "#{?client_prefix,#[bg=#ff0000],} #{session_name} "
       # Turns status-left blue if the window is zoomed, pink if the prefix is active, and yellow in copy mode.
       set -g status-left "\
-      #[fg=colour235,bg=colour248,bold]\
-      #{?window_zoomed_flag,#[bg=colour39],}\
-      #{?client_prefix,#[bg=colour167],}\
-      #{?pane_in_mode,#[bg=colour214],}\
-      #{session_name} "
+      #[bg=cyan] \
+      #[bg=cyan,fg=brightgreen]\
+      #{?window_zoomed_flag,#[bg=blue],}\
+      #{?client_prefix,#[bg=red],}\
+      #{?pane_in_mode,#[bg=yellow],}\
+       #{session_name} \
+      #[bg=cyan] "
 
       # Change date and time formating
       set -g status-right ""
@@ -199,7 +240,7 @@
       {
         plugin = tmuxPlugins.continuum;
         extraConfig = ''
-          set -g @continuum-boot 'on' # Not sure this will work in NixOS.
+          #set -g @continuum-boot 'on' # Not sure this will work in NixOS.
           set -g @continuum-restore 'on'
           set -g @continuum-save-interval '0' # '5' to save every 5 minutes. '0' to disable autosave.
         '';
@@ -224,15 +265,15 @@
       #  '';
       #}
 
-      {
-        # For copying to system clipboard
-        # Need a program that store data in the system clipboard (xsel, wl-copy, xclip, ...)
-        # Linux has several cut-and-paste clipboards: primary, secondary, and clipboard (default in tmux-yank is clipboard).
-        plugin = tmuxPlugins.yank;
-        extraConfig = ''
-          #set -g @yank_selection_mouse 'clipboard' # or 'primary' or 'secondary'
-        '';
-      }
+      #{
+      #  # For copying to system clipboard
+      #  # Need a program that store data in the system clipboard (xsel, wl-copy, xclip, ...)
+      #  # Linux has several cut-and-paste clipboards: primary, secondary, and clipboard (default in tmux-yank is clipboard).
+      #  plugin = tmuxPlugins.yank;
+      #  extraConfig = ''
+      #    #set -g @yank_selection_mouse 'clipboard' # or 'primary' or 'secondary'
+      #  '';
+      #}
 
       #--------------------------------
       #{
@@ -242,12 +283,12 @@
       #  '';
       #}
       #
-      {
-        plugin = tmuxPlugins.tmux-thumbs;
-        extraConfig = ''
-          set -g @thumbs-key T
-        '';
-      }
+      #{
+      #  plugin = tmuxPlugins.tmux-thumbs;
+      #  extraConfig = ''
+      #    set -g @thumbs-key T
+      #  '';
+      #}
       #--------------------------------
 
       {

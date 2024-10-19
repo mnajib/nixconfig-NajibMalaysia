@@ -142,10 +142,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    expose-cuda = {
-      url = "github:ogoid/nixos-expose-cuda";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    #expose-cuda = {
+    #  url = "github:ogoid/nixos-expose-cuda";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
 
     kmonad = {
       url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
@@ -179,7 +179,7 @@
     sops-nix,
     nix-doom-emacs,
     nix-ld,
-    expose-cuda,
+    #expose-cuda,
     kmonad,
     ...
   }@inputs:
@@ -580,7 +580,7 @@
           # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
           #hardware.nixosModules.lenovo-thinkpad-x220
 
-          expose-cuda.nixosModules.default
+          #expose-cuda.nixosModules.default
         ];
 
         #----------------------------------------------------------------------

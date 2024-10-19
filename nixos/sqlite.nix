@@ -1,7 +1,8 @@
 { pkgs, config, ... }:
 {
   environment.systemPackages = with pkgs; [
-    lutris
-    dxvk
+    sqlite
+    sqlite-utils
+    sqlitebrowser
   ];
 }

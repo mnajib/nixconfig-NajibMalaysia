@@ -11,11 +11,15 @@ in
 {
   programs.neovim = {
     enable = true;
+
     defaultEditor = true;
     #viAlias = true;
     #vimAlias = true;
     #vimdiffAlias = true;
 
+    extraPackages = [];
+
+    # Custom vimrc lines
     #extraConfig = builtins.readFile ../src/.config/nvim/init.vim;
     extraConfig = ''
       set nocompatible            " disable compatibility to old-time vi
@@ -25,17 +29,34 @@ in
       set hlsearch                " highlight search
       set incsearch               " incremental search
       set wildmode=longest,list   " get bash-like tab completions
-      set termguicolors           " enabling true color
+
+
+      "set termguicolors           " enabling true color; Comment this out for use only ANSI colors
+      "------------------------------------------------------------------------------
+      " Use different color schemes based on the TERM variable
+      "if $TERM == "linux"
+      "  " Use a basic color scheme for 16 colors
+      "  "set t_Co=8  " Set the number of colors to 8 (basic ANSI)
+      "  set termguicolors=false
+      "  colorscheme default  " Use the default color scheme
+      "else
+      "  " Use a color scheme that supports 256 colors
+      "  set t_Co=256  " Set the number of colors to 256
+      "  set termguicolors=true
+      "  colorscheme gruvbox  " Example: Use a 256-color scheme like gruvbox
+      "endif
+      "------------------------------------------------------------------------------
+
 
       set background=dark
       highlight Normal ctermbg=black ctermfg=lightgrey guibg=black guifg=lightgrey
 
-      "set number                  " add line numbers
-      set relativenumber                  " add line numbers
-      "highlight LineNr ctermfg=11 guifg=Yellow ctermbg=DarkGrey guibg=DarkGrey
-      "highlight LineNr ctermfg=11 guifg=Yellow ctermbg=237 guibg=#100c08
-      highlight LineNr ctermfg=11   ctermbg=237
-      highlight LineNr guifg=#525252 guibg=#333333
+      ""set number                  " add line numbers
+      "set relativenumber                  " add line numbers
+      ""highlight LineNr ctermfg=11 guifg=Yellow ctermbg=DarkGrey guibg=DarkGrey
+      ""highlight LineNr ctermfg=11 guifg=Yellow ctermbg=237 guibg=#100c08
+      "highlight LineNr ctermfg=11   ctermbg=237
+      "highlight LineNr guifg=#525252 guibg=#333333
 
       filetype plugin indent on   " allow auto-indenting depending on file type
       syntax on                   " syntax highlighting
@@ -45,7 +66,7 @@ in
 
       " set an 80 column border for good coding style
       "set colorcolumn=80
-      set colorcolumn=40,60,80
+      "set colorcolumn=40,60,80 " disable this when use only ANSI colors
       " if using ANSI-16
       "highlight ColorColumn ctermbg=16
       " if using 256 color terminal
@@ -192,17 +213,98 @@ in
       "call plug#end()
     '';
 
+    #extraLuaPackages = [];
+
+    # Custom lua lines
+    extraLuaConfig = ''
+
+
+      -- -----------------------------------------------------------------------
+      local function reload_nvim_config()
+        -- Clear all loaded Lua modules to force reloading them
+        for name, _ in pairs(package.loaded) do
+          if name:match("^user") or name:match("^plugins") then  -- Adjust to match your config structure
+            package.loaded[name] = nil
+          end
+        end
+
+        -- Reload the init.lua (or init.vim)
+        dofile(vim.env.MYVIMRC)
+
+        print("Neovim configuration reloaded!")
+      end
+
+      -- Create a user command to trigger the reload
+      vim.api.nvim_create_user_command("ReloadConfig", reload_nvim_config, {})
+      -- Now, when you need to reload the config, simply run:
+      -- :ReloadConfig
+
+      -- Optionally, can configure keybinding to reload config quickly
+      -- vim.keymap.set("n", "<leader>r", ":ReloadConfig<CR>", { noremap = true, silent = true })
+      -- Now, pressing <leader>r will reload your Neovim configuration instantly.
+      -- -----------------------------------------------------------------------
+
+
+      -- Enable absolute line numbers for the current line
+      vim.wo.number = true
+
+      -- Enable relative line numbers for other lines
+      -- vim.wo.relativenumber = true
+
+      -- Set the width of the number column (optional)
+      -- vim.wo.numberwidth = 4  -- Adjust as needed for your line numbers
+
+
+      -- -----------------------------------------------------------------------
+      -- To Switch Between 256 Colors and ANSI Colors
+      local function set_color_mode()
+        -- Detect the TERM environment variable
+        local term = vim.env.TERM
+
+        if term:match("256color") then
+          vim.opt.termguicolors = true  -- Enable 24-bit colors
+          vim.cmd("colorscheme gruvbox")  -- Example: 256-color theme
+        elseif term == "linux" then
+          vim.opt.termguicolors = false  -- Fallback to basic 16 colors
+          vim.cmd("colorscheme default") -- Example: ANSI theme
+        else
+          print("Unknown TERM: " .. term .. ", defaulting to ANSI colors.")
+          vim.opt.termguicolors = false
+          vim.cmd("colorscheme default")
+        end
+
+      end
+
+      -- Run the function on startup
+      set_color_mode()
+
+      -- Optional: Create a command to manually switch color modes
+      vim.api.nvim_create_user_command("ReloadColors", set_color_mode, {})
+      -- Now, when you nedd to switch color modes, simply run:
+      -- :ReloadColors
+      -- -----------------------------------------------------------------------
+
+
+      -- Highlight settings for line numbers
+      vim.cmd([[highlight LineNr ctermfg=11 ctermbg=237]])
+      vim.cmd([[highlight LineNr guifg=#525252 guibg=#333333]])
+    '';
+
     # Use Nix Package search engine to find even more plugins:
     # https://search.nixos.org/packages
     plugins = with pkgs.vimPlugins; [
       ##nvim-lspconfig
       #nvim-treesitter.withAllGrammars
       #plenary-nvim
+      gruvbox
       #gruvbox-material
+      #gruvbox-material-nvim
       #mini-nvim
       #nvim-tree-lua
       #vim-illuminate
       #vim-numbertoggle
+      #yankring
+      #vim-nix
 
       #{
       #  plugin = vim-startify;
