@@ -316,7 +316,7 @@ with lib;
       vaapiVdpau
       mesa.drivers
     ];
-    extraPackagse32 = with pkgs.pkgsi686Linux; [
+    extraPackages32 = with pkgs.pkgsi686Linux; [
       libva
       vaapiIntel
       libvdpau-va-gl

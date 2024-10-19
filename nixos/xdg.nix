@@ -24,8 +24,8 @@
 
     configPackages = with pkgs; [
       #gnome-session
-      #xdg-desktop-portal-gtk
-      xdg-desktop-portal-shana
+      xdg-desktop-portal-gtk
+      #xdg-desktop-portal-shana
     ];
 
     config = {
@@ -35,8 +35,8 @@
         #
         default = [
           #"kde"
-          #"gtk"
-          "shana"
+          "gtk"
+          #"shana"
         ];
       };
     }; # End xdg.portal.config
@@ -44,26 +44,27 @@
     ##key = if builtins.pathExists ./path then "woot" else "bummer";
     extraPortals = with pkgs; [
       #xdg-desktop-portal-kde
-      #xdg-desktop-portal-gtk
+      xdg-desktop-portal-gtk
       #xdg-desktop-portal-xapp
       #lxqt.xdg-desktop-portal-lxqt
-      xdg-desktop-portal-shana
+      #xdg-desktop-portal-shana
     ];
   }; # End xdg.portal
 
   environment.systemPackages = with pkgs; with kdePackages; [ # look in kdePackages first, if it's not found there, it then looks in pkgs.
-    #zenity
     xdg-utils # Set of command line tools that assist applications with a variety of desktop integration tasks
-    perl538Packages.FileMimeInfo # Determine file type from the file name
-    #xdg-desktop-portal-gtk
-    #xdg-desktop-portal
-    kdialog
-    zathura # pdf viewer?
+    xdg-desktop-portal
+    #xdg-desktop-portal-shana # filechooser portal backend for any desktop environment
+    xdg-desktop-portal-gtk
     #xdg-desktop-portal-kde
     #xdg-desktop-portal-xapp # for cinnamon, MATE, Xfce
-    xdg-desktop-portal-shana # filechooser portal backend for any desktop environment
     #lxqt.xdg-desktop-portal-lxqt # backend implementation for xdg-desktop-portal that is using Qt/KF5/libfm-qt
+
     dunst # notification daemon for handling notifications
+    #zenity
+    #perl538Packages.FileMimeInfo # Determine file type from the file name
+    kdialog
+    zathura # pdf viewer?
 
     #kdePackages.neochat # A client for matrix, the decentralized communication protocol.
     #neochat # disable: marked unsecured because olm
@@ -95,7 +96,8 @@
   environment.variables = {
     #XDG_CURRENT_DESKTOP = "GNOME"; # Default: "none+xmonad"
     #XDG_CURRENT_DESKTOP = "KDE"; # Default: "none+xmonad"
-    XDG_CURRENT_DESKTOP = "shana"; # Default: "none+xmonad"
+    #XDG_CURRENT_DESKTOP = "shana"; # Default: "none+xmonad"
+    XDG_CURRENT_DESKTOP = "gtk"; # Default: "none+xmonad"
   };
 
   #environment.sessionVariables = {
@@ -109,9 +111,9 @@
     #  wantedBy = [ "default.target" ];
     #};
 
-    #"xdg-desktop-portal".enable = true;
+    "xdg-desktop-portal".enable = true;
+    "xdg-desktop-portal-gtk".enable = true;
     #"xdg-desktop-portal-kde".enable = false;
-    #"xdg-desktop-portal-gtk".enable = false;
   };
 
   #home-manager.users.najib = {
