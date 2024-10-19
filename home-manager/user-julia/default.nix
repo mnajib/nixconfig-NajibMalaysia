@@ -23,6 +23,8 @@ in
 
     ../common-configs.nix
     ../common-packages.nix
+
+    ../neovim
   ];
 
   nixpkgs = {
