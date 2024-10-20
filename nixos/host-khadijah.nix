@@ -367,7 +367,6 @@ with lib;
         greeters = {
           gtk = { # gtk is the default
             enable = true;
-            theme = "Adwaita";
             indicators = [
               "~host"
               "~spacer"
