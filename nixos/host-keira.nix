@@ -2,21 +2,23 @@
   pkgs,
   config,
   lib,
+  #home,
+  #vars,
+  #hosts,
   ...
 }:
-
 {
   nix = {
     package = pkgs.nixFlakes;
+    settings = {
+      cores = 3;
+      max-jobs = 3;
+      trusted-users = [ "root" "najib" "julia" ];
+    };
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
   };
-
-  nix.settings.cores = 3;
-  nix.settings.max-jobs = 3;
-
-  nix.settings.trusted-users = [ "root" "najib" "julia" ];
 
   imports = [
     #./bootEFI.nix
@@ -64,10 +66,10 @@
 
     #./configuration.MIN.nix
     ./configuration.FULL.nix
+    ./xmonad.nix
 
     ./btrbk-keira.nix
-
-    #./nix-garbage-collector.nix
+    ./nix-garbage-collector.nix
 
     ./monitoring-tools.nix
 
@@ -84,10 +86,6 @@
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   #
-
-  # Thinkpad T410 Shah Alam RM100 (price include T60)
-  networking.hostId = "b74500be";
-  networking.hostName = "keira"; # also called "tifoten"
 
   hardware.enableAllFirmware = true;
 
@@ -138,6 +136,11 @@
 
   services.fstrim.enable = true;
 
+  #----------------------------------------------------------
+  # Thinkpad T410 Shah Alam RM100 (price include T60)
+  networking.hostId = "b74500be";
+  networking.hostName = "keira"; # also called "tifoten"
+
   #networking.useDHCP = lib.mkForce true; # XXX:
   networking.useDHCP = false;
   #networking.interface.eno1.useDHCP = true;
@@ -166,10 +169,8 @@
     4045 # NFS lock manager
   ];
 
+  #----------------------------------------------------------
   powerManagement.enable = true;
-  #----------------------------------------------------------------------------
-  # XXX: on-going test
-  #----------------------------------------------------------------------------
   services.auto-cpufreq.enable = true;
   powerManagement.cpuFreqGovernor = "powersave";
   #powerManagement.cpufreq.min = 800000;
@@ -206,15 +207,7 @@
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
-  hardware.trackpoint = {
-    enable = true;
-    device = "TPPS/2 IBM TrackPoint";
-    speed = 97;
-    sensitivity = 130;
-    emulateWheel = true;
-  };
-
-  # XXX:
+  #----------------------------------------------------------
   security.sudo.extraRules = [
     {
       users = [ "najib" "julia" ];
@@ -228,24 +221,60 @@
     }
   ];
 
-  services.xserver.enable = true;
+  #----------------------------------------------------------
+  hardware.trackpoint = {
+    enable = true;
+    device = "TPPS/2 IBM TrackPoint";
+    speed = 97;
+    sensitivity = 130;
+    emulateWheel = true;
+  };
 
-  services.xserver.libinput.enable = true;
-  services.xserver.libinput.touchpad.disableWhileTyping = true;
-  services.xserver.libinput.touchpad.scrollMethod = "twofinger";
-  services.xserver.libinput.touchpad.tapping = true; #false;
+  services.libinput = {
+    enable = true;
+    touchpad.disableWhileTyping = true;
+    touchpad.scrollMethod = "twofinger";
+    touchpad.tapping = true; #false;
+  };
 
-  #services.xserver.displayManager.sddm.enable = true;
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.displayManager.defaultSession = "none+xmonad";
+  services.xserver = {
+    enable = true;
 
-  #services.xserver.desktopManager.plasma5.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
-  #services.xserver.desktopManager.lxqt.enable = true;
+    displayManager = {
+      #sddm.enable = true;
+      lightdm.enable = true;
+      defaultSession = "none+xmonad";
 
-  #environment.systemPackages = [
-  #  pkgs.blender
-  #];
+      sessionCommands = ''
+        xset -dpms
+        xset s blank
+        xset s 120
+      '';
+    };
+
+    desktopManager = {
+      #plasma5.enable = true;
+      #xfce.enable = true;
+      #lxqt.enable = true;
+    };
+
+    windowManager = {
+      jwm.enable = true;
+      icewm.enable = true;
+      fluxbox.enable = true;
+      awesome.enable = true;
+    };
+  };
+
+  #----------------------------------------------------------
+  environment.systemPackages = with pkgs; [
+    #blender
+    stack
+    cabal-install
+    haskellPackages.xmobar
+    haskellPackages.X11
+    haskellPackages.X11-xft
+  ];
 
   #system.stateVersion = "22.05";
   system.stateVersion = "23.05";

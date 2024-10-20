@@ -17,14 +17,13 @@ in
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
-    ../neovim/lazyvim.nix
+    #../neovim/lazyvim.nix
+    ../neovim
     #./roblox.nix
     #./wesnoth.nix
 
     ../common-configs.nix
     ../common-packages.nix
-
-    ../neovim
   ];
 
   nixpkgs = {
