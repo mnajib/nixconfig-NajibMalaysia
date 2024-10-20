@@ -191,7 +191,7 @@
       # Turns status-left blue if the window is zoomed, pink if the prefix is active, and yellow in copy mode.
       set -g status-left "\
       #[bg=cyan] \
-      #[bg=cyan,fg=brightgreen]\
+      #[bg=cyan,fg=black]\
       #{?window_zoomed_flag,#[bg=blue],}\
       #{?client_prefix,#[bg=red],}\
       #{?pane_in_mode,#[bg=yellow],}\
