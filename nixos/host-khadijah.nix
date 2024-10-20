@@ -363,12 +363,25 @@ with lib;
 
       lightdm = {
         enable = true;
+        #background = "";
         greeters = {
-          gtk = {
-            enable = false;
+          gtk = { # gtk is the default
+            enable = true;
+            theme = "Adwaita";
+            indicators = [
+              "~host"
+              "~spacer"
+              "~clock"
+              "~spacer"
+              "~session"
+              "~language"
+              "~a11y"
+              "~power"
+            ];
+            clock-format = "%F";
           };
           slick = {
-            enable = true;
+            enable = false;
           };
           enso.enable = false;
         };
