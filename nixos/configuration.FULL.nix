@@ -1139,9 +1139,14 @@
   programs.mosh.enable = true;
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-  services.openssh.settings.X11Forwarding = true;
-  #services.openssh.ports= [ 7177 ];
+  services.openssh = {
+    enable = true;
+    settings.X11Forwarding = true;
+    #ports= [ 7177 ];
+    #extraConfig = ''
+    #  X11DisplayOffset 10
+    #'';
+  };
   services.sshguard.enable = true;
 
   #services.toxvpn.enable = true;
