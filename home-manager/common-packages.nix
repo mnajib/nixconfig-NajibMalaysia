@@ -96,6 +96,11 @@
 
     ed # text editor
 
+    yad
+    zenity
+    dialog
+    gxmessage
+
     timeline # Display and navigate information on a timeline
   ];
 }
