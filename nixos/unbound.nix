@@ -5,6 +5,10 @@
 }:
 {
 
+  # NOTE:
+  #  systemctl status unbound.service
+  #  journalctl -u unbound.service -f
+
   # Define a systemd service to download the named.root file
   systemd.services.updateRootHints = {
     description = "Download and update root hints for dnsmasq";
@@ -42,6 +46,8 @@
 
       server = {
 
+        #verbosity = 2; # 0 (no verbosity, only errors) to 5 (logs client identification for cache misses). Default 1.
+
         # location of the trust anchor file that enables DNSSEC
         #auto-trust-anchor-file = "/var/lib/unbound/root.key";
 
@@ -71,6 +77,9 @@
         prefetch = true;
         edns-buffer-size = 1232;
 
+        # Disable DNSSEC validation for the specific internal zone
+        #module-config = "validator iterator";
+
         # Custom settings
         hide-identity = true;
         hide-version = true;
@@ -78,19 +87,51 @@
         # send minimal amount of information to upstream servers to enhance privacy
         qname-minimisation = true;
 
+        domain-insecure = [
+          "localdomain."
+        ];
+
       }; # End services.unbound.settings.server
 
-      #forward-zone = [
-      #  # Example config with quad9
-      #  {
-      #    name = ".";
-      #    forward-addr = [
-      #      "9.9.9.9#dns.quad9.net"
-      #      "149.112.112.112#dns.quad9.net"
-      #    ];
-      #    forward-tls-upstream = true;  # Protected DNS
-      #  }
-      #];
+      forward-zone = [
+      # # Example config with quad9
+      # {
+      #   name = ".";
+      #   forward-addr = [
+      #     "9.9.9.9#dns.quad9.net"
+      #     "149.112.112.112#dns.quad9.net"
+      #   ];
+      #   forward-tls-upstream = true;  # Protected DNS
+      # }
+
+      # {
+      #   name = ".";
+      #   forward-addr = [
+      #     "8.8.8.8"
+      #     "8.8.4.4"
+      #   ];
+      # }
+
+      # {
+      #   name = ".";
+      #   forward-addr = [
+      #     "1.1.1.1"
+      #     "1.0.0.1"
+      #   ];
+      # }
+
+        {
+          name = "localdomain.";
+          forward-addr = [
+            "192.168.0.15"
+          ];
+          #forward-first = true;
+          #do-not-query-localhost = false;
+          #dnssec-bogus-addr = "0.0.0.0";
+          #dnssec-check-unsigned = true; # Allow responses without DNSSEC validation
+        }
+
+      ]; # End services.unbound.settings.forward-zone
 
       # allows controlling unbound using "unbound-control"
       remote-control.control-enable = true;
