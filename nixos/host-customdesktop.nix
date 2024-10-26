@@ -67,8 +67,8 @@
     #./nfs-client-automount-games.nix
     #./nfs-client.nix
 
-    ./samba-server-customdesktop.nix
-    ./samba-client.nix
+    #./samba-server-customdesktop.nix
+    #./samba-client.nix
 
     ./console-keyboard-dvorak.nix
     ./keyboard-with-msa.nix
@@ -96,7 +96,6 @@
 
     #./sway.nix
 
-    # XXX:
     ./nix-garbage-collector.nix
 
     #./timetracker.nix                  # desktop app for time management
