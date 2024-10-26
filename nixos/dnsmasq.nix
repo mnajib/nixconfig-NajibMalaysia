@@ -53,7 +53,10 @@
     resolveLocalQueries = true;                                                 # resolv localhost/127.0.0.1 queries
     settings = {
       bind-interfaces = true;
-      port = 53;
+
+      #port = 53;
+      port = 5335; # XXX: testing
+
       domain-needed = true;
       bogus-priv = true;
       no-resolv = true;
@@ -228,7 +231,8 @@
     #  53  # DNS
     #];
     allowedUDPPorts = [
-      53  # DNS
+      #53  # DNS
+      5335  # XXX: testing
     ];
   };
 }
