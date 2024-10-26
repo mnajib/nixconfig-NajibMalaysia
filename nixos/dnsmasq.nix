@@ -68,6 +68,7 @@
         "1.1.1.1"
         "1.0.0.1"
 
+        #"/./"
         #"/./etc/dnsmasq/root.hints"
         #"/etc/dnsmasq/root.hints"
 
@@ -77,6 +78,8 @@
         #"208.67.220.220" # OpenDNS
       ];
       local = "/localdomain/";         # Ensures that queries for your private domain are only answered by Dnsmasq, from /etc/hosts or DHCP.
+
+      #timeout = 5; # increase query timeout to handle delays with root servers
 
       # If Dnsmasq will be the only DHCP server in your network
       #dhcp-authoritative
