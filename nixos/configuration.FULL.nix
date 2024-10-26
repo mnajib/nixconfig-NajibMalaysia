@@ -251,6 +251,7 @@
 
     #efibootmgr
     bind
+    drill
     gnupg
     xorg.xmodmap
 
