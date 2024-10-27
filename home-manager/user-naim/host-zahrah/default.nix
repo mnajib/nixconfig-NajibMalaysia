@@ -9,6 +9,22 @@
   # You can import other home-manager modules here
   imports = [
     ../default.nix
+    #../../neovim
+  ];
+
+  home.packages = with pkgs; [
+    neovim
+    gcc
+    gnumake
+    ripgrep
+    xclip xsel
+    nerdfonts
+    typescript-language-server
+    vim-language-server
+    lua-language-server
+    haskell-language-server
+    dot-language-server
+    bash-language-server
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
