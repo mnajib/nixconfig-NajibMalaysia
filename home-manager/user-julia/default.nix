@@ -83,7 +83,7 @@ in
     fairymax                            # a small chess-engine supporting fairy pieces
     xboard                              # gui for chess-engine
     eboard                              # chess interface for unix-like systems
-    gnome.gnome-chess                   # gui chess game
+    gnome-chess                   # gui chess game
     #kdePackages.knights                 # Chess board program
     cutechess                           # GUI, CLI, and library for playing chess
     uchess                              # play chess against UCI engines in your terminal

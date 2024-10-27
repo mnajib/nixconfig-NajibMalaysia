@@ -490,7 +490,8 @@
 
           # Roferences:
           #   http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
-          hardware.nixosModules.lenovo-thinkpad-t410
+          #hardware.nixosModules.lenovo-thinkpad-t410
+          hardware.nixosModules.lenovo-thinkpad # zahrah on T400, after T410 having CPU error
           hardware.nixosModules.common-cpu-intel
           #hardware.nixosModules.common-gpu-intel
           #hardware.nixosModules.common-gpu-nvidia

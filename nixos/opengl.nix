@@ -4,9 +4,9 @@
   ...
 }:
 {
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
     extraPackages = with pkgs; [
       #vaapiIntel # conflic with nixos-hardware config
       libvdpau-va-gl

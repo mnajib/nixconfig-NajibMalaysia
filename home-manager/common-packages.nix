@@ -8,7 +8,7 @@
     atop
     btop
     htop
-    gnome.gnome-disk-utility
+    gnome-disk-utility
     fortune
     #mgba
     zeal                           # Offline API documentation browser for software developers
@@ -85,7 +85,7 @@
     sylpheed
     thunderbird
     #mailspring                    # is marked as insecure
-    gnome.geary
+    geary
     balsa
     #deltachat-desktop             # used electron version that marked as unsecured?
 

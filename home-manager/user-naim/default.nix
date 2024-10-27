@@ -19,6 +19,7 @@ in
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
+    ../neovim
 
     ../common-configs.nix
     ../common-packages.nix
@@ -92,7 +93,7 @@ in
     #xmind-8-update8
     xournalpp
     #evince
-    gnome.gnome-clocks
+    gnome-clocks
     smlnj
     waydroid
     #kmymoney
@@ -133,8 +134,7 @@ in
     ephemeral
     eolie
     surf
-    #dillo
-    dillong
+    dillo-plus #dillo
     #brave
     #opera
     #google-chrome
