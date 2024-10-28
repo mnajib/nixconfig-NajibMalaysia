@@ -9,6 +9,11 @@
   # You can import other home-manager modules here
   imports = [
     ../default.nix
+    ../../neovim # need apply this per user-host if do not want to manually configure neovim with  plugin like lazyvim
+  ];
+
+  home.packages = with pkgs; [
+    #neovim
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

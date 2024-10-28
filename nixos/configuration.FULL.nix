@@ -251,6 +251,7 @@
 
     #efibootmgr
     bind
+    drill
     gnupg
     xorg.xmodmap
 
@@ -351,7 +352,7 @@
     retext      # markdow editor
     litemdview  # a suckless markdown viewer
 
-    gnome.gnome-clocks
+    gnome-clocks
 
     screenkey onboard xorg.xkbcomp # xorg.xkbprint
 
@@ -363,7 +364,7 @@
     ethtool
 
     adwaita-qt
-    gnome3.adwaita-icon-theme
+    adwaita-icon-theme
 
     niv
     npins
@@ -403,7 +404,7 @@
 
     lm_sensors
 
-    taskwarrior timewarrior
+    taskwarrior3 timewarrior
     taskwarrior-tui vit tasknc
 
     oneko xcape find-cursor #gnomeExtensions.jiggle hlcursors
@@ -471,12 +472,12 @@
     unrar
     p7zip
     xarchiver
-    gnome.file-roller           # Archive manager for the GNOME desktop environment
+    file-roller           # Archive manager for the GNOME desktop environment
 
     #---------------------------------------------------------------
     # Games
     #---------------------------------------------------------------
-    gnome.gnome-chess
+    gnome-chess
     #bzflag
 
     #---------------------------------------------------------------
@@ -521,9 +522,9 @@
     k4dirstat           # A small utility program that sums up disk usage for directory trees
     qdirstat
     jdiskreport
-    gnome.gnome-disk-utility      # A udisks graphical front-end
+    gnome-disk-utility      # A udisks graphical front-end
 
-    gnome.gnome-logs    # A log viewer for the systemd journal
+    gnome-logs    # A log viewer for the systemd journal
 
     #---------------------------------------------------------------
     # find duplicate files
@@ -556,7 +557,7 @@
     # gnome
     #---------------------------------------------------------------
 
-    gnome3.simple-scan
+    simple-scan
     gnomeExtensions.appindicator
     gnomeExtensions.cpufreq
 
@@ -634,7 +635,7 @@
     # File Sharing and Download Manager, File transfer
     #---------------------------------------------------------------
 
-    transmission-gtk
+    transmission_4-gtk
     rtorrent                            # An ncurses client for libtorrent, ideal for use with screen, tmux, or dtach
     qbittorrent                         # Featureful free software BitTorrent client
     rsync grsync zsync luckybackup      # remote file sync / backup
@@ -667,7 +668,7 @@
     enlightenment.ephoto
     gtkimageview
     gthumb
-    gnome.eog                           # Gnome image viewer
+    eog                           # Gnome image viewer
 
     hakuneko                            # comic/manga/manhwa downloader/viewer
     #mcomix                             # Comic book reader and image viewer
@@ -763,15 +764,15 @@
 
     drawing drawpile
 
-    gnome.gnome-clocks
-    gnome.gnome-calendar
-    gnome.gnome-contacts
-    gnome.gnome-font-viewer
-    gnome.gnome-screenshot
-    gnome.gnome-system-monitor
-    gnome.totem
+    gnome-clocks
+    gnome-calendar
+    gnome-contacts
+    gnome-font-viewer
+    gnome-screenshot
+    gnome-system-monitor
+    totem
     plots
-    gnome.gnome-weather
+    gnome-weather
     gnome-decoder         # Scan and Generate QR Codes
 
     elastic               # Design spring animations
@@ -801,7 +802,7 @@
     #sweethome3d.application sweethome3d.furniture-editor sweethome3d.textures-editor
 
     #alchemy lmms marvin mixxx mypaint
-    gnome.cheese
+    cheese
     snapshot              # Take pictures and videos on your computer, tablet, or phone
     simplescreenrecorder #qt-recordmydesktop
     audio-recorder
@@ -820,7 +821,7 @@
     pdftk       # Command-line tool for working with PDFs
     #pdfchain   #
     gnote                 # A note taking application
-    gnome.gnome-notes     # Note editor designed to remain simple to use
+    gnome-notes     # Note editor designed to remain simple to use
 
     screenkey onboard xorg.xkbcomp # xorg.xkbprint
 
@@ -880,7 +881,7 @@
     clac # CLI Interactive stack-based calculator
     pro-office-calculator speedcrunch wcalc pdd galculator # calculator
     qalculate-gtk # qalculate-qt # the ultimate desktop calculator
-    gnome.gnome-calculator
+    gnome-calculator
     rink  # unit-aware CLI calculator
     fend # CLI arbitrary-precision unit-aware calculator
     wcalc # A command line (CLI) calculator
@@ -897,7 +898,7 @@
     ethtool
 
     adwaita-qt
-    gnome3.adwaita-icon-theme
+    adwaita-icon-theme
 
     fontforge   # fontforge-gtk
     fontforge-fonttools
@@ -915,7 +916,7 @@
 
     lm_sensors
 
-    taskwarrior timewarrior
+    taskwarrior3 timewarrior
     taskwarrior-tui vit tasknc
     acpi
 
