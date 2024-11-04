@@ -69,7 +69,7 @@ in
     #./nvim/lsp.nix
     #./nvim
     #./neovim # lets put this per-user
-    #./neovide
+    ./neovide
 
     ./zsh.nix
     ./bash.nix # bash shell
@@ -562,7 +562,7 @@ in
       #package = pkgs.tela-icon-theme;
       #name = "Tela";
 
-      package = pkgs.gnome.adwaita-icon-theme;
+      package = pkgs.adwaita-icon-theme;
       name = "Adwaita";
     };
     # Give Termite some internal spacing.

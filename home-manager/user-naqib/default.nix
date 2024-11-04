@@ -85,7 +85,7 @@ in
     #jrnl
     #kodi
     #python3.8-notebook
-    qtox
+    #qtox
     #retroarch
     tig
     treesheets

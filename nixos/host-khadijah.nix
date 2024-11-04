@@ -125,6 +125,8 @@ with lib;
 
     #./xdg-kde.nix
     ./xdg.nix
+
+    ./opengl2.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -192,6 +194,10 @@ with lib;
     haskellPackages.X11-xft
 
     #nitter # alternative Twitter front-end
+
+    #amule-daemon
+    #amule
+    amule-gui
   ];
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
   #  environment.systemPackages = [
@@ -210,6 +216,8 @@ with lib;
   #};
 
   #hardware.video.hidpi.enable = true;
+
+  #services.amule.enable = true; # need to manually run “amuled –ec-config” to configure the service for the first time.
 
   services.btrfs.autoScrub = {
     enable = true;
@@ -307,23 +315,6 @@ with lib;
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".device = "/dev/disk/by-uuid/a5172078-045e-4b03-abbc-32a86dfe0d06";
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".keyFile = "/crypto_keyfile.bin";
 
-  hardware.opengl = {
-    enable = true;
-    driSupport32Bit = true;
-    extraPackages = with pkgs; [
-      vaapiIntel # conflic with nixos-hardware config (for sakinah)
-      libvdpau-va-gl
-      vaapiVdpau
-      mesa.drivers
-    ];
-    extraPackages32 = with pkgs.pkgsi686Linux; [
-      libva
-      vaapiIntel
-      libvdpau-va-gl
-      vaapiVdpau
-    ];
-  };
-
   # 01:00.0 VGA compatible controller: NVIDIA Corporation GK106GLM [Quadro K2100M] (rev a1)
   # For GK106GLM [Quadro K2100M] in Dell Precision M4800
   # Legacy driver
@@ -359,7 +350,6 @@ with lib;
     #videoDrivers = [ "nvidiaLegacy390" ]; #
 
     displayManager = {
-      defaultSession = "none+xmonad";
 
       lightdm = {
         enable = true;
@@ -435,7 +425,7 @@ with lib;
 
   }; # End services.xserver
 
-  #services.displayManager = {
+  services.displayManager = {
     #enable = false; # true;
 
     #sddm = {
@@ -443,8 +433,8 @@ with lib;
     #  wayland.enable = false; #true; # XXX: Experimental
     #};
 
-  #  defaultSession = "none+xmonad";
-  #};
+    defaultSession = "none+xmonad";
+  };
 
   #services.desktopManager = {
     #plasma6.enable = true;
