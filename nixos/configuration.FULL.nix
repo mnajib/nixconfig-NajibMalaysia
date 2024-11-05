@@ -72,7 +72,7 @@
   #   nix-store --delete
   #   nix-collect-garbage
   #nix.package = pkgs.nixVersions.latest;
-  nix.package = lib.mkDefault pkgs.nixVersions.latest;
+  #nix.package = lib.mkDefault pkgs.nixVersions.latest;
 
   # Binary Cache for Haskell.nix
   nix.settings.trusted-public-keys = [
