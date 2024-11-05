@@ -249,6 +249,7 @@
 
     #efibootmgr
     bind
+    drill
     gnupg
     xorg.xmodmap
 
@@ -361,6 +362,7 @@
     ethtool
 
     adwaita-qt
+    adwaita-icon-theme
 
     niv
     npins
@@ -399,6 +401,9 @@
     pinfo
 
     lm_sensors
+
+    taskwarrior3 timewarrior
+    taskwarrior-tui vit tasknc
 
     oneko xcape find-cursor #gnomeExtensions.jiggle hlcursors
 
