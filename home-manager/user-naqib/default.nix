@@ -18,7 +18,7 @@ in
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
     #../neovim/lazyvim.nix
-    ../neovim
+    #../neovim # NOTE: Commented because I decided to set neovim per user per host configuration
 
     ../common-configs.nix
     ../common-packages.nix
@@ -86,7 +86,7 @@ in
     #jrnl
     #kodi
     #python3.8-notebook
-    qtox
+    #qtox
     #retroarch
     tig
     treesheets
@@ -97,7 +97,7 @@ in
     #xmind-8-update8
     xournalpp
     #evince
-    gnome.gnome-clocks
+    gnome-clocks
     smlnj
     waydroid
     #kmymoney
@@ -139,7 +139,7 @@ in
     ranger
     #nnn
     nano
-    #neovim # plus manually install LazyVim in ~/.config/nvim from git repo
+    #neovim # plus manually install LazyVim in ~/.config/nvim from git repo. NOTE: Decided to set neovim per user per host configuration
     micro
     emacs
     #haskellPackages.yi # marked as broken

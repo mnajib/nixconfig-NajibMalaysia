@@ -72,7 +72,7 @@
   #   nix-store --delete
   #   nix-collect-garbage
   #nix.package = pkgs.nixVersions.latest;
-  nix.package = lib.mkDefault pkgs.nixVersions.latest;
+  #nix.package = lib.mkDefault pkgs.nixVersions.latest;
 
   # Binary Cache for Haskell.nix
   nix.settings.trusted-public-keys = [
@@ -82,11 +82,9 @@
     "https://cache.iog.io"
   ];
 
-  #nix.daemonIONiceLevel = 7;
-  nix.daemonIOSchedPriority = 7; # 0(high) (default) ... 7 (low) priority
-  #nix.daemonNiceLevel = 19;
-  nix.daemonCPUSchedPolicy = "idle";
   nix.daemonIOSchedClass = "idle";
+  nix.daemonCPUSchedPolicy = "idle";
+  nix.daemonIOSchedPriority = 7;            # 0(high) (default) ... 7 (low) priority
 
   imports = [
     ./users-najib.nix
@@ -217,7 +215,7 @@
     gsmartcontrol smartmontools
     #lizardfs                 # marked as broken?
     wget curl killall
-    mtr iproute # busybox
+    mtr iproute2 # busybox
     htop mc irssi most mosh coreutils
     nload
     zenith                    # Sort of like top or htop but with zoom-able charts, network, and disk usage
@@ -251,6 +249,7 @@
 
     #efibootmgr
     bind
+    drill
     gnupg
     xorg.xmodmap
 
@@ -331,7 +330,7 @@
     xdotool    # xserver dispaly tool
     xbindkeys
 
-    qtox    # chat using tox protocol
+    #qtox    # chat using tox protocol
     #keybase keybase-gui
 
     #gnomeExtensions.draw-on-your-screen
@@ -351,7 +350,7 @@
     retext      # markdow editor
     litemdview  # a suckless markdown viewer
 
-    gnome.gnome-clocks
+    gnome-clocks
 
     screenkey onboard xorg.xkbcomp # xorg.xkbprint
 
@@ -363,7 +362,7 @@
     ethtool
 
     adwaita-qt
-    gnome3.adwaita-icon-theme
+    adwaita-icon-theme
 
     niv
     npins
@@ -403,7 +402,7 @@
 
     lm_sensors
 
-    taskwarrior timewarrior
+    taskwarrior3 timewarrior
     taskwarrior-tui vit tasknc
 
     oneko xcape find-cursor #gnomeExtensions.jiggle hlcursors
@@ -471,12 +470,12 @@
     unrar
     p7zip
     xarchiver
-    gnome.file-roller           # Archive manager for the GNOME desktop environment
+    file-roller           # Archive manager for the GNOME desktop environment
 
     #---------------------------------------------------------------
     # Games
     #---------------------------------------------------------------
-    gnome.gnome-chess
+    gnome-chess
     #bzflag
 
     #---------------------------------------------------------------
@@ -499,7 +498,7 @@
     acpi
     libinput
     libinput-gestures
-    alsaUtils
+    alsa-utils
     partclone           # Utilities to save and restore used blocks on a partition
     hdparm
     lsscsi
@@ -521,9 +520,9 @@
     k4dirstat           # A small utility program that sums up disk usage for directory trees
     qdirstat
     jdiskreport
-    gnome.gnome-disk-utility      # A udisks graphical front-end
+    gnome-disk-utility      # A udisks graphical front-end
 
-    gnome.gnome-logs    # A log viewer for the systemd journal
+    gnome-logs    # A log viewer for the systemd journal
 
     #---------------------------------------------------------------
     # find duplicate files
@@ -556,7 +555,7 @@
     # gnome
     #---------------------------------------------------------------
 
-    gnome3.simple-scan
+    simple-scan
     gnomeExtensions.appindicator
     gnomeExtensions.cpufreq
 
@@ -634,7 +633,7 @@
     # File Sharing and Download Manager, File transfer
     #---------------------------------------------------------------
 
-    transmission-gtk
+    transmission_4-gtk
     rtorrent                            # An ncurses client for libtorrent, ideal for use with screen, tmux, or dtach
     qbittorrent                         # Featureful free software BitTorrent client
     rsync grsync zsync luckybackup      # remote file sync / backup
@@ -658,7 +657,7 @@
     clipgrab
     #dfilemanager # File manager written in Qt/C++
     pcmanfm # File manager with GTK interface
-    #gnome.nautilus
+    #nautilus
     index-fm # Multi-platform file manager
     worker # A two-pane file manager with advanced file manipulation features
     #keepnote
@@ -667,7 +666,7 @@
     enlightenment.ephoto
     gtkimageview
     gthumb
-    gnome.eog                           # Gnome image viewer
+    eog                           # Gnome image viewer
 
     hakuneko                            # comic/manga/manhwa downloader/viewer
     #mcomix                             # Comic book reader and image viewer
@@ -763,15 +762,15 @@
 
     drawing drawpile
 
-    gnome.gnome-clocks
-    gnome.gnome-calendar
-    gnome.gnome-contacts
-    gnome.gnome-font-viewer
-    gnome.gnome-screenshot
-    gnome.gnome-system-monitor
-    gnome.totem
+    gnome-clocks
+    gnome-calendar
+    gnome-contacts
+    gnome-font-viewer
+    gnome-screenshot
+    gnome-system-monitor
+    totem
     plots
-    gnome.gnome-weather
+    gnome-weather
     gnome-decoder         # Scan and Generate QR Codes
 
     elastic               # Design spring animations
@@ -801,7 +800,7 @@
     #sweethome3d.application sweethome3d.furniture-editor sweethome3d.textures-editor
 
     #alchemy lmms marvin mixxx mypaint
-    gnome.cheese
+    cheese
     snapshot              # Take pictures and videos on your computer, tablet, or phone
     simplescreenrecorder #qt-recordmydesktop
     audio-recorder
@@ -820,7 +819,7 @@
     pdftk       # Command-line tool for working with PDFs
     #pdfchain   #
     gnote                 # A note taking application
-    gnome.gnome-notes     # Note editor designed to remain simple to use
+    gnome-notes     # Note editor designed to remain simple to use
 
     screenkey onboard xorg.xkbcomp # xorg.xkbprint
 
@@ -860,7 +859,6 @@
     gromit-mpx  # Desktop annotation tool
 
     partclone   # Utilities to save and restore used blocks on a partition
-    qtox        # chat using tox protocol
     keybase keybase-gui
     python3Minimal      #python3Full #python39Full
 
@@ -880,7 +878,7 @@
     clac # CLI Interactive stack-based calculator
     pro-office-calculator speedcrunch wcalc pdd galculator # calculator
     qalculate-gtk # qalculate-qt # the ultimate desktop calculator
-    gnome.gnome-calculator
+    gnome-calculator
     rink  # unit-aware CLI calculator
     fend # CLI arbitrary-precision unit-aware calculator
     wcalc # A command line (CLI) calculator
@@ -897,7 +895,7 @@
     ethtool
 
     adwaita-qt
-    gnome3.adwaita-icon-theme
+    adwaita-icon-theme
 
     fontforge   # fontforge-gtk
     fontforge-fonttools
@@ -915,13 +913,12 @@
 
     lm_sensors
 
-    taskwarrior timewarrior
+    taskwarrior3 timewarrior
     taskwarrior-tui vit tasknc
     acpi
 
     libinput
     libinput-gestures
-    alsaUtils
 
     oneko xcape find-cursor #gnomeExtensions.jiggle hlcursors
     #virtscreen
@@ -1139,9 +1136,14 @@
   programs.mosh.enable = true;
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-  services.openssh.settings.X11Forwarding = true;
-  #services.openssh.ports= [ 7177 ];
+  services.openssh = {
+    enable = true;
+    settings.X11Forwarding = true;
+    #ports= [ 7177 ];
+    #extraConfig = ''
+    #  X11DisplayOffset 10
+    #'';
+  };
   services.sshguard.enable = true;
 
   #services.toxvpn.enable = true;
@@ -1455,8 +1457,12 @@
       anonymousPro
       dejavu_fonts
       noto-fonts #font-droid
-      noto-fonts-cjk
-      noto-fonts-emoji
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
+      noto-fonts-color-emoji
+      noto-fonts-monochrome-emoji
+      noto-fonts-emoji-blob-bin
+      noto-fonts-lgc-plus
       terminus_font_ttf
       source-code-pro                   # monospaced font family for user interface and coding environments
       fira-code                         # suitable for coding

@@ -15,26 +15,48 @@
     securityType = "user";              # Default: "user"
     #enableNmbd = true;                 # Default: true
 
-    extraConfig = ''
-      workgroup = WORKGROUP
-      server string = customdesktop
-      netbios name = customdesktop
-      server role = standalone server
+    #extraConfig = ''
+    #  workgroup = WORKGROUP
+    #  server string = customdesktop
+    #  netbios name = customdesktop
+    #  server role = standalone server
 
-      log file = /var/log/samba/smbd.%m
-      max log size = 50
+    #  log file = /var/log/samba/smbd.%m
+    #  max log size = 50
 
-      security = user
-      use sendfile = yes
-      #max protocol = smb2
-      # note: localhost is the ipv6 localhost ::1
-      #hosts allow = 192.168.0. 192.168.1. 127.0.0.1 localhost
-      hosts allow = 0.0.0.0/0
-      hosts deny = 0.0.0.0/0
-      dns proxf = no
-      guest account = nobody
-      map to guest = bad user
-    '';
+    #  security = user
+    #  use sendfile = yes
+    #  #max protocol = smb2
+    #  # note: localhost is the ipv6 localhost ::1
+    #  #hosts allow = 192.168.0. 192.168.1. 127.0.0.1 localhost
+    #  hosts allow = 0.0.0.0/0
+    #  hosts deny = 0.0.0.0/0
+    #  dns proxf = no
+    #  guest account = nobody
+    #  map to guest = bad user
+    #'';
+    settings = {
+      global = {
+        workgroup = "WORKGROUP";
+        "server string" = "customdesktop";
+        "netbios name" = "customdesktop";
+        "server role" = "standalone server";
+
+        #"log file" = "/var/log/samba/smbd.%m";
+        "max log size" = 50;
+
+        security = "user";
+        "use sendfile" = "yes";
+        #max protocol = smb2
+        # note: localhost is the ipv6 localhost ::1
+        #hosts allow = 192.168.0. 192.168.1. 127.0.0.1 localhost
+        "hosts allow" = "0.0.0.0/0";
+        "hosts deny" = "0.0.0.0/0";
+        "dns proxy" = "no";
+        "guest account" = "nobody";
+        "map to guest" = "bad user";
+      };
+    };
 
     shares = {
 
@@ -102,7 +124,10 @@
     };
   };
 
-  services.samba-wsdd.enable = true;    # To make shares visible for Windows-10
+  services.samba-wsdd = {
+    enable = true;    # To make shares visible for Windows-10
+    openFirewall = true;
+  };
 
   #----------------------------------------------------------------------------
   # Open Firewall Ports
@@ -112,11 +137,17 @@
   #   networking.firewall.allowPing = true;
   #   services.samba.openFirewall = true;
 
-  networking.firewall.allowedTCPPorts = [
-    5357      # wsdd
-  ];
+  networking.firewall = {
+    enable = true;
+    allowPing = true;
 
-  networking.firewall.allowedUDPPorts = [
-    3702      # wsdd
-  ];
+    allowedTCPPorts = [
+      5357      # wsdd
+    ];
+
+    allowedUDPPorts = [
+      3702      # wsdd
+    ];
+
+  };
 }

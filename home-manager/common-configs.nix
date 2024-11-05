@@ -69,7 +69,7 @@ in
     #./nvim/lsp.nix
     #./nvim
     #./neovim # lets put this per-user
-    #./neovide
+    ./neovide
 
     ./zsh.nix
     ./bash.nix # bash shell
@@ -562,7 +562,7 @@ in
       #package = pkgs.tela-icon-theme;
       #name = "Tela";
 
-      package = pkgs.gnome.adwaita-icon-theme;
+      package = pkgs.adwaita-icon-theme;
       name = "Adwaita";
     };
     # Give Termite some internal spacing.
@@ -617,9 +617,18 @@ in
   #services.syncthing.enable = true;
 
   # Removable disk automounter for udisks
-  services.udiskie = {
-    enable = true;
-  };
+  #services.udiskie = {
+  #  enable = true;
+  #};
+  #udisks
+  #udiskie
+  #deepin.udisk2-qt5
+  #usermount
+  #services.udisks2 = {
+  #  enable = true;
+  #  #mountOnMedia = true;
+  #  #settings = {};
+  #};
 
   # This will automatically install the lorri command.
   # Note: There's a known issue preventing the lorri daemon from starting automatically upon installation. Until it's resolved, you'll have to reload the user daemon by hand by running systemctl --user daemon-reload, or reboot.

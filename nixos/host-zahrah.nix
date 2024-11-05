@@ -3,10 +3,13 @@
 { pkgs, config, ... }:
 {
   nix = {
-    package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
+    #package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+    settings = {
+      max-jobs = 2;
+    };
   };
 
   imports = [
@@ -56,6 +59,11 @@
     #./ai.nix
 
     ./inspircd.nix # IRC server
+    ./xdg.nix
+    ./xmonad.nix
+
+    ./opengl.nix
+    #./opengl_with_vaapiIntel.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -82,21 +90,21 @@
   #services.xserver.videoDrivers = [ "nvidia" "nvidiaLegacy340" "nouveau" "fbdev" ];
   #services.xserver.videoDrivers = [ "nvidiaLegacy340" "fbdev" ];
   #services.xserver.videoDrivers = [ "fbdev" ];
-  hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.legacy_340;
-    nvidiaSettings = true;
+  #hardware.nvidia = {
+  #  package = config.boot.kernelPackages.nvidiaPackages.legacy_340;
+  #  nvidiaSettings = true;
 
-    prime = {
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:1:0:0";
-      #sync.enable = true;
-    };
+  #  prime = {
+  #    intelBusId = "PCI:0:2:0";
+  #    nvidiaBusId = "PCI:1:0:0";
+  #    #sync.enable = true;
+  #  };
 
-    modesetting.enable = true;
-    open = false; # true;
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
-  };
+  #  modesetting.enable = true;
+  #  open = false; # true;
+  #  powerManagement.enable = false;
+  #  powerManagement.finegrained = false;
+  #};
   #hardware.nvidiaOptimus.disable = true; # Completely disable the NVIDIA graphics card and use the integrated graphics processor instead.
 
   #boot.loader.systemd-boot.enable = true; # gummi-boot for EFI
@@ -248,21 +256,27 @@
   };
 
   services.displayManager.defaultSession = "none+xmonad";
+  
+  services.xserver.enable = true;
 
-  #services.xserver.displayManager.sddm.enable = true;
-  #services.xserver.displayManager.gdm.enable = true;
-  #services.xserver.displayManager.startx.enable = true;
-  services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.displayManager = {
+    #sddm.enable = true;
+    #gdm.enable = true;
+    #startx.enable = true;
+    lightdm.enable = true;
+  };
 
-  #services.xserver.desktopManager.plasma5.enable = true;
-  #services.xserver.desktopManager.gnome.enable = true;
-  #services.xserver.desktopManager.xfce.enable = true;
-  #services.xserver.desktopManager.pantheon.enable = true;
-  #services.xserver.desktopManager.enlightenment.enable = true;
-  #services.xserver.desktopManager.lumina.enable = true;
-  services.xserver.desktopManager.mate.enable = true;
-  #services.xserver.desktopManager.cinnamon.enable = true;
-  #services.xserver.desktopManager.lxqt.enable = true;
+  services.xserver.desktopManager = {
+    #plasma5.enable = true;
+    #gnome.enable = true;
+    #xfce.enable = true;
+    #pantheon.enable = true;
+    #enlightenment.enable = true;
+    #lumina.enable = true;
+    #mate.enable = true;
+    #cinnamon.enable = true;
+    #lxqt.enable = true;
+  };
 
   services.xserver.windowManager = {
     berry.enable = true;
@@ -303,8 +317,6 @@
 
   #programs.sway.enable = true;
   #programs.xwayland.enable = true;
-
-  #nix.maxJobs = 4;
 
   system.stateVersion = "22.05";
 }
