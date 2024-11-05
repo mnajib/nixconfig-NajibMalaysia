@@ -18,6 +18,7 @@ in
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
     #../neovim/lazyvim.nix
+    ../neovim
 
     ../common-configs.nix
     ../common-packages.nix
@@ -138,7 +139,7 @@ in
     ranger
     #nnn
     nano
-    neovim # plus manually install LazyVim in ~/.config/nvim from git repo
+    #neovim # plus manually install LazyVim in ~/.config/nvim from git repo
     micro
     emacs
     #haskellPackages.yi # marked as broken

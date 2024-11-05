@@ -63,6 +63,7 @@
     ./lutris.nix
     ./steam.nix
 
+    #./nix-build.nix
     ./nix-garbage-collector.nix
     #./teamviewer.nix
   ];
