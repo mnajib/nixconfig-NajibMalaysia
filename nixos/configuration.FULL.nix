@@ -513,6 +513,8 @@
     gdu                 # Disk usage analyzer with console interface
     godu                #
     ncdu                # Disk usage analyzer with an ncurses interface
+    fdupes              # find duplicate files
+    fsearch             # find duplicate files (GUI)
     dua                 # A tool to conveniently learn about the disk usage of directories, fast! View disk space usage and delete unwanted data, fast. 
     dutree
     du-dust #dust
