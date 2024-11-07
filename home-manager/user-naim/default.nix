@@ -23,11 +23,13 @@ in
 
     ../common-configs.nix
     ../common-packages.nix
+
     #../roblox.nix
     #../wesnoth.nix
     #./system-benchmark.nix
     #./minecraft.nix
     ../youtube.nix
+    ../time-management.nix
   ];
 
   nixpkgs = {

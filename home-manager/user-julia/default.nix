@@ -22,6 +22,7 @@ in
     #../roblox.nix
     #../wesnoth.nix
     ../chess.nix
+    ../time-management.nix
 
     ../common-configs.nix
     ../common-packages.nix

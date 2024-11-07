@@ -26,6 +26,8 @@ in
 
     ../neovim
 
+    ../time-management.nix
+
     # My attemp to use nix-doom-emacs
     #./emacs.nix
     #
