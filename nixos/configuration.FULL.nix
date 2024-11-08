@@ -72,7 +72,7 @@
   #   nix-store --delete
   #   nix-collect-garbage
   #nix.package = pkgs.nixVersions.latest;
-  nix.package = lib.mkDefault pkgs.nixVersions.latest;
+  #nix.package = lib.mkDefault pkgs.nixVersions.latest;
 
   # Binary Cache for Haskell.nix
   nix.settings.trusted-public-keys = [
@@ -82,11 +82,9 @@
     "https://cache.iog.io"
   ];
 
-  #nix.daemonIONiceLevel = 7;
-  nix.daemonIOSchedPriority = 7; # 0(high) (default) ... 7 (low) priority
-  #nix.daemonNiceLevel = 19;
-  nix.daemonCPUSchedPolicy = "idle";
   nix.daemonIOSchedClass = "idle";
+  nix.daemonCPUSchedPolicy = "idle";
+  nix.daemonIOSchedPriority = 7;            # 0(high) (default) ... 7 (low) priority
 
   imports = [
     ./users-najib.nix
@@ -217,7 +215,7 @@
     gsmartcontrol smartmontools
     #lizardfs                 # marked as broken?
     wget curl killall
-    mtr iproute # busybox
+    mtr iproute2 # busybox
     htop mc irssi most mosh coreutils
     nload
     zenith                    # Sort of like top or htop but with zoom-able charts, network, and disk usage
@@ -332,7 +330,7 @@
     xdotool    # xserver dispaly tool
     xbindkeys
 
-    qtox    # chat using tox protocol
+    #qtox    # chat using tox protocol
     #keybase keybase-gui
 
     #gnomeExtensions.draw-on-your-screen
@@ -455,7 +453,9 @@
     vimHugeX
     emacs # emacs-nox
     #vscode
-    leafpad notepadqq geany      # kate
+    #leafpad
+    xfce.mousepad
+    notepadqq geany      # kate
     #pulsar                             # forked from atom text editor
     #unstable.yi # Install yi the other way to allow enable personalized configuration.
     #leksah
@@ -500,7 +500,7 @@
     acpi
     libinput
     libinput-gestures
-    alsaUtils
+    alsa-utils
     partclone           # Utilities to save and restore used blocks on a partition
     hdparm
     lsscsi
@@ -513,6 +513,8 @@
     gdu                 # Disk usage analyzer with console interface
     godu                #
     ncdu                # Disk usage analyzer with an ncurses interface
+    fdupes              # find duplicate files
+    fsearch             # find duplicate files (GUI)
     dua                 # A tool to conveniently learn about the disk usage of directories, fast! View disk space usage and delete unwanted data, fast. 
     dutree
     du-dust #dust
@@ -559,7 +561,7 @@
 
     simple-scan
     gnomeExtensions.appindicator
-    gnomeExtensions.cpufreq
+    #gnomeExtensions.cpufreq
 
     #---------------------------------------------------------------
     # xfce
@@ -659,7 +661,7 @@
     clipgrab
     #dfilemanager # File manager written in Qt/C++
     pcmanfm # File manager with GTK interface
-    #gnome.nautilus
+    #nautilus
     index-fm # Multi-platform file manager
     worker # A two-pane file manager with advanced file manipulation features
     #keepnote
@@ -861,7 +863,6 @@
     gromit-mpx  # Desktop annotation tool
 
     partclone   # Utilities to save and restore used blocks on a partition
-    qtox        # chat using tox protocol
     keybase keybase-gui
     python3Minimal      #python3Full #python39Full
 
@@ -922,7 +923,6 @@
 
     libinput
     libinput-gestures
-    alsaUtils
 
     oneko xcape find-cursor #gnomeExtensions.jiggle hlcursors
     #virtscreen
@@ -1461,8 +1461,12 @@
       anonymousPro
       dejavu_fonts
       noto-fonts #font-droid
-      noto-fonts-cjk
-      noto-fonts-emoji
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
+      noto-fonts-color-emoji
+      noto-fonts-monochrome-emoji
+      noto-fonts-emoji-blob-bin
+      noto-fonts-lgc-plus
       terminus_font_ttf
       source-code-pro                   # monospaced font family for user interface and coding environments
       fira-code                         # suitable for coding

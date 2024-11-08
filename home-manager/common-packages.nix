@@ -2,6 +2,8 @@
 {
   imports = [
     ./evince.nix
+    ./tox.nix
+    ./password-manager.nix
   ];
 
   home.packages = with pkgs; [
@@ -48,9 +50,12 @@
     simplescreenrecorder
     #obs-studio
     #tuir                           #rtv # Browse Reddit from terminal
-    qtox
-    zoom-us
-    pass                           # CLI password manager
+    #qtox
+    #zoom-us
+
+    #pass                           # CLI password manager
+    #keepassxc
+
     vlc
     shutter                        # Screenshots
     #zathura                        # Document viewer

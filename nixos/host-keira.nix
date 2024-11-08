@@ -9,7 +9,7 @@
 }:
 {
   nix = {
-    package = pkgs.nixFlakes;
+    #package = pkgs.nixFlakes;
     settings = {
       cores = 3;
       max-jobs = 3;

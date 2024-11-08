@@ -62,6 +62,12 @@
   #inputs.nixpkgs-mitchty.url = "github:/mitchty/nixpkgs/mitchty";
   #inputs.nixpkgs-najib.url = "github:/mnajib/nixpkgs/najib";
 
+  # Reference: https://lix.systems/add-to-config/
+  inputs.lix-module = {
+    url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-1.tar.gz";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   #inputs.systems = {
   #  url = "github:nix-systems/default-linux";
   #};
@@ -177,6 +183,7 @@
     nixpkgs-stable,
     nixpkgs-unstable,
     #nixpkgs-najib,
+    lix-module,
     #systems,
     home-manager,
 
@@ -346,7 +353,9 @@
         #  ];
         #};
         #
-        khawlah = mkNixos [./nixos/host-khawlah.nix];
+        khawlah = mkNixos [
+          ./nixos/host-khawlah.nix
+        ];
 
         #----------------------------------------------------------------------
         # Laptop Dell Najib
@@ -423,9 +432,12 @@
         khadijah = mkNixos [
           nix-ld.nixosModules.nix-ld
           { programs.nix-ld.dev.enable = true; }
+
           ./nixos/host-khadijah.nix
 
           #{ environment.systemPackages = [ fh.packages.x86_64-linux.default ]; }
+
+          lix-module.nixosModules.default
         ];
 
         #----------------------------------------------------------------------

@@ -2,7 +2,7 @@
 
 {
   nix = {
-    package = pkgs.nixFlakes;
+    #package = pkgs.nixFlakes;
     settings = {
       trusted-users = [ "root" "najib" "naqib" "julia" ];
       max-jobs = 2;

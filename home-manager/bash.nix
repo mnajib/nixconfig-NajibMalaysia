@@ -13,6 +13,16 @@
     enable = true;
     enableCompletion = true;
 
+    # Default:
+    #   PS1='\n\[\033[1;32m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$\[\033[0m\] '
+    # Change to:
+    #   export PS1='[\u@\h \W] [$(date +"%Y-%m-%d %H:%M:%S")] \$ '
+    #   export PS1='\n[$(date +"%Y-%m-%d %H:%M:%S")] \[\033[1;32m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$\[\033[0m\] '
+    #   export PS1='\n\[\033[1;93m\][$(date +"%Y-%m-%d %H:%M:%S")] \[\033[1;32m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$\[\033[0m\] '
+    initExtra = ''
+      export PS1='\[\033[1;93m\][$(date +"%Y-%m-%d %H:%M:%S")] \[\033[1;32m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$\[\033[0m\] '
+    '';
+
     #shellOptions = [
     #];
 

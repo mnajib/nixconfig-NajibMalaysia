@@ -16,11 +16,13 @@ in
     # inputs.nix-colors.homeManagerModules.default
 
     # You can also split up your configuration and import pieces of it here:
-    # ./nvim.nix
+    #../nvim.nix
     #../neovim/lazyvim.nix
     ../neovim
-    #./roblox.nix
-    #./wesnoth.nix
+    #../roblox.nix
+    #../wesnoth.nix
+    ../chess.nix
+    ../time-management.nix
 
     ../common-configs.nix
     ../common-packages.nix
@@ -77,22 +79,6 @@ in
     #kmymoney
     #shotwell
     gv                                  # view and navigate through PostScript and PDF documents on an X display (user interface for the ghostscript interpreter)
-
-    gnuchess                            # chess-engine
-    stockfish                           # strong open source chess-engine
-    fairymax                            # a small chess-engine supporting fairy pieces
-    xboard                              # gui for chess-engine
-    eboard                              # chess interface for unix-like systems
-    gnome-chess                   # gui chess game
-    #kdePackages.knights                 # Chess board program
-    cutechess                           # GUI, CLI, and library for playing chess
-    uchess                              # play chess against UCI engines in your terminal
-    gambit-chess                        # play chess in your terminal
-    arena                               # Chess GUI for analyzing with and playing against various engines
-    chessx                              # browse and analyse chess games
-    chessdb                             # a free chess database
-
-    gshogi                              # a GUI implementation of the Shogi board game (also known as Japanese Chess)
   ];
 
   # Enable home-manager and git

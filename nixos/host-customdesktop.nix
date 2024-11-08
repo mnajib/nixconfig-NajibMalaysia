@@ -89,6 +89,7 @@
 
     #./gogs.nix
     ./gitea.nix
+    #./forgejo-sqlite.nix
 
     #./hosts2.nix
     ./configuration.FULL.nix

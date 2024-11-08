@@ -23,12 +23,14 @@ in
 
     ../common-configs.nix
     ../common-packages.nix
+
     ../roblox.nix
     #../wesnoth.nix
     #./system-benchmark.nix
     #./minecraft.nix
     ../youtube.nix
     ../evince.nix
+    ../time-management.nix
   ];
 
   nixpkgs = {
@@ -87,7 +89,7 @@ in
     #jrnl
     #kodi
     #python3.8-notebook
-    qtox
+    #qtox
     #retroarch
     tig
     treesheets

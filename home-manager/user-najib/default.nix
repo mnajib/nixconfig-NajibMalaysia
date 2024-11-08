@@ -26,6 +26,8 @@ in
 
     ../neovim
 
+    ../time-management.nix
+
     # My attemp to use nix-doom-emacs
     #./emacs.nix
     #
@@ -95,7 +97,7 @@ in
     #jrnl
     #kodi
     #python3.8-notebook
-    qtox
+    #qtox
     #retroarchFull # retroarch
     tig
     treesheets
@@ -105,7 +107,7 @@ in
     xarchiver
     #xmind-8-update8
     xournalpp
-    wpsoffice
+    #wpsoffice
 
     libreoffice-fresh
     #libreoffice-qt-fresh
@@ -120,6 +122,7 @@ in
     #xwayland
     #tribler
     webtorrent_desktop
+    tor-browser
     duf
     gdmap
     ncdu

@@ -23,6 +23,8 @@ in
 
     ../common-configs.nix
     ../common-packages.nix
+
+    ../time-management.nix
   ];
 
   nixpkgs = {
