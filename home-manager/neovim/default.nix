@@ -1,3 +1,12 @@
+#
+# Ref:
+#   - https://github.com/nix-community/nixvim
+#     - https://nix-community.github.io/nixvim/
+#   - https://github.com/nix-community/kickstart-nix.nvim
+#     - https://github.com/mnajib/neovim-config-NajibMalaysia?tab=readme-ov-file
+#   - https://nix.dev/tutorials/nix-language
+#
+
 {
   config,
   pkgs,

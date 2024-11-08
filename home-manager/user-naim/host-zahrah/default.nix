@@ -37,6 +37,11 @@
     #python312Packages.pip
   ];
 
+  #programs.nixvim {
+  #  enable = true;
+  #  package = pkgs.nixvim; # use the overlaid nixvim package
+  #};
+
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "22.05";
 }
