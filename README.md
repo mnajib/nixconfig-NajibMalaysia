@@ -59,6 +59,10 @@ nixos-rebuild build --flake .#manggis --build-host naqib@sakinah.localdomain --u
 sudo nixos-rebuild boot       --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
 sudo nixos-rebuild test       --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
 sudo nixos-rebuild switch     --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
+#
+# This below command successfully run on khadijah, build on asmak, install on zahrah.
+# Requirement: impliment ssh key and sudo-able of the user
+nixos-rebuild build --flake .#zahrah --target-host naim@zahrah --build-host najib@asmak --use-remote-sudo
 
 # XXX:
 nix shell nixpkgs#pulsar
