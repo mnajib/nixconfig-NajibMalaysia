@@ -145,6 +145,8 @@ in
 
     #vscode
     vscode-with-extensions
+
+    ssh-ident
   ];
 
   # Enable home-manager and git

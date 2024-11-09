@@ -198,6 +198,8 @@ with lib;
     #amule-daemon
     #amule
     amule-gui
+
+    libnotify
   ];
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
   #  environment.systemPackages = [
