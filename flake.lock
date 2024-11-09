@@ -933,13 +933,13 @@
         "revCount": 875,
         "submodules": true,
         "type": "git",
-        "url": "https://github.com/kmonad/kmonad"
+        "url": "https://github.com/kmonad/kmonad?dir=nix"
       },
       "original": {
         "dir": "nix",
         "submodules": true,
         "type": "git",
-        "url": "https://github.com/kmonad/kmonad"
+        "url": "https://github.com/kmonad/kmonad?dir=nix"
       }
     },
     "lix": {
@@ -1029,8 +1029,8 @@
       },
       "original": {
         "owner": "viperML",
+        "ref": "fe4a96a0b0b0662dba7c186b4a1746c70bbcad03",
         "repo": "nh",
-        "rev": "fe4a96a0b0b0662dba7c186b4a1746c70bbcad03",
         "type": "github"
       }
     },
