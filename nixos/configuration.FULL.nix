@@ -451,7 +451,7 @@
     ed
     nano neovim vim kakoune micro jedit vis # jed
     vimHugeX
-    emacs # emacs-nox
+    #emacs # emacs-nox
     #vscode
     #leafpad
     xfce.mousepad
@@ -774,6 +774,7 @@
     gnome-system-monitor
     totem
     plots
+    gnome-graphs # Simple, yet powerful tool that allows you to plot and manipulate your data with ease
     gnome-weather
     gnome-decoder         # Scan and Generate QR Codes
 

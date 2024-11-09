@@ -134,7 +134,7 @@ in
     midori
     epiphany
     ephemeral
-    eolie
+    #eolie # 
     surf
     dillo-plus #dillo
     #brave

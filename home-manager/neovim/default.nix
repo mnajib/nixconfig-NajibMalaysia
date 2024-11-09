@@ -1,3 +1,12 @@
+#
+# Ref:
+#   - https://github.com/nix-community/nixvim
+#     - https://nix-community.github.io/nixvim/
+#   - https://github.com/nix-community/kickstart-nix.nvim
+#     - https://github.com/mnajib/neovim-config-NajibMalaysia?tab=readme-ov-file
+#   - https://nix.dev/tutorials/nix-language
+#
+
 {
   config,
   pkgs,
@@ -9,6 +18,11 @@ let
   #color = pkgs.writeText "color.vim" (import ./theme.nix config.colorscheme);
 in
 {
+
+  home.packages = with pkgs; [
+    #gcc
+  ];
+
   programs.neovim = {
     enable = true;
 
@@ -17,7 +31,36 @@ in
     #vimAlias = true;
     #vimdiffAlias = true;
 
-    extraPackages = [];
+    extraPackages = with pkgs; [
+      gcc
+      gnumake
+      ripgrep
+      xclip xsel
+      nerdfonts
+      typescript-language-server
+      vim-language-server
+      lua-language-server
+      nginx-language-server
+      matlab-language-server
+      lua-language-server
+      typescript-language-server
+      haskell-language-server
+      yaml-language-server
+      dot-language-server
+      bash-language-server
+      autotools-language-server
+      cmake-language-server
+      arduino-language-server
+      nixd nil
+      shfmt
+      packer
+      lua
+      luarocks-nix
+      fd
+      lazygit
+      go
+      python312Packages.pip
+    ];
 
     # Custom vimrc lines
     #extraConfig = builtins.readFile ../src/.config/nvim/init.vim;
@@ -316,6 +359,6 @@ in
 
     ]; # End programs.neovim.plugins
 
-  }; # End progroms.neovim
+  }; # End programs.neovim
 
 } # End let ... in { ... }
