@@ -533,7 +533,7 @@
 
           kmonad.nixosModules.default
 
-          lix-module.nixosModules.default
+          #lix-module.nixosModules.default
         ];
 
         #----------------------------------------------------------------------

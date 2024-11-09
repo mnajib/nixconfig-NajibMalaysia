@@ -45,6 +45,10 @@ home-manager build --flake .
 home-manager build --flake .#najib@khawlah
 home-manager switch --flake .#najib@khawlah
 home-manager switch --flake .#najib@khawlah -b backup
+#
+nix build --target-host target-host --build-host build-host --flake /path/to/flake#user@target-host
+scp -r result user@target-host:/path/to/built-result
+ssh user@target-host 'home-manager switch --flake /path/to/built-result#user@target-host'
 
 sudo nixos-rebuild dry-build  --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
 #sudo nixos-rebuild build      --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
@@ -62,7 +66,8 @@ sudo nixos-rebuild switch     --flake .#zahrah    --target-host naim@zahrah     
 #
 # This below command successfully run on khadijah, build on asmak, install on zahrah.
 # Requirement: impliment ssh key and sudo-able of the user
-nixos-rebuild build --flake .#zahrah --target-host naim@zahrah --build-host najib@asmak --use-remote-sudo
+#nixos-rebuild build --flake .#zahrah --target-host naim@zahrah --build-host najib@asmak --use-remote-sudo
+sudo nixos-rebuild build --flake .#zahrah --target-host naim@zahrah --build-host najib@asmak --use-remote-sudo
 
 # XXX:
 nix shell nixpkgs#pulsar
