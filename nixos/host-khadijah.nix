@@ -323,11 +323,41 @@ with lib;
   #   NVIDIA GPU product: Quadro K2100M
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390; # Latest Legacy GPU version (390.xx series): 390.143 that support the graphic card.
 
-  hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
-  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
+  hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
 
   hardware.nvidia.prime.sync.enable = true;
-  hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
+  #
+  # OR
+  #
+  # Dedicated GPU only activated when needed
+  #offload = {
+  #  enable = true;
+  #
+  #  # In general:
+  #  #   nvidia-offload some-game
+  #  # steam:
+  #  #   nvidia-offload %command%
+  #  enableOffloadCmd = true;
+  #
+  #};
+  #
+  # OR
+  #
+  #specialisation = {
+  #  gaming-time.configuration = {
+  #    hardware.nvidia = {
+  #      prime.sync.enable = lib.mkForce true;
+  #      prime.offload = {
+  #        enable = lib.mkForce false;
+  #        enableOffloadCmd = lib.mkForce false;
+  #      };
+  #    };
+  #  };
+  #};
+
+  # nix shell nixpkgs#pciutils -c lspci | grep ' VGA '
+  hardware.nvidia.prime.intelBusId = "PCI:0:2:0"; # integrated GPU
+  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0"; # dedicated GPU
 
   hardware.nvidia.powerManagement.enable = false;
   hardware.nvidia.powerManagement.finegrained = false;
