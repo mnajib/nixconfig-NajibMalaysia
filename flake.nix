@@ -532,6 +532,8 @@
           hardware.nixosModules.common-pc-laptop-ssd
 
           kmonad.nixosModules.default
+
+          lix-module.nixosModules.default
         ];
 
         #----------------------------------------------------------------------
