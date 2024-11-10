@@ -257,23 +257,23 @@
     ]
   ];
 
-  hardware.trackpoint = {
-    enable = true;
-    device = "TPPS/2 IBM TrackPoint";
-    speed = 97;
-    sensitivity = 130;
-    emulateWheel = true;
-  };
+  #hardware.trackpoint = {
+  #  enable = true;
+  #  device = "TPPS/2 IBM TrackPoint";
+  #  speed = 97;
+  #  sensitivity = 130;
+  #  emulateWheel = true;
+  #};
 
   # Custom script to decrease trackpoint sensitivity
   #...
 
-  services.libinput.enable = true;
-  services.libinput.touchpad = {
-    disableWhileTyping = true;
-    scrollMethod = "twofinger";
-    tapping = true; #false;
-  };
+  #services.libinput.enable = true;
+  #services.libinput.touchpad = {
+  #  disableWhileTyping = true;
+  #  scrollMethod = "twofinger";
+  #  tapping = true; #false;
+  #};
 
   services.displayManager.defaultSession = "none+xmonad";
 
