@@ -152,7 +152,7 @@ in
 
     fluxbox                             # need fbsetroot to set desktop background color
 
-    clang
+    #clang
   ];
 
   # Enable home-manager and git
