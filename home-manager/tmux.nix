@@ -44,6 +44,7 @@
     #packages =  pkgs.tumx;
     clock24 = true;
     newSession = false;                                     # Automatically spawn a session if trying to attach and none are running.
+    mouse = true; # Default: false
 
     resizeAmount = 1;
     baseIndex = 1;
@@ -157,9 +158,6 @@
       #bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -in -selection clipboard"  # Yank text with 'y'
       # Now you can use v to start selection and y to copy to the system clipboard using xclip. You can change xclip to wl-copy if you're on Wayland.
 
-      # Do not rename windows automatically, I like to give my tmux windows custom names using the , key.
-      set-option -g allow-rename off
-
       # Change background color of pane; differenciate background color between non-active-pane and active-pane.
       #COLOR1=color233                   # light-black / dark-grey
       #COLOR2=black                      # black
@@ -218,6 +216,29 @@
       #set -g status-interval 5
       #set -g status-right "#(ps --no-headers -eo comm,%cpu --sort=-%cpu | head -n 1) | DL: #(ifstat -i eth0 0.1 1 | tail -1 | awk '{print $1 \" KB/s\"}') | RAM: #(free -h | grep Mem | awk '{print $3 \"/\" $2}') | %H:%M %d-%b-%Y"
       #set -g status-left '#S '
+
+      ##set-option -g automatic-rename off
+      ##set-option -g automatic-rename on
+      #set-option -g automatic-rename-format ...
+      # Do not rename tmux windows automatically, I like to give my tmux windows custom names using the , key.
+      # Allow programs in the pane to change the window name using a terminal escape sequence (\ek...\e\\). 
+      #set-option -g allow-rename off
+      set-option -g allow-rename on                   # 'on' to allow tmux receives title from bash (I configured bash will sent new title at each prompt)
+      # but how to make command that currently run (in bash) as 'tmux pane title'?
+
+      # Allow programs in the pane (for example, bash shell) to change the title (title of the tmux pane) using the terminal escape sequences (\e]2;...\e\\ or \e]0;...\e\\). 
+      #set-option -g allow-set-title off
+      set-option -g allow-set-title on
+
+      # Set tmux to forward the window title to the outer terminal emulator
+      set -g set-titles on                            # To make tmux set (window) title to the outer (terminal emulator)
+      #set -g set-titles-string "#P: #W (#S)"          # Default?
+      #set -g set-titles-string "#S: #W (#P)"          # Session name, Window name, Pane name
+      #set -g set-titles-string "#S: #W: #P: (#F)"          # Session name, Window name, Pane name, Current command
+      #set -g set-titles-string "#S: #W: #P: (#T)"          # Session name, Window name, Pane name, Pane title
+      set -g set-titles-string "#T"          # Session name, Window name, Pane name, Pane title
+      #set -ga terminal-overrides ',*:set-titles:a'
+      #set -ga terminal-overrides ',*:set-titles-string:a "#S: #W"'
     '';
 
     #tmuxinator.enable = true;

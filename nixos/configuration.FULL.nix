@@ -451,7 +451,7 @@
     ed
     nano neovim vim kakoune micro jedit vis # jed
     vimHugeX
-    emacs # emacs-nox
+    #emacs # emacs-nox
     #vscode
     #leafpad # old, not maintain
     xfce.mousepad
@@ -513,6 +513,8 @@
     gdu                 # Disk usage analyzer with console interface
     godu                #
     ncdu                # Disk usage analyzer with an ncurses interface
+    fdupes              # find duplicate files
+    fsearch             # find duplicate files (GUI)
     dua                 # A tool to conveniently learn about the disk usage of directories, fast! View disk space usage and delete unwanted data, fast. 
     dutree
     du-dust #dust
@@ -772,6 +774,7 @@
     gnome-system-monitor
     totem
     plots
+    gnome-graphs # Simple, yet powerful tool that allows you to plot and manipulate your data with ease
     gnome-weather
     gnome-decoder         # Scan and Generate QR Codes
 

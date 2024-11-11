@@ -26,6 +26,8 @@ in
 
     ../neovim
 
+    ../time-management.nix
+
     # My attemp to use nix-doom-emacs
     #./emacs.nix
     #
@@ -143,6 +145,8 @@ in
 
     #vscode
     vscode-with-extensions
+
+    ssh-ident
   ];
 
   # Enable home-manager and git

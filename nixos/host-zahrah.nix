@@ -9,7 +9,14 @@
     '';
     settings = {
       max-jobs = 2;
+      trusted-users = [ "root" "najib" "naim" ];
     };
+  };
+
+  nixpkgs.config = {
+    allowUnfree = true;
+    #allowBroken = true;
+    #cudaSupport = true;
   };
 
   imports = [
@@ -69,17 +76,24 @@
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   #
-
-  nix.settings.trusted-users = [ "root" "najib" "naim" ];
-
   networking.hostId = "4dcfcacd";
   networking.hostName = "zahrah"; # also called "tifoten"
 
   hardware.enableAllFirmware = true;
 
-  #environment.systemPackages = with pkgs; [
-  #  nvtop
-  #];
+  environment.systemPackages = with pkgs; [
+    #nvtop
+    #nvtopPackages.full
+
+    libnotify
+
+    # Haskell Tools
+    stack
+    cabal-install
+    haskellPackages.xmobar
+    haskellPackages.X11
+    haskellPackages.X11-xft
+  ];
 
   #
   # NOTE:
@@ -151,7 +165,9 @@
   #networking.interfaces.enp0s25.useDHCP = true;
   #networking.interfaces.wlp3s0.useDHCP = true;
 
-  networking.firewall.enable = false;
+  networking.nftables.enable = true;
+  networking.firewall.enable = true;
+  networking.firewall.allowPing = true;
   networking.firewall.allowedTCPPorts = [
     # Gluster
     24007         # gluster daemon
@@ -163,7 +179,6 @@
     1110          # NFS cluster
     4045          # NFS lock manager
   ];
-
   networking.firewall.allowedUDPPorts = [
     # Gluster
     111           # portmapper
@@ -174,6 +189,11 @@
 
   powerManagement.enable = true;
   services.auto-cpufreq.enable = true;
+  systemd.services."auto-cpufreq" = {
+    after = [
+      "display-manager.service"
+    ];
+  };
   powerManagement.cpuFreqGovernor = "powersave";
   #powerManagement.cpufreq.min =  800000;
   powerManagement.cpufreq.max = 1500000;
@@ -237,26 +257,26 @@
     ]
   ];
 
-  hardware.trackpoint = {
-    enable = true;
-    device = "TPPS/2 IBM TrackPoint";
-    speed = 97;
-    sensitivity = 130;
-    emulateWheel = true;
-  };
+  #hardware.trackpoint = {
+  #  enable = true;
+  #  device = "TPPS/2 IBM TrackPoint";
+  #  speed = 97;
+  #  sensitivity = 130;
+  #  emulateWheel = true;
+  #};
 
   # Custom script to decrease trackpoint sensitivity
   #...
 
-  services.libinput.enable = true;
-  services.libinput.touchpad = {
-    disableWhileTyping = true;
-    scrollMethod = "twofinger";
-    tapping = true; #false;
-  };
+  #services.libinput.enable = true;
+  #services.libinput.touchpad = {
+  #  disableWhileTyping = true;
+  #  scrollMethod = "twofinger";
+  #  tapping = true; #false;
+  #};
 
   services.displayManager.defaultSession = "none+xmonad";
-  
+
   services.xserver.enable = true;
 
   services.xserver.displayManager = {
@@ -268,6 +288,7 @@
 
   services.xserver.desktopManager = {
     #plasma5.enable = true;
+    #plasma6.enable = true;
     #gnome.enable = true;
     #xfce.enable = true;
     #pantheon.enable = true;
@@ -276,9 +297,26 @@
     #mate.enable = true;
     #cinnamon.enable = true;
     #lxqt.enable = true;
+    #lomiri.enable = true;
   };
 
   services.xserver.windowManager = {
+    xmonad = {
+      enable = true;
+      enableContribAndExtras = true;
+      extraPackages = haskellPackages: [
+        haskellPackages.xmonad
+        haskellPackages.xmonad-extras
+        haskellPackages.xmonad-contrib
+        haskellPackages.dbus
+        haskellPackages.List
+        haskellPackages.monad-logger
+        haskellPackages.xmobar
+      ];
+    };
+    awesome = {
+      enable = true;
+    };
     berry.enable = true;
     notion.enable = true;
     pekwm.enable = true;
@@ -300,7 +338,6 @@
     fluxbox.enable = true;
     windowmaker.enable = true;
     twm.enable = true;
-    awesome.enable = true;
     spectrwm.enable = true;
     wmderland.enable = true;
     herbstluftwm.enable = true;
@@ -310,7 +347,7 @@
     clfswm.enable = true;
     #stumpwm.enable = true;
     sawfish.enable = true;
-    exwm.enable = true;
+    #exwm.enable = true;
 
     "2bwm".enable = true;
   };

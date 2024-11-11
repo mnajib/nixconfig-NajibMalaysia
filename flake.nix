@@ -9,10 +9,12 @@
 #  nix flake check                      # is a great way to ensure that the entire flake configuration is up to snuff with a single invocation.
 #  nix repl
 #
+# Ref:
+#   - ...
 #
 
 {
-  description = "Najib new NixOS configuration with flakes";
+  description = "NajibOS";
 
   nixConfig = {
     #experimental-features = [ "nix-command" "flakes" ];
@@ -36,132 +38,152 @@
     # Looks like the flag is '--accept-flake-config'.
   };
 
-  inputs = {
-    # Nixpkgs
-    #nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:nixos/nixpkgs?rev=a04d33c0c3f1a59a2c1cb0c6e34cd24500e5a1dc";
-    #nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
-    #nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/*.tar.gz";   # TODO: use flake hub as much as possible
-    #
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-master.url = "github:nixos/nixpkgs/master";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
-    #
-    #fh.url = "https://flakehub.com/f/DeterminateSystems/fh/*.tar.gz";
-    #nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.2305.*.tar.gz";
-    #
-    # pkgs ? import <nixpkgs> {}
-    # unstable-pkgs ? import <nixpkgs-unstable> {}
-    # old-pkgs ? import <nixpkgs-23.05> {}
-    # old-pkgs ? import <nixos-old> {}
-    #
+  #---------------------------------------------------------------
+  #inputs = {
 
-    # Set this up as an overlay; or pull-request (PR) it to nixpkgs.
-    #nixpkgs-mitchty.url = "github:/mitchty/nixpkgs/mitchty";
-    #nixpkgs-najib.url = "github:/mnajib/nixpkgs/najib";
+  # Nixpkgs
+  #inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs?rev=a04d33c0c3f1a59a2c1cb0c6e34cd24500e5a1dc";
+  #nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
+  #nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/*.tar.gz";   # TODO: use flake hub as much as possible
+  #
+  inputs.nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs.nixpkgs-master.url = "github:nixos/nixpkgs/master";
+  inputs.nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
+  #
+  #inputs.fh.url = "https://flakehub.com/f/DeterminateSystems/fh/*.tar.gz";
+  #inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.2305.*.tar.gz";
+  #
+  # pkgs ? import <nixpkgs> {}
+  # unstable-pkgs ? import <nixpkgs-unstable> {}
+  # old-pkgs ? import <nixpkgs-23.05> {}
+  # old-pkgs ? import <nixos-old> {}
+  #
 
-    # Reference: https://lix.systems/add-to-config/
-    lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-1.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+  # Set this up as an overlay; or pull-request (PR) it to nixpkgs.
+  #inputs.nixpkgs-mitchty.url = "github:/mitchty/nixpkgs/mitchty";
+  #inputs.nixpkgs-najib.url = "github:/mnajib/nixpkgs/najib";
 
-    #systems = {
-    #  url = "github:nix-systems/default-linux";
-    #};
+  # Reference: https://lix.systems/add-to-config/
+  inputs.lix-module = {
+    url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-1.tar.gz";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
-    # Home manager
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";                   # Forcing another flake (github nix-community home-manager) to use one of our inputs (nixpkgs).
-    };
+  #inputs.systems = {
+  #  url = "github:nix-systems/default-linux";
+  #};
 
-    #nixos-mailserver = {
-    #  url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #  inputs.nixpkgs-23_05.follows = "nixpkgs";
-    #  inputs.nixpkgs-23_11.follows = "nixpkgs";
-    #};
+  # Home manager
+  inputs.home-manager = {
+    url = "github:nix-community/home-manager";
+    inputs.nixpkgs.follows = "nixpkgs";                   # Forcing another flake (github nix-community home-manager) to use one of our inputs (nixpkgs).
+  };
 
-    # TODO: Add any other flake you might need
-    #hardware.url = "github:nixos/nixos-hardware";
-    hardware.url = "github:NixOS/nixos-hardware/master";
-    #nixos-hardware.url = "github:NixOS/nixos-hardware";
+  #inputs.nixos-mailserver = {
+  #  url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+  #  inputs.nixpkgs.follows = "nixpkgs";
+  #  inputs.nixpkgs-23_05.follows = "nixpkgs";
+  #  inputs.nixpkgs-23_11.follows = "nixpkgs";
+  #};
 
-    flake-utils.url = "github:numtide/flake-utils";
+  # TODO: Add any other flake you might need
+  #inputs.hardware.url = "github:nixos/nixos-hardware";
+  inputs.hardware.url = "github:NixOS/nixos-hardware/master";
+  #inputs.nixos-hardware.url = "github:NixOS/nixos-hardware";
 
-    nur.url = "github:nix-community/NUR";
+  inputs.flake-utils.url = "github:numtide/flake-utils";
 
-    impermanence.url = "github:nix-community/impermanence";
+  inputs.nixvim = {
+    url = "github:nix-community/nixvim";
+    # If you are not running an unstable channel of nixpkgs, select the corresponding branch of nixvim.
+    # url = "github:nix-community/nixvim/nixos-24.05";
 
-    # Shameless plug: looking for a way to nixify your themes and make
-    # everything match nicely? Try nix-colors!
-    nix-colors.url = "github:misterio77/nix-colors";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
-    hyprland = {
-      #url = "github:hyprwm/hyprland";
-      url = "git+https://github.com/hyprwm/hyprland?submodules=1";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-      #plugin_name = {
-      #  url = "github:maintener/plugin_name";
-      #  inputs.hyprland.follows = "hyprland";                 # IMPORTANT
-      #}
-    };
+  inputs.neovim-config-NajibMalaysia.url = "github:mnajib/neovim-config-NajibMalaysia";
 
-    hyprwn-contrib = {
-      url = "github:hyprwm/contrib";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+  inputs.nur.url = "github:nix-community/NUR";
 
-    hyprkeys = {
-      url = "github:hyprland-community/hyprkeys";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+  inputs.impermanence.url = "github:nix-community/impermanence";
 
-    nh = {
-      url = "github:viperML/nh?ref=fe4a96a0b0b0662dba7c186b4a1746c70bbcad03";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+  # Shameless plug: looking for a way to nixify your themes and make
+  # everything match nicely? Try nix-colors!
+  inputs.nix-colors.url = "github:misterio77/nix-colors";
 
-    sops-nix = {
-      url = "github:mic92/sops-nix";
-      #inputs.nixpkgs.follows = "nixpkgs";                   # optional, not necessary for the module
-      inputs.nixpkgs.follows = "nixpkgs-unstable";                   # optional, not necessary for the module
-      inputs.nixpkgs-stable.follows = "nixpkgs";            # ???
-    };
+  #inputs.stylix.url = "github:danth/stylix";
 
-    #sile.url = "github:sile-typesetter/sile/v0.14.3";
+  #inputs.fine-cmdline = {
+  #  url = "github:VonHeikemen/fine-cmdline.nvim";
+  #  flake = false;
+  #};
 
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+  inputs.hyprland = {
+    #url = "github:hyprwm/hyprland";
+    url = "git+https://github.com/hyprwm/hyprland?submodules=1";
+    inputs.nixpkgs.follows = "nixpkgs-unstable";
+    #plugin_name = {
+    #  url = "github:maintener/plugin_name";
+    #  inputs.hyprland.follows = "hyprland";                 # IMPORTANT
+    #}
+  };
 
-    dnsblacklist = {
-      url = "github:notracking/hosts-blocklists";
-      flake = false;
-    };
+  inputs.hyprwn-contrib = {
+    url = "github:hyprwm/contrib";
+    inputs.nixpkgs.follows = "nixpkgs-unstable";
+  };
 
-    seaweedfs.url = "github:/mitchty/nixos-seaweedfs/wip";
+  inputs.hyprkeys = {
+    url = "github:hyprland-community/hyprkeys";
+    inputs.nixpkgs.follows = "nixpkgs-unstable";
+  };
 
-    nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
+  inputs.nh = {
+    url = "github:viperML/nh?ref=fe4a96a0b0b0662dba7c186b4a1746c70bbcad03";
+    inputs.nixpkgs.follows = "nixpkgs-unstable";
+  };
 
-    nix-ld = {
-      url = "github:Mic92/nix-ld";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+  inputs.sops-nix = {
+    url = "github:mic92/sops-nix";
+    #inputs.nixpkgs.follows = "nixpkgs";                   # optional, not necessary for the module
+    inputs.nixpkgs.follows = "nixpkgs-unstable";                   # optional, not necessary for the module
+    inputs.nixpkgs-stable.follows = "nixpkgs";            # ???
+  };
 
-    #expose-cuda = {
-    #  url = "github:ogoid/nixos-expose-cuda";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
+  #inputs.sile.url = "github:sile-typesetter/sile/v0.14.3";
 
-    kmonad = {
-      url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+  inputs.nixos-generators = {
+    url = "github:nix-community/nixos-generators";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
-  }; # End 'inputs'.
+  inputs.dnsblacklist = {
+    url = "github:notracking/hosts-blocklists";
+    flake = false;
+  };
+
+  inputs.seaweedfs.url = "github:/mitchty/nixos-seaweedfs/wip";
+
+  inputs.nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
+
+  inputs.nix-ld = {
+    url = "github:Mic92/nix-ld";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  #inputs.expose-cuda = {
+  #  url = "github:ogoid/nixos-expose-cuda";
+  #  inputs.nixpkgs.follows = "nixpkgs";
+  #};
+
+  inputs.kmonad = {
+    url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  #}; # End 'inputs'.
+  #-------------------------------------------------------------------
 
   outputs = {
     self,
@@ -191,6 +213,8 @@
     nix-ld,
     #expose-cuda,
     kmonad,
+    nixvim,
+    neovim-config-NajibMalaysia,
     ...
   }@inputs:
     let
@@ -517,6 +541,8 @@
           hardware.nixosModules.common-pc-laptop-ssd
 
           kmonad.nixosModules.default
+
+          #lix-module.nixosModules.default
         ];
 
         #----------------------------------------------------------------------

@@ -86,9 +86,9 @@
     kalk # powerful cross-platform calculator
 
     # games
-    kolf # miniature golf game with 2d top-down view
-    kigo # go game
-    bovo # a gomoku like game for two players
+    #kolf # miniature golf game with 2d top-down view
+    #kigo # go game
+    #bovo # a gomoku like game for two players
 
     kalm # learn different breathing techniques
   ];
