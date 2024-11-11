@@ -13,7 +13,7 @@
 #
 
 {
-  description = "Najib new NixOS configuration with flakes";
+  description = "NajibOS";
 
   nixConfig = {
     #experimental-features = [ "nix-command" "flakes" ];
@@ -109,6 +109,13 @@
   # Shameless plug: looking for a way to nixify your themes and make
   # everything match nicely? Try nix-colors!
   inputs.nix-colors.url = "github:misterio77/nix-colors";
+
+  #inputs.stylix.url = "github:danth/stylix";
+
+  #inputs.fine-cmdline = {
+  #  url = "github:VonHeikemen/fine-cmdline.nvim";
+  #  flake = false;
+  #};
 
   inputs.hyprland = {
     #url = "github:hyprwm/hyprland";
