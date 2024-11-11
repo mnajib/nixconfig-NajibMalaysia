@@ -18,8 +18,7 @@ in
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
     #../neovim/lazyvim.nix
-    #../neovim
-    # NOTE: Decided to set neovim per user per host configuration
+    #../neovim # NOTE: Commented because I decided to set neovim per user per host configuration
 
     ../common-configs.nix
     ../common-packages.nix
@@ -153,7 +152,7 @@ in
 
     fluxbox                             # need fbsetroot to set desktop background color
 
-    clang
+    #clang
   ];
 
   # Enable home-manager and git

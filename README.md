@@ -93,10 +93,11 @@ To run garbage collection:
 #------------------------------------------------------------------------------
 # To remove all NixOS generations older than 30 days. You can adjust the time window, e.g., 90d for 90 days.
   sudo nix-collect-garbage --delete-older-than 30d
+  sudo nix-collect-garbage --delete-old
 
 #------------------------------------------------------------------------------
 To show derivations:
-  nix derivation show
+#  nix derivation show
 
 To perform garbage collect for user's environment:
   nix store gc

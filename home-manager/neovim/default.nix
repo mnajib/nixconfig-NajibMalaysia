@@ -358,6 +358,7 @@ in
       #vim-numbertoggle
       #yankring
       #vim-nix
+      vim-godot
 
       #{
       #  plugin = vim-startify;

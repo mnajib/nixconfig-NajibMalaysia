@@ -453,7 +453,7 @@
     vimHugeX
     #emacs # emacs-nox
     #vscode
-    #leafpad
+    #leafpad # old, not maintain
     xfce.mousepad
     notepadqq geany      # kate
     #pulsar                             # forked from atom text editor
@@ -561,7 +561,7 @@
 
     simple-scan
     gnomeExtensions.appindicator
-    #gnomeExtensions.cpufreq
+    #gnomeExtensions.cpufreq # Not available anymore on 2024-11-05
 
     #---------------------------------------------------------------
     # xfce
