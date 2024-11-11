@@ -46,7 +46,7 @@
     ./configuration.FULL.nix
     #./btrbk.nix
     ./zfs.nix
-    ./timetracker.nix
+    #./timetracker.nix # look home-manager/time-management.nix
 
     ./3D.nix
 
