@@ -4,9 +4,11 @@
 #  nix flake info                       # will show all inputs and what revision (or other flake's inputs) are being tracked!
 #  nix flake show
 #  nix flake update                     # will try to update all inputs where possible. Inputs pinned to specific revisions will, of course, remain pinned.
+#  nix flake update --override-input nixpkgs github:NixOS/nixpkgs/a04d33c0c3f1a59a2c1cb0c6e34cd24500e5a1dc
 #  nix flake lock --update-input $NAME  # will only try to update the $NAME input.
 #  nix flake check                      # is a great way to ensure that the entire flake configuration is up to snuff with a single invocation.
 #  nix repl
+#
 #
 
 {
@@ -36,7 +38,8 @@
 
   inputs = {
     # Nixpkgs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    #nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs?rev=a04d33c0c3f1a59a2c1cb0c6e34cd24500e5a1dc";
     #nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
     #nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/*.tar.gz";   # TODO: use flake hub as much as possible
     #
