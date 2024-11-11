@@ -453,7 +453,9 @@
     vimHugeX
     emacs # emacs-nox
     #vscode
-    leafpad notepadqq geany      # kate
+    #leafpad # old, not maintain
+    xfce.mousepad
+    notepadqq geany      # kate
     #pulsar                             # forked from atom text editor
     #unstable.yi # Install yi the other way to allow enable personalized configuration.
     #leksah
@@ -557,7 +559,7 @@
 
     simple-scan
     gnomeExtensions.appindicator
-    gnomeExtensions.cpufreq
+    #gnomeExtensions.cpufreq # Not available anymore on 2024-11-05
 
     #---------------------------------------------------------------
     # xfce

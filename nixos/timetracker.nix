@@ -5,7 +5,7 @@
   environment.systemPackages = with pkgs; [
     # gui
     ktimetracker
-    gnome.pomodoro
+    gnome-pomodoro #gnome.pomodoro
 
     # tui
     timewarrior

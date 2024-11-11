@@ -15,6 +15,9 @@
 
   home.packages = with pkgs; [
     neovim # then need to manually install(configure) lazyvim plugin from github
+
+    gcc
+    clang clang-tools clang-manpages
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
