@@ -80,7 +80,7 @@ in
       c_default='\[\e[0m\]'
       c_title='\[\e]0;\u@\h: \w\a\]'
       c_bell='\[\a\]'
-      c_date=$(date +'%Y-%m-%d %H:%M:%S')
+      c_date='\D{%Y-%m-%d} \t'
       export PS1="''\${c_bell}''\${c_brightyellow}[''\${c_date}] ''\${c_brightgreen}[''\${c_title}''\${c_brightcyan}\u@\h''\${c_brightgreen}:\w]\''\$ ''\${c_default}"
     '';
     #initExtra = myInitCommands;
