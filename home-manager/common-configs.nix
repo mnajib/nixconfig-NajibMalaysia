@@ -68,7 +68,7 @@ in
 
     #./nvim/lsp.nix
     #./nvim
-    #./neovim # lets put this per-user
+    #./neovim # lets put this per-user, so disable neovim here
     ./neovide
 
     ./zsh.nix
