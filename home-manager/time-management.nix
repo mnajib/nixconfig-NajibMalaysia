@@ -9,8 +9,10 @@
     gnome-pomodoro
     pomodoro-gtk
     #uair
+    #
+    ktimetracker
 
-    # CLI
+    # TUI/CLI
     tomato-c
     #haskellPackages.Monadoro
     #haskellPackages.pomodoro
@@ -18,5 +20,10 @@
     #pomodoro
     #openpomodoro-cli
     porsmo
+    #
+    timewarrior
+    timetrap
+    timetagger_cli
+    tasktimer
   ];
 }
