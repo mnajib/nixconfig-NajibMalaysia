@@ -61,6 +61,25 @@ in
         render = true;
       };
 
+      keyskeys.normal = {
+        #space.space = "file_picker";
+        #space.w = ":w";
+        #space.q = ":q";
+        #esc = [ "collapse_selection" "keep_primary_selection" ];
+
+        # Navigation
+        #"h" = "move_down";
+        #"t" = "move_up";
+        #"d" = "move_left";
+        #"n" = "move_right";
+
+        # Editing
+        #"i" = "insert_mode";
+        #"a" = "append";
+        #"x" = "delete_selection";
+        #"y" = "yank_selection";
+      };
+
     }; # End programs.helix.editor
   };
 
