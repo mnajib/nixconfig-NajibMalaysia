@@ -368,6 +368,24 @@ in
       #  '';
       #}
 
+      #{
+      #  plugin = indent-blankline-nvim;
+      #  type = "lua";
+      #  config = /* lua */ ''
+      #    require('ibl').setup() -- {
+      #      -- indent = {
+      #      --  char = "|"
+      #      -- },
+      #      -- scope = {
+      #      --   enabled = false
+      #      -- },
+      #    -- }
+      #  '';
+      #  #extraConfig = ''
+      #  #  require("ibl").setup()
+      #  #'';
+      #}
+
     ]; # End programs.neovim.plugins
 
   }; # End programs.neovim
