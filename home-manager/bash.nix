@@ -55,22 +55,6 @@ in
     # Default:
     #   PS1='\n\[\033[1;32m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$\[\033[0m\] '
     # Change to:
-    #   export PS1='[\u@\h \W] [$(date +"%Y-%m-%d %H:%M:%S")] \$ '
-    #   export PS1='\n[$(date +"%Y-%m-%d %H:%M:%S")] \[\033[1;32m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$\[\033[0m\] '
-    #   export PS1='\n\[\033[1;93m\][$(date +"%Y-%m-%d %H:%M:%S")] \[\033[1;32m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$\[\033[0m\] '
-    #   export PS1='\[\033[1;93m\][$(date +"%Y-%m-%d %H:%M:%S")] \[\033[1;32m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$\[\033[0m\] '
-    #   export PS1='\[\033[1;93m\][$(date +"%Y-%m-%d %H:%M:%S")] \[\033[1;32m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$\[\033[0m\] '
-    #   export PS1='${toString c_brightyellow}[$(date +"%Y-%m-%d %H:%M:%S")] ${toString c_brightgreen}[\[\e]0;\u@\h: \w\a\]\u@\h:${toString c_brightyan}\w${toString c_brightgreen}]\$${toString c_default} '
-    #   export PS1='${toString c_brightyellow}[$(date +"%Y-%m-%d %H:%M:%S")] ${toString c_brightgreen}[${toString c_brightcyan}\[\e]0;\u@\h \w\a\]\u@\h${toString c_brightgreen}:${toString c_brightgreen}\w${toString c_brightgreen}]\$${toString c_default} '
-    #   export PS1='\[\033[1;93m\][$(date +"%Y-%m-%d %H:%M:%S")] \[\033[1;32m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$\[\033[0m\] '
-    #   export PS1='\[\033[1;93m\][$(date +"%Y-%m-%d %H:%M:%S")] \[\033[1;32m\][\[\e]0;\u@\h: \w\a\]\[\033[1;96m\]\u\[\033[1;92m\]@\[\033[1;96m\]\h\[\033[1;92m\]:\w]\$\[\033[0m\] '
-    #
-    # With give title name to outer (terminal-emulator, or perhaps tmux)?
-    #   export PS1='\[\033[1;93m\][$(date +"%Y-%m-%d %H:%M:%S")] \[\033[1;32m\][\[\e]0;\u@\h: \w\a\]\[\033[1;96m\]\u@\h\[\033[1;92m\]:\w]\$\[\033[0m\] '
-    #   export PS1='\[\033[1;93m\][$(date +"%Y-%m-%d %H:%M:%S")] \[\033[1;32m\][\[\e]0;\u@\h: \w\007\]\[\033[1;96m\]\u@\h\[\033[1;92m\]:\w]\$\[\033[0m\] '
-    # Without give title name to outer (terminal-emulator, or perhaps tmux)?
-    #   export PS1='\a\[\033[1;93m\][$(date +"%Y-%m-%d %H:%M:%S")] \[\033[1;32m\][\[\033[1;96m\]\u@\h\[\033[1;92m\]:\w]\$\[\033[0m\] '
-    #   export PS1='\a\[\033[1;93m\][$(date +"%Y-%m-%d %H:%M:%S")] \[\033[1;32m\][\[\033[1;96m\]\u@\h\[\033[1;92m\]:\w]\$\[\033[0m\] '
     initExtra = ''
       c_brightyellow='\[\e[1;93m\]'
       c_brightgreen='\[\e[1;92m\]'
@@ -83,10 +67,6 @@ in
       c_date='\D{%Y-%m-%d} \t'
       export PS1="''\${c_bell}''\${c_brightyellow}[''\${c_date}] ''\${c_brightgreen}[''\${c_title}''\${c_brightcyan}\u@\h''\${c_brightgreen}:\w]\''\$ ''\${c_default}"
     '';
-    #initExtra = myInitCommands;
-    #initExtra = c_ps1;
-    #  export PS1='\a   \[\033[1;93m\]    [$(date +"%Y-%m-%d %H:%M:%S")]     \[\033[1;32m\]     [       \[\e]0;\u@\h: \w\a]     \[\033[1;96m\]    \u@\h     \[\033[1;92m\]    :\w   ]\$       \[\033[0m\]'
-    #  export PS1='\a\[\033[1;93m\][$(date +"%Y-%m-%d %H:%M:%S")] \[\033[1;32m\][\[\e]0;\u@\h: \w\a\]\[\033[1;96m\]\u@\h\[\033[1;92m\]:\w]\$\[\033[0m\] '
 
     #shellOptions = [
     #];
