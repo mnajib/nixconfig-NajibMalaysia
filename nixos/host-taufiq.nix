@@ -310,18 +310,6 @@ with lib;
     };
   };
 
-  services.xserver.enable = true;
-
-  #services.xserver.dpi = 96;
-
-  #----------------------------------------------------------------------------
-  #services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
-  #services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
-  services.xserver.videoDrivers = [ "nvidia" ];
-  #
-  # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`, not here.
-  ##services.xserver.videoDrivers = [ "nvidiaLegacy390" ]; #
-
   hardware.nvidia = {
     #hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
     #hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
@@ -383,10 +371,19 @@ with lib;
   #----------------------------------------------------------------------------
 
   services.xserver.enable = true;
+  #services.xserver.dpi = 96;
+
+  #services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
+  #services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
+  services.xserver.videoDrivers = [ "nvidia" ];
+  #
+  # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`, not here.
+  ##services.xserver.videoDrivers = [ "nvidiaLegacy390" ]; #
+
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.windowManager.xmonad = {
     enable = true;
-    enableContribandExtras = true;
+    enableContribAndExtras = true;
     extraPackages = haskellPackages: [
       haskellPackages.xmonad
       haskellPackages.xmonad-extras
