@@ -106,6 +106,6 @@
     dialog
     gxmessage
 
-    timeline # Display and navigate information on a timeline
+    #timeline # Display and navigate information on a timeline
   ];
 }

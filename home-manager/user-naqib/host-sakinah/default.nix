@@ -13,6 +13,13 @@
     #../../neovim
   ];
 
+  #----------------------------------------------------------
+  # disable stylix on specifix programs
+  #
+  #stylix.targets.nixvim.enable = false;
+  #wayland.windowManager.hyprland.settings.general."col.active_border" = lib.mkForce "rgb(${config.stylix.base16Scheme.base0E})";
+  #----------------------------------------------------------
+
   home.packages = with pkgs; [
     neovim # then need to manually install(configure) lazyvim plugin from github
 

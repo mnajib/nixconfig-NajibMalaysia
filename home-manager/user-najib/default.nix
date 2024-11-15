@@ -25,6 +25,7 @@ in
     ../common-packages.nix
 
     ../neovim
+    ../helix
 
     ../time-management.nix
 
@@ -147,6 +148,12 @@ in
     vscode-with-extensions
 
     ssh-ident
+
+    geogebra6 # Dynamic mathematics software with graphics, algebra and spreadsheets
+
+    #helix # Post-modern modal text editor
+    #evil-helix # Post-modern modal text editor, with vim keybindings
+    #helix-gpt # Code completion LSP for Helix with support for Copilot + OpenAI
   ];
 
   # Enable home-manager and git

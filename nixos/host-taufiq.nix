@@ -91,7 +91,7 @@ with lib;
 
     ./3D.nix                            # freecad, qcad, ...
     ./steam.nix                         # steam for game, blender-LTS, ...
-    ./roblox.nix
+    #./roblox.nix
     #./mame.nix
     #./emulationstation.nix
 
@@ -119,7 +119,9 @@ with lib;
 
     #./walkie-talkie.nix
 
-    ./ai.nix
+    #./ai.nix
+
+    ./opengl.nix
   ];
 
   # Dell Precision M4800
@@ -380,28 +382,25 @@ with lib;
 
   #----------------------------------------------------------------------------
 
-  #services.xserver.displayManager.sddm.enable = true;
+  services.xserver.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
-  #services.xserver.displayManager.startx.enable = true;
-
-  #services.xserver.displayManager.defaultSession = "none+xmonad";
+  services.xserver.windowManager.xmonad = {
+    enable = true;
+    enableContribandExtras = true;
+    extraPackages = haskellPackages: [
+      haskellPackages.xmonad
+      haskellPackages.xmonad-extras
+      haskellPackages.xmonad-contrib
+      haskellPackages.dbus
+      haskellPackages.List
+      haskellPackages.monad-logger
+      haskellPackages.xmobar
+    ];
+  };
+  services.xserver.windowManager.awesome = { enable = true; };
+  services.xserver.windowManager.fluxbox = { enable = true; };
+  services.xserver.windowManager.jwm = { enable = true; };
   services.displayManager.defaultSession = "none+xmonad";
-
-  #services.xserver.desktopManager.plasma5.enable = true;
-  #services.xserver.desktopManager.plasma6.enable = true;
-  #services.xserver.desktopManager.gnome.enable = true;
-  #services.xserver.desktopManager.mate.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
-  #services.xserver.desktopManager.enlightenment.enable = true;
-  #services.xserver.desktopManager.lxqt.enable = true;
-  #services.xserver.desktopManager.lumina.enable = true;
-
-  #services.xserver.windowManager.spectrwm.enable = true;
-  #services.xserver.windowManager.qtile.enable = true;
-  #services.xserver.windowManager.notion.enable = true;
-  #services.xserver.windowManager.leftwm.enable = true;
-  #services.xserver.windowManager.nimdow.enable = true;
-  #services.xserver.windowManager.herbstluftwm.enable = true;
 
   #----------------------------------------------------------------------------
 
