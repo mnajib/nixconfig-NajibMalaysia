@@ -21,7 +21,8 @@
     pkgs.gnupg
     pkgs.translate-shell                # CLI translator using Google Translate, Bing Translator, ...
     pkgs.whois
-    pkgs.youtube-dl
+    #pkgs.youtube-dl
+    pkgs.yt-dlp
     pkgs.coreutils
     pkgs.dzen2                          # A general purpose messaging, notification and menuing program for X11
     pkgs.vis
@@ -92,6 +93,6 @@
 
     pkgs.ed # text editor
 
-    pkgs.timeline # Display and navigate information on a timeline
+    #pkgs.timeline # Display and navigate information on a timeline
   ];
 }

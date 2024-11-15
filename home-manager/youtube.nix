@@ -35,7 +35,7 @@
     # TUI Downloader (without ability to launch player)
     #--------------------------------------------------------------------------
     #tartube-yt-dlp # conflic with tartube
-    youtube-dl
+    #youtube-dl
     #youtude-dl-light
     yt-dlp
     ytmdl
