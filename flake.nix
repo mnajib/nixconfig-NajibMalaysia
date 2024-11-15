@@ -112,7 +112,7 @@
   # everything match nicely? Try nix-colors!
   inputs.nix-colors.url = "github:misterio77/nix-colors";
 
-  #inputs.stylix.url = "github:danth/stylix";
+  inputs.stylix.url = "github:danth/stylix";
 
   #inputs.fine-cmdline = {
   #  url = "github:VonHeikemen/fine-cmdline.nvim";
@@ -215,6 +215,7 @@
     kmonad,
     nixvim,
     neovim-config-NajibMalaysia,
+    stylix,
     ...
   }@inputs:
     let
@@ -439,6 +440,7 @@
         #};
         #
         khadijah = mkNixos [
+
           nix-ld.nixosModules.nix-ld
           { programs.nix-ld.dev.enable = true; }
 
@@ -447,6 +449,9 @@
           #{ environment.systemPackages = [ fh.packages.x86_64-linux.default ]; }
 
           lix-module.nixosModules.default
+
+          inputs.stylix.nixosModules.stylix
+
         ];
 
         #----------------------------------------------------------------------

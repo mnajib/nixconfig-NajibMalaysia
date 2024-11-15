@@ -127,6 +127,8 @@ with lib;
     ./xdg.nix
 
     ./opengl2.nix
+
+    ./stylix.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -484,6 +486,28 @@ with lib;
   #  #konsole
   #  #oxygen
   #];
+
+  #----------------------------------------------------------------------------
+  # see nixos/stylix.nix
+  #----------------------------------------------------------------------------
+
+  # nix build nixpkgs#base16-schemes
+  # cd result
+  # nix run nixpkgs#eza -- --tree
+  #stylix.base16Scheme = "${pkgs.bash16-schemes}/share/themes/gruvbox-dark-medium.yaml";
+  #
+  # OR
+  #
+  #stylix.base16Scheme = {
+  #  base00 = "282828";
+  #  base01 = "3c3836";
+  #  #...
+  #};
+  #
+  # OR
+  #
+  # Auto-generate from wallpaper
+  #stylix.image = ./my-cool-wallpaper.png;
 
   #----------------------------------------------------------------------------
 
