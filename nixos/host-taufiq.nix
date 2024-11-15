@@ -91,7 +91,7 @@ with lib;
 
     ./3D.nix                            # freecad, qcad, ...
     ./steam.nix                         # steam for game, blender-LTS, ...
-    ./roblox.nix
+    #./roblox.nix
     #./mame.nix
     #./emulationstation.nix
 
@@ -119,7 +119,7 @@ with lib;
 
     #./walkie-talkie.nix
 
-    ./ai.nix
+    #./ai.nix
   ];
 
   # Dell Precision M4800
@@ -391,7 +391,7 @@ with lib;
   #services.xserver.desktopManager.plasma6.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
   #services.xserver.desktopManager.mate.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
+  #services.xserver.desktopManager.xfce.enable = true;
   #services.xserver.desktopManager.enlightenment.enable = true;
   #services.xserver.desktopManager.lxqt.enable = true;
   #services.xserver.desktopManager.lumina.enable = true;
