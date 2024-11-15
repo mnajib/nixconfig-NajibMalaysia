@@ -29,10 +29,12 @@
 
     #./nfs-client.nix
     ./nfs-client-automount.nix
-    #./nfs-client.nix
+
+    ./samba-client.nix
 
     ./console-keyboard-dvorak.nix
-    ./keyboard-with-msa.nix
+    #./keyboard-with-msa.nix
+    ./keyboard-kmonad.nix
 
     ./audio-pipewire.nix
     #./audio-pulseaudio.nix
@@ -44,14 +46,26 @@
     ./configuration.FULL.nix
     #./btrbk.nix
     ./zfs.nix
-    ./timetracker.nix
+    #./timetracker.nix # look home-manager/time-management.nix
 
     ./3D.nix
 
+    ./flatpak.nix
+
+    ./xdg.nix
+    #./xdg-gtk.nix
+    #./xdg-kde.nix
+
+    ./typesetting.nix
+
     # Games
     ./openra.nix
-
+    ./lutris.nix
     ./steam.nix
+
+    #./nix-build.nix
+    ./nix-garbage-collector.nix
+    #./teamviewer.nix
   ];
 
   # Booting
@@ -74,9 +88,28 @@
   networking.hostId = "6a063836";
   networking.hostName = "sakinah";
 
-  nix.settings.trusted-users = [ "root" "najib" "nurnasuha" ];
+  nix.settings.trusted-users = [ "root" "najib" "naqib" "nurnasuha" ];
 
   hardware.enableAllFirmware = true;
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    extraPackages = with pkgs; [
+      #vaapiIntel # conflic with nixos-hardware config
+      libvdpau-va-gl
+      vaapiVdpau
+      mesa.drivers
+    ];
+    extraPackages32 = with pkgs.pkgsi686Linux; [
+      libva
+      #vaapiIntel # conflic with nixos-hardware config
+      libvdpau-va-gl
+      vaapiVdpau
+    ];
+  };
+
+  #services.fstrim.enable = true;
 
   # XXX:
   networking.useDHCP = false;
@@ -97,7 +130,18 @@
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
-  networking.firewall.enable = true;
+  networking.nftables.enable = true;
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [
+      1110 # NFS cluster
+      4045 # NFS lock manager
+    ];
+    allowedUDPPorts = [
+      1110 # NFS client
+      4045 # NFS lock manager
+    ];
+  };
 
   hardware.trackpoint = {
     enable = true;
@@ -107,24 +151,62 @@
     emulateWheel = true;
   };
 
-  services.libinput.enable = true;
-  services.displayManager.defaultSession = "none+xmonad";
+  services.libinput = {
+    enable = true;
+    touchpad = {
+      disableWhileTyping = true;
+      scrollMethod = "twofinger";
+      tapping = true;
+    };
+  };
+
+  services.displayManager = {
+    #enable = true;
+
+    #sddm = {
+    #  enable = true;
+    #  #wayland = true;
+    #};
+
+    defaultSession = "none+xmonad";
+    #autoLogin = {};
+  };
+
+  #services.desktopManager.plasma6.enable = true;
+
   services.xserver = {
     enable = true;
-    #displayManager.gdm.enable = true;
-    displayManager.lightdm.enable = true;
+
+    displayManager = {
+      #gdm.enable = true;
+      lightdm.enable = true;
+
+      sessionCommands = ''
+      xset -dpms
+      xset s blank
+      xset s 120
+      '';
+    };
+
     #desktopManager.xfce.enable = true;
-    desktopManager.mate.enable = true;
+    #desktopManager.mate.enable = true;
     #desktopManager.gnome.enable = true;
+
+    windowManager.jwm.enable = true;
+    windowManager.icewm.enable = true;
+    windowManager.fluxbox.enable = true;
   };
 
   nix.settings.max-jobs = 2;
 
+  #environment.systemPackages = with pkgs; [
   #environment.systemPackages = [
     #pkgs.blender
     #pkgs.sweethome3d.application
     #pkgs.sweethome3d.textures-editor
     #pkgs.sweethome3d.furniture-editor
+
+    #lightlocker
   #];
 
   # Home Manager configuration

@@ -3,7 +3,7 @@
 { pkgs, config, ... }:
 {
   nix = {
-    package = pkgs.nixFlakes;
+    #package = pkgs.nixFlakes;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
@@ -25,16 +25,19 @@
     ./hardware-printer.nix
     ./console-keyboard-dvorak.nix
     ./keyboard-with-msa.nix
+    #./keyboard-kmonad.nix
     ./zramSwap.nix
     ./configuration.FULL.nix
     #./btrbk-khawlah.nix
     ./typesetting.nix
     ./nix-garbage-collector.nix
 
-    ./gnome.nix
+    #./gnome.nix
     #./hyprland.nix
 
     ./logitech-unifying.nix
+    ./xdg.nix
+    ./opengl.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -51,6 +54,7 @@
   nix.settings.trusted-users = [
     "root"
     "najib"
+    "naqib"
   ];
 
   # XXX:
@@ -80,23 +84,37 @@
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  #networking.firewall.allowedUDPPorts = [ 3450 ]; # 3450 for minetest server
-  # Or disable the firewall altogether.
-  networking.firewall.enable = false;
+  networking.firewall = {
+    enable = false;
+    # Open ports in the firewall.
+    #allowedTCPPorts = [ ... ];
+    #allowedUDPPorts = [ ... ];
+    #allowedUDPPorts = [ 3450 ]; # 3450 for minetest server
+  };
 
-  #services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.displayManager.defaultSession = "none+xmonad";
+  services.libinput = {
+    enable = true;
+  };
+
+  services.displayManager = {
+    #lightdm.enable = true;
+    defaultSession = "none+xmonad";
+  };
+
   #services.xserver.desktopManager.xfce.enable = true;
-  services.xserver.desktopManager.plasma6.enable = true;
   #services.xserver.desktopManager.enlightenment.enable = true;
   #services.xserver.desktopManager.lxqt.enable = true;
   #services.xserver.desktopManager.deepin.enable = true;
   #services.xserver.desktopManager.budgie.enable = true;
+  services.desktopManager = {
+    plasma6.enable = true;
+  };
 
-  services.xserver.libinput.enable = true;
+  services.xserver = {
+    windowManager = {
+      fluxbox.enable = true;
+    };
+  };
 
   system.stateVersion = "22.05";
 }

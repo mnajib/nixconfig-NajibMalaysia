@@ -32,7 +32,8 @@
     #./network-dns.nix
 
     # Internal/private network DNS server
-    ./dnsmasq.nix # disabled this because now running endian firewall (EFW)
+    #./dnsmasq.nix
+    ./unbound.nix
 
     #./users-abdullah-wheel.nix
     #./users-anak2.nix
@@ -67,8 +68,8 @@
     #./nfs-client-automount-games.nix
     #./nfs-client.nix
 
-    ./samba-server-customdesktop.nix
-    ./samba-client.nix
+    #./samba-server-customdesktop.nix
+    #./samba-client.nix
 
     ./console-keyboard-dvorak.nix
     ./keyboard-with-msa.nix
@@ -88,6 +89,7 @@
 
     #./gogs.nix
     ./gitea.nix
+    #./forgejo-sqlite.nix
 
     #./hosts2.nix
     ./configuration.FULL.nix
@@ -96,7 +98,6 @@
 
     #./sway.nix
 
-    # XXX:
     ./nix-garbage-collector.nix
 
     #./timetracker.nix                  # desktop app for time management
@@ -108,6 +109,12 @@
     ./appimage.nix
 
     ./walkie-talkie.nix
+
+    #./jupyter.nix # jupyter-hub? jupyter-notebook?
+    #./invidious.nix # for watch youtube. Need postgresql database
+
+    ./xdg.nix
+    ./opengl.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:

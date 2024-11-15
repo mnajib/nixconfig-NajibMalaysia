@@ -17,14 +17,19 @@ in
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
+    #../neovim/lazyvim.nix
+    #../neovim # NOTE: Commented because I decided to set neovim per user per host configuration
 
     ../common-configs.nix
     ../common-packages.nix
+
     ../roblox.nix
     #../wesnoth.nix
     #./system-benchmark.nix
     #./minecraft.nix
     ../youtube.nix
+    ../evince.nix
+    ../time-management.nix
   ];
 
   nixpkgs = {
@@ -64,6 +69,7 @@ in
 
   # Add stuff for your user as you see fit:
   home.packages = with pkgs; [
+    ihaskell
     #posterazor
     remmina
     #wpsoffice
@@ -82,7 +88,7 @@ in
     #jrnl
     #kodi
     #python3.8-notebook
-    qtox
+    #qtox
     #retroarch
     tig
     treesheets
@@ -92,8 +98,8 @@ in
     xarchiver
     #xmind-8-update8
     xournalpp
-    evince
-    gnome.gnome-clocks
+    #evince
+    gnome-clocks
     smlnj
     waydroid
     #kmymoney
@@ -125,7 +131,7 @@ in
     pixelorama
 
     godot_4
-    gdtoolkit #gdtoolkit_4
+    gdtoolkit_4
     godot_4-export-templates
 
     #firefox
@@ -135,14 +141,18 @@ in
     ranger
     #nnn
     nano
-    #neovim
+    #neovim # plus manually install LazyVim in ~/.config/nvim from git repo. NOTE: Decided to set neovim per user per host configuration
+    micro
     emacs
+    #haskellPackages.yi # marked as broken
 
     #zeroad
     minetest
     _4d-minesweeper
 
     fluxbox                             # need fbsetroot to set desktop background color
+
+    #clang
   ];
 
   # Enable home-manager and git

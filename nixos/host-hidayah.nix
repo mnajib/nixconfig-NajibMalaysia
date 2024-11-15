@@ -16,7 +16,7 @@ with lib;
 #with host;
 {
   nix = {
-    package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
+    #package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
     extraOptions = ''
         experimental-features = nix-command flakes
     '';
@@ -187,6 +187,7 @@ with lib;
     xournalpp
     gparted
     rofi
+    pcsx2 # games
   ];
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
   #  environment.systemPackages = [

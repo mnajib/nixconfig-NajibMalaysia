@@ -5,6 +5,6 @@
 {
   home.packages = [
     #pkgs.grapejuice
-    pkgs.vinegar
+    #pkgs.vinegar a removed due to being blocked by Roblox
   ];
 }

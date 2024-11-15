@@ -16,14 +16,35 @@
     enable = true;
     openFirewall = true;
 
-    extraConfig = ''
-      workgroup = WORKGROUP
-      security = user
-      #guest account = najib
-      guest account = nobody
-      map to guest = bad user
-    '';
-  };
+    #extraConfig = ''
+    #  workgroup = WORKGROUP
+    #  security = user
+    #  #guest account = najib
+    #  guest account = nobody
+    #  map to guest = bad user
+    #'';
+    settings = {
+      global = {
+        "invalid users" = [
+          "root"
+        ];
+        "passwd program" = "/run/wrappers/bin/passwd %u";
+
+        workgroup = "WORKGROUP";
+        security = "user";
+        "guest account" = "nobody";
+        "map to guest" = "bad user";
+      };
+      #public = {
+        #browseable = "yes";
+        #comment = "Public samba share.";
+        #"guest ok" = "yes";
+        #path = "/srv/public";
+        #"read only" = "yes";
+      #};
+    }; # End services.samba.settings
+
+  }; # End services.samba
 
   services.gvfs = {
     enable = true;

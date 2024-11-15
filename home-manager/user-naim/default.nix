@@ -19,14 +19,17 @@ in
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
+    #../neovim
 
     ../common-configs.nix
     ../common-packages.nix
+
     #../roblox.nix
     #../wesnoth.nix
     #./system-benchmark.nix
     #./minecraft.nix
     ../youtube.nix
+    ../time-management.nix
   ];
 
   nixpkgs = {
@@ -81,7 +84,7 @@ in
     #jrnl
     #kodi
     #python3.8-notebook
-    qtox
+    #qtox
     #retroarch
     tig
     treesheets
@@ -91,8 +94,8 @@ in
     xarchiver
     #xmind-8-update8
     xournalpp
-    evince
-    gnome.gnome-clocks
+    #evince
+    gnome-clocks
     smlnj
     waydroid
     #kmymoney
@@ -121,9 +124,23 @@ in
     #gimp
     inkscape
     #libreoffice
+
     #firefox
-    #brave
+    #chromium
+    #ungoogled-chromium
+    #palemoon-bin
     qutebrowser
+    netsurf.browser
+    midori
+    epiphany
+    ephemeral
+    #eolie # 
+    surf
+    dillo-plus #dillo
+    #brave
+    #opera
+    #google-chrome
+
     ranger
     #nnn
     nano
@@ -132,6 +149,8 @@ in
 
     #zeroad
     minetest
+    hedgewars
+    openttd
 
     fluxbox                             # need fbsetroot to set desktop background color
   ];

@@ -65,9 +65,15 @@ in
     ./screen.nix
     ./tmux.nix
     ./rofi.nix
+
     #./nvim/lsp.nix
     #./nvim
+    #./neovim # lets put this per-user, so disable neovim here
+    ./neovide
+
     ./zsh.nix
+    ./bash.nix # bash shell
+    ./garbage-collect.nix
   ]
   ++ (builtins.attrValues outputs.homeManagerModules);
   # XXX: TODO: Should be in seperate file packages.nix
@@ -168,16 +174,16 @@ in
 
       #c.colors.webpage.darkmode.grayscale.images = 0.35
       #c.content.user_stylesheets = '~/.config/qutebrowser/stylesheet/mydarkmodefix.css'
-    extraConfig = ''
-      c.colors.webpage.preferred_color_scheme = 'dark'
-      c.colors.webpage.darkmode.enabled = True
-      c.colors.webpage.darkmode.algorithm = 'lightness-hsl'
-      c.colors.webpage.darkmode.contrast = -.022
-      c.colors.webpage.darkmode.threshold.foreground = 150
-      c.colors.webpage.darkmode.threshold.background = 100
-      c.colors.webpage.darkmode.policy.images = 'never'
-      c.content.notifications.enabled = False
-    '';
+    #extraConfig = ''
+    #  c.colors.webpage.preferred_color_scheme = 'dark'
+    #  c.colors.webpage.darkmode.enabled = True
+    #  c.colors.webpage.darkmode.algorithm = 'lightness-hsl'
+    #  c.colors.webpage.darkmode.contrast = -.022
+    #  c.colors.webpage.darkmode.threshold.foreground = 150
+    #  c.colors.webpage.darkmode.threshold.background = 100
+    #  c.colors.webpage.darkmode.policy.images = 'never'
+    #  c.content.notifications.enabled = False
+    #'';
   };
   #home.file.".config/qutebrowser/stylesheet/mydarkmodefix.css" = {
   #home.file."mydarkmodefix.css" = {
@@ -231,62 +237,6 @@ in
   #  enable = true;
   #  #packages =
   #};
-
-  # SessionPath and sessionVariables creates a hm-session file that must be sourced:
-  # Beware, it puts it in .profile, not in the .bashrc!
-  programs.bash = {
-    enable = true;
-    enableCompletion = true;
-
-    #shellOptions = [
-    #];
-
-    # Environment variable t...
-    #sessionVariables = {
-    #};
-
-    shellAliases = {
-      aoeu = "setxkbmap us";
-      asdf = "setxkbmap dvorak";
-      oeu = "loadkeys us";
-      sdf = "loadkeys dvorak";
-
-      l = "ls -alhF";
-      #ll = "ls --color=tty -Filah";
-      j = "jobs";
-      s = "sync";
-      #emacs = "emacs -nw";
-      #la = "ls -Fa";
-      p = "pwd";
-      a = "alias";
-
-      yi = "yi -k vim";
-    };
-
-    # Extra commands that should be run when initializing a login shell.
-    # This will append to ~/.profile
-    profileExtra = ''
-      umask 0002
-    '';
-
-    # Extra commands that should be run when initializing an interactive shell.
-    #initExtra = ''
-      #umask 0002
-      #"$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
-    #'';
-
-    # Extra commands that should be placed in ~/.bashrc.
-    # Note that these commands will be run even in non-interactive shells.
-    bashrcExtra = ''
-      umask 0002
-      #. ~/.bashrc
-      #eval "$(direnv hook bash)"
-      #colorscript random
-    '';
-
-    #logoutExtra = ''
-    #'';
-  };
 
   programs.fish = {
     enable = true;
@@ -372,34 +322,34 @@ in
   programs.fzf.enable = true;           # fuzzy finder
   programs.skim.enable = true;          # fuzzy finder
 
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    #viAlias = true;
-    #vimAlias = true;
-    #vimdiffAlias = true;
-
-    # Use Nix Package search engine to find even more plugins:
-    # https://search.nixos.org/packages
-    plugins = with pkgs.vimPlugins; [
-      ##nvim-lspconfig
-      #nvim-treesitter.withAllGrammars
-      #plenary-nvim
-      #gruvbox-material
-      #mini-nvim
-      #nvim-tree-lua
-      #vim-illuminate
-      #vim-numbertoggle
-
-      #{
-      #plugin = vim-startify;
-      #config = "let g:startify_change_to_vcs_root = 0";
-      #}
-
-    ];
-
-    extraConfig = builtins.readFile ./src/.config/nvim/init.vim;
-  };
+# programs.neovim = {
+#   enable = true;
+#   defaultEditor = true;
+#   #viAlias = true;
+#   #vimAlias = true;
+#   #vimdiffAlias = true;
+#
+#   # Use Nix Package search engine to find even more plugins:
+#   # https://search.nixos.org/packages
+#   plugins = with pkgs.vimPlugins; [
+#     ##nvim-lspconfig
+#     #nvim-treesitter.withAllGrammars
+#     #plenary-nvim
+#     #gruvbox-material
+#     #mini-nvim
+#     #nvim-tree-lua
+#     #vim-illuminate
+#     #vim-numbertoggle
+#
+#     #{
+#     #plugin = vim-startify;
+#     #config = "let g:startify_change_to_vcs_root = 0";
+#     #}
+#
+#   ];
+#
+#   extraConfig = builtins.readFile ./src/.config/nvim/init.vim;
+# };
 
 # programs.vim = {
 #   enable = true;
@@ -532,17 +482,17 @@ in
   };
 
 #------------------------------------------------------------------------------
-  wayland.windowManager.sway = {
-    enable = true;
-    config = {
-      input = {
-        "*" = {
-          xkb_layout = "us";
-          xkb_variant = "dvorak";
-        };
-      };
-    };
-  };
+  #wayland.windowManager.sway = {
+  #  enable = true;
+  #  config = {
+  #    input = {
+  #      "*" = {
+  #        xkb_layout = "us";
+  #        xkb_variant = "dvorak";
+  #      };
+  #    };
+  #  };
+  #};
 
   #xsession = {
   #    enable = true;
@@ -612,7 +562,7 @@ in
       #package = pkgs.tela-icon-theme;
       #name = "Tela";
 
-      package = pkgs.gnome.adwaita-icon-theme;
+      package = pkgs.adwaita-icon-theme;
       name = "Adwaita";
     };
     # Give Termite some internal spacing.
@@ -667,9 +617,18 @@ in
   #services.syncthing.enable = true;
 
   # Removable disk automounter for udisks
-  services.udiskie = {
-    enable = true;
-  };
+  #services.udiskie = {
+  #  enable = true;
+  #};
+  #udisks
+  #udiskie
+  #deepin.udisk2-qt5
+  #usermount
+  #services.udisks2 = {
+  #  enable = true;
+  #  #mountOnMedia = true;
+  #  #settings = {};
+  #};
 
   # This will automatically install the lorri command.
   # Note: There's a known issue preventing the lorri daemon from starting automatically upon installation. Until it's resolved, you'll have to reload the user daemon by hand by running systemctl --user daemon-reload, or reboot.

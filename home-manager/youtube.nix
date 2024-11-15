@@ -14,7 +14,7 @@
     invidious
     #gtk-pipe-viewer
     #ytmdesktop # desktop player for youtube music
-    tartube # the easy way to watch and download videos from youtube, twitch, odysee, etc.
+    #tartube # the easy way to watch and download videos from youtube, twitch, odysee, etc. # disabled because tartube use youtube-dl that is insecure
 
     #--------------------------------------------------------------------------
     # CLI / TUI Player (or with ability to launch player)
@@ -35,7 +35,7 @@
     # TUI Downloader (without ability to launch player)
     #--------------------------------------------------------------------------
     #tartube-yt-dlp # conflic with tartube
-    #youtube-dl
+    #youtube-dl # insecure packages
     #youtude-dl-light
     yt-dlp
     ytmdl

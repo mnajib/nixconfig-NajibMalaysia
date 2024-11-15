@@ -11,6 +11,7 @@
       "istana46" "naqib"
       "dialout"
       "wheel"
+      "input" "uinput" # for kmonad keyboard modifier
     ];
   };
 

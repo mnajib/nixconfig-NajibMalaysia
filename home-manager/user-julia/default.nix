@@ -16,9 +16,13 @@ in
     # inputs.nix-colors.homeManagerModules.default
 
     # You can also split up your configuration and import pieces of it here:
-    # ./nvim.nix
-    #./roblox.nix
-    #./wesnoth.nix
+    #../nvim.nix
+    #../neovim/lazyvim.nix
+    ../neovim
+    #../roblox.nix
+    #../wesnoth.nix
+    ../chess.nix
+    ../time-management.nix
 
     ../common-configs.nix
     ../common-packages.nix
@@ -61,17 +65,20 @@ in
   #programs.neovim.enable = true;
 
   home.packages = with pkgs; [
-    #posterazor
-    remmina
-    #wpsoffice
+    #posterazor                          # for print on big paper?
+    #remmina                             # RDP remote desktop client ?
+    #wpsoffice                           #
     libreoffice
-    clamav
+    clamav                              # scan anti-virus ?
+    mindustry                           # game
+    minetest                            # game
     #audacity
     #shotcut
-    #calligra        # calligra marked unsecure because using qtwebkit
+    #calligra                           # calligra marked unsecure because using qtwebkit
     #openshot-qt
     #kmymoney
     #shotwell
+    gv                                  # view and navigate through PostScript and PDF documents on an X display (user interface for the ghostscript interpreter)
   ];
 
   # Enable home-manager and git

@@ -56,7 +56,7 @@ with lib;
   nixpkgs.config = {
     allowUnfree = true;
     #allowBroken = true;
-    cudaSupport = true;                 # May cause a mass rebuild
+    # cudaSupport = true;                 # May cause a mass rebuild
   };
 
   imports = [
@@ -88,7 +88,7 @@ with lib;
     #./waydroid.nix
 
     ./3D.nix                            # freecad, qcad, ...
-    ./steam.nix                         # steam for game, blender-LTS, ...
+    #./steam.nix                         # steam for game, blender-LTS, ...
 
     ./mame.nix
     #./emulationstation.nix
@@ -112,13 +112,21 @@ with lib;
 
     #./nix-garbage-collector.nix
 
-    ./flatpak.nix
-    ./appimage.nix
+    #./flatpak.nix
+    #./appimage.nix
 
     ./walkie-talkie.nix
 
-    ./ai.nix
+    #./ai.nix
     ./barrier.nix
+
+    ./jupyter.nix
+    #./nitter.nix
+
+    #./xdg-kde.nix
+    ./xdg.nix
+
+    ./opengl2.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -169,9 +177,29 @@ with lib;
   # XXX: ???
   environment.systemPackages = with pkgs; [
     #tmux
+
     #nvtop # has been rename to nvtopPackages.full
     nvtopPackages.full
+
     kdenlive
+    pcsx2 # games emulator
+
+    #----------------------------------
+    # haskell tools
+    #----------------------------------
+    stack
+    cabal-install
+    haskellPackages.xmobar
+    haskellPackages.X11
+    haskellPackages.X11-xft
+
+    #nitter # alternative Twitter front-end
+
+    #amule-daemon
+    #amule
+    amule-gui
+
+    libnotify
   ];
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
   #  environment.systemPackages = [
@@ -190,6 +218,8 @@ with lib;
   #};
 
   #hardware.video.hidpi.enable = true;
+
+  #services.amule.enable = true; # need to manually run “amuled –ec-config” to configure the service for the first time.
 
   services.btrfs.autoScrub = {
     enable = true;
@@ -287,26 +317,47 @@ with lib;
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".device = "/dev/disk/by-uuid/a5172078-045e-4b03-abbc-32a86dfe0d06";
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".keyFile = "/crypto_keyfile.bin";
 
-  services.xserver.dpi = 96;
-
-  #services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
-  #services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
-  services.xserver.videoDrivers = [ "nvidia" ];
-  # OR
-  # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
-  #services.xserver.videoDrivers = [ "nvidiaLegacy390" ]; #
-
   # 01:00.0 VGA compatible controller: NVIDIA Corporation GK106GLM [Quadro K2100M] (rev a1)
   # For GK106GLM [Quadro K2100M] in Dell Precision M4800
   # Legacy driver
   #   NVIDIA GPU product: Quadro K2100M
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390; # Latest Legacy GPU version (390.xx series): 390.143 that support the graphic card.
 
-  hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
-  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
+  hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
 
   hardware.nvidia.prime.sync.enable = true;
-  hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
+  #
+  # OR
+  #
+  # Dedicated GPU only activated when needed
+  #offload = {
+  #  enable = true;
+  #
+  #  # In general:
+  #  #   nvidia-offload some-game
+  #  # steam:
+  #  #   nvidia-offload %command%
+  #  enableOffloadCmd = true;
+  #
+  #};
+  #
+  # OR
+  #
+  #specialisation = {
+  #  gaming-time.configuration = {
+  #    hardware.nvidia = {
+  #      prime.sync.enable = lib.mkForce true;
+  #      prime.offload = {
+  #        enable = lib.mkForce false;
+  #        enableOffloadCmd = lib.mkForce false;
+  #      };
+  #    };
+  #  };
+  #};
+
+  # nix shell nixpkgs#pciutils -c lspci | grep ' VGA '
+  hardware.nvidia.prime.intelBusId = "PCI:0:2:0"; # integrated GPU
+  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0"; # dedicated GPU
 
   hardware.nvidia.powerManagement.enable = false;
   hardware.nvidia.powerManagement.finegrained = false;
@@ -319,27 +370,120 @@ with lib;
 
   #----------------------------------------------------------------------------
 
-  #services.xserver.displayManager.sddm.enable = true;
-  services.xserver.displayManager.lightdm.enable = true;
-  #services.xserver.displayManager.startx.enable = true;
+  services.xserver = {
+    enable = true;
+    dpi = 96;
 
-  #services.xserver.displayManager.defaultSession = "none+xmonad"; # Replaced by services.displayManager.defaultSession = "none+xmonad";
-  services.displayManager.defaultSession = "none+xmonad";
+    #videoDrivers = [ "modesetting" "nvidia" ];
+    #videoDrivers = [ "nvidia" "modesetting" ];
+    videoDrivers = [ "nvidia" ];
+    # OR
+    # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
+    #videoDrivers = [ "nvidiaLegacy390" ]; #
 
-  #services.xserver.desktopManager.plasma5.enable = true;
-  #services.xserver.desktopManager.gnome.enable = true;
-  #services.xserver.desktopManager.mate.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
-  #services.xserver.desktopManager.enlightenment.enable = true;
-  #services.xserver.desktopManager.lxqt.enable = true;
-  #services.xserver.desktopManager.lumina.enable = true;
+    displayManager = {
 
-  #services.xserver.windowManager.spectrwm.enable = true;
-  #services.xserver.windowManager.qtile.enable = true;
-  #services.xserver.windowManager.notion.enable = true;
-  #services.xserver.windowManager.leftwm.enable = true;
-  #services.xserver.windowManager.nimdow.enable = true;
-  #services.xserver.windowManager.herbstluftwm.enable = true;
+      lightdm = {
+        enable = true;
+        #background = "";
+        greeters = {
+          gtk = { # gtk is the default
+            enable = true;
+            indicators = [
+              "~host"
+              "~spacer"
+              "~clock"
+              "~spacer"
+              "~session"
+              "~language"
+              "~a11y"
+              "~power"
+            ];
+            clock-format = "%F";
+          };
+          slick = {
+            enable = false;
+          };
+          enso.enable = false;
+        };
+      };
+
+      #gdm = {
+      #  enable = false; #true;
+      #  autoSuspend = false;
+      #};
+
+      startx.enable = false;
+    };
+
+    desktopManager = {
+      xterm.enable = false;
+      #plasma5.enable = true;
+      #gnome.enable = true;
+      #mate.enable = true;
+      #cinnamon.enable = true;
+      #xfce.enable = true;
+      #enlightenment.enable = true;
+      #lxqt.enable = true;
+      #lumina.enable = true;
+    };
+
+    windowManager = {
+      xmonad = {
+        enable = true;
+        enableContribAndExtras = true;
+        extraPackages = haskellPackages: [
+          haskellPackages.xmonad
+          haskellPackages.xmonad-extras
+          haskellPackages.xmonad-contrib
+          haskellPackages.dbus
+          haskellPackages.List
+          haskellPackages.monad-logger
+          haskellPackages.xmobar
+        ];
+      };
+
+      awesome = {
+        enable = true;
+      };
+
+      #spectrwm.enable = true;
+      #qtile.enable = true;
+      #notion.enable = true;
+      #leftwm.enable = true;
+      #nimdow.enable = true;
+      #herbstluftwm.enable = true;
+    };
+
+  }; # End services.xserver
+
+  services.displayManager = {
+    #enable = false; # true;
+
+    #sddm = {
+    #  enable = true;
+    #  wayland.enable = false; #true; # XXX: Experimental
+    #};
+
+    defaultSession = "none+xmonad";
+  };
+
+  #services.desktopManager = {
+    #plasma6.enable = true;
+    #lomiri.enable = true;
+  #};
+
+  # Excluding some KDE Plasma applications from the default install
+  #environment.plasma5.excludePackages = with pkgs.libsForQt5; [
+  #  plasma-browser-integration
+  #  #konsole
+  #  #oxygen
+  #];
+  #environment.plasma6.excludePackages = with pkgs.kdePackages; [
+  #  plasma-browser-integration
+  #  #konsole
+  #  #oxygen
+  #];
 
   #----------------------------------------------------------------------------
 

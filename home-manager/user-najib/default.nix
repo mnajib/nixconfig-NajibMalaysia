@@ -24,6 +24,11 @@ in
     ../common-configs.nix
     ../common-packages.nix
 
+    ../neovim
+    ../helix
+
+    ../time-management.nix
+
     # My attemp to use nix-doom-emacs
     #./emacs.nix
     #
@@ -32,6 +37,9 @@ in
     #./emacs-with-doom.nix
 
     #./hyprland.nix
+    #../evince.nix
+
+    ../cmus.nix
   ];
 
   nixpkgs = {
@@ -78,6 +86,10 @@ in
   # programs.neovim.enable = true;
 
   home.packages = with pkgs; [
+    #tmux
+    mtm
+    dvtm-unstable abduco
+
     btop
     #steam
     almanah
@@ -86,7 +98,7 @@ in
     #jrnl
     #kodi
     #python3.8-notebook
-    qtox
+    #qtox
     #retroarchFull # retroarch
     tig
     treesheets
@@ -96,7 +108,7 @@ in
     xarchiver
     #xmind-8-update8
     xournalpp
-    wpsoffice
+    #wpsoffice
 
     libreoffice-fresh
     #libreoffice-qt-fresh
@@ -111,6 +123,7 @@ in
     #xwayland
     #tribler
     webtorrent_desktop
+    tor-browser
     duf
     gdmap
     ncdu
@@ -130,6 +143,17 @@ in
     #qmmp
     ed  # an implemintation of the standard unix editor
     sakura # a terminal emulator based on GTK and VTE
+
+    #vscode
+    vscode-with-extensions
+
+    ssh-ident
+
+    geogebra6 # Dynamic mathematics software with graphics, algebra and spreadsheets
+
+    #helix # Post-modern modal text editor
+    #evil-helix # Post-modern modal text editor, with vim keybindings
+    #helix-gpt # Code completion LSP for Helix with support for Copilot + OpenAI
   ];
 
   # Enable home-manager and git
@@ -164,6 +188,11 @@ in
       #};
       #------------------------------------------------------------------------
     };
+
+    #".ssh/config_source" = {
+    #  source = ../shared/config/ssh/config-cmt;
+    #  onChange = ''cat ~/.ssh/config_source > ~/.ssh/config && chmod 600 ~/.ssh/config'';
+    #};
   };
 
   # XXX:
