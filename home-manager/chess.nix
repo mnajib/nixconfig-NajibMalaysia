@@ -17,7 +17,7 @@
     stockfish                           # strong open source chess-engine
     fairymax                            # a small chess-engine supporting fairy pieces
     xboard                              # gui for chess-engine
-    eboard                              # chess interface for unix-like systems
+    #eboard                              # chess interface for unix-like systems
     gnome.gnome-chess                   # gui chess game
     #kdePackages.knights                 # Chess board program
     cutechess                           # GUI, CLI, and library for playing chess
