@@ -122,7 +122,7 @@ in
       highlight ColorColumn ctermbg=238 guibg=#111111
 
       " XXX: security risk ???
-      set modeline                " to make vim/nvim load setting in file header
+      "set modeline                " to make vim/nvim load setting in file header
 
 
       "------------------------------------------------------------------------------
@@ -265,6 +265,7 @@ in
     #extraLuaPackages = [];
 
     # Custom lua lines
+    #extraLuaConfig = builtins.readFile ../src/.config/nvim/init.lua;
     extraLuaConfig = ''
 
 
@@ -289,7 +290,7 @@ in
       -- :ReloadConfig
 
       -- Optionally, can configure keybinding to reload config quickly
-      -- vim.keymap.set("n", "<leader>r", ":ReloadConfig<CR>", { noremap = true, silent = true })
+      vim.keymap.set("n", "<leader>r", ":ReloadConfig<CR>", { noremap = true, silent = true })
       -- Now, pressing <leader>r will reload your Neovim configuration instantly.
       -- -----------------------------------------------------------------------
 
