@@ -38,6 +38,7 @@
     ./logitech-unifying.nix
     ./xdg.nix
     ./opengl.nix
+    ./xmonad.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -107,12 +108,14 @@
   #services.xserver.desktopManager.deepin.enable = true;
   #services.xserver.desktopManager.budgie.enable = true;
   services.desktopManager = {
-    plasma6.enable = true;
+    #plasma6.enable = true;
   };
 
   services.xserver = {
     windowManager = {
       fluxbox.enable = true;
+      awesome.enable = true;
+      jwm.enable = true;
     };
   };
 
