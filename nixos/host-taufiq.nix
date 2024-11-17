@@ -15,11 +15,21 @@
 with lib;
 #with host;
 {
+
   nix = {
     #package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
     extraOptions = ''
         experimental-features = nix-command flakes
     '';
+
+    settings = {
+      trusted-users = [
+        "root" "najib"
+        "julia"
+        "naqib"
+      ];
+      #max-jobs = 2;
+    };
 
     #bash-prompt-prefix = "";
     #bash-prompt = "[develop] ";
@@ -129,12 +139,6 @@ with lib;
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   networking.hostId = "fc10af0f";
-
-  nix.settings.trusted-users = [
-    "root" "najib"
-    "naqib"
-    "julia"
-  ];
 
   networking.useDHCP = false;          # Disabled by Najib on 20220724T0740
                                        # Enabled by Najib on 2023-02-01T1245 in attemp to decrease delay on startup.
@@ -464,11 +468,6 @@ with lib;
   # echo 1 > /sys/module/processor/parameters/ignore_ppc
 
   systemd.watchdog.rebootTime = "10m";
-
-  #nix.maxJobs = lib.mkDefault 4; #8;
-  nix.settings.max-jobs = 4;
-  #nix.daemonNiceLevel = 19; # 0 to 19, default 0
-  #nix.daemonIONiceLevel = 7; # 0 to 7, default 0
 
   # XXX: High-DPI console
   #console.font = lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
