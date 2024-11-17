@@ -69,3 +69,8 @@ vim.api.nvim_create_user_command("ReloadColors", set_color_mode, {})
 -- Highlight settings for line numbers
 vim.cmd([[highlight LineNr ctermfg=11 ctermbg=237]])
 vim.cmd([[highlight LineNr guifg=#525252 guibg=#333333]])
+
+require('orgmode').setup({
+  org_agenda_files = {'~/orgfiles/**/*'}, -- for multiple, separate it with ','
+  org_default_notes_file = '~/orgfiles/refile.org',
+})
