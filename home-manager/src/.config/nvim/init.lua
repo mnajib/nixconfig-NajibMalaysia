@@ -20,9 +20,10 @@ vim.api.nvim_create_user_command("ReloadConfig", reload_nvim_config, {})
 -- Optionally, can configure keybinding to reload config quickly
 vim.keymap.set("n", "<leader>r", ":ReloadConfig<CR>", { noremap = true, silent = true })
 -- Now, pressing <leader>r will reload your Neovim configuration instantly.
+
+
+
 -- -----------------------------------------------------------------------
-
-
 -- Enable absolute line numbers for the current line
 vim.wo.number = true
 
@@ -31,6 +32,7 @@ vim.wo.number = true
 
 -- Set the width of the number column (optional)
 -- vim.wo.numberwidth = 4  -- Adjust as needed for your line numbers
+
 
 
 -- -----------------------------------------------------------------------
@@ -63,9 +65,18 @@ set_color_mode()
 vim.api.nvim_create_user_command("ReloadColors", set_color_mode, {})
 -- Now, when you nedd to switch color modes, simply run:
 -- :ReloadColors
+
+
+
 -- -----------------------------------------------------------------------
-
-
 -- Highlight settings for line numbers
 -- vim.cmd([[highlight LineNr ctermfg=11 ctermbg=237]])
 -- vim.cmd([[highlight LineNr guifg=#525252 guibg=#333333]])
+
+
+
+-- -----------------------------------------------------------------------
+require('orgmode').setup({
+  org_agenda_files = {'~/orgfiles/**/*'}, -- for multiple, separate it with ','
+  org_default_notes_file = '~/orgfiles/refile.org',
+})
