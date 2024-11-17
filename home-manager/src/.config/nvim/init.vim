@@ -7,6 +7,9 @@ set incsearch               " incremental search
 set wildmode=longest,list   " get bash-like tab completions
 
 
+" ----------------------------------------------------------------------------
+"  NOTE: This configuration have been moved into init.lua
+" ----------------------------------------------------------------------------
 "set termguicolors           " enabling true color; Comment this out for use only ANSI colors
 "------------------------------------------------------------------------------
 " Use different color schemes based on the TERM variable

@@ -41,17 +41,17 @@ local function set_color_mode()
 
   if term:match("256color") then
     vim.opt.termguicolors = true  -- Enable 24-bit colors
-    -- vim.cmd("colorscheme gruvbox8")  -- Example: 256-color theme
-    vim.cmd("colorscheme default")
+    vim.cmd("colorscheme gruvbox8")  -- Example: 256-color theme
+    -- vim.cmd("colorscheme default")
   elseif term == "linux" then
     vim.opt.termguicolors = false  -- Fallback to basic 16 colors
-    vim.cmd("colorscheme default") -- Example: ANSI theme
-    -- vim.cmd("colorscheme gruvbox8") -- Example: ANSI theme
+    -- vim.cmd("colorscheme default") -- Example: ANSI theme
+    vim.cmd("colorscheme gruvbox8") -- Example: ANSI theme
   else
     print("Unknown TERM: " .. term .. ", defaulting to ANSI colors.")
     vim.opt.termguicolors = false
-    vim.cmd("colorscheme default")
-    -- vim.cmd("colorscheme gruvbox8")
+    -- vim.cmd("colorscheme default")
+    vim.cmd("colorscheme gruvbox8")
   end
 
 end
@@ -67,5 +67,5 @@ vim.api.nvim_create_user_command("ReloadColors", set_color_mode, {})
 
 
 -- Highlight settings for line numbers
-vim.cmd([[highlight LineNr ctermfg=11 ctermbg=237]])
-vim.cmd([[highlight LineNr guifg=#525252 guibg=#333333]])
+-- vim.cmd([[highlight LineNr ctermfg=11 ctermbg=237]])
+-- vim.cmd([[highlight LineNr guifg=#525252 guibg=#333333]])
