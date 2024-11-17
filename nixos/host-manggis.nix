@@ -63,7 +63,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    blender
+    #blender
     obs-studio
     #steam
     #steam-run
@@ -178,15 +178,17 @@
     touchpad.tapping = true; #false;
   };
 
-  #services.displayManager = {
-  #  enable = false;
-  #  defaultSession = "none+xmonad";
-  #};
+  services.displayManager = {
+    #enable = false;
+    defaultSession = "none+xmonad";
+    #sddm.enable = true;
+  };
 
   services.xserver = {
     enable = true;
     #dpi = 96;
 
+    # services.xserver.displayManager
     displayManager = {
       defaultSession = "none+xmonad";
 
@@ -209,9 +211,9 @@
         autoSuspend = false;
       };
 
-      sddm = {
-        enable = false;
-      };
+      #sddm = {
+      #  enable = false;
+      #};
 
       sessionCommands = ''
       xset -dpms                      # Disable Energy Star, as we are going to suspend anyway and it may hide "success" on that
@@ -222,8 +224,10 @@
       '';
 
       #sddm.enable = true;
-    };
 
+    }; # End services.xserver.displayManager
+
+    # services.xserver.displayManager.desktopManager
     desktopManager = {
       plasma5.enable = false;
       gnome.enable = false;
@@ -231,6 +235,7 @@
       #mate.enable = true;
     };
 
+    # services.xserver.displayManager.windowManager
     windowManager = {
       awesome.enable = true;
       jwm.enable = true;
@@ -249,8 +254,9 @@
           haskellPackages.xmobar
         ];
       };
-    };
-  };
+    }; # End services.xserver.displayManager.windowManager
+
+  }; # End services.xserver
 
   system.stateVersion = "22.05";
 }
