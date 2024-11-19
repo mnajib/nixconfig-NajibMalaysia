@@ -35,22 +35,67 @@ with lib;
     #distributedBuilds = true;
     #builders = "ssh://sakinah x86_64-linux; ssh://customdesktop x86_64-linux;";
     #builders = "ssh://nurnasuha@sakinah.localdomain x86_64-linux";
-    #buildMachines = [
-    #  {
-    #    hostName = "sakinah.localdomain";
-    #    protocol = "ssh"; # "ssh-ng"
-    #    system = "x86_64-linux";
-    #    #maxJobs = 1;
-    #    #speedFactor = 2;
-    #    #supportedFeatures = [
-    #    #  "nixos-test"
-    #    #  "benchmark"
-    #    #  "big-parallel"
-    #    #  "kvm"
-    #    #];
-    #  }
-    #];
-    #max-jobs = 0; # Disable (never build on local machine, even when connecting to remote builders fails) building on local machine; only build on remote builders.
+    buildMachines = [
+      {
+        hostName = "sakinah.localdomain";
+        #protocol = "ssh"; # "ssh-ng"
+        sshUser = "najib";
+        maxJobs = 1;
+        system = "x86_64-linux";
+        #speedFactor = 2;
+        #supportedFeatures = [
+        #  "nixos-test"
+        #  "benchmark"
+        #  "big-parallel"
+        #  "kvm"
+        #];
+      }
+
+      {
+        hostName = "asmak";
+        sshUser = "najib";
+        maxJobs = 2;
+        systems = [ "x86_64-linux" ];
+      }
+
+      {
+        hostName = "taufiq";
+        sshUser = "najib";
+        maxJobs = 3;
+        systems = [ "x86_64-linux" ];
+      }
+
+      {
+        hostName = "customdesktop";
+        sshUser = "najib";
+        maxJobs = 2;
+        systems = [ "x86_64-linux" ];
+      }
+
+      {
+        hostName = "zahrah";
+        sshUser = "najib";
+        maxJobs = 2;
+        systems = [ "x86_64-linux" ];
+      }
+
+      {
+        hostName = "khawlah";
+        sshUser = "najib";
+        maxJobs = 2;
+        systems = [ "x86_64-linux" ];
+      }
+
+    ];
+
+    settings = {
+      #max-jobs = 0; # Disable (never build on local machine, even when connecting to remote builders fails) building on local machine; only build on remote builders.
+    };
+
+    daemonIOSchedClass = "idle";
+    daemonIOSchedPriority = 7;
+    daemonCPUSchedPolicy = "idle"; # Refer: systemd.resource-control(5), and adjust systemd.services.nix-daemon
+
   };
 
   nixpkgs.config = {
@@ -128,7 +173,7 @@ with lib;
 
     ./opengl2.nix
 
-    ./stylix.nix
+    #./stylix.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -574,11 +619,6 @@ with lib;
   # echo 1 > /sys/module/processor/parameters/ignore_ppc
 
   systemd.watchdog.rebootTime = "10m";
-
-  #nix.maxJobs = lib.mkDefault 4; #8;
-  nix.settings.max-jobs = 4;
-  #nix.daemonNiceLevel = 19; # 0 to 19, default 0
-  #nix.daemonIONiceLevel = 7; # 0 to 7, default 0
 
   # XXX: High-DPI console
   #console.font = lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
