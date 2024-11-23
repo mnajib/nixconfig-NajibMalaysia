@@ -69,6 +69,8 @@
 
     ./opengl.nix
     #./opengl_with_vaapiIntel.nix
+
+    ./stylix.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:

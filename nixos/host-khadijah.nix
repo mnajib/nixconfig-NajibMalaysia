@@ -535,7 +535,6 @@ with lib;
   #----------------------------------------------------------------------------
   # see nixos/stylix.nix
   #----------------------------------------------------------------------------
-
   # nix build nixpkgs#base16-schemes
   # cd result
   # nix run nixpkgs#eza -- --tree
@@ -553,7 +552,6 @@ with lib;
   #
   # Auto-generate from wallpaper
   #stylix.image = ./my-cool-wallpaper.png;
-
   #----------------------------------------------------------------------------
 
   # Enable touchpad support (enabled default in most desktopManager).

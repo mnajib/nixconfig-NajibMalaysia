@@ -549,6 +549,8 @@
           kmonad.nixosModules.default
 
           #lix-module.nixosModules.default
+
+          inputs.stylix.nixosModules.stylix
         ];
 
         #----------------------------------------------------------------------
