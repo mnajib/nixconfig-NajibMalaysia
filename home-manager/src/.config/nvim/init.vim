@@ -32,7 +32,7 @@ set wildmode=longest,list   " get bash-like tab completions
 "else
 "  set background=light
 "endif
-set background=dark
+"set background=dark
 
 highlight Normal ctermbg=black ctermfg=lightgrey guibg=black guifg=lightgrey
 

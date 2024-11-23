@@ -10,7 +10,9 @@
   imports = [
     ../default.nix
 
-    ../../neovim
+    #../../neovim
+    ../../neovim/lazyvim.nix
+
     ../../helix
   ];
 

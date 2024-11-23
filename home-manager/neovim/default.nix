@@ -14,7 +14,7 @@
   #lib,
   #outputs,
   ... }:
-let
+let#packages
   #color = pkgs.writeText "color.vim" (import ./theme.nix config.colorscheme);
 in
 {
@@ -86,8 +86,8 @@ in
       #vim-numbertoggle
       #yankring
       #vim-nix
-      vim-godot
-      orgmode
+      #vim-godot
+      #orgmode
 
       #{
       #  plugin = vim-startify;
@@ -133,6 +133,10 @@ in
       #      })
       #      EOF
       #    '';
+      #}
+
+      #{
+      #  plugin = LazyVim;
       #}
 
     ]; # End programs.neovim.plugins

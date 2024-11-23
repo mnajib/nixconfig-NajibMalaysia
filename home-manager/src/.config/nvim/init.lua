@@ -41,7 +41,8 @@ local function set_color_mode()
   -- Detect the TERM environment variable
   local term = vim.env.TERM
 
-  if term:match("*256color") then
+  -- if term:match("*256color") then
+  if term:match("256color") then
     vim.opt.termguicolors = true  -- Enable 24-bit colors
     vim.cmd("colorscheme gruvbox8")  -- Example: 256-color theme
     -- vim.cmd("colorscheme default")
@@ -76,7 +77,7 @@ vim.api.nvim_create_user_command("ReloadColors", set_color_mode, {})
 
 
 -- -----------------------------------------------------------------------
-require('orgmode').setup({
-  org_agenda_files = {'~/orgfiles/**/*'}, -- for multiple, separate it with ','
-  org_default_notes_file = '~/orgfiles/refile.org',
-})
+-- require('orgmode').setup({
+--   org_agenda_files = {'~/orgfiles/**/*'}, -- for multiple, separate it with ','
+--   org_default_notes_file = '~/orgfiles/refile.org',
+-- })
