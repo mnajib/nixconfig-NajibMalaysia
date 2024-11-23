@@ -211,6 +211,7 @@
     google-chrome
 
     gptfdisk efibootmgr btrfs-progs btrbk #bcachefs-tools
+    exfat
     fatresize	# The FAT16/FAT32 non-destructive resizer
     gsmartcontrol smartmontools
     #lizardfs                 # marked as broken?

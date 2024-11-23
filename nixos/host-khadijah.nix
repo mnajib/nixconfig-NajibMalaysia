@@ -51,12 +51,12 @@ with lib;
         #];
       }
 
-      {
-        hostName = "asmak";
-        sshUser = "najib";
-        maxJobs = 2;
-        systems = [ "x86_64-linux" ];
-      }
+      #{
+      #  hostName = "asmak";
+      #  sshUser = "najib";
+      #  maxJobs = 2;
+      #  systems = [ "x86_64-linux" ];
+      #}
 
       {
         hostName = "taufiq";
