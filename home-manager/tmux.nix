@@ -39,6 +39,9 @@
   # :show terminal-overrides
   # :show terminal-features
   #
+
+  #programs.fzf.tmux.enableShellIntegration = true;
+
   programs.tmux = {
     enable = true;
     #packages =  pkgs.tumx;
@@ -51,7 +54,7 @@
     escapeTime = 10;  # 0 # use '0' to zero-out escape time delay
     historyLimit = 10000; # 1000000
     keyMode = "vi";
-    terminal = "screen-256color";
+    #terminal = "screen-256color";
 
     prefix = "C-b";
     #shortcut = "b";                                        # Default is "b".
@@ -65,22 +68,24 @@
       #set -g mouse-resize-pane on
       set -g mouse on                                       # Tmux 2.1 and above, need only this one line
 
+      # NOTES:
+      #   'Tc' is true-colors
+      #    'RGB' is color codes for true-colors
+      #
       # Check if running in a graphical environment
-      #if-shell '[[ $TERM == *xterm* || $TERM == *screen* ]]' {
-      if-shell '[[ $TERM == screen-256color ]]' {
+      #if-shell '[[ $TERM == screen-256color || $TERM == *xterm* || $TERM == *-256color ]]' {
+      if-shell '[[ $TERM == linux ]]' { # if in console terminal
+        set -g default-terminal "screen"
+        #set-option -ga terminal-overrides ",screen:Tc"
+        #set-option -sa terminal-features ",screen:RGB"
+      } { # if in terminal emulator, if-shell '[ "$TERM" != "linux" ]'
         set -g default-terminal "screen-256color"
-        set-option -ga terminal-overrides ",screen-256color:Tc"
-        set-option -sa terminal-features ",screen-256color:RGB"
-      } {
-        if-shell '[[ $TERM == xterm-256color ]]' {
-          set -g default-terminal "xterm-256color"
-          set-option -ga terminal-overrides ",xterm-256color:Tc"
-          set-option -sa terminal-features ",xterm-256color:RGB"
-        } {
-          set -g default-terminal "screen"
-          set-option -ga terminal-overrides ",screen:Tc"
-          set-option -sa terminal-features ",screen:RGB"
-        }
+        #set-option -ga terminal-overrides ",screen-256color:Tc"
+        #set-option -sa terminal-features ",screen-256color:RGB"
+        set-option -ga terminal-overrides ",screen*:Tc"
+        set-option -ga terminal-overrides ",xterm*:Tc"
+        set-option -sa terminal-features ",screen*:RGB"
+        set-option -sa terminal-features ",xterm*:RGB"
       }
 
       set -g detach-on-destroy off  # Do not exit from tmux when closing a session
@@ -167,9 +172,6 @@
       #set -g window-style bg=$COLOR1
       #set -g window-active-style bg=$COLOR2
       #
-      COLOR1=color233                   # light-black / dark-grey
-      COLOR2=black                      # black
-      COLOR3=color252                   # white
       set -g pane-border-style 'bg=black,fg=white'
       set -g pane-active-border-style 'bg=black,fg=magenta'
       set -g window-style  'bg=black,fg=default'
@@ -247,25 +249,26 @@
       # ??? To install plugin in tmux using tmux-plugin-manager (TPM)? : prefix + I
 
       tmuxPlugins.cpu
-      {
-        # To manually save session, press: prefix + Ctrl+s
-        # To manually restore session, press: prefix + Ctrl+r
-        plugin = tmuxPlugins.resurrect;
-        extraConfig = ''
-          set -g @resurrect-strategy-nvim 'session'
-          set -g @resurrect-capture-pane-contents 'on'
-          set -g @resurrect-save-layouts 'on'
-        '';
-      }
 
-      {
-        plugin = tmuxPlugins.continuum;
-        extraConfig = ''
-          #set -g @continuum-boot 'on' # Not sure this will work in NixOS.
-          set -g @continuum-restore 'on'
-          set -g @continuum-save-interval '0' # '5' to save every 5 minutes. '0' to disable autosave.
-        '';
-      }
+      #{
+      #  # To manually save session, press: prefix + Ctrl+s
+      #  # To manually restore session, press: prefix + Ctrl+r
+      #  plugin = tmuxPlugins.resurrect;
+      #  extraConfig = ''
+      #    set -g @resurrect-strategy-nvim 'session'
+      #    set -g @resurrect-capture-pane-contents 'on'
+      #    set -g @resurrect-save-layouts 'on'
+      #  '';
+      #}
+      #
+      #{
+      #  plugin = tmuxPlugins.continuum;
+      #  extraConfig = ''
+      #    #set -g @continuum-boot 'on' # Not sure this will work in NixOS.
+      #    set -g @continuum-restore 'on'
+      #    set -g @continuum-save-interval '0' # '5' to save every 5 minutes. '0' to disable autosave.
+      #  '';
+      #}
 
       #{
       #  # Highlights when the prefix key has been pressed, helpful for visibility.

@@ -10,20 +10,19 @@ set wildmode=longest,list   " get bash-like tab completions
 " ----------------------------------------------------------------------------
 "  NOTE: This configuration have been moved into init.lua
 " ----------------------------------------------------------------------------
-"set termguicolors           " enabling true color; Comment this out for use only ANSI colors
-"------------------------------------------------------------------------------
 " Use different color schemes based on the TERM variable
-"if $TERM == "linux"
-"  " Use a basic color scheme for 16 colors
-"  "set t_Co=8  " Set the number of colors to 8 (basic ANSI)
-"  set termguicolors=false
-"  colorscheme default  " Use the default color scheme
-"else
-"  " Use a color scheme that supports 256 colors
-"  set t_Co=256  " Set the number of colors to 256
-"  set termguicolors=true
-"  colorscheme gruvbox  " Example: Use a 256-color scheme like gruvbox
-"endif
+if $TERM == "linux"
+  " Use a basic color scheme for 16 colors
+  set t_Co=8  " Set the number of colors to 8 (basic ANSI)
+  set notermguicolors
+  colorscheme default  " Use the default color scheme
+else
+  " Use a color scheme that supports 256 colors
+  set t_Co=256  " Set the number of colors to 256
+  set termguicolors
+  " colorscheme gruvbox  " Example: Use a 256-color scheme like gruvbox
+  colorscheme gruvbox8  " Example: Use a 256-color scheme like gruvbox
+endif
 "------------------------------------------------------------------------------
 
 
@@ -32,9 +31,10 @@ set wildmode=longest,list   " get bash-like tab completions
 "else
 "  set background=light
 "endif
-"set background=dark
+set background=light
+set background=dark
 
-highlight Normal ctermbg=black ctermfg=lightgrey guibg=black guifg=lightgrey
+" highlight Normal ctermbg=black ctermfg=lightgrey guibg=black guifg=lightgrey
 
 ""set number                  " add line numbers
 "set relativenumber                  " add line numbers
@@ -55,9 +55,8 @@ filetype plugin on
 " if using ANSI-16
 "highlight ColorColumn ctermbg=16
 " if using 256 color terminal
-highlight ColorColumn ctermbg=238 guibg=#111111
+" highlight ColorColumn ctermbg=238 guibg=#111111
 
-" XXX: security risk ???
 "set modeline                " to make vim/nvim load setting in file header
 
 
@@ -74,7 +73,7 @@ highlight ColorColumn ctermbg=238 guibg=#111111
 "highlight Cursor guifg=bg guibg=fg
 "highlight Cursor guifg=bg guibg=#626262
 "highlight Cursor guifg=Black guibg=Yellow
-highlight Cursor guifg=Black guibg=Yellow ctermfg=Black ctermbg=Yellow
+"highlight Cursor guifg=Black guibg=Yellow ctermfg=Black ctermbg=Yellow
 
 "set cursorline              " highlight current cursorline
 "set cursorcolumn
@@ -82,9 +81,10 @@ highlight Cursor guifg=Black guibg=Yellow ctermfg=Black ctermbg=Yellow
 "highlight CursorLine guibg=#303030
 "highlight CursorLine cterm=NONE ctermbg=242 gui=NONE guibg=Grey40
 "highlight CursorColumn ctermbg=242 guibg=Grey40
-highlight CursorLine cterm=NONE ctermbg=DarkBlue gui=NONE guibg=DarkBlue
-highlight CursorColumn ctermbg=DarkBlue guibg=DarkBlue
-highlight CursorLineNr cterm=underline ctermfg=11 gui=bold guifg=Yellow
+"
+" highlight CursorLine cterm=NONE ctermbg=DarkBlue gui=NONE guibg=DarkBlue
+" highlight CursorColumn ctermbg=DarkBlue guibg=DarkBlue
+" highlight CursorLineNr cterm=underline ctermfg=11 gui=bold guifg=Yellow
 "------------------------------------------------------------------------------
 
 
@@ -93,8 +93,9 @@ highlight CursorLineNr cterm=underline ctermfg=11 gui=bold guifg=Yellow
 "------------------------------------------------------------------------------
 "highlight Search cterm=NONE ctermbg=darkyellow ctermfg=lightyellow
 "highlight Search gui=NONE guibg=darkyellow guifg=lightyellow
-highlight Search cterm=NONE ctermbg=darkyellow ctermfg=black
-highlight Search gui=NONE guibg=darkyellow guifg=black
+"
+"highlight Search cterm=NONE ctermbg=darkyellow ctermfg=black
+"highlight Search gui=NONE guibg=darkyellow guifg=black
 "------------------------------------------------------------------------------
 
 
@@ -103,8 +104,9 @@ highlight Search gui=NONE guibg=darkyellow guifg=black
 "------------------------------------------------------------------------------
 "highlight MatchParen cterm=none ctermbg=green ctermfg=blue
 "highlight MatchParen cterm=none ctermbg=green ctermfg=blue guibg=NONE guifg=brue gui=bold
-highlight MatchParen cterm=NONE ctermbg=darkblue ctermfg=lightblue
-highlight MatchParen gui=NONE guibg=darkblue guifg=lightblue
+"
+"highlight MatchParen cterm=NONE ctermbg=darkblue ctermfg=lightblue
+"highlight MatchParen gui=NONE guibg=darkblue guifg=lightblue
 "------------------------------------------------------------------------------
 
 
@@ -113,8 +115,9 @@ highlight MatchParen gui=NONE guibg=darkblue guifg=lightblue
 "------------------------------------------------------------------------------
 "highlight Comment cterm=italic ctermbg=NONE ctermfg=darkgrey
 "highlight Comment gui=italic guibg=NONE guifg=darkgrey
-highlight Comment cterm=italic ctermbg=NONE ctermfg=238
-highlight Comment gui=italic guibg=NONE guifg=#444444
+"
+"highlight Comment cterm=italic ctermbg=NONE ctermfg=238
+"highlight Comment gui=italic guibg=NONE guifg=#444444
 "------------------------------------------------------------------------------
 
 
@@ -196,3 +199,6 @@ set nowrap
 " Plug 'mhinz/vim-startify'
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "call plug#end()
+
+set background=light
+set background=dark

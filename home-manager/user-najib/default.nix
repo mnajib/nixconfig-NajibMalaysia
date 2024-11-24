@@ -25,6 +25,8 @@ in
     ../common-packages.nix
 
     ../neovim
+    #../neovim/lazyvim.nix
+
     ../helix
 
     ../time-management.nix

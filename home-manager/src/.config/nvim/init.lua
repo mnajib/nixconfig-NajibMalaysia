@@ -1,3 +1,7 @@
+
+
+
+-- -----------------------------------------------------------------------
 local function reload_nvim_config()
   -- Clear all loaded Lua modules to force reloading them
   for name, _ in pairs(package.loaded) do
@@ -20,6 +24,7 @@ vim.api.nvim_create_user_command("ReloadConfig", reload_nvim_config, {})
 -- Optionally, can configure keybinding to reload config quickly
 vim.keymap.set("n", "<leader>r", ":ReloadConfig<CR>", { noremap = true, silent = true })
 -- Now, pressing <leader>r will reload your Neovim configuration instantly.
+-- -----------------------------------------------------------------------
 
 
 
@@ -32,40 +37,50 @@ vim.wo.number = true
 
 -- Set the width of the number column (optional)
 -- vim.wo.numberwidth = 4  -- Adjust as needed for your line numbers
+-- -----------------------------------------------------------------------
 
 
 
 -- -----------------------------------------------------------------------
 -- To Switch Between 256 Colors and ANSI Colors
-local function set_color_mode()
-  -- Detect the TERM environment variable
-  local term = vim.env.TERM
-
-  -- if term:match("*256color") then
-  if term:match("256color") then
-    vim.opt.termguicolors = true  -- Enable 24-bit colors
-    vim.cmd("colorscheme gruvbox8")  -- Example: 256-color theme
-    -- vim.cmd("colorscheme default")
-  elseif term == "linux" then
-    vim.opt.termguicolors = false  -- Fallback to basic 16 colors
-    -- vim.cmd("colorscheme default") -- Example: ANSI theme
-    vim.cmd("colorscheme gruvbox8") -- Example: ANSI theme
-  else
-    print("Unknown TERM: " .. term .. ", defaulting to ANSI colors.")
-    vim.opt.termguicolors = false
-    -- vim.cmd("colorscheme default")
-    vim.cmd("colorscheme gruvbox8")
-  end
-
-end
-
--- Run the function on startup
-set_color_mode()
-
--- Optional: Create a command to manually switch color modes
-vim.api.nvim_create_user_command("ReloadColors", set_color_mode, {})
--- Now, when you nedd to switch color modes, simply run:
--- :ReloadColors
+-- local function set_color_mode()
+--   -- Detect the TERM environment variable
+--   -- local term = vim.env.TERM
+--   local term = os.getenv("TERM")
+--
+--   -- if term:match("*256color") then
+--   if term:match("256color") then
+--     vim.opt.termguicolors = true  -- Enable 24-bit colors
+--     vim.cmd("colorscheme gruvbox8")  -- Example: 256-color theme
+--     -- vim.cmd("colorscheme default")
+--   elseif term == "xterm" then
+--     vim.opt.termguicolors = true  -- Fallback to basic 16 colors
+--     -- vim.cmd("colorscheme default") -- Example: ANSI theme
+--     vim.cmd("colorscheme gruvbox8") -- Example: ANSI theme
+--   elseif term == "linux" then
+--     vim.opt.termguicolors = false  -- Fallback to basic 16 colors
+--     -- vim.cmd("colorscheme default") -- Example: ANSI theme
+--     vim.cmd("colorscheme gruvbox8") -- Example: ANSI theme
+--     vim.opt.t_Co = 8
+--   else
+--     print("Unknown TERM: " .. term .. ", defaulting to ANSI colors.")
+--     vim.opt.termguicolors = false
+--     vim.cmd("colorscheme default")
+--     -- vim.cmd("colorscheme gruvbox8")
+--   end
+--
+-- end
+-- vim.opt.termguicolors = true  -- Fallback to basic 16 colors
+-- vim.cmd("colorscheme gruvbox8") -- Example: ANSI theme
+--
+-- -- Run the function on startup
+-- set_color_mode()
+--
+-- -- Optional: Create a command to manually switch color modes
+-- vim.api.nvim_create_user_command("ReloadColors", set_color_mode, {})
+-- -- Now, when you nedd to switch color modes, simply run:
+-- -- :ReloadColors
+-- -----------------------------------------------------------------------
 
 
 
