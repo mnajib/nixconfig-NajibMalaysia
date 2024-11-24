@@ -228,6 +228,16 @@ with lib;
     #nvtop # has been rename to nvtopPackages.full
     nvtopPackages.full
 
+    pciutils
+    file
+
+    gnumake
+    gcc
+
+    gparted
+    fatresize
+    kate
+
     kdenlive
     pcsx2 # games emulator
 
@@ -324,6 +334,9 @@ with lib;
   #};
 
   #boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_11.zfs;
+  #boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12.zfs;
+
   boot.kernelParams = [
     #"i915.modeset=0" "nouveau.modeset=1"                                        # to disable i915 and enable nouveau
     "video=eDP-1:1920x1080" "video=VGA-1:1280x1024" "video=DP-1-3:1280x1024"    #
@@ -364,20 +377,23 @@ with lib;
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".device = "/dev/disk/by-uuid/a5172078-045e-4b03-abbc-32a86dfe0d06";
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".keyFile = "/crypto_keyfile.bin";
 
+
+  # NOTE: may need to disable automatic graphic switching in BIOS
+
   # 01:00.0 VGA compatible controller: NVIDIA Corporation GK106GLM [Quadro K2100M] (rev a1)
   # For GK106GLM [Quadro K2100M] in Dell Precision M4800
   # Legacy driver
   #   NVIDIA GPU product: Quadro K2100M
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390; # Latest Legacy GPU version (390.xx series): 390.143 that support the graphic card.
 
-  hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
+  #hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
 
-  hardware.nvidia.prime.sync.enable = true;
+  #hardware.nvidia.prime.sync.enable = true;
   #
   # OR
   #
   # Dedicated GPU only activated when needed
-  #offload = {
+  #hardware.nvidia.prime.offload = {
   #  enable = true;
   #
   #  # In general:
@@ -409,9 +425,16 @@ with lib;
   hardware.nvidia.powerManagement.enable = false;
   hardware.nvidia.powerManagement.finegrained = false;
   hardware.nvidia.open = false;
-  hardware.nvidia.nvidiaSettings = true;
+  #hardware.nvidia.nvidiaSettings = true;
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;  # <-- this is tested and work
+
+
+
+
+
+
+
 
   services.logind.extraConfig = "RuntimeDirectorySize=4G";    # before this it is 100% full with 1.6G tmpfs /run/user/1001
 
@@ -423,7 +446,7 @@ with lib;
 
     #videoDrivers = [ "modesetting" "nvidia" ];
     #videoDrivers = [ "nvidia" "modesetting" ];
-    videoDrivers = [ "nvidia" ];
+    #videoDrivers = [ "nvidia" ];
     # OR
     # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
     #videoDrivers = [ "nvidiaLegacy390" ]; #
@@ -495,7 +518,8 @@ with lib;
       };
 
       #spectrwm.enable = true;
-      #qtile.enable = true;
+      qtile.enable = true;
+      jwm.enable = true;
       #notion.enable = true;
       #leftwm.enable = true;
       #nimdow.enable = true;
