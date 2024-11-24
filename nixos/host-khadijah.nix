@@ -378,12 +378,18 @@ with lib;
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".keyFile = "/crypto_keyfile.bin";
 
 
+  #----------------------------------------------------------------------------
   # NOTE: may need to disable automatic graphic switching in BIOS
 
   # 01:00.0 VGA compatible controller: NVIDIA Corporation GK106GLM [Quadro K2100M] (rev a1)
   # For GK106GLM [Quadro K2100M] in Dell Precision M4800
   # Legacy driver
   #   NVIDIA GPU product: Quadro K2100M
+
+  # nix shell nixpkgs#pciutils -c lspci | grep ' VGA '
+  hardware.nvidia.prime.intelBusId = "PCI:0:2:0"; # integrated GPU
+  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0"; # dedicated GPU
+
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390; # Latest Legacy GPU version (390.xx series): 390.143 that support the graphic card.
 
   #hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
@@ -393,16 +399,15 @@ with lib;
   # OR
   #
   # Dedicated GPU only activated when needed
-  #hardware.nvidia.prime.offload = {
-  #  enable = true;
-  #
-  #  # In general:
-  #  #   nvidia-offload some-game
-  #  # steam:
-  #  #   nvidia-offload %command%
-  #  enableOffloadCmd = true;
-  #
-  #};
+  hardware.nvidia.prime.offload = {
+    enable = true;
+    # With enebleOffloadCmd = true, we can do as below.
+    #   In general:
+    #     nvidia-offload some-game
+    #   steam:
+    #     nvidia-offload %command%
+    enableOffloadCmd = true;
+  };
   #
   # OR
   #
@@ -418,28 +423,18 @@ with lib;
   #  };
   #};
 
-  # nix shell nixpkgs#pciutils -c lspci | grep ' VGA '
-  hardware.nvidia.prime.intelBusId = "PCI:0:2:0"; # integrated GPU
-  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0"; # dedicated GPU
-
   hardware.nvidia.powerManagement.enable = false;
   hardware.nvidia.powerManagement.finegrained = false;
   hardware.nvidia.open = false;
   #hardware.nvidia.nvidiaSettings = true;
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;  # <-- this is tested and work
-
-
-
-
-
-
+  #----------------------------------------------------------------------------
 
 
   services.logind.extraConfig = "RuntimeDirectorySize=4G";    # before this it is 100% full with 1.6G tmpfs /run/user/1001
 
   #----------------------------------------------------------------------------
-
   services.xserver = {
     enable = true;
     dpi = 96;
