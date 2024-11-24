@@ -250,25 +250,25 @@
 
       tmuxPlugins.cpu
 
-      #{
-      #  # To manually save session, press: prefix + Ctrl+s
-      #  # To manually restore session, press: prefix + Ctrl+r
-      #  plugin = tmuxPlugins.resurrect;
-      #  extraConfig = ''
-      #    set -g @resurrect-strategy-nvim 'session'
-      #    set -g @resurrect-capture-pane-contents 'on'
-      #    set -g @resurrect-save-layouts 'on'
-      #  '';
-      #}
+      {
+        # To manually save session, press: prefix + Ctrl+s
+        # To manually restore session, press: prefix + Ctrl+r
+        plugin = tmuxPlugins.resurrect;
+        extraConfig = ''
+          set -g @resurrect-strategy-nvim 'session'
+          set -g @resurrect-capture-pane-contents 'on'
+          set -g @resurrect-save-layouts 'on'
+        '';
+      }
       #
-      #{
-      #  plugin = tmuxPlugins.continuum;
-      #  extraConfig = ''
-      #    #set -g @continuum-boot 'on' # Not sure this will work in NixOS.
-      #    set -g @continuum-restore 'on'
-      #    set -g @continuum-save-interval '0' # '5' to save every 5 minutes. '0' to disable autosave.
-      #  '';
-      #}
+      {
+        plugin = tmuxPlugins.continuum;
+        extraConfig = ''
+          #set -g @continuum-boot 'on' # Not sure this will work in NixOS.
+          set -g @continuum-restore 'on'
+          set -g @continuum-save-interval '0' # '5' to save every 5 minutes. '0' to disable autosave.
+        '';
+      }
 
       #{
       #  # Highlights when the prefix key has been pressed, helpful for visibility.
