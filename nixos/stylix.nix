@@ -71,11 +71,11 @@
     popups = 10; # 10;
   };
 
-  stylix.opacity = {
-    applications = 1.0;
-    terminal = 1.0;
-    desktop = 1.0;
-    popups = 1.0;
-  };
+  #stylix.opacity = {
+  #  applications = 1.0;
+  #  terminal = 1.0;
+  #  desktop = 1.0;
+  #  popups = 1.0;
+  #};
 
 }
