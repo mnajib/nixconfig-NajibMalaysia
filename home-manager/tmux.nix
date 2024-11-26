@@ -248,6 +248,7 @@
       # Change date and time formating
       set -g status-right ""
       set -g status-right-length 200 # 60 # 200
+      #
       #set -g status-right " \"#{client_user}@#{host_short}\" %A %Y-%m-%d %H:%M:%S "
       set -g status-right " #[bg=white,fg=black]#P:#{pane_title}#[default] #[bg=yellow,fg=black]\"#{client_user}@#{host_short}\"#[default] %A %Y-%m-%d %H:%M:%S "
       #set -g status-right " #{prefix_highlight} \"#{client_user}@#{host_short}\" %A %Y-%m-%d %H:%M:%S "
