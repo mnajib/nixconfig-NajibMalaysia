@@ -508,6 +508,7 @@
         asmak = mkNixos [
           ./nixos/host-asmak.nix
           #sops-nix.nixosModules.sops
+          inputs.stylix.nixosModules.stylix
         ];
 
         #----------------------------------------------------------------------

@@ -51,6 +51,7 @@
     ./xdg.nix
     ./opengl_with_vaapiIntel.nix
     ./xmonad.nix
+    ./stylix.nix
   ];
 
   environment.systemPackages = with pkgs; [
