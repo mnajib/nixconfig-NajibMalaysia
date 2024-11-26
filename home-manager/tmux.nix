@@ -59,8 +59,15 @@
     prefix = "C-b";
     #shortcut = "b";                                        # Default is "b".
 
-    #withUtempter = true;                                   # Default is 'true'. Whether to enable libutempter for tmux. This is required so that tmux can write to /var/run/utmp (which can be queried with who to display currently connected user sessions). Note, this will add a guid wrapper for the group utmp!
-    secureSocket = false;                                   # Store tmux socket under /run, which is more secure than /tmp, but as a downside it doesn’t survive user logout.
+    # Store tmux socket under /run, which is more secure than /tmp, but as a
+    # downside it doesn’t survive user logout.
+    secureSocket = false;
+    #
+    # Default is 'true'. Whether to enable libutempter for tmux. This is
+    # required so that tmux can write to /var/run/utmp (which can be queried
+    # with who to display currently connected user sessions). Note, this will
+    # add a guid wrapper for the group utmp!
+    #withUtempter = true;
 
     extraConfig = ''
       #set -g mouse-select-window on
@@ -178,14 +185,28 @@
       set -g window-active-style 'bg=black,fg=default'
 
       # Change colors to easier to see how many windows have open and which one is active
-      set -g window-status-style bg=green,fg=brightblack
-      set -g window-status-current-style bg=green,fg=black
-      set -g status-fg black                                # Change the status bar fg
       set -g status-bg cyan                                 # Change the status bar background color
+      set -g status-fg black                                # Change the status bar fg
       set -g status-position bottom                         # top
       set -g status-style 'bg=#1e1e2e'                      # transparent
       set -g status-justify left
 
+
+      # ===========================================================
+      # NOTES:
+      # -----------------------------------------------------------
+      # To query tmux's environment variables from inside tmux:
+      #   :display-message -p '#{status-left}'
+      #   :display-message -p '#{status-right}'
+      # To query tmux's environment variables from outside tmux:
+      #   $ tmux display-message -p '#{status-left}'
+      #   $ tmux display-message -p '#{status-right}'
+      # -----------------------------------------------------------
+
+
+      # ===========================================================
+      # Left Status
+      # -----------------------------------------------------------
       set -g status-left-length 200 #
       #set -g status-left "#{?client_prefix,#[bg=#ff0000],} #{session_name} "
       # Turns status-left blue if the window is zoomed, pink if the prefix is active, and yellow in copy mode.
@@ -195,14 +216,43 @@
       #{?window_zoomed_flag,#[bg=blue],}\
       #{?client_prefix,#[bg=red],}\
       #{?pane_in_mode,#[bg=yellow],}\
-       #{session_name} \
-      #[bg=cyan] "
+       \
+      tmux #{session_name}\
+       \
+      #[default] "
+      #
+      # tmux #{session_id}:#{session_name}
+      # tmux #(echo #{session_id} | sed 's/^\\$//'):#{session_name}
 
+
+      # ===========================================================
+      # Center Status
+      # -----------------------------------------------------------
+      set -g window-status-format "#I:#W#{?window_flags,#{window_flags}, }"
+      set -g window-status-current-format "#I:#W#{?window_flags,#{window_flags}, }"
+      #
+      # NOTE: Press prefix-l (Ctrl-b l) to toggle between the active window and the last active window;
+      #       or use ':last-window'.
+      #set -g window-status-style         bg=green,fg=brightblack
+      #set -g window-status-last-style    bg=green,fg=brightwhite
+      #set -g window-status-current-style bg=green,fg=black
+      set -g window-status-style          bg=green,fg=brightblack
+      set -g window-status-last-style     bg=green,fg=brightblue
+      set -g window-status-current-style  bg=green,fg=black
+      # ===========================================================
+
+
+      # ===========================================================
+      # Right Status
+      # -----------------------------------------------------------
       # Change date and time formating
       set -g status-right ""
       set -g status-right-length 200 # 60 # 200
-      set -g status-right " \"#{client_user}@#{host_short}\" %A %Y-%m-%d %H:%M:%S "
+      #set -g status-right " \"#{client_user}@#{host_short}\" %A %Y-%m-%d %H:%M:%S "
+      set -g status-right " #[bg=white,fg=black]#P:#{pane_title}#[default] #[bg=yellow,fg=black]\"#{client_user}@#{host_short}\"#[default] %A %Y-%m-%d %H:%M:%S "
       #set -g status-right " #{prefix_highlight} \"#{client_user}@#{host_short}\" %A %Y-%m-%d %H:%M:%S "
+      # ===========================================================
+
 
       # Advanced Status Bar Customization
       # Display network statistics, memory usage, or other system info in the status bar. Here's an example for network bandwidth and free memory:
@@ -217,13 +267,12 @@
       # Status bar with system info
       #set -g status-interval 5
       #set -g status-right "#(ps --no-headers -eo comm,%cpu --sort=-%cpu | head -n 1) | DL: #(ifstat -i eth0 0.1 1 | tail -1 | awk '{print $1 \" KB/s\"}') | RAM: #(free -h | grep Mem | awk '{print $3 \"/\" $2}') | %H:%M %d-%b-%Y"
-      #set -g status-left '#S '
 
       ##set-option -g automatic-rename off
       ##set-option -g automatic-rename on
       #set-option -g automatic-rename-format ...
       # Do not rename tmux windows automatically, I like to give my tmux windows custom names using the , key.
-      # Allow programs in the pane to change the window name using a terminal escape sequence (\ek...\e\\). 
+      # Allow programs in the pane to change the window name using a terminal escape sequence (\ek...\e\\).
       #set-option -g allow-rename off
       set-option -g allow-rename on                   # 'on' to allow tmux receives title from bash (I configured bash will sent new title at each prompt)
       # but how to make command that currently run (in bash) as 'tmux pane title'?
