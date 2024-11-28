@@ -174,6 +174,8 @@ with lib;
     ./opengl2.nix
 
     ./stylix.nix
+
+    #./host-khadijah-Xorg-nvidia.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
