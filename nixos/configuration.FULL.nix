@@ -225,6 +225,7 @@
     bmon                      # Network bandwidth monitor
     btop
     enlightenment.evisum
+    tldr # community-driven simplified man pages
 
     screen
     tmux
