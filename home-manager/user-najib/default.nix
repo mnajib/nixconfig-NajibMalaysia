@@ -31,8 +31,10 @@ in
 
     ../time-management.nix
 
-    # My attemp to use nix-doom-emacs
+    # Previously, my attemp to use nix-doom-emacs
     #./emacs.nix
+    # My config with manually download/git clone doomemacs into ~/.config/emacs
+    ../doom-emacs.nix
     #
     #inputs.nix-doom-emacs.hmModule
     #
@@ -151,7 +153,7 @@ in
 
     #vscode
     vscode-with-extensions
-    emacs
+    #emacs
 
     ssh-ident
 

@@ -95,6 +95,8 @@
     #./xdg.nix
     #./xdg-gtk.nix
     #./xdg-kde.nix
+
+    ./doom-emacs.nix
   ];
 
   # Q: Each time I change my configuration.nix and run nixos-rebuild switch,
@@ -319,6 +321,7 @@
     gnumake   # install gnumake, needed for ihp
     cmake     # needed for doom-emacs vterm
     libtool   # needed for doom-emacs vterm
+    ispell    # needed for doom-emacs vterm
 
     expect    # tool for automating interactive applications
 
