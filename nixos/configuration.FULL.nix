@@ -315,9 +315,10 @@
     #})
     #--------------------------------------------------------------------------
 
-    dzen2    # A general purpose messaging, notification and menuing program for X11
-    gnumake    # install gnumake, needed for ihp
-    cmake     # needed by doom-emacs vterm
+    dzen2     # A general purpose messaging, notification and menuing program for X11
+    gnumake   # install gnumake, needed for ihp
+    cmake     # needed for doom-emacs vterm
+    libtool   # needed for doom-emacs vterm
 
     expect    # tool for automating interactive applications
 

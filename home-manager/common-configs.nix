@@ -207,13 +207,13 @@ in
     enable = true;
   };
 
-  programs.wezterm = {
-    enable = true;
-    #package = pkgs.wezterm;
-    #colorSchemes = { ... };
-    #extraConfig = ''
-    #'';
-  };
+  #programs.wezterm = {
+  #  enable = true;
+  #  #package = pkgs.wezterm;
+  #  #colorSchemes = { ... };
+  #  #extraConfig = ''
+  #  #'';
+  #};
 
   programs.termite = {
     enable = true;
