@@ -38,41 +38,40 @@
   stylix.cursor.name = "Bibata-Modern-Ice";
 
   #---------------------------------------------------------------------------
-  stylix.fonts = {
-    monospace = {
-      #package = pkgs.nerdfonts.override {fonts = [ "JetBrainsMono" ];};
-      #name = "JetBrainsMono Nerd Font Mono";
-      #package = pkgs.powerline-fonts;
-      package = pkgs.nerdfonts.override { fonts = [ "FiraMono" ]; };
-      name = "Fira Mono for Powerline (Bold)";
-    };
-    #monospace = {
-    #  package = pkgs.dejavu_fonts;
-    #  name = "DejaVu Sans Mono";
-    #};
-    #sansSerif = {
-    #  package = pkgs.dejavu_fonts;
-    #  name = "DejaVu Sans";
-    #};
-    #serif = {
-    #  package = pkgs.dejavu_fonts;
-    #  name = "DejaVu Serif";
-    #};
-    #emoji = {
-    #  package = pkgs.noto-fonts-emoji;
-    #  name = "Noto Color Emoji";
-    #};
-    serif = config.stylix.fonts.monospace;
-    sansSerif = config.stylix.fonts.monospace;
-    emoji = config.stylix.fonts.monospace;
-  };
+  #stylix.fonts = {
+  #  monospace = {
+  #    package = pkgs.nerdfonts.override {fonts = [ "JetBrainsMono" ];};
+  #    name = "JetBrainsMono Nerd Font Mono";
+  #    #package = pkgs.nerdfonts.override { fonts = [ "FiraMono" ]; };
+  #    #name = "Fira Mono for Powerline (Bold)";
+  #  };
+  #  #monospace = {
+  #  #  package = pkgs.dejavu_fonts;
+  #  #  name = "DejaVu Sans Mono";
+  #  #};
+  #  sansSerif = {
+  #    package = pkgs.dejavu_fonts;
+  #    name = "DejaVu Sans";
+  #  };
+  #  serif = {
+  #    package = pkgs.dejavu_fonts;
+  #    name = "DejaVu Serif";
+  #  };
+  #  emoji = {
+  #    package = pkgs.noto-fonts-emoji;
+  #    name = "Noto Color Emoji";
+  #  };
+  #  #serif = config.stylix.fonts.monospace;
+  #  #sansSerif = config.stylix.fonts.monospace;
+  #  #emoji = config.stylix.fonts.monospace;
+  #};
 
-  stylix.fonts.sizes = {
-    applications = 9;#12; # 1
-    terminal = 9;#10; # 15;
-    desktop = 9;#10; # 10;
-    popups = 9;#10; # 10;
-  };
+  #stylix.fonts.sizes = {
+  #  applications = 9;#12; # 1
+  #  terminal = 9;#10; # 15;
+  #  desktop = 9;#10; # 10;
+  #  popups = 9;#10; # 10;
+  #};
 
   #stylix.opacity = {
   #  applications = 1.0;
