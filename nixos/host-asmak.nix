@@ -12,6 +12,10 @@
     '';
   };
 
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
+
   imports = [
     ./hardware-configuration-asmak.nix
     #./bootEFI.nix
@@ -47,6 +51,7 @@
     ./xdg.nix
     ./opengl_with_vaapiIntel.nix
     ./xmonad.nix
+    ./stylix.nix
   ];
 
   environment.systemPackages = with pkgs; [
@@ -67,6 +72,7 @@
 
   #services.xserver.libinput.tapping = pkgs.lib.mkForce true; # Will delete this line, do not need this anymore; instead I have put if-then-else for this in configuration.FULL.nix
 
+  networking.nftables.enable = true;
   networking.firewall = {
     enable = false;
     #allowedTCPPorts = [ ... ];
@@ -174,7 +180,7 @@
     };
 
     windowManager = {
-      xmonad.enable = true;
+      #xmonad.enable = true; # import ./xmonad.nix
       jwm.enable = true;
       fluxbox.enable = true;
       awesome.enable = true;

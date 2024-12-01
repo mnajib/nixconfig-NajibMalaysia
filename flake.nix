@@ -448,7 +448,8 @@
 
           #{ environment.systemPackages = [ fh.packages.x86_64-linux.default ]; }
 
-          lix-module.nixosModules.default
+          # lix: alternative implimentation of 'nix'
+          #lix-module.nixosModules.default
 
           inputs.stylix.nixosModules.stylix
 
@@ -507,6 +508,7 @@
         asmak = mkNixos [
           ./nixos/host-asmak.nix
           #sops-nix.nixosModules.sops
+          inputs.stylix.nixosModules.stylix
         ];
 
         #----------------------------------------------------------------------
@@ -548,6 +550,8 @@
           kmonad.nixosModules.default
 
           #lix-module.nixosModules.default
+
+          inputs.stylix.nixosModules.stylix
         ];
 
         #----------------------------------------------------------------------

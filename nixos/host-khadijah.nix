@@ -35,22 +35,67 @@ with lib;
     #distributedBuilds = true;
     #builders = "ssh://sakinah x86_64-linux; ssh://customdesktop x86_64-linux;";
     #builders = "ssh://nurnasuha@sakinah.localdomain x86_64-linux";
-    #buildMachines = [
-    #  {
-    #    hostName = "sakinah.localdomain";
-    #    protocol = "ssh"; # "ssh-ng"
-    #    system = "x86_64-linux";
-    #    #maxJobs = 1;
-    #    #speedFactor = 2;
-    #    #supportedFeatures = [
-    #    #  "nixos-test"
-    #    #  "benchmark"
-    #    #  "big-parallel"
-    #    #  "kvm"
-    #    #];
-    #  }
-    #];
-    #max-jobs = 0; # Disable (never build on local machine, even when connecting to remote builders fails) building on local machine; only build on remote builders.
+    buildMachines = [
+      {
+        hostName = "sakinah.localdomain";
+        #protocol = "ssh"; # "ssh-ng"
+        sshUser = "najib";
+        maxJobs = 1;
+        system = "x86_64-linux";
+        #speedFactor = 2;
+        #supportedFeatures = [
+        #  "nixos-test"
+        #  "benchmark"
+        #  "big-parallel"
+        #  "kvm"
+        #];
+      }
+
+      #{
+      #  hostName = "asmak";
+      #  sshUser = "najib";
+      #  maxJobs = 2;
+      #  systems = [ "x86_64-linux" ];
+      #}
+
+      {
+        hostName = "taufiq";
+        sshUser = "najib";
+        maxJobs = 3;
+        systems = [ "x86_64-linux" ];
+      }
+
+      {
+        hostName = "customdesktop";
+        sshUser = "najib";
+        maxJobs = 2;
+        systems = [ "x86_64-linux" ];
+      }
+
+      {
+        hostName = "zahrah";
+        sshUser = "najib";
+        maxJobs = 2;
+        systems = [ "x86_64-linux" ];
+      }
+
+      {
+        hostName = "khawlah";
+        sshUser = "najib";
+        maxJobs = 2;
+        systems = [ "x86_64-linux" ];
+      }
+
+    ];
+
+    settings = {
+      #max-jobs = 0; # Disable (never build on local machine, even when connecting to remote builders fails) building on local machine; only build on remote builders.
+    };
+
+    daemonIOSchedClass = "idle";
+    daemonIOSchedPriority = 7;
+    daemonCPUSchedPolicy = "idle"; # Refer: systemd.resource-control(5), and adjust systemd.services.nix-daemon
+
   };
 
   nixpkgs.config = {
@@ -129,6 +174,8 @@ with lib;
     ./opengl2.nix
 
     ./stylix.nix
+
+    #./host-khadijah-Xorg-nvidia.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -182,6 +229,16 @@ with lib;
 
     #nvtop # has been rename to nvtopPackages.full
     nvtopPackages.full
+
+    pciutils
+    file
+
+    gnumake
+    gcc
+
+    gparted
+    fatresize
+    kate
 
     kdenlive
     pcsx2 # games emulator
@@ -279,6 +336,9 @@ with lib;
   #};
 
   #boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_11.zfs;
+  #boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12.zfs;
+
   boot.kernelParams = [
     #"i915.modeset=0" "nouveau.modeset=1"                                        # to disable i915 and enable nouveau
     "video=eDP-1:1920x1080" "video=VGA-1:1280x1024" "video=DP-1-3:1280x1024"    #
@@ -319,29 +379,37 @@ with lib;
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".device = "/dev/disk/by-uuid/a5172078-045e-4b03-abbc-32a86dfe0d06";
   #boot.initrd.luks.devices."luks-a5172078-045e-4b03-abbc-32a86dfe0d06".keyFile = "/crypto_keyfile.bin";
 
+
+  #----------------------------------------------------------------------------
+  # NOTE: may need to disable automatic graphic switching in BIOS
+
   # 01:00.0 VGA compatible controller: NVIDIA Corporation GK106GLM [Quadro K2100M] (rev a1)
   # For GK106GLM [Quadro K2100M] in Dell Precision M4800
   # Legacy driver
   #   NVIDIA GPU product: Quadro K2100M
+
+  # nix shell nixpkgs#pciutils -c lspci | grep ' VGA '
+  hardware.nvidia.prime.intelBusId = "PCI:0:2:0"; # integrated GPU
+  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0"; # dedicated GPU
+
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390; # Latest Legacy GPU version (390.xx series): 390.143 that support the graphic card.
 
-  hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
+  #hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
 
-  hardware.nvidia.prime.sync.enable = true;
+  #hardware.nvidia.prime.sync.enable = true;
   #
   # OR
   #
   # Dedicated GPU only activated when needed
-  #offload = {
-  #  enable = true;
-  #
-  #  # In general:
-  #  #   nvidia-offload some-game
-  #  # steam:
-  #  #   nvidia-offload %command%
-  #  enableOffloadCmd = true;
-  #
-  #};
+  hardware.nvidia.prime.offload = {
+    enable = true;
+    # With enebleOffloadCmd = true, we can do as below.
+    #   In general:
+    #     nvidia-offload some-game
+    #   steam:
+    #     nvidia-offload %command%
+    enableOffloadCmd = true;
+  };
   #
   # OR
   #
@@ -357,28 +425,25 @@ with lib;
   #  };
   #};
 
-  # nix shell nixpkgs#pciutils -c lspci | grep ' VGA '
-  hardware.nvidia.prime.intelBusId = "PCI:0:2:0"; # integrated GPU
-  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0"; # dedicated GPU
-
   hardware.nvidia.powerManagement.enable = false;
   hardware.nvidia.powerManagement.finegrained = false;
   hardware.nvidia.open = false;
-  hardware.nvidia.nvidiaSettings = true;
+  #hardware.nvidia.nvidiaSettings = true;
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;  # <-- this is tested and work
+  #----------------------------------------------------------------------------
+
 
   services.logind.extraConfig = "RuntimeDirectorySize=4G";    # before this it is 100% full with 1.6G tmpfs /run/user/1001
 
   #----------------------------------------------------------------------------
-
   services.xserver = {
     enable = true;
     dpi = 96;
 
     #videoDrivers = [ "modesetting" "nvidia" ];
     #videoDrivers = [ "nvidia" "modesetting" ];
-    videoDrivers = [ "nvidia" ];
+    #videoDrivers = [ "nvidia" ];
     # OR
     # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
     #videoDrivers = [ "nvidiaLegacy390" ]; #
@@ -450,7 +515,8 @@ with lib;
       };
 
       #spectrwm.enable = true;
-      #qtile.enable = true;
+      qtile.enable = true;
+      jwm.enable = true;
       #notion.enable = true;
       #leftwm.enable = true;
       #nimdow.enable = true;
@@ -486,30 +552,6 @@ with lib;
   #  #konsole
   #  #oxygen
   #];
-
-  #----------------------------------------------------------------------------
-  # see nixos/stylix.nix
-  #----------------------------------------------------------------------------
-
-  # nix build nixpkgs#base16-schemes
-  # cd result
-  # nix run nixpkgs#eza -- --tree
-  #stylix.base16Scheme = "${pkgs.bash16-schemes}/share/themes/gruvbox-dark-medium.yaml";
-  #
-  # OR
-  #
-  #stylix.base16Scheme = {
-  #  base00 = "282828";
-  #  base01 = "3c3836";
-  #  #...
-  #};
-  #
-  # OR
-  #
-  # Auto-generate from wallpaper
-  #stylix.image = ./my-cool-wallpaper.png;
-
-  #----------------------------------------------------------------------------
 
   # Enable touchpad support (enabled default in most desktopManager).
   #services.xserver.libinput.enable = true; # XXX replaced by services.libinput.enable = true;
@@ -574,11 +616,6 @@ with lib;
   # echo 1 > /sys/module/processor/parameters/ignore_ppc
 
   systemd.watchdog.rebootTime = "10m";
-
-  #nix.maxJobs = lib.mkDefault 4; #8;
-  nix.settings.max-jobs = 4;
-  #nix.daemonNiceLevel = 19; # 0 to 19, default 0
-  #nix.daemonIONiceLevel = 7; # 0 to 7, default 0
 
   # XXX: High-DPI console
   #console.font = lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";

@@ -95,6 +95,8 @@
     #./xdg.nix
     #./xdg-gtk.nix
     #./xdg-kde.nix
+
+    ./doom-emacs.nix
   ];
 
   # Q: Each time I change my configuration.nix and run nixos-rebuild switch,
@@ -211,6 +213,7 @@
     google-chrome
 
     gptfdisk efibootmgr btrfs-progs btrbk #bcachefs-tools
+    exfat
     fatresize	# The FAT16/FAT32 non-destructive resizer
     gsmartcontrol smartmontools
     #lizardfs                 # marked as broken?
@@ -222,6 +225,7 @@
     bmon                      # Network bandwidth monitor
     btop
     enlightenment.evisum
+    tldr # community-driven simplified man pages
 
     screen
     tmux
@@ -314,8 +318,11 @@
     #})
     #--------------------------------------------------------------------------
 
-    dzen2    # A general purpose messaging, notification and menuing program for X11
-    gnumake    # install gnumake, needed for ihp
+    dzen2     # A general purpose messaging, notification and menuing program for X11
+    gnumake   # install gnumake, needed for ihp
+    cmake     # needed for doom-emacs vterm
+    libtool   # needed for doom-emacs vterm
+    ispell    # needed for doom-emacs vterm
 
     expect    # tool for automating interactive applications
 
