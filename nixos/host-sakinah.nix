@@ -136,6 +136,7 @@
     allowedTCPPorts = [
       1110 # NFS cluster
       4045 # NFS lock manager
+      30000 # minetest
     ];
     allowedUDPPorts = [
       1110 # NFS client
