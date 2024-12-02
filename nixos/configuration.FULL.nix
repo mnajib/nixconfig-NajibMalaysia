@@ -206,6 +206,9 @@
   # $ nix search wget
   #
   environment.systemPackages = with pkgs; [
+    socat
+    redis
+
     cachix
 
     #unstable.minetest
