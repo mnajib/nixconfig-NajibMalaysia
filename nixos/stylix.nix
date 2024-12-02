@@ -37,6 +37,12 @@
   stylix.cursor.package = pkgs.bibata-cursors;
   stylix.cursor.name = "Bibata-Modern-Ice";
 
+  # NOTE: https://sourcefoundry.org/hack/playground.html
+  #   - Hack
+  #   - Liberation Mono
+  #   - Ubuntu Mono
+  #   - Roboto Mono
+  #   - DejaVu Sans Mono
   #---------------------------------------------------------------------------
   #stylix.fonts = {
   #  monospace = {
