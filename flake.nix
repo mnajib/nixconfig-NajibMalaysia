@@ -564,6 +564,8 @@
             # Add your model from this list:
             # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
             hardware.nixosModules.lenovo-thinkpad-x220
+
+            inputs.stylix.nixosModules.stylix
           ];
         };
 

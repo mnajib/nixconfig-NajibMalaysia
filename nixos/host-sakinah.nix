@@ -66,6 +66,8 @@
     #./nix-build.nix
     ./nix-garbage-collector.nix
     #./teamviewer.nix
+
+    ./stylix.nix
   ];
 
   # Booting
