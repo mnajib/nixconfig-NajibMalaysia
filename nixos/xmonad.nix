@@ -17,6 +17,7 @@
         haskellPackages.List
         haskellPackages.monad-logger
         haskellPackages.xmobar
+        haskellPackages.network
       ];
     };
   };
