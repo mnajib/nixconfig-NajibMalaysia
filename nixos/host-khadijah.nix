@@ -40,7 +40,7 @@ with lib;
         hostName = "sakinah.localdomain";
         #protocol = "ssh"; # "ssh-ng"
         sshUser = "najib";
-        maxJobs = 1;
+        #maxJobs = 1;
         system = "x86_64-linux";
         #speedFactor = 2;
         #supportedFeatures = [
@@ -51,17 +51,17 @@ with lib;
         #];
       }
 
-      #{
-      #  hostName = "asmak";
-      #  sshUser = "najib";
-      #  maxJobs = 2;
-      #  systems = [ "x86_64-linux" ];
-      #}
+      {
+        hostName = "asmak";
+        sshUser = "najib";
+        maxJobs = 2;
+        systems = [ "x86_64-linux" ];
+      }
 
       {
         hostName = "taufiq";
         sshUser = "najib";
-        maxJobs = 3;
+        #maxJobs = 3;
         systems = [ "x86_64-linux" ];
       }
 
@@ -82,7 +82,7 @@ with lib;
       {
         hostName = "khawlah";
         sshUser = "najib";
-        maxJobs = 2;
+        #maxJobs = 2;
         systems = [ "x86_64-linux" ];
       }
 
@@ -173,7 +173,7 @@ with lib;
 
     ./opengl2.nix
 
-    ./stylix.nix
+    #./stylix.nix
 
     #./host-khadijah-Xorg-nvidia.nix
   ];
@@ -394,22 +394,22 @@ with lib;
 
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390; # Latest Legacy GPU version (390.xx series): 390.143 that support the graphic card.
 
-  #hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
+  hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
 
-  #hardware.nvidia.prime.sync.enable = true;
+  hardware.nvidia.prime.sync.enable = true;
   #
   # OR
   #
   # Dedicated GPU only activated when needed
-  hardware.nvidia.prime.offload = {
-    enable = true;
-    # With enebleOffloadCmd = true, we can do as below.
-    #   In general:
-    #     nvidia-offload some-game
-    #   steam:
-    #     nvidia-offload %command%
-    enableOffloadCmd = true;
-  };
+  #hardware.nvidia.prime.offload = {
+  #  enable = true;
+  #  # With enebleOffloadCmd = true, we can do as below.
+  #  #   In general:
+  #  #     nvidia-offload some-game
+  #  #   steam:
+  #  #     nvidia-offload %command%
+  #  enableOffloadCmd = true;
+  #};
   #
   # OR
   #
@@ -429,7 +429,7 @@ with lib;
   hardware.nvidia.powerManagement.finegrained = false;
   hardware.nvidia.open = false;
   #hardware.nvidia.nvidiaSettings = true;
-  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
+  ##hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;  # <-- this is tested and work
   #----------------------------------------------------------------------------
 
@@ -443,7 +443,7 @@ with lib;
 
     #videoDrivers = [ "modesetting" "nvidia" ];
     #videoDrivers = [ "nvidia" "modesetting" ];
-    #videoDrivers = [ "nvidia" ];
+    videoDrivers = [ "nvidia" ];
     # OR
     # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
     #videoDrivers = [ "nvidiaLegacy390" ]; #
@@ -480,7 +480,7 @@ with lib;
       #  autoSuspend = false;
       #};
 
-      startx.enable = false;
+      startx.enable = true; #false;
     };
 
     desktopManager = {
@@ -515,7 +515,7 @@ with lib;
       };
 
       #spectrwm.enable = true;
-      qtile.enable = true;
+      #qtile.enable = true;
       jwm.enable = true;
       #notion.enable = true;
       #leftwm.enable = true;

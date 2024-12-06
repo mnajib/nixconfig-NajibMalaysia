@@ -13,11 +13,11 @@
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sd_mod" "sdhci_pci" ];
-  boot.initrd.kernelModules = [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ]; #"zfs" "bcachefs"
-  boot.initrd.supportedFilesystems = [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ]; #"zfs" "bcachefs"
+  boot.initrd.kernelModules = [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" ]; #"zfs" "bcachefs"
+  boot.initrd.supportedFilesystems = [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" ]; #"zfs" "bcachefs"
 
   boot.kernelModules = [ "kvm-intel" "wl" "88x2bu" "8812au" ]; # "8812au"
-  boot.supportedFilesystems = [ "btrfs" "ext4" "xfs" "vfat" "zfs" "ntfs" ]; #"zfs" "bcachefs"
+  boot.supportedFilesystems = [ "btrfs" "ext4" "xfs" "vfat" "ntfs" ]; #"zfs" "bcachefs"
   boot.extraModulePackages = [
     # Wireless Network Card
     #config.boot.kernelPackages.broadcom_sta

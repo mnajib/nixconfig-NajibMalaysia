@@ -47,6 +47,8 @@ in
     #../evince.nix
 
     ../cmus.nix
+
+    ../chemistry.nix
   ];
 
   nixpkgs = {
@@ -120,8 +122,6 @@ in
     libreoffice-fresh
     #libreoffice-qt-fresh
 
-    chemtool
-    marvin
     smlnj
     #waydroid
     #kmymoney
