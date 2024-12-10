@@ -89,6 +89,26 @@ in
   home = {
     username = "najib";
     homeDirectory = "/home/najib";
+
+    # NOTE: home.sessionVariables are defined in a file named hm-session-vars.sh.
+    # If you are in a shell provided by a HM module, this file is already sourced
+    # (They are also explicitly sourcing 31 it but it is hidden to the user.). If
+    # you are not using a shell provided by a HM module (e.g. shell provided by
+    # NixOS) or writing your own HM module for a shell, then you need to source that
+    # file yourself to have those sessions variables defined.
+    # Example, for bash:
+    # programs.bash = {
+    #   enable = true;
+    #   sessionVariables = {
+    #     EDITOR = "vim";
+    #   };
+    #   initExtra = ''
+    #     . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+    #   '';
+    # };
+    sessionVariables = {
+      WINIT_X11_SCALE_FACTOR = 0.8;
+    };
   };
 
   # Add stuff for your user as you see fit:
@@ -163,6 +183,10 @@ in
     #evil-helix # Post-modern modal text editor, with vim keybindings
     #helix-gpt # Code completion LSP for Helix with support for Copilot + OpenAI
   ];
+
+  # Environment variable t...
+  #sessionVariables = {
+  #};
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
