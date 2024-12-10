@@ -101,6 +101,8 @@
 
     ed # text editor
 
+    bats # Automated testing system for bash script
+
     yad
     zenity
     dialog
