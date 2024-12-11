@@ -389,14 +389,14 @@ with lib;
   #   NVIDIA GPU product: Quadro K2100M
 
   # nix shell nixpkgs#pciutils -c lspci | grep ' VGA '
-  hardware.nvidia.prime.intelBusId = "PCI:0:2:0"; # integrated GPU
-  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0"; # dedicated GPU
+  #hardware.nvidia.prime.intelBusId = "PCI:0:2:0"; # integrated GPU
+  #hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0"; # dedicated GPU
 
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390; # Latest Legacy GPU version (390.xx series): 390.143 that support the graphic card.
 
-  hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
+  hardware.nvidia.modesetting.enable = false;#true;    # enable in order to prevent tearing on nvidia.prime.sync
 
-  hardware.nvidia.prime.sync.enable = true;
+  hardware.nvidia.prime.sync.enable = false;#true;
   #
   # OR
   #
@@ -447,6 +447,23 @@ with lib;
     # OR
     # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
     #videoDrivers = [ "nvidiaLegacy390" ]; #
+
+    # verify that Xinerama is working by checking:
+    # xrandr --verbose | grep -i provider
+    extraConfig = ''
+      Section "ServerFlags"
+        Option "Xinerama" "on"
+      EndSection
+
+      Section "Device"
+        Identifier "NVIDIA GPU"
+        Driver "nvidia"
+        Option "AllowEmptyInitialConfiguration" "false"
+        Option "PrimaryGPU" "true"
+        Option "UseDisplayDevice" "DFP-0, DFP-1, DFP-2"
+        Option "Xinerama" "on"
+      EndSection
+    '';
 
     displayManager = {
 
