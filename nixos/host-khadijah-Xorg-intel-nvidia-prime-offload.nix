@@ -389,27 +389,28 @@ with lib;
   #   NVIDIA GPU product: Quadro K2100M
 
   # nix shell nixpkgs#pciutils -c lspci | grep ' VGA '
-  #hardware.nvidia.prime.intelBusId = "PCI:0:2:0"; # integrated GPU
-  #hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0"; # dedicated GPU
+  hardware.nvidia.prime.intelBusId = "PCI:0:2:0"; # integrated GPU
+  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0"; # dedicated GPU
 
-  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390; # Latest Legacy GPU version (390.xx series): 390.143 that support the graphic card.
+  hardware.nvidia.powerManagement.enable = false;
+  hardware.nvidia.powerManagement.finegrained = false;
+  hardware.nvidia.open = false;
+  #hardware.nvidia.nvidiaSettings = true;
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;  # <-- this is tested and work
 
-  hardware.nvidia.modesetting.enable = false;#true;    # enable in order to prevent tearing on nvidia.prime.sync
+  #hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
+  #hardware.nvidia.prime.sync.enable = true;
 
-  hardware.nvidia.prime.sync.enable = false;#true;
-  #
-  # OR
-  #
   # Dedicated GPU only activated when needed
-  #hardware.nvidia.prime.offload = {
-  #  enable = true;
-  #  # With enebleOffloadCmd = true, we can do as below.
-  #  #   In general:
-  #  #     nvidia-offload some-game
-  #  #   steam:
-  #  #     nvidia-offload %command%
-  #  enableOffloadCmd = true;
-  #};
+  hardware.nvidia.prime.offload = {
+    enable = true;
+    # With enebleOffloadCmd = true, we can do as below.
+    #   In general:
+    #     nvidia-offload some-game
+    #   steam:
+    #     nvidia-offload %command%
+    enableOffloadCmd = true;
+  };
   #
   # OR
   #
@@ -425,14 +426,7 @@ with lib;
   #  };
   #};
 
-  hardware.nvidia.powerManagement.enable = false;
-  hardware.nvidia.powerManagement.finegrained = false;
-  hardware.nvidia.open = false;
-  #hardware.nvidia.nvidiaSettings = true;
-  ##hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;  # <-- this is tested and work
   #----------------------------------------------------------------------------
-
 
   services.logind.extraConfig = "RuntimeDirectorySize=4G";    # before this it is 100% full with 1.6G tmpfs /run/user/1001
 
@@ -441,6 +435,9 @@ with lib;
     enable = true;
     dpi = 96;
 
+    #videoDrivers = [ "modesetting" ];
+    #videoDrivers = [ "modesetting" ];
+    #videoDrivers = [ "nouveau" ];
     #videoDrivers = [ "modesetting" "nvidia" ];
     #videoDrivers = [ "nvidia" "modesetting" ];
     videoDrivers = [ "nvidia" ];
@@ -450,20 +447,28 @@ with lib;
 
     # verify that Xinerama is working by checking:
     # xrandr --verbose | grep -i provider
-    extraConfig = ''
-      Section "ServerFlags"
-        Option "Xinerama" "on"
-      EndSection
-
-      Section "Device"
-        Identifier "NVIDIA GPU"
-        Driver "nvidia"
-        Option "AllowEmptyInitialConfiguration" "false"
-        Option "PrimaryGPU" "true"
-        Option "UseDisplayDevice" "DFP-0, DFP-1, DFP-2"
-        Option "Xinerama" "on"
-      EndSection
-    '';
+    #  extraConfig = ''
+    #    Section "ServerFlags"
+    #      Option "Xinerama" "on"
+    #    EndSection
+    #    Section "Device"
+    #      Identifier "NVIDIA GPU"
+    #      Driver "nouveau"
+    #      Option "AllowEmptyInitialConfiguration" "false"
+    #      Option "PrimaryGPU" "true"
+    #      Option "UseDisplayDevice" "DFP-0, DFP-1, DFP-2"
+    #      Option "Xinerama" "on"
+    #    EndSection
+    #  '';
+    #  Section "Device"
+    #    Identifier "NVIDIA GPU"
+    #    Driver "nvidia"
+    #    Option "AllowEmptyInitialConfiguration" "false"
+    #    Option "PrimaryGPU" "true"
+    #    Option "UseDisplayDevice" "DFP-0, DFP-1, DFP-2"
+    #    Option "Xinerama" "on"
+    #  EndSection
+    #'';
 
     displayManager = {
 

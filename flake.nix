@@ -445,7 +445,41 @@
           nix-ld.nixosModules.nix-ld
           { programs.nix-ld.dev.enable = true; }
 
-          ./nixos/host-khadijah.nix
+          # ---------------------------------------------------------------------------------
+          # Intel + Nvidia
+          # ---------------------------------------------------------------------------------
+          # With enable switchable graphic in BIOS (Dell Precision M4800 laptop).
+          # Enable intel and nvidia graphic driver, with enable PRIME
+          ./nixos/host-khadijah-Xorg-intel-nvidia-prime-sync.nix # nvidia always on, best while connected with power
+          #./nixos/host-khadijah-Xorg-intel-nvidia-prime-offload.nix # nvidia on when needed, best while on battery
+          #
+          # ---------------------------------------------------------------------------------
+          # Intel + Nouveau
+          # ---------------------------------------------------------------------------------
+          # Enable intel and nouveau graphic driver, with enable allow both/switchable (PRIME?)
+          #./nixos/host-khadijah-Xorg-intel-nouveau.nix
+          #
+          # ---------------------------------------------------------------------------------
+          # Intel
+          # ---------------------------------------------------------------------------------
+          # Enable intel graphic driver, disable nouveau and nvidia graphic driver
+          # With enable switchable graphic in BIOS (Dell Precision M4800 laptop).
+          # The only problem is, I do not have external display on Display-port of the laptop.
+          # External display on VGA-port of the laptop is working.
+          # If disable switchable graphic in BIOS, it will only display on laptop screen.
+          #./nixos/host-khadijah-Xorg-intel.nix
+          #
+          # ---------------------------------------------------------------------------------
+          # Nvidia
+          # ---------------------------------------------------------------------------------
+          # Enable nvidia graphic driver, disable nouveau and intel graphic driver
+          #./nixos/host-khadijah-Xorg-nvidia.nix
+          #
+          # ---------------------------------------------------------------------------------
+          # Nouveau
+          # ---------------------------------------------------------------------------------
+          # Enable nouveau graphic driver, disable intel and nvidia graphic driver
+          #./nixos/host-khadijah-Xorg-nouveau.nix
 
           #{ environment.systemPackages = [ fh.packages.x86_64-linux.default ]; }
 
