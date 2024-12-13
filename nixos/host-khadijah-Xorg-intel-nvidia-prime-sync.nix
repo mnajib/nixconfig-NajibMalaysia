@@ -371,7 +371,7 @@ with lib;
 
   boot.initrd.availableKernelModules = [
     "i915"
-    "nvidia"
+    "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm"
   ];
 
   #
@@ -480,6 +480,84 @@ with lib;
     # OR
     # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
     #videoDrivers = [ "nvidiaLegacy390" ]; #
+
+    #extraConfig = lib.mkAfter ''
+    #  # -----------------------------------------------
+    #  # Layout
+    #  # -----------------------------------------------
+    #
+    #  Section "ServerLayout"
+    #      Identifier "Layout[all]"
+    #      Screen 0 "Screen0" 0 0               # Place Screen0 (eDP) at position 0x0
+    #      Screen 1 "Screen1" RightOf "Screen0" # Place Screen1 (VGA + DP) to the right of Screen0
+    #  EndSection
+    #
+    #  # -----------------------------------------------
+    #  # Devices
+    #  # -----------------------------------------------
+    #
+    #  # Device configuration for modesetting (Intel GPU)
+    #  Section "Device"
+    #      Identifier "Device-modesetting[0]"
+    #      Driver "modesetting"
+    #      BusID "PCI:0:2:0"                    # Intel GPU Bus ID
+    #      Option "AccelMethod" "none"
+    #      Option "DRI" "3" # Enable PRIME support
+    #  EndSection
+    #
+    #  # Device configuration for NVIDIA GPU
+    #  Section "Device"
+    #      Identifier "Device-nvidia[0]"
+    #      Driver "nvidia"
+    #      Option "AllowEmptyInitialConfiguration" "True"
+    #      Option "SidebandSocketPath" "/run/nvidia-xdriver/"
+    #      Option "Coolbits" "28" # Enable PRIME and manual setting
+    #      BusID "PCI:1:0:0"                    # NVIDIA GPU Bus ID
+    #  EndSection
+    #
+    #  # -----------------------------------------------
+    #  # Monitors
+    #  # -----------------------------------------------
+    #
+    #  Section "Monitor"
+    #      Identifier "Monitor0"                # Laptop display (eDP)
+    #  EndSection
+    #
+    #  Section "Monitor"
+    #      Identifier "Monitor1"                # External VGA monitor
+    #  EndSection
+    #
+    #  Section "Monitor"
+    #      Identifier "Monitor2"                # External DP monitor
+    #  EndSection
+    #
+    #  # -----------------------------------------------
+    #  # Screens
+    #  # -----------------------------------------------
+    #
+    #  Section "Screen"
+    #      Identifier "Screen0"                 # Screen for Monitor0 (laptop display)
+    #      Device "Device-modesetting[0]"       # Use modesetting device
+    #      Monitor "Monitor0"
+    #      SubSection "Display"
+    #          Depth 24
+    #          Virtual 1920 1080               # Resolution for Monitor0
+    #      EndSubSection
+    #  EndSection
+    #
+    #  Section "Screen"
+    #      Identifier "Screen1"                 # Screen for Monitor1 + Monitor2
+    #      Device "Device-nvidia[0]"            # Use NVIDIA device
+    #      Monitor "Monitor1"
+    #      Monitor "Monitor2"
+    #      SubSection "Display"
+    #          Depth 24
+    #          Virtual 2560 1024               # Combine Monitor1 (VGA) and Monitor2 (DP) side-by-side
+    #      EndSubSection
+    #  EndSection
+    #
+    #  # -----------------------------------------------
+    #'';
 
     # verify that Xinerama is working by checking:
     # xrandr --verbose | grep -i provider
