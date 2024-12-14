@@ -1,9 +1,23 @@
+#
+# NOTE:
+#   xdpyinfo
+#
+#
+# Ref:
+#   https://wiki.haskell.org/Xmonad/Frequently_asked_questions#Multi_head_or_xinerama_troubles
+#
+
 {
   pkgs,
   config,
   ...
 }:
 {
+  environment.systemPackages = with pkgs; [
+    xorg.libXinerama
+    xorg.libX11
+    xorg.libXrandr
+  ];
 
   services.xserver.windowManager = {
     xmonad = {
@@ -18,6 +32,8 @@
         haskellPackages.monad-logger
         haskellPackages.xmobar
         haskellPackages.network
+
+        haskellPackages.GLHUI
       ];
     };
   };
