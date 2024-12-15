@@ -25,21 +25,30 @@ in
     ../common-packages.nix
 
     ../neovim
+    #../neovim/lazyvim.nix
+
     ../helix
 
     ../time-management.nix
 
-    # My attemp to use nix-doom-emacs
+    # Previously, my attemp to use nix-doom-emacs
     #./emacs.nix
+    # My config with manually download/git clone doomemacs into ~/.config/emacs
+    ../doom-emacs.nix
     #
     #inputs.nix-doom-emacs.hmModule
     #
     #./emacs-with-doom.nix
 
+    # NOTE: nix-doom-emacs: This project has been broken for more than a year due to Doom's excessive divergence from emacs-overlay's package set, which is not Doom's fault but rather a missing Elisp package locking mechanism on our end.
+    #nix-doom-emacs.hmModule
+
     #./hyprland.nix
     #../evince.nix
 
     ../cmus.nix
+
+    ../chemistry.nix
   ];
 
   nixpkgs = {
@@ -113,8 +122,6 @@ in
     libreoffice-fresh
     #libreoffice-qt-fresh
 
-    chemtool
-    marvin
     smlnj
     #waydroid
     #kmymoney
@@ -146,6 +153,7 @@ in
 
     #vscode
     vscode-with-extensions
+    #emacs
 
     ssh-ident
 
@@ -195,11 +203,11 @@ in
     #};
   };
 
-  # XXX:
   #programs.tmux.shell = "\${pkgs.zsh}/bin/zsh";
   #programs.tmux.shell = "${pkgs.zsh}/bin/zsh";
   #programs.tmux.shell = "/run/current-system/sw/bin/zsh";
 
+  # NOTE: nix-doom-emacs: This project has been broken for more than a year due to Doom's excessive divergence from emacs-overlay's package set, which is not Doom's fault but rather a missing Elisp package locking mechanism on our end.
   #programs.doom-emacs = {
   #  enable = true;
   #  # Directory containing my config.el, init.el, and packages.el files

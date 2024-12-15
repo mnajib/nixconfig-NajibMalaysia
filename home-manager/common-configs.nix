@@ -74,6 +74,8 @@ in
     ./zsh.nix
     ./bash.nix # bash shell
     ./garbage-collect.nix
+
+    ./git.nix
   ]
   ++ (builtins.attrValues outputs.homeManagerModules);
   # XXX: TODO: Should be in seperate file packages.nix
@@ -207,13 +209,13 @@ in
     enable = true;
   };
 
-  programs.wezterm = {
-    enable = true;
-    #package = pkgs.wezterm;
-    #colorSchemes = { ... };
-    #extraConfig = ''
-    #'';
-  };
+  #programs.wezterm = {
+  #  enable = true;
+  #  #package = pkgs.wezterm;
+  #  #colorSchemes = { ... };
+  #  #extraConfig = ''
+  #  #'';
+  #};
 
   programs.termite = {
     enable = true;
@@ -407,79 +409,6 @@ in
   #  enable = true;
   #};
 
-  programs.git = {
-      enable = true;
-      package = pkgs.gitAndTools.gitFull;
-
-      #userName =  "${name}"; #"Najib Ibrahim";
-      #userEmail = "${email}"; # "mnajib@gmail.com";
-
-      aliases = {
-          co = "checkout";
-          ci = "commit";
-          st = "status";
-          br = "branch";
-          #hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cr)' --graph --date=short --all";
-          hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all";
-          #hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=relative --all";
-          histp = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all -p";
-          type = "cat-file -t";
-          dump = "cat-file -p";
-          branchall = "branch -a -vv";
-          tracked = "ls-tree --full-tree -r --name-only HEAD";
-      };
-      #diff-so-fancy.enable = true;
-      extraConfig = {
-          pull = {
-            rebase = true;
-          };
-          #push = {
-          #  default = "current";
-          #};
-          core = {
-              editor = "vim";
-              excludesfile = "~/.gitignore";
-              whitespace = "trailing-space,space-before-tab";
-          };
-          merge = {
-              tool = "vimdiff";
-          };
-          color = {
-              ui = "auto";
-              #diff = "auto";
-              status = "auto";
-              #branch = "auto";
-              branch = {
-                current = "yellow reverse";
-                remote = "green bold";
-                local = "blue bold";
-              };
-              diff = {
-                meta = "blue bold";
-                frag = "magenta bold";
-                old = "red bold";
-                new = "green bold";
-              };
-          };
-
-          # mkdir /srv/gitrepo/nixconfig-NajibMalaysia.git
-          # chgrp -R users nixconfig-NajibMalaysia.git
-          # git init --bare --shared=0664 /srv/gitrepo/nixconfig-NajibMalaysia.git
-          # git init --bare --shared=group mysharedgitrepo
-          #
-          # git clone --config core.sharedRepository=true
-          #
-          # setfacl -R -m g:<whatever group>:rwX gitrepo
-          # find gitrepo -type d | xargs setfacl -R -m d:g:<whatever group>:rwX
-          #
-          # chmod -vR g+swX /srv/gitrepo
-          safe = {
-            #directory = "/srv/gitrepo/nixconfig-NajibMalaysia.git";
-            #directory = "/srv/gitrepo";
-            directory = "*";
-          };
-      }; # End extraConfig
-  };
 
 #------------------------------------------------------------------------------
   #wayland.windowManager.sway = {

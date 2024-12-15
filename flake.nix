@@ -42,8 +42,8 @@
   #inputs = {
 
   # Nixpkgs
-  #inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-  inputs.nixpkgs.url = "github:nixos/nixpkgs?rev=a04d33c0c3f1a59a2c1cb0c6e34cd24500e5a1dc";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  #inputs.nixpkgs.url = "github:nixos/nixpkgs?rev=a04d33c0c3f1a59a2c1cb0c6e34cd24500e5a1dc";
   #nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
   #nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/*.tar.gz";   # TODO: use flake hub as much as possible
   #
@@ -148,7 +148,8 @@
     url = "github:mic92/sops-nix";
     #inputs.nixpkgs.follows = "nixpkgs";                   # optional, not necessary for the module
     inputs.nixpkgs.follows = "nixpkgs-unstable";                   # optional, not necessary for the module
-    inputs.nixpkgs-stable.follows = "nixpkgs";            # ???
+    #inputs.nixpkgs-stable.follows = "nixpkgs";            # ???
+    #inputs.nixpkgs-stable.follows = "nixpkgs-stable";            # ???
   };
 
   #inputs.sile.url = "github:sile-typesetter/sile/v0.14.3";
@@ -508,6 +509,7 @@
         asmak = mkNixos [
           ./nixos/host-asmak.nix
           #sops-nix.nixosModules.sops
+          inputs.stylix.nixosModules.stylix
         ];
 
         #----------------------------------------------------------------------
@@ -563,6 +565,8 @@
             # Add your model from this list:
             # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
             hardware.nixosModules.lenovo-thinkpad-x220
+
+            inputs.stylix.nixosModules.stylix
           ];
         };
 

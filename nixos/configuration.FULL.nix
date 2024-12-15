@@ -95,6 +95,8 @@
     #./xdg.nix
     #./xdg-gtk.nix
     #./xdg-kde.nix
+
+    ./doom-emacs.nix
   ];
 
   # Q: Each time I change my configuration.nix and run nixos-rebuild switch,
@@ -204,6 +206,9 @@
   # $ nix search wget
   #
   environment.systemPackages = with pkgs; [
+    socat
+    redis
+
     cachix
 
     #unstable.minetest
@@ -223,6 +228,7 @@
     bmon                      # Network bandwidth monitor
     btop
     enlightenment.evisum
+    tldr # community-driven simplified man pages
 
     screen
     tmux
@@ -315,8 +321,11 @@
     #})
     #--------------------------------------------------------------------------
 
-    dzen2    # A general purpose messaging, notification and menuing program for X11
-    gnumake    # install gnumake, needed for ihp
+    dzen2     # A general purpose messaging, notification and menuing program for X11
+    gnumake   # install gnumake, needed for ihp
+    cmake     # needed for doom-emacs vterm
+    libtool   # needed for doom-emacs vterm
+    ispell    # needed for doom-emacs vterm
 
     expect    # tool for automating interactive applications
 
@@ -1500,8 +1509,19 @@
 
       iosevka
 
-      nerdfonts
+      #nerdfonts
       #(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ] })
+      nerd-fonts.hack
+      nerd-fonts.fira-code
+      nerd-fonts.meslo-lg
+      nerd-fonts.sauce-code-pro
+      nerd-fonts.terminess-ttf
+      nerd-fonts.monoid
+      nerd-fonts.noto
+      nerd-fonts.iosevka-term
+      nerd-fonts._0xproto
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.ubuntu
 
       jetbrains-mono # An opensource typeface made for developers. suitable for coding
       mononoki # A font for programming and code review

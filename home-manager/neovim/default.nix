@@ -36,7 +36,11 @@ in
       gnumake
       ripgrep
       xclip xsel
-      nerdfonts
+
+      #nerdfonts
+      nerd-fonts._0xproto
+      nerd-fonts.jetbrains-mono
+
       typescript-language-server
       vim-language-server
       lua-language-server
