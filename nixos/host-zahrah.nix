@@ -60,6 +60,7 @@
 
     ./flatpak.nix
     #./emulationstation.nix # freeimage no safe?
+    ./mame.nix
 
     #./ai.nix
 
