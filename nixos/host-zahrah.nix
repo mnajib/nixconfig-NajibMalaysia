@@ -82,9 +82,25 @@
 
   hardware.enableAllFirmware = true;
 
+  hardware.graphics.extraPackages = with pkgs; [
+    mesa
+  ];
+
+  #hardware.amdgpu = {
+  #  initrd.enable = true;
+  #  opencl.enable = true;
+  #};
+
   environment.systemPackages = with pkgs; [
     #nvtop
     #nvtopPackages.full
+    radeontop # T400 zahrah have GPU: AMD ATI Mobility Radeon HD 3450/3470 (RV620/M83). May need to choose 'discrete graphic' in BIOS.
+    #amdgpu_top
+    #xorg.xf86videoamdgpu
+    #lact # Linux AMDGPU Controller. This application allows you to overclock, undervolt, set fans curves of AMD GPUs on a Linux system.
+    clinfo
+    gpu-viewer
+    vulkan-tools
 
     libnotify
 
@@ -105,6 +121,12 @@
   #services.xserver.videoDrivers = [ "nvidia" "nvidiaLegacy340" "nouveau" "fbdev" ];
   #services.xserver.videoDrivers = [ "nvidiaLegacy340" "fbdev" ];
   #services.xserver.videoDrivers = [ "fbdev" ];
+  services.xserver.videoDrivers = [ "radeon" ];
+
+  # To enable hardware accelerated graphics drivers, to allow most graphical applications and environments to use hardware rendering, video encode/decode acceleration, etc. 
+  # This option should be enabled by default by the corresponding modules, so you do not usually have to set it yourself.
+  hardware.graphics.enable = true;
+
   #hardware.nvidia = {
   #  package = config.boot.kernelPackages.nvidiaPackages.legacy_340;
   #  nvidiaSettings = true;
@@ -160,6 +182,11 @@
     #];
   };
 
+
+  boot.kernelParams = [
+    "radeon.modeset=1" # enable radeon
+  ];
+
   services.fstrim.enable = true;
 
   #networking.useDHCP = false;
@@ -187,6 +214,12 @@
     1110          # NFS client
     4045          # NFS lock manager
   ];
+
+  # LACT
+  #systemd.packages = with pkgs; [
+  #  lact
+  #];
+  #systemd.services.lactd.wantedBy = [ "multi-user.target" ];
 
   powerManagement.enable = true;
   services.auto-cpufreq.enable = true;
@@ -281,16 +314,22 @@
   services.xserver.enable = true;
 
   services.xserver.displayManager = {
-    #sddm.enable = true;
-    #gdm.enable = true;
-    #startx.enable = true;
     lightdm.enable = true;
+    #sddm = {
+    #  enable = true;
+    #  wayland.enable = false;
+    #};
+    #gdm = {
+    #  enable = true;
+    #  wayland = false;
+    #};
+    #startx.enable = true;
   };
 
   services.xserver.desktopManager = {
     #plasma5.enable = true;
     #plasma6.enable = true;
-    #gnome.enable = true;
+    gnome.enable = true;
     #xfce.enable = true;
     #pantheon.enable = true;
     #enlightenment.enable = true;
@@ -354,8 +393,8 @@
   };
 
   programs = {
-    #sway.enable = true;
-    #xwayland.enable = true;
+    sway.enable = true;
+    xwayland.enable = true;
 
     firefox.enable = false;
 
@@ -430,7 +469,7 @@
     };
 
     dconf.enable = true;
-    seahorse.enable = true;
+    #seahorse.enable = true;
     fuse.userAllowOther = true;
     mtr.enable = true;
 
