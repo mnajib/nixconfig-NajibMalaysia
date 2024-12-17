@@ -483,6 +483,28 @@ with lib;
     # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
     #videoDrivers = [ "nvidiaLegacy390" ]; #
 
+    extraConfig = lib.mkAfter ''
+      Section "Monitor"
+          Identifier "LaptopMonitor"
+          Option "Primary" "true"
+      EndSection
+
+      Section "Monitor"
+          Identifier "CombineMonitor"
+          Option "RightOf" "LaptopMonitor"
+      EndSection
+
+      Section "Screen"
+          Identifier "Screen0"
+          Device "Device0"
+          Monitor "LaptopMonitor"
+          SubSection "Display"
+              Depth 24
+              Virtual 4480 1080
+          EndSubSection
+      EndSection
+    '';
+
     #extraConfig = lib.mkAfter ''
     #  # -----------------------------------------------
     #  # Layout
