@@ -398,8 +398,8 @@ with lib;
   #hardware.nvidia.nvidiaSettings = true;
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;  # <-- this is tested and work
 
-  #hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
-  #hardware.nvidia.prime.sync.enable = true;
+  hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
+  hardware.nvidia.prime.sync.enable = true;
 
   # Dedicated GPU only activated when needed
   hardware.nvidia.prime.offload = {
@@ -440,7 +440,7 @@ with lib;
     #videoDrivers = [ "nouveau" ];
     #videoDrivers = [ "modesetting" "nvidia" ];
     #videoDrivers = [ "nvidia" "modesetting" ];
-    videoDrivers = [ "nvidia" ];
+    #videoDrivers = [ "nvidia" ];
     # OR
     # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
     #videoDrivers = [ "nvidiaLegacy390" ]; #
