@@ -176,6 +176,8 @@ with lib;
     #./stylix.nix
 
     #./host-khadijah-Xorg-nvidia.nix
+
+    ./xmonad.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -518,19 +520,21 @@ with lib;
     };
 
     windowManager = {
-      xmonad = {
-        enable = true;
-        enableContribAndExtras = true;
-        extraPackages = haskellPackages: [
-          haskellPackages.xmonad
-          haskellPackages.xmonad-extras
-          haskellPackages.xmonad-contrib
-          haskellPackages.dbus
-          haskellPackages.List
-          haskellPackages.monad-logger
-          haskellPackages.xmobar
-        ];
-      };
+
+      # ./xmonad.nix
+      #xmonad = {
+      #  enable = true;
+      #  enableContribAndExtras = true;
+      #  extraPackages = haskellPackages: [
+      #    haskellPackages.xmonad
+      #    haskellPackages.xmonad-extras
+      #    haskellPackages.xmonad-contrib
+      #    haskellPackages.dbus
+      #    haskellPackages.List
+      #    haskellPackages.monad-logger
+      #    haskellPackages.xmobar
+      #  ];
+      #};
 
       awesome = {
         enable = true;
