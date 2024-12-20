@@ -72,6 +72,8 @@
     #./opengl_with_vaapiIntel.nix
 
     ./stylix.nix
+
+    ./barrier.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
