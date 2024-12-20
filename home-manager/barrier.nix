@@ -1,8 +1,8 @@
 {
   config,
   pkgs,
-  #inputs,
-  #outputs,
+  inputs,
+  outputs,
   lib,
   hostname,
   ...

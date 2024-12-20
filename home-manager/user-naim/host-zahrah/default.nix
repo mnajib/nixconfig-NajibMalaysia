@@ -16,7 +16,7 @@ in
     ../../helix
 
     #../../barrier.nix
-    (import ../../barrier.nix { inherit hostname config pkgs lib; }) # Pass hostname and other args
+    (import ../../barrier.nix { inherit hostname config pkgs lib inputs outputs; }) # Pass hostname and other args
   ];
 
   home.packages = with pkgs; [
