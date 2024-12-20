@@ -2,16 +2,15 @@
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 
 { inputs, outputs, lib, config, pkgs, ... }:
-#let
-#  name = "Juliani Jaffar";
-#  email = "jung_jue@yahoo.com";
-#in
+let
+  hostname = "taufiq"
+in
 {
   # You can import other home-manager modules here
   imports = [
     ../default.nix
     ../../neovim
-    ../../barrier.nix
+    #(import ../../barrier.nix { inherit hostname config pkgs lib inputs outputs; })
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
