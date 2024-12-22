@@ -231,6 +231,7 @@ with lib;
 
     #nvtop # has been rename to nvtopPackages.full
     nvtopPackages.full
+    glances
 
     pciutils
     file

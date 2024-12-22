@@ -231,6 +231,7 @@ with lib;
 
     #nvtop # has been rename to nvtopPackages.full
     nvtopPackages.full
+    glances
 
     pciutils
     file
@@ -483,27 +484,27 @@ with lib;
     # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
     #videoDrivers = [ "nvidiaLegacy390" ]; #
 
-    extraConfig = lib.mkAfter ''
-      Section "Monitor"
-          Identifier "LaptopMonitor"
-          Option "Primary" "true"
-      EndSection
-
-      Section "Monitor"
-          Identifier "CombineMonitor"
-          Option "RightOf" "LaptopMonitor"
-      EndSection
-
-      Section "Screen"
-          Identifier "Screen0"
-          Device "Device0"
-          Monitor "LaptopMonitor"
-          SubSection "Display"
-              Depth 24
-              Virtual 4480 1080
-          EndSubSection
-      EndSection
-    '';
+#    extraConfig = lib.mkAfter ''
+#      Section "Monitor"
+#          Identifier "LaptopMonitor"
+#          Option "Primary" "true"
+#      EndSection
+#
+#      Section "Monitor"
+#          Identifier "CombineMonitor"
+#          Option "RightOf" "LaptopMonitor"
+#      EndSection
+#
+#      Section "Screen"
+#          Identifier "Screen0"
+#          Device "Device0"
+#          Monitor "LaptopMonitor"
+#          SubSection "Display"
+#              Depth 24
+#              Virtual 4480 1080
+#          EndSubSection
+#      EndSection
+#    '';
 
     #extraConfig = lib.mkAfter ''
     #  # -----------------------------------------------
@@ -731,11 +732,12 @@ with lib;
   #        #device=
   #    };
 
-  services.power-profiles-daemon.enable = false;
-  #powerManagement.cpuFreqGovernor = "powersave";
+#  services.power-profiles-daemon.enable = false;
   #powerManagement.enable = false; # Default is true;
-  powerManagement.cpufreq.min = 2000000000; # 2000000; # 800000; # Default is 'null';
-  powerManagement.cpufreq.max = 2600000000; # 2600000; # 3200000; # Default is null;
+  #powerManagement.cpuFreqGovernor = "powersave";
+  powerManagement.cpuFreqGovernor = "performance";
+#  powerManagement.cpufreq.min = 2000000000; # 2000000; # 800000; # Default is 'null';
+#  powerManagement.cpufreq.max = 2600000000; # 2600000; # 3200000; # Default is null;
   #services.upower.enable = true;
   #powerManagement.powertop.enable = true;
   services.tlp = {
@@ -745,7 +747,8 @@ with lib;
       #TLP_DEFAULT_MODE="BAT";
 
       CPU_SCALING_GOVERNOR_ON_BAT="powersave";
-      CPU_SCALING_GOVERNOR_ON_AC="powersave"; #"performance";
+      #CPU_SCALING_GOVERNOR_ON_AC="powersave";
+      CPU_SCALING_GOVERNOR_ON_AC="performance";
 
       # The following prevents the battery from charging fully to
       # preserve lifetime. Run `tlp fullcharge` to temporarily force
@@ -760,10 +763,10 @@ with lib;
       #CPU_MAX_PERF_ON_BAT=60;
 
       # CPU frequency
-      CPU_SCALING_MIN_FREQ_ON_AC="2.0GHz"; # 2000000; # 800000;
-      CPU_SCALING_MAX_FREQ_ON_AC="2.6GHz"; # 2600000; # 3200000;
-      CPU_SCALING_MIN_FREQ_ON_BAT="2.0GHz"; # 2000000; #800000;
-      CPU_SCALING_MAX_FREQ_ON_BAT="2.6GHz"; # 2600000; #3200000; #2300000;
+#      CPU_SCALING_MIN_FREQ_ON_AC="2.0GHz"; # 2000000; # 800000;
+#      CPU_SCALING_MAX_FREQ_ON_AC="2.6GHz"; # 2600000; # 3200000;
+#      CPU_SCALING_MIN_FREQ_ON_BAT="2.0GHz"; # 2000000; #800000;
+#      CPU_SCALING_MAX_FREQ_ON_BAT="2.6GHz"; # 2600000; #3200000; #2300000;
     };
   };
   services.auto-cpufreq = {

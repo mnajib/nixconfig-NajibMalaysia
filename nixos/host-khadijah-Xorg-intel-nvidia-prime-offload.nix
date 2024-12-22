@@ -231,6 +231,7 @@ with lib;
 
     #nvtop # has been rename to nvtopPackages.full
     nvtopPackages.full
+    glances
 
     pciutils
     file
@@ -344,6 +345,25 @@ with lib;
   boot.kernelParams = [
     #"i915.modeset=0" "nouveau.modeset=1"                                        # to disable i915 and enable nouveau
     "video=eDP-1:1920x1080" "video=VGA-1:1280x1024" "video=DP-1-3:1280x1024"    #
+
+    #"i915.modeset=1"                     # Enable i915 kernel mode-setting
+    "nouveau.modeset=0"                  # Disable Nouveau (open-source NVIDIA driver)
+    #"nvidia.modeset=1"
+    #"modprobe.blacklist=nvidia,nvidia_drm,nvidia_modeset" # Blacklist proprietary NVIDIA modules
+  ];
+
+  boot.kernelModules = [
+    #"i915" # Explicitly load Intel i915 driver for framebuffer
+  ];
+
+  boot.blacklistedKernelModules = [
+    # Blacklist NVIDIA proprietary kernel modules
+    #"nvidia"
+    #"nvidia_drm"
+    #"nvidia_uvm"
+    #"nvidia_modeset"
+    "nouveau"
+    "nouveau_modeset"
   ];
 
   #
@@ -608,8 +628,8 @@ with lib;
       #TLP_PERSISTENT_DEFAULT=1;
       #TLP_DEFAULT_MODE="BAT";
 
-      CPU_SCALING_GOVERNOR_ON_BAT="powersave";
-      CPU_SCALING_GOVERNOR_ON_AC="powersave"; #"performance";
+      #CPU_SCALING_GOVERNOR_ON_BAT="powersave";
+      #CPU_SCALING_GOVERNOR_ON_AC="powersave"; #"performance";
 
       # The following prevents the battery from charging fully to
       # preserve lifetime. Run `tlp fullcharge` to temporarily force
@@ -624,18 +644,18 @@ with lib;
       #CPU_MAX_PERF_ON_BAT=60;
 
       # CPU frequency
-      CPU_SCALING_MIN_FREQ_ON_AC="2.0GHz"; # 2000000; # 800000;
-      CPU_SCALING_MAX_FREQ_ON_AC="2.6GHz"; # 2600000; # 3200000;
-      CPU_SCALING_MIN_FREQ_ON_BAT="2.0GHz"; # 2000000; #800000;
-      CPU_SCALING_MAX_FREQ_ON_BAT="2.6GHz"; # 2600000; #3200000; #2300000;
+      #CPU_SCALING_MIN_FREQ_ON_AC="2.0GHz"; # 2000000; # 800000;
+      #CPU_SCALING_MAX_FREQ_ON_AC="2.6GHz"; # 2600000; # 3200000;
+      #CPU_SCALING_MIN_FREQ_ON_BAT="2.0GHz"; # 2000000; #800000;
+      #CPU_SCALING_MAX_FREQ_ON_BAT="2.6GHz"; # 2600000; #3200000; #2300000;
     };
   };
-  services.auto-cpufreq = {
-    enable = true;
-  };
-  systemd.services."auto-cpufreq" = {
-    after = [ "display-manager.service" ];
-  };
+  #services.auto-cpufreq = {
+  #  enable = true;
+  #};
+  #systemd.services."auto-cpufreq" = {
+  #  after = [ "display-manager.service" ];
+  #};
 
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.powersave = false;
