@@ -42,14 +42,16 @@
   #inputs = {
 
   # Nixpkgs
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-  #inputs.nixpkgs.url = "github:nixos/nixpkgs?rev=a04d33c0c3f1a59a2c1cb0c6e34cd24500e5a1dc";
-  #nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
-  #nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/*.tar.gz";   # TODO: use flake hub as much as possible
-  #
   inputs.nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.nixpkgs-master.url = "github:nixos/nixpkgs/master";
-  inputs.nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
+  inputs.nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+  #
+  ##inputs.nixpkgs.url = "github:nixos/nixpkgs?rev=a04d33c0c3f1a59a2c1cb0c6e34cd24500e5a1dc";
+  ##nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
+  ##nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/*.tar.gz";   # TODO: use flake hub as much as possible
+  #inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+  #
   #
   #inputs.fh.url = "https://flakehub.com/f/DeterminateSystems/fh/*.tar.gz";
   #inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.2305.*.tar.gz";
@@ -76,8 +78,9 @@
 
   # Home manager
   inputs.home-manager = {
-    url = "github:nix-community/home-manager";
-    inputs.nixpkgs.follows = "nixpkgs";                   # Forcing another flake (github nix-community home-manager) to use one of our inputs (nixpkgs).
+    #url = "github:nix-community/home-manager";
+    url = "github:nix-community/home-manager/release-24.11";
+    inputs.nixpkgs.follows = "nixpkgs"; # Forcing another flake (github nix-community home-manager) to use one of our inputs (nixpkgs).
   };
 
   #inputs.nixos-mailserver = {

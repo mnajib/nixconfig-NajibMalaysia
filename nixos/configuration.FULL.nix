@@ -1509,19 +1509,19 @@
 
       iosevka
 
-      #nerdfonts
+      nerdfonts
       #(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ] })
-      nerd-fonts.hack
-      nerd-fonts.fira-code
-      nerd-fonts.meslo-lg
-      nerd-fonts.sauce-code-pro
-      nerd-fonts.terminess-ttf
-      nerd-fonts.monoid
-      nerd-fonts.noto
-      nerd-fonts.iosevka-term
-      nerd-fonts._0xproto
-      nerd-fonts.jetbrains-mono
-      nerd-fonts.ubuntu
+#     nerd-fonts.hack
+#     nerd-fonts.fira-code
+#     nerd-fonts.meslo-lg
+#     nerd-fonts.sauce-code-pro
+#     nerd-fonts.terminess-ttf
+#     nerd-fonts.monoid
+#     nerd-fonts.noto
+#     nerd-fonts.iosevka-term
+#     nerd-fonts._0xproto
+#     nerd-fonts.jetbrains-mono
+#     nerd-fonts.ubuntu
 
       jetbrains-mono # An opensource typeface made for developers. suitable for coding
       mononoki # A font for programming and code review
