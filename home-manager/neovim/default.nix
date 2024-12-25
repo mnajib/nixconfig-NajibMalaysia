@@ -37,9 +37,9 @@ in
       ripgrep
       xclip xsel
 
-      #nerdfonts
-      nerd-fonts._0xproto
-      nerd-fonts.jetbrains-mono
+      nerdfonts
+      #nerd-fonts._0xproto
+      #nerd-fonts.jetbrains-mono
 
       typescript-language-server
       vim-language-server
