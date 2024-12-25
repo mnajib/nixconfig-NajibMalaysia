@@ -732,7 +732,7 @@ with lib;
   #        #device=
   #    };
 
-#  services.power-profiles-daemon.enable = false;
+  services.power-profiles-daemon.enable = false;
   #powerManagement.enable = false; # Default is true;
   #powerManagement.cpuFreqGovernor = "powersave";
   powerManagement.cpuFreqGovernor = "performance";
