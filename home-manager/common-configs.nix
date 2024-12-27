@@ -291,6 +291,44 @@ in
 
   programs.command-not-found.enable = true;
 
+  programs.fd.enable = true; # A faster alternative to 'find'
+
+  programs.bat.enable = true; # For file previews
+
+  programs.ranger = {
+    enable = true; # A terminal 'file manager'.
+    #extraPackages =
+    #extraPlugins =
+    extraConfig = ''
+      set column_ratios 0,1,1
+      #set mouse_enabled false
+      set collapse_preview false
+      set sort_directories_first false
+
+      set preview_directories true
+      set preview_files false
+      set perview_images false
+
+      # 'uv' as shortcut to unmark all in all directories
+      # as command 'unmark' only unmarks marked files in the current directory.
+      map uv mark_files all=True val=False
+
+      # Color schemes
+      #Ranger comes with four color schemes: default, jungle, snow and solarized. You can change your color scheme using:
+      set colorscheme solarized
+
+      # Move to trash
+      map DD shell mv %s /home/$${USER}/.local/share/Trash/files/
+      #
+      # Alternatively, use GIO commandline tool provided by glib2 package:
+      #map DD shell gio trash %s
+    '';
+  };
+  #home.file.".config/ranger" = {
+  #  source = ./src/.config/ranger;
+  #  recursive = true;
+  #};
+
   programs.nnn = {
     enable = true;
     extraPackages = with pkgs; [
@@ -321,7 +359,15 @@ in
 
   programs.dircolors.enable = true;
 
-  programs.fzf.enable = true;           # fuzzy finder
+  programs.fzf = {
+    enable = true;           # fuzzy finder
+    enableBashIntegration = true;
+    enableFishIntegration = true;
+    enableZshIntegration = true;
+
+    tmux.enableShellIntegration = true;
+  };
+  #
   programs.skim.enable = true;          # fuzzy finder
 
 # programs.neovim = {
@@ -653,11 +699,6 @@ in
   #    source = ./src/.config/kak;
   #    recursive = true;
   #};
-
-  home.file.".config/ranger" = {
-    source = ./src/.config/ranger;
-    recursive = true;
-  };
 
   #home.file.".config/git" = {
   #  source = ./src/.config/git;
