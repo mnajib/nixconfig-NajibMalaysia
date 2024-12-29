@@ -11,6 +11,8 @@
     ../default.nix
 
     ../../p2p.nix
+
+    #../../neovim/astronvim.nix
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
