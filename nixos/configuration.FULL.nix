@@ -343,6 +343,8 @@
     #qtox    # chat using tox protocol
     #keybase keybase-gui
 
+    bluez # official linux Bluetooth protocol stack
+
     #gnomeExtensions.draw-on-your-screen
     #pentablet-driver
     gromit-mpx                          # Desktop annotation tool
