@@ -65,12 +65,13 @@ local function set_color_mode()
     vim.opt.t_Co = 8
   else
     vim.opt.termguicolors = true  -- Enable 24-bit colors
-    vim.cmd("colorscheme gruvbox8")  -- Example: 256-color theme
-  --else
-  --  print("Unknown TERM: " .. term .. ", defaulting to ANSI colors.")
-  --  vim.opt.termguicolors = false
-  --  vim.cmd("colorscheme default")
-  --  -- vim.cmd("colorscheme gruvbox8")
+    -- vim.cmd("colorscheme gruvbox8")  -- Example: 256-color theme
+    vim.cmd("colorscheme default")
+--  else
+--    print("Unknown TERM: " .. term .. ", defaulting to ANSI colors.")
+--    vim.opt.termguicolors = false
+--    vim.cmd("colorscheme default")
+--    -- vim.cmd("colorscheme gruvbox8")
   end
 --
 end
