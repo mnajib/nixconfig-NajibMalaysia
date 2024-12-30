@@ -169,7 +169,8 @@ with lib;
     #./nitter.nix
 
     #./xdg-kde.nix
-    ./xdg.nix
+    #./xdg.nix
+    ./xdg-gnome.nix
 
     ./opengl2.nix
 
@@ -636,10 +637,10 @@ with lib;
         };
       };
 
-      #gdm = {
-      #  enable = false; #true;
-      #  autoSuspend = false;
-      #};
+      gdm = {
+        enable = false; # true;
+        autoSuspend = false;
+      };
 
       startx.enable = true; #false;
     };
@@ -647,7 +648,7 @@ with lib;
     desktopManager = {
       xterm.enable = false;
       #plasma5.enable = true;
-      #gnome.enable = true;
+      gnome.enable = true;
       #mate.enable = true;
       #cinnamon.enable = true;
       #xfce.enable = true;
