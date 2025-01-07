@@ -202,12 +202,29 @@
   #  XDG_CACHE_HOME = "${HOME}/var/cache";
   #};
 
+  environment.unixODBCDrivers = with pkgs.unixODBCDrivers; [
+    sqlite
+    psql
+    mariadb
+    #mysql
+    msodbcsql18
+    #msodbcsql17
+    #redshift
+  ];
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   #
   environment.systemPackages = with pkgs; [
     socat
     redis
+
+    unixODBC
+    unixODBCDrivers.sqlite
+    unixODBCDrivers.psql
+    unixODBCDrivers.mariadb
+    #unixODBCDrivers.mysql
+    unixODBCDrivers.msodbcsql18
 
     cachix
 
