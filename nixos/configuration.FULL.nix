@@ -226,6 +226,8 @@
     #unixODBCDrivers.mysql
     unixODBCDrivers.msodbcsql18
 
+    sshfs # FUSE-based filesystem that allows remote filesystems to be mounted over SSH; mount.fuse.sshfs, mount.sshfs, sshfs
+
     cachix
 
     #unstable.minetest
