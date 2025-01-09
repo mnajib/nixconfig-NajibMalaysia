@@ -58,12 +58,13 @@
     ./typesetting.nix
     ./nix-garbage-collector.nix
 
-    ./flatpak.nix
+    #./flatpak.nix
   ];
 
   environment.systemPackages = with pkgs; [
     vim
     nano
+    #harlequin
   ];
 
   nix.settings.trusted-users = [ "root" "najib" "naqib" ];
@@ -203,10 +204,11 @@
   services.xserver.libinput.touchpad.tapping = true; #false;
 
   #----------------------------------------------------------------------------
-  services.xserver.displayManager.lightdm.enable = true;
+  #services.xserver.displayManager.lightdm.enable = true;
   services.xserver.displayManager.defaultSession = "none+xmonad";
   #----------------------------------------------------------------------------
   #services.xserver.desktopManager.plasma5.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
   services.xserver.desktopManager.lxqt.enable = true;
   #services.xserver.desktopManager.budgie.enable = true;
   #----------------------------------------------------------------------------
