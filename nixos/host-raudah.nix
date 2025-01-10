@@ -216,10 +216,11 @@
   services.libinput.touchpad.scrollMethod = "twofinger";
   services.libinput.touchpad.tapping = true; #false;
 
+  services.xserver.enable = true;
   #----------------------------------------------------------------------------
   #services.xserver.displayManager.lightdm.enable = true;
   #services.xserver.displayManager.defaultSession = "none+xmonad";
-  services.displayManager.defaultSession = "none+xmonad";
+  #services.xserver.displayManager.startx.enable = true;
   #----------------------------------------------------------------------------
   #services.xserver.desktopManager.plasma5.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
@@ -229,6 +230,7 @@
   #services.xserver.windowManager.i3.enable = true;
   services.xserver.windowManager.awesome.enable = true;
   #----------------------------------------------------------------------------
+  services.displayManager.defaultSession = "none+xmonad";
 
   security.rtkit.enable = true;
 
