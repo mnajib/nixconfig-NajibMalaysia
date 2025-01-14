@@ -270,7 +270,7 @@
 
     #desktopManager.plasma5.enable = true;
     #desktopManager.xfce.enable = true;
-    desktopManager.mate.enable = true;
+    #desktopManager.mate.enable = true;
     #desktopManager.gnome.enable = true;
     #desktopManager.enlightenment.enable = true;
 
