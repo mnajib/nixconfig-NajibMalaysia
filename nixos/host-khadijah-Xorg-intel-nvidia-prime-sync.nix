@@ -169,7 +169,8 @@ with lib;
     #./nitter.nix
 
     #./xdg-kde.nix
-    ./xdg.nix
+    #./xdg.nix
+    ./xdg-gnome.nix
 
     ./opengl2.nix
 
@@ -636,10 +637,10 @@ with lib;
         };
       };
 
-      #gdm = {
-      #  enable = false; #true;
-      #  autoSuspend = false;
-      #};
+      gdm = {
+        enable = false; # true;
+        autoSuspend = false;
+      };
 
       startx.enable = true; #false;
     };
@@ -647,7 +648,7 @@ with lib;
     desktopManager = {
       xterm.enable = false;
       #plasma5.enable = true;
-      #gnome.enable = true;
+      gnome.enable = true;
       #mate.enable = true;
       #cinnamon.enable = true;
       #xfce.enable = true;
@@ -738,7 +739,7 @@ with lib;
   powerManagement.cpuFreqGovernor = "performance";
 #  powerManagement.cpufreq.min = 2000000000; # 2000000; # 800000; # Default is 'null';
 #  powerManagement.cpufreq.max = 2600000000; # 2600000; # 3200000; # Default is null;
-  #services.upower.enable = true;
+  services.upower.enable = true; # firefox seams to complain something about needing this
   #powerManagement.powertop.enable = true;
   services.tlp = {
     enable = true; # default is 'false'

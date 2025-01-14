@@ -202,3 +202,5 @@ set nowrap
 
 set background=light
 set background=dark
+
+set guifont=monospace:h12:w0

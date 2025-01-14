@@ -202,12 +202,31 @@
   #  XDG_CACHE_HOME = "${HOME}/var/cache";
   #};
 
+  environment.unixODBCDrivers = with pkgs.unixODBCDrivers; [
+    sqlite
+    psql
+    mariadb
+    #mysql
+    msodbcsql18
+    #msodbcsql17
+    #redshift
+  ];
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   #
   environment.systemPackages = with pkgs; [
     socat
     redis
+
+    unixODBC
+    unixODBCDrivers.sqlite
+    unixODBCDrivers.psql
+    unixODBCDrivers.mariadb
+    #unixODBCDrivers.mysql
+    unixODBCDrivers.msodbcsql18
+
+    sshfs # FUSE-based filesystem that allows remote filesystems to be mounted over SSH; mount.fuse.sshfs, mount.sshfs, sshfs
 
     cachix
 
@@ -228,6 +247,7 @@
     zenith                    # Sort of like top or htop but with zoom-able charts, network, and disk usage
     bmon                      # Network bandwidth monitor
     btop
+    glances
     enlightenment.evisum
     tldr # community-driven simplified man pages
 
@@ -343,6 +363,8 @@
 
     #qtox    # chat using tox protocol
     #keybase keybase-gui
+
+    bluez # official linux Bluetooth protocol stack
 
     #gnomeExtensions.draw-on-your-screen
     #pentablet-driver
@@ -1512,17 +1534,17 @@
 
       nerdfonts
       #(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ] })
-#     nerd-fonts.hack
-#     nerd-fonts.fira-code
-#     nerd-fonts.meslo-lg
-#     nerd-fonts.sauce-code-pro
-#     nerd-fonts.terminess-ttf
-#     nerd-fonts.monoid
-#     nerd-fonts.noto
-#     nerd-fonts.iosevka-term
-#     nerd-fonts._0xproto
-#     nerd-fonts.jetbrains-mono
-#     nerd-fonts.ubuntu
+      #nerd-fonts.hack
+      #nerd-fonts.fira-code
+      #nerd-fonts.meslo-lg
+      #nerd-fonts.sauce-code-pro
+      #nerd-fonts.terminess-ttf
+      #nerd-fonts.monoid
+      #nerd-fonts.noto
+      #nerd-fonts.iosevka-term
+      #nerd-fonts._0xproto
+      #nerd-fonts.jetbrains-mono
+      #nerd-fonts.ubuntu
 
       jetbrains-mono # An opensource typeface made for developers. suitable for coding
       mononoki # A font for programming and code review
