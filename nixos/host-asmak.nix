@@ -2,10 +2,18 @@
 
 {
   nix = {
-    package = pkgs.nixFlakes;
+    #package = pkgs.nixFlakes;
+    settings = {
+      trusted-users = [ "root" "najib" "naqib" "julia" ];
+      max-jobs = 2;
+    };
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+  };
+
+  nixpkgs.config = {
+    allowUnfree = true;
   };
 
   imports = [
@@ -35,20 +43,22 @@
     #./synergy-client.nix
     ./hardware-printer.nix
     ./zramSwap.nix
-    ./hosts2.nix
+    #./hosts2.nix
     ./configuration.FULL.nix
     ./nix-garbage-collector.nix
     ./flatpak.nix
+    ./steam.nix
+    ./xdg.nix
+    ./opengl_with_vaapiIntel.nix
+    ./xmonad.nix
+    ./stylix.nix
   ];
 
   environment.systemPackages = with pkgs; [
-    steam
-    steam-tui
     gparted
     simplex-chat-desktop
+    lightlocker
   ];
-
-  programs.steam.enable = true;
 
   # For the value of 'networking.hostID', use the following command:
   #   cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
@@ -56,22 +66,20 @@
   networking.hostId = "ec4da958";
   networking.hostName = "asmak";
 
-  nix.settings.trusted-users = [ "root" "najib" "naqib" "julia" ];
-
   networking.useDHCP = false;
   networking.networkmanager.enable = true;
   systemd.services.NetworkManager-wait-online.enable = false;
 
   #services.xserver.libinput.tapping = pkgs.lib.mkForce true; # Will delete this line, do not need this anymore; instead I have put if-then-else for this in configuration.FULL.nix
 
-  # Open ports in the firewall.
-  #networking.firewall.allowedTCPPorts = [ ... ];
-  #networking.firewall.allowedUDPPorts = [ ... ];
-  #networking.firewall.allowedUDPPorts = [ 3450 ]; # 3450 for minetest server
-  #
-  # Or disable the firewall altogether.
-  networking.firewall.enable = false;
+  networking.nftables.enable = true;
+  networking.firewall = {
+    enable = false;
+    #allowedTCPPorts = [ ... ];
+    #allowedUDPPorts = [ 3450 ]; # 3450 for minetest server
+  };
 
+  boot.loader.timeout = 10;
   boot.loader.grub = {
     enable = true;
     efiSupport = false;
@@ -81,6 +89,8 @@
     devices = [
       "/dev/disk/by-id/wwn-0x5000000000000000"
     ];
+    memtest86.enable = true;
+    timeoutStyle = "menu";
   };
 
   boot.kernelParams = [
@@ -127,43 +137,56 @@
   services.fstrim.enable = true;
   hardware.enableAllFirmware = true;
   services.smartd.enable = true;
-
-  services.xserver.synaptics.enable = false;
-  services.xserver.libinput.enable = true;
-  services.xserver.libinput.touchpad.disableWhileTyping = true;
-
-  # Click Method
-  services.xserver.libinput.touchpad.tapping = true;
-  #service.xserver.libinput.clickMethod = "clickfinger";
-
-  # Scroll Method
-  #services.xserver.libinput.scrollMethod = "edge";
-  #
-  services.xserver.libinput.touchpad.scrollMethod = "twofinger";
-  #
-  #services.xserver.libinput.scrollMethod = "button";
-  #services.xserver.libinput.scrollButton = 1;
-
-  services.xserver.enable = true;
-
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.displayManager.sddm.enable = false;
-  services.xserver.displayManager.gdm.enable = false;
-
-  services.xserver.displayManager.defaultSession = "none+xmonad";
-
-  #services.xserver.desktopManager.plasma5.enable = true;
-  #services.xserver.desktopManager.gnome.enable = true;
-  #services.xserver.desktopManager.xfce.enable = true;
-
-  services.xserver.windowManager.xmonad.enable = true;
-  services.xserver.windowManager.jwm.enable = true;
-  services.xserver.windowManager.fluxbox.enable = true;
-  services.xserver.windowManager.awesome.enable = true;
-  services.xserver.windowManager.berry.enable = true;
-
   networking.networkmanager.wifi.powersave = false;
   systemd.watchdog.rebootTime = "10m";
+
+  services.libinput = {
+    enable = true;
+
+    touchpad = {
+      scrollMethod = "twofinger"; # button, edge, twofinger, or none
+      #clickMethod = "none"; # none, buttonareas, or clickfinger
+      disableWhileTyping = true;
+      #scrollButton = 1;
+      tapping = true;
+    };
+
+    #mouse = {};
+  };
+
+  services.xserver = {
+    enable = true;
+
+    displayManager.sessionCommands = ''
+      xset -dpms
+      xset s blank
+      xset s 120
+      #${pkgs.lightlocker}/bin/light-locker --idle-hint &
+    '';
+
+    displayManager = {
+      defaultSession = "none+xmonad";
+      lightdm.enable = true;
+      sddm.enable = false;
+      gdm.enable = false;
+    };
+
+    desktopManager = {
+      #plasma5.enable = true;
+      #gnome.enable = true;
+      #xfce.enable = true;
+      #mate.enable = true;
+      #lxqt.enable = true;
+    };
+
+    windowManager = {
+      #xmonad.enable = true; # import ./xmonad.nix
+      jwm.enable = true;
+      fluxbox.enable = true;
+      awesome.enable = true;
+      berry.enable = true;
+    };
+  };
 
   system.stateVersion = "22.11";
 }

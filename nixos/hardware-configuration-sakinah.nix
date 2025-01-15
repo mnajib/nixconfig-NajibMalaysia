@@ -8,40 +8,59 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "uhci_hcd" "ehci_pci" "ahci" "firewire_ohci" "usb_storage" "sd_mod" "sr_mod" "sdhci_pci" ];
-  boot.initrd.kernelModules = [ ];
+  #boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+  #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;         # Do not neet it here as I already define this in zfs.nix
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  boot.supportedFilesystems = [
+    "ext4" "btrfs" "xfs" "vfat" "ntfs"
+    #"bcachefs"
+    "dm-crypt" "dm-snapshot" "dm-raid"
+    "zfs"
+  ];
+  boot.initrd.availableKernelModules = [ "uhci_hcd" "ehci_pci" "ahci" "firewire_ohci" "usb_storage" "sd_mod" "sr_mod" "sdhci_pci" "usbhid"];
+  boot.initrd.kernelModules = [ ];
+  boot.initrd.supportedFilesystems = [
+    "ext4" "btrfs" "xfs" "vfat" "ntfs"
+    #"bcachefs"
+    "dm-crypt" "dm-snapshot" "dm-raid"
+    "zfs"
+  ];
+
+  # For '/' partition
+  #boot.initrd.luks.devices."luks-34a274e3-4353-430f-8ded-9354cd8acab5".device = "/dev/disk/by-uuid/34a274e3-4353-430f-8ded-9354cd8acab5";
+  # For swap partition
+  #boot.initrd.luks.devices."luks-745aa30d-5f90-4d57-8193-c380ed2ece24".device = "/dev/disk/by-uuid/745aa30d-5f90-4d57-8193-c380ed2ece24";
+
+  #fileSystems."/" =
+  #  { device = "/dev/disk/by-uuid/606e7695-318c-4105-b4fe-ca0db0343b84";
+  #    fsType = "ext4";
+  #  };
+  #
+  #fileSystems."/boot" =
+  #  { device = "/dev/disk/by-uuid/FD6B-4835";
+  #    fsType = "vfat";
+  #  };
+  #
+  #swapDevices =
+  #  [ { device = "/dev/disk/by-uuid/615add4b-eb31-4d5f-82e5-7f17387307c5"; }
+  #  ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/8636a7e7-ff81-45c7-8d8f-83814b0d50b2";
-      fsType = "ext4";
-      options = [ "noatime" "nodiratime" ];
+    { device = "/dev/disk/by-uuid/49891baf-ec78-4b5f-97b2-ce0915bf4dfd";
+      fsType = "xfs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/c10d6b59-436c-4e02-a30e-bba6828b3308";
-      fsType = "ext4";
-      options = [ "noatime" "nodiratime" ];
-    };
-
-  fileSystems."/root" =
-    { device = "/dev/disk/by-uuid/5aeecfdc-bd03-444c-95e5-fbe673911cdb";
-      fsType = "ext4";
-      options = [ "noatime" "nodiratime" ];
-    };
-
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/0e2a01d6-416d-4ce5-904e-f824324b16f1";
-      fsType = "ext4";
-      options = [ "noatime" "nodiratime" ];
+    { device = "/dev/disk/by-uuid/0525-C5DB";
+      fsType = "vfat";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/d9dcad99-7ec7-4922-b381-845310223041"; }
+    [ { device = "/dev/disk/by-uuid/ebf3dd4d-a564-49cd-bd45-11a509ee41fd"; }
     ];
 
+  networking.useDHCP = lib.mkDefault true;
   nixpkgs.hostPlatform.system = "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
 }

@@ -3,10 +3,20 @@
 { pkgs, config, lib, ... }:
 {
   nix = {
-    package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
+    #package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+    settings = {
+      max-jobs = 2;
+      trusted-users = [ "root" "najib" "naim" ];
+    };
+  };
+
+  nixpkgs.config = {
+    allowUnfree = true;
+    #allowBroken = true;
+    #cudaSupport = true;
   };
 
   imports = [
@@ -15,7 +25,7 @@
     #./hardware-storageSSD001.nix
     ./thinkpad.nix
 
-    ./hosts2.nix
+    #./hosts2.nix
     #./network-dns.nix
 
     #./users-anak2.nix
@@ -29,8 +39,9 @@
     ./nfs-client-automount.nix
 
     ./console-keyboard-dvorak.nix
-    ./keyboard-with-msa.nix
-    #./keyboard-without-msa.nix
+    #./keyboard-with-msa.nix
+    ./keyboard-kmonad.nix
+    ##./keyboard-without-msa.nix
 
     #./audio-pulseaudio.nix
     ./audio-pipewire.nix
@@ -50,45 +61,56 @@
     ./nix-garbage-collector.nix
 
     ./flatpak.nix
-    ./emulationstation.nix
+    #./emulationstation.nix # freeimage no safe?
+    ./mame.nix
+
+    #./ai.nix
+
+    ./inspircd.nix # IRC server
+    ./xdg.nix
+    ./xmonad.nix
+
+    ./opengl.nix
+    #./opengl_with_vaapiIntel.nix
+
+    ./stylix.nix
+
+    ./barrier.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   #
-
-  nix.settings.trusted-users = [ "root" "najib" "naim" ];
-
   networking.hostId = "4dcfcacd";
   networking.hostName = "zahrah"; # also called "tifoten"
 
   hardware.enableAllFirmware = true;
 
-  #environment.systemPackages = with pkgs; [
-  #  nvtop
-  #];
+  hardware.graphics.extraPackages = with pkgs; [
+    mesa
+  ];
 
-  #----------------------------------------------------------------------------
-  # To enable propriotary nvidia legacy driver
-  # but now the support was ended :(
-  #----------------------------------------------------------------------------
-  #services.xserver.videoDrivers = [ "nvidia" ];
-  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_340;
-  #hardware.nvidia.nvidiaSettings = true;
-  #hardware.nvidia.prime.intelBusId = "PCI:0:2:0";         # sudo lshw -c display. lspci | grep -i vga
-  #hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";        # sudo lshw -c display. lspci
-  #hardware.nvidia.prime.sync.enable = true;
-  #hardware.nvidia.modesetting.enable = true;
-  #hardware.nvidia.open = false;
-  #hardware.nvidia.powerManagement.enable = false;
-  #hardware.nvidia.powerManagement.finegrained = false;
-  #----------------------------------------------------------------------------
+  environment.systemPackages = with pkgs; [
+    radeontop # T400 zahrah have GPU: AMD ATI Mobility Radeon HD 3450/3470 (RV620/M83). May need to choose 'discrete graphic' in BIOS.
+    clinfo
+    gpu-viewer
+    vulkan-tools
 
-  #----------------------------------------------------------------------------
-  # To completely disable the NVIDIA graphics card and use the integrated graphics processor instead.
-  #----------------------------------------------------------------------------
-  #hardware.nvidiaOptimus.disable = true;
-  #----------------------------------------------------------------------------
+    libnotify
+
+    # Haskell Tools
+    stack
+    cabal-install
+    haskellPackages.xmobar
+    haskellPackages.X11
+    haskellPackages.X11-xft
+  ];
+
+  #services.xserver.videoDrivers = [ "radeon" ];
+
+  ## To enable hardware accelerated graphics drivers, to allow most graphical applications and environments to use hardware rendering, video encode/decode acceleration, etc. 
+  ## This option should be enabled by default by the corresponding modules, so you do not usually have to set it yourself.
+  #hardware.graphics.enable = true;
 
   #boot.loader.systemd-boot.enable = true; # gummi-boot for EFI
   #boot.loader.efi.canTouchEfiVariables = true;
@@ -129,35 +151,52 @@
     #];
   };
 
+
+  boot.kernelParams = [
+    "radeon.modeset=1" # enable radeon
+  ];
+
   services.fstrim.enable = true;
 
   #networking.useDHCP = false;
   #networking.interfaces.enp0s25.useDHCP = true;
   #networking.interfaces.wlp3s0.useDHCP = true;
 
-  networking.firewall.enable = false;
+  networking.nftables.enable = true;
+  networking.firewall.enable = true;
+  networking.firewall.allowPing = true;
   networking.firewall.allowedTCPPorts = [
     # Gluster
-    24007 # gluster daemon
-    24008 # management
-    #49152 # brick1
-    49153 # brick2
-    #38465-38467 # Gluster NFS
-    111 # portmapper
-    1110 # NFS cluster
-    4045    # NFS lock manager
+    24007         # gluster daemon
+    24008         # management
+    #49152        # brick1
+    49153         # brick2
+    #38465-38467  # Gluster NFS
+    111           # portmapper
+    1110          # NFS cluster
+    4045          # NFS lock manager
   ];
-
   networking.firewall.allowedUDPPorts = [
     # Gluster
-    111 # portmapper
-    3450 # for minetest server
-    1110 # NFS client
-    4045 # NFS lock manager
+    111           # portmapper
+    3450          # for minetest server
+    1110          # NFS client
+    4045          # NFS lock manager
   ];
+
+  # LACT
+  #systemd.packages = with pkgs; [
+  #  lact
+  #];
+  #systemd.services.lactd.wantedBy = [ "multi-user.target" ];
 
   powerManagement.enable = true;
   services.auto-cpufreq.enable = true;
+  systemd.services."auto-cpufreq" = {
+    after = [
+      "display-manager.service"
+    ];
+  };
   powerManagement.cpuFreqGovernor = "powersave";
   #powerManagement.cpufreq.min =  800000;
   powerManagement.cpufreq.max = 1500000;
@@ -221,40 +260,72 @@
     ]
   ];
 
-  hardware.trackpoint = {
-    enable = true;
-    device = "TPPS/2 IBM TrackPoint";
-    speed = 97;
-    sensitivity = 130;
-    emulateWheel = true;
-  };
+  #hardware.trackpoint = {
+  #  enable = true;
+  #  device = "TPPS/2 IBM TrackPoint";
+  #  speed = 97;
+  #  sensitivity = 130;
+  #  emulateWheel = true;
+  #};
 
   # Custom script to decrease trackpoint sensitivity
   #...
 
-  services.xserver.libinput.enable = true;
-  services.xserver.libinput.touchpad.disableWhileTyping = true;
-  services.xserver.libinput.touchpad.scrollMethod = "twofinger";
-  services.xserver.libinput.touchpad.tapping = true; #false;
+  #services.libinput.enable = true;
+  #services.libinput.touchpad = {
+  #  disableWhileTyping = true;
+  #  scrollMethod = "twofinger";
+  #  tapping = true; #false;
+  #};
 
-  #services.xserver.displayManager.sddm.enable = true;
-  #services.xserver.displayManager.gdm.enable = true;
-  #services.xserver.displayManager.startx.enable = true;
-  services.xserver.displayManager.lightdm.enable = true;
+  services.displayManager.defaultSession = "none+xmonad";
 
-  services.xserver.displayManager.defaultSession = "none+xmonad";
+  services.xserver.enable = true;
 
-  #services.xserver.desktopManager.plasma5.enable = true;
-  #services.xserver.desktopManager.gnome.enable = true;
-  #services.xserver.desktopManager.xfce.enable = true;
-  #services.xserver.desktopManager.pantheon.enable = true;
-  #services.xserver.desktopManager.enlightenment.enable = true;
-  #services.xserver.desktopManager.lumina.enable = true;
-  #services.xserver.desktopManager.mate.enable = true;
-  #services.xserver.desktopManager.cinnamon.enable = true;
-  services.xserver.desktopManager.lxqt.enable = true;
+  services.xserver.displayManager = {
+    lightdm.enable = true;
+    #sddm = {
+    #  enable = true;
+    #  wayland.enable = false;
+    #};
+    #gdm = {
+    #  enable = true;
+    #  wayland = false;
+    #};
+    #startx.enable = true;
+  };
+
+  services.xserver.desktopManager = {
+    #plasma5.enable = true;
+    #plasma6.enable = true;
+    gnome.enable = true;
+    #xfce.enable = true;
+    #pantheon.enable = true;
+    #enlightenment.enable = true;
+    #lumina.enable = true;
+    #mate.enable = true;
+    #cinnamon.enable = true;
+    #lxqt.enable = true;
+    #lomiri.enable = true;
+  };
 
   services.xserver.windowManager = {
+    #xmonad = {
+    #  enable = true;
+    #  enableContribAndExtras = true;
+    #  extraPackages = haskellPackages: [
+    #    haskellPackages.xmonad
+    #    haskellPackages.xmonad-extras
+    #    haskellPackages.xmonad-contrib
+    #    haskellPackages.dbus
+    #    haskellPackages.List
+    #    haskellPackages.monad-logger
+    #    haskellPackages.xmobar
+    #  ];
+    #};
+    awesome = {
+      enable = true;
+    };
     berry.enable = true;
     notion.enable = true;
     pekwm.enable = true;
@@ -276,7 +347,6 @@
     fluxbox.enable = true;
     windowmaker.enable = true;
     twm.enable = true;
-    awesome.enable = true;
     spectrwm.enable = true;
     wmderland.enable = true;
     herbstluftwm.enable = true;
@@ -286,15 +356,116 @@
     clfswm.enable = true;
     #stumpwm.enable = true;
     sawfish.enable = true;
-    exwm.enable = true;
+    #exwm.enable = true;
 
     "2bwm".enable = true;
   };
 
-  #programs.sway.enable = true;
-  #programs.xwayland.enable = true;
+  programs = {
+    sway.enable = true;
+    xwayland.enable = true;
 
-  #nix.maxJobs = 4;
+    firefox.enable = false;
+
+    starship = {
+      enable = false;
+      settings = {
+        add_newline = false;
+        buf = {
+          symbol = " ";
+        };
+        c = {
+          symbol = " ";
+        };
+        directory = {
+          read_only = " 󰌾";
+        };
+        docker_context = {
+          symbol = " ";
+        };
+        fossil_branch = {
+          symbol = " ";
+        };
+        git_branch = {
+          symbol = " ";
+        };
+        golang = {
+          symbol = " ";
+        };
+        hg_branch = {
+          symbol = " ";
+        };
+        hostname = {
+          ssh_symbol = " ";
+        };
+        lua = {
+          symbol = " ";
+        };
+        memory_usage = {
+          symbol = "󰍛 ";
+        };
+        meson = {
+          symbol = "󰔷 ";
+        };
+        nim = {
+          symbol = "󰆥 ";
+        };
+        nix_shell = {
+          symbol = " ";
+        };
+        nodejs = {
+          symbol = " ";
+        };
+        ocaml = {
+          symbol = " ";
+        };
+        package = {
+          symbol = "󰏗 ";
+        };
+        python = {
+          symbol = " ";
+        };
+        rust = {
+          symbol = " ";
+        };
+        swift = {
+          symbol = " ";
+        };
+        zig = {
+          symbol = " ";
+        };
+      };
+    };
+
+    dconf.enable = true;
+    #seahorse.enable = true;
+    fuse.userAllowOther = true;
+    mtr.enable = true;
+
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
+
+    virt-manager.enable = true;
+
+    steam = {
+      enable = true;
+      gamescopeSession.enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+    };
+
+    thunar = {
+      enable = true;
+      plugins = with pkgs.xfce; [
+        thunar-archive-plugin
+        thunar-volman
+      ];
+    };
+
+  };
+
 
   system.stateVersion = "22.05";
 }

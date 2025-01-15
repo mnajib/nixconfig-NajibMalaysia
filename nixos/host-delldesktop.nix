@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 {
   nix = {
-    package = pkgs.nixFlakes;
+    #package = pkgs.nixFlakes;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
@@ -31,7 +31,7 @@
 
     ./users-julia.nix
     ./users-anak2.nix
-    ./users-abdullah.nix
+    ./users-abdullah-wheel.nix
 
     #./nfs-server.nix
     ./nfs-client-automount.nix

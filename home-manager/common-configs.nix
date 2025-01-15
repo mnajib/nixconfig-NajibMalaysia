@@ -35,7 +35,7 @@ let
     slug = "najib";
     name = "Najib";
     author = "Najib Ibrahim (https://github.com/mnajib)";
-    colors = {
+    palette = {
       base00 = "#000000";
       base01 = "#c7002e";
       base02 = "#009200";
@@ -59,38 +59,60 @@ let
   inherit (inputs.nix-colors.lib-contrib { inherit pkgs; }) colorschemeFromPicture nixWallpaperFromScheme;
 in
 {
-  nixpkgs.config = {
-    allowUnfree = true;
-    #firefox.enableAdobeFlash = false;
-    pulseaudio = true;
-  };
-
   # XXX: TODO: Better if not import here; but import from user specific file
   imports = [
     inputs.nix-colors.homeManagerModule
     ./screen.nix
     ./tmux.nix
-  ];
+    ./rofi.nix
+
+    #./nvim/lsp.nix
+    #./nvim
+    #./neovim # lets put this per-user, so disable neovim here
+    ./neovide
+
+    ./zsh.nix
+    ./bash.nix # bash shell
+    ./garbage-collect.nix
+
+    ./git.nix
+  ]
+  ++ (builtins.attrValues outputs.homeManagerModules);
   # XXX: TODO: Should be in seperate file packages.nix
+
+  nixpkgs.overlays = builtins.attrValues outputs.overlays;
+  nixpkgs.config = {
+    allowUnfree = true;
+    allowUnfreePredicate = _: true;
+    permittedInsecurePackages = [
+      #"nix-2.15.3"
+      #"electron-25.9.0"
+    ];
+    #firefox.enableAdobeFlash = false;
+    pulseaudio = true;
+  };
 
   colorscheme = lib.mkDefault colorSchemes.dracula;
   #colorscheme = lib.mkDefault colorSchemes.nord;
   #colorscheme = lib.mkDefault colorSchemes.najib;
 
   #home.sessionVariables = {
-  #  EDITOR = "nvim";       # yi vis nvim kak vim nano rasa jak
+    #EDITOR = "nvim";       # yi vis nvim kak vim nano rasa jak
+    #XDG_CONFIG_HOME = "$HOME/.config";
+    #XDG_DATA_HOME = "$HOME/var/lib";
+    #XDG_CACHE_HOME = "$HOME/var/cache";
   #};
 
 #------------------------------------------------------------------------------
-  programs.rofi = {
-    enable = true;
-    #font = "${font} 8"; #9
-    #theme = "~/.cache/wal/colors-rofi-dark-rasi";
-  };
+  #programs.rofi = {
+  #  enable = true;
+  #  #font = "${font} 8"; #9
+  #  #theme = "~/.cache/wal/colors-rofi-dark-rasi";
+  #};
 
-  programs.rofi.pass = {
-    enable = true;
-  };
+  #programs.rofi.pass = {
+  #  enable = true;
+  #};
 
   programs.java = {
     enable = true;
@@ -110,8 +132,8 @@ in
     #theme = "Space Gray Eighties";
 
     settings = {
-      background = "#${config.colorScheme.colors.base00}";
-      foreground = "#${config.colorScheme.colors.base05}";
+      background = "#${config.colorScheme.palette.base00}";
+      foreground = "#${config.colorScheme.palette.base05}";
 
       #cursor = "#cccccc";
       #cursor_text_color = "#111111";
@@ -134,11 +156,11 @@ in
     settings = {
       colors = {
         hints = {
-          bg = "#${config.colorScheme.colors.base00}";
-          fg = "#${config.colorScheme.colors.base0F}";
+          bg = "#${config.colorScheme.palette.base00}";
+          fg = "#${config.colorScheme.palette.base0F}";
         };
         tabs.bar = {
-          bg = "#${config.colorScheme.colors.base00}";
+          bg = "#${config.colorScheme.palette.base00}";
         };
       };
       #tabs.tabs_are_windows = true;
@@ -149,19 +171,51 @@ in
     #  tabs.bar.bg = "#${config.colorScheme.colors.base00}";
     #  keyhint.fg = "#${config.colorScheme.colors.base05}";
     #};
+
+    #extraConfig = builtins.readFile ./src/.config/nvim/init.vim;
+
+      #c.colors.webpage.darkmode.grayscale.images = 0.35
+      #c.content.user_stylesheets = '~/.config/qutebrowser/stylesheet/mydarkmodefix.css'
+    #extraConfig = ''
+    #  c.colors.webpage.preferred_color_scheme = 'dark'
+    #  c.colors.webpage.darkmode.enabled = True
+    #  c.colors.webpage.darkmode.algorithm = 'lightness-hsl'
+    #  c.colors.webpage.darkmode.contrast = -.022
+    #  c.colors.webpage.darkmode.threshold.foreground = 150
+    #  c.colors.webpage.darkmode.threshold.background = 100
+    #  c.colors.webpage.darkmode.policy.images = 'never'
+    #  c.content.notifications.enabled = False
+    #'';
   };
+  #home.file.".config/qutebrowser/stylesheet/mydarkmodefix.css" = {
+  #home.file."mydarkmodefix.css" = {
+  home.file.".config/qutebrowser" = {
+    enable = true;
+    #text = ''
+    #'';
+    #source = ./src/.config/qutebrowser/stylesheet/mydarkmodefix.css;
+    source = ./src/.config/qutebrowser;
+    #source = src/.Xresources.d;
+    recursive = true;
+    #target = ".config/qutebrowser/stylesheet/mydarkmodefix.css"; # Path to target file relative to HOME
+    #target = ~/.config/qutebrowser/stylesheet/mydarkmodefix.css; # Path to target file relative to HOME
+    #target = "~.config/qutebrowser/stylesheet/mydarkmodefix.css"; # Path to target file relative to HOME
+    target = "~.config/qutebrowser"; # Path to target file relative to HOME
+    #target = ".config/qutebrowser/stylesheet/"; # Path to target file relative to HOME
+  };
+  #xresources.extraConfig = builtins.readFile ./src/.Xresources;
 
   programs.urxvt = {
     enable = true;
   };
 
-  programs.wezterm = {
-    enable = true;
-    #package = pkgs.wezterm;
-    #colorSchemes = { ... };
-    #extraConfig = ''
-    #'';
-  };
+  #programs.wezterm = {
+  #  enable = true;
+  #  #package = pkgs.wezterm;
+  #  #colorSchemes = { ... };
+  #  #extraConfig = ''
+  #  #'';
+  #};
 
   programs.termite = {
     enable = true;
@@ -185,62 +239,6 @@ in
   #  enable = true;
   #  #packages =
   #};
-
-  # SessionPath and sessionVariables creates a hm-session file that must be sourced:
-  # Beware, it puts it in .profile, not in the .bashrc!
-  programs.bash = {
-    enable = true;
-    enableCompletion = true;
-
-    #shellOptions = [
-    #];
-
-    # Environment variable t...
-    #sessionVariables = {
-    #};
-
-    shellAliases = {
-      aoeu = "setxkbmap us";
-      asdf = "setxkbmap dvorak";
-      oeu = "loadkeys us";
-      sdf = "loadkeys dvorak";
-
-      l = "ls -alhF";
-      #ll = "ls --color=tty -Filah";
-      j = "jobs";
-      s = "sync";
-      #emacs = "emacs -nw";
-      #la = "ls -Fa";
-      p = "pwd";
-      a = "alias";
-
-      yi = "yi -k vim";
-    };
-
-    # Extra commands that should be run when initializing a login shell.
-    # This will append to ~/.profile
-    profileExtra = ''
-      umask 0002
-    '';
-
-    # Extra commands that should be run when initializing an interactive shell.
-    #initExtra = ''
-      #umask 0002
-      #"$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
-    #'';
-
-    # Extra commands that should be placed in ~/.bashrc.
-    # Note that these commands will be run even in non-interactive shells.
-    bashrcExtra = ''
-      umask 0002
-      #. ~/.bashrc
-      #eval "$(direnv hook bash)"
-      #colorscript random
-    '';
-
-    #logoutExtra = ''
-    #'';
-  };
 
   programs.fish = {
     enable = true;
@@ -293,6 +291,44 @@ in
 
   programs.command-not-found.enable = true;
 
+  programs.fd.enable = true; # A faster alternative to 'find'
+
+  programs.bat.enable = true; # For file previews
+
+  programs.ranger = {
+    enable = true; # A terminal 'file manager'.
+    #extraPackages =
+    #extraPlugins =
+    extraConfig = ''
+      set column_ratios 0,1,1
+      #set mouse_enabled false
+      set collapse_preview false
+      set sort_directories_first false
+
+      set preview_directories true
+      set preview_files false
+      set perview_images false
+
+      # 'uv' as shortcut to unmark all in all directories
+      # as command 'unmark' only unmarks marked files in the current directory.
+      map uv mark_files all=True val=False
+
+      # Color schemes
+      #Ranger comes with four color schemes: default, jungle, snow and solarized. You can change your color scheme using:
+      set colorscheme solarized
+
+      # Move to trash
+      map DD shell mv %s /home/$${USER}/.local/share/Trash/files/
+      #
+      # Alternatively, use GIO commandline tool provided by glib2 package:
+      #map DD shell gio trash %s
+    '';
+  };
+  #home.file.".config/ranger" = {
+  #  source = ./src/.config/ranger;
+  #  recursive = true;
+  #};
+
   programs.nnn = {
     enable = true;
     extraPackages = with pkgs; [
@@ -316,64 +352,75 @@ in
   programs.info.enable = true;
 
   #programs.exa = {
-  programs.eza = {
-    enable = true;
-    #enableAliases = true;
-  };
+  #programs.eza = {
+  #  enable = true;
+  #  #enableAliases = true;
+  #};
 
   programs.dircolors.enable = true;
 
-  programs.fzf.enable = true;           # fuzzy finder
+  programs.fzf = {
+    enable = true;           # fuzzy finder
+    enableBashIntegration = true;
+    enableFishIntegration = true;
+    enableZshIntegration = true;
+
+    tmux.enableShellIntegration = true;
+  };
+  #
   programs.skim.enable = true;          # fuzzy finder
 
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-    vimdiffAlias = true;
+# programs.neovim = {
+#   enable = true;
+#   defaultEditor = true;
+#   #viAlias = true;
+#   #vimAlias = true;
+#   #vimdiffAlias = true;
+#
+#   # Use Nix Package search engine to find even more plugins:
+#   # https://search.nixos.org/packages
+#   plugins = with pkgs.vimPlugins; [
+#     ##nvim-lspconfig
+#     #nvim-treesitter.withAllGrammars
+#     #plenary-nvim
+#     #gruvbox-material
+#     #mini-nvim
+#     #nvim-tree-lua
+#     #vim-illuminate
+#     #vim-numbertoggle
+#
+#     #{
+#     #plugin = vim-startify;
+#     #config = "let g:startify_change_to_vcs_root = 0";
+#     #}
+#
+#   ];
+#
+#   extraConfig = builtins.readFile ./src/.config/nvim/init.vim;
+# };
 
-    # Use Nix Package search engine to find even more plugins:
-    # https://search.nixos.org/packages
-    plugins = with pkgs.vimPlugins; [
-      nvim-lspconfig
-      nvim-treesitter.withAllGrammars
-      plenary-nvim
-      gruvbox-material
-      mini-nvim
-
-      nvim-tree-lua {
-        plugin = pkgs.vimPlugins.vim-startify;
-        config = "let g:startify_change_to_vcs_root = 0";
-      }
-
-    ];
-
-    extraConfig = builtins.readFile ./src/.config/nvim/init.vim;
-  };
-
-  programs.vim = {
-    enable = true;
-    extraConfig = builtins.readFile ./src/vim/vimrc;
-    settings = {
-      relativenumber = true;
-      number = true;
-      #nowrap = true;
-    };
-    plugins = with pkgs.vimPlugins; [
-      vim-elixir
-      #vim-mix-format
-      sensible
-      vim-airline
-      The_NERD_tree                      # file system explorer
-      fugitive vim-gitgutter             # git
-      rust-vim
-      #YouCompleteMe
-      vim-abolish
-      command-t
-      vim-go
-    ];
-  };
+# programs.vim = {
+#   enable = true;
+#   extraConfig = builtins.readFile ./src/vim/vimrc;
+#   settings = {
+#     relativenumber = true;
+#     number = true;
+#     #nowrap = true;
+#   };
+#   plugins = with pkgs.vimPlugins; [
+#     vim-elixir
+#     #vim-mix-format
+#     sensible
+#     vim-airline
+#     The_NERD_tree                      # file system explorer
+#     fugitive vim-gitgutter             # git
+#     rust-vim
+#     #YouCompleteMe
+#     vim-abolish
+#     command-t
+#     vim-go
+#   ];
+# };
 
   #programs.yi = {
   #    ...
@@ -408,75 +455,19 @@ in
   #  enable = true;
   #};
 
-  programs.git = {
-      enable = true;
-      package = pkgs.gitAndTools.gitFull;
-
-      #userName =  "${name}"; #"Najib Ibrahim";
-      #userEmail = "${email}"; # "mnajib@gmail.com";
-
-      aliases = {
-          co = "checkout";
-          ci = "commit";
-          st = "status";
-          br = "branch";
-          #hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cr)' --graph --date=short --all";
-          hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all";
-          #hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=relative --all";
-          histp = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all -p";
-          type = "cat-file -t";
-          dump = "cat-file -p";
-          branchall = "branch -a -vv";
-          tracked = "ls-tree --full-tree -r --name-only HEAD";
-      };
-      #diff-so-fancy.enable = true;
-      extraConfig = {
-          pull = {
-            rebase = true;
-          };
-          #push = {
-          #  default = "current";
-          #};
-          core = {
-              editor = "vim";
-              excludesfile = "~/.gitignore";
-              whitespace = "trailing-space,space-before-tab";
-          };
-          merge = {
-              tool = "vimdiff";
-          };
-          color = {
-              ui = "auto";
-              #diff = "auto";
-              status = "auto";
-              #branch = "auto";
-              branch = {
-                current = "yellow reverse";
-                remote = "green bold";
-                local = "blue bold";
-              };
-              diff = {
-                meta = "blue bold";
-                frag = "magenta bold";
-                old = "red bold";
-                new = "green bold";
-              };
-          };
-      };
-  };
 
 #------------------------------------------------------------------------------
-  wayland.windowManager.sway = {
-    enable = true;
-    config = {
-      input = {
-        "*" = {
-          xkb_layout = "us";
-          xkb_variant = "dvorak";
-        };
-      };
-    };
-  };
+  #wayland.windowManager.sway = {
+  #  enable = true;
+  #  config = {
+  #    input = {
+  #      "*" = {
+  #        xkb_layout = "us";
+  #        xkb_variant = "dvorak";
+  #      };
+  #    };
+  #  };
+  #};
 
   #xsession = {
   #    enable = true;
@@ -546,7 +537,7 @@ in
       #package = pkgs.tela-icon-theme;
       #name = "Tela";
 
-      package = pkgs.gnome.adwaita-icon-theme;
+      package = pkgs.adwaita-icon-theme;
       name = "Adwaita";
     };
     # Give Termite some internal spacing.
@@ -578,9 +569,9 @@ in
   };
 
   services.xscreensaver = {
-    enable = true;
+    enable = false;                     # Xserver just blank/power-off the display, no need to display xscreensaver
     settings = {
-      mode = "random";
+      mode = "Voronoi";                 # "random";
       lock = false;
       fadeTicks = 20;
     };
@@ -601,9 +592,18 @@ in
   #services.syncthing.enable = true;
 
   # Removable disk automounter for udisks
-  services.udiskie = {
-    enable = true;
-  };
+  #services.udiskie = {
+  #  enable = true;
+  #};
+  #udisks
+  #udiskie
+  #deepin.udisk2-qt5
+  #usermount
+  #services.udisks2 = {
+  #  enable = true;
+  #  #mountOnMedia = true;
+  #  #settings = {};
+  #};
 
   # This will automatically install the lorri command.
   # Note: There's a known issue preventing the lorri daemon from starting automatically upon installation. Until it's resolved, you'll have to reload the user daemon by hand by running systemctl --user daemon-reload, or reboot.
@@ -699,11 +699,6 @@ in
   #    source = ./src/.config/kak;
   #    recursive = true;
   #};
-
-  home.file.".config/ranger" = {
-    source = ./src/.config/ranger;
-    recursive = true;
-  };
 
   #home.file.".config/git" = {
   #  source = ./src/.config/git;

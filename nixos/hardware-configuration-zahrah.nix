@@ -9,7 +9,8 @@
   ];
 
   #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;	# Need to use this if want to enable zfs support.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
+
   boot.supportedFilesystems = [
     "ext4" "btrfs" "xfs" "vfat" "ntfs"
     #"zfs"
@@ -24,12 +25,16 @@
   boot.extraModulePackages = [
     #config.boot.kernelPacakages.broadcom_sta
   ];
-  #boot.blacklistedKernelModules = [
-  #  "intel_ips"       # Some Intel Ibex Peak based platforms support so-called
-  #                    # 'intelligent power sharing', which allows the CPU and
-  #                    # GPU to cooperate to maximize performance within a given
-  #                    # TDP (thermal design point).
-  #];
+  boot.blacklistedKernelModules = [
+    #"intel_ips"       # Some Intel Ibex Peak based platforms support so-called
+                      # 'intelligent power sharing', which allows the CPU and
+                      # GPU to cooperate to maximize performance within a given
+                      # TDP (thermal design point).
+  ];
+  boot.kernelParams = [
+    #"module_blacklist=i915"           # intel
+    #"module_blacklist=amdgpu"         # AMD
+  ];
 
   boot.initrd.supportedFilesystems = [
     "ext4" "btrfs" "xfs" "vfat" "ntfs"
@@ -45,6 +50,7 @@
   boot.initrd.availableKernelModules = [
     "ehci_pci" "ahci" "firewire_ohci" "sd_mod" "sdhci_pci"
     "xhci_pci" "usb_storage"
+    "radeon"
   ];
 
   #---------------------------------------------------------------------------
