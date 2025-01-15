@@ -1,6 +1,6 @@
 # vim: set ts=2 sw=2 expandtab nowrap number:
 
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 {
   nix = {
     package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
@@ -68,22 +68,31 @@
   #  nvtop
   #];
 
-  #services.xserver.videoDrivers = [ "nouveau" ];
+  #----------------------------------------------------------------------------
+  # To enable propriotary nvidia legacy driver
+  # but now the support was ended :(
+  #----------------------------------------------------------------------------
   #services.xserver.videoDrivers = [ "nvidia" ];
-  #services.xserver.videoDrivers = [ "nvidia" "nvidiaLegacy340" "nouveau" "fbdev" ];
-  #services.xserver.videoDrivers = [ "nvidiaLegacy340" "fbdev" ];
-  #services.xserver.videoDrivers = [ "fbdev" ];
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_340;
   #hardware.nvidia.nvidiaSettings = true;
-  #hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
-  #hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
+  #hardware.nvidia.prime.intelBusId = "PCI:0:2:0";         # sudo lshw -c display. lspci | grep -i vga
+  #hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";        # sudo lshw -c display. lspci
   #hardware.nvidia.prime.sync.enable = true;
   #hardware.nvidia.modesetting.enable = true;
-  #hardware.nvidiaOptimus.disable = true; # Completely disable the NVIDIA graphics card and use the integrated graphics processor instead.
-  #hardware.nvidia.open = true;
+  #hardware.nvidia.open = false;
+  #hardware.nvidia.powerManagement.enable = false;
+  #hardware.nvidia.powerManagement.finegrained = false;
+  #----------------------------------------------------------------------------
+
+  #----------------------------------------------------------------------------
+  # To completely disable the NVIDIA graphics card and use the integrated graphics processor instead.
+  #----------------------------------------------------------------------------
+  #hardware.nvidiaOptimus.disable = true;
+  #----------------------------------------------------------------------------
 
   #boot.loader.systemd-boot.enable = true; # gummi-boot for EFI
   #boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.timeout = 10; # in second(s)
   boot.loader.grub = {
     enable = true;
     #version = 2;
@@ -236,7 +245,7 @@
   services.xserver.displayManager.defaultSession = "none+xmonad";
 
   #services.xserver.desktopManager.plasma5.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  #services.xserver.desktopManager.gnome.enable = true;
   #services.xserver.desktopManager.xfce.enable = true;
   #services.xserver.desktopManager.pantheon.enable = true;
   #services.xserver.desktopManager.enlightenment.enable = true;
