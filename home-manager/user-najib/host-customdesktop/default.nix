@@ -9,6 +9,8 @@
   # You can import other home-manager modules here
   imports = [
     ../default.nix
+
+    ../..neovim
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

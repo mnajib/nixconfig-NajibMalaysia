@@ -775,13 +775,16 @@
         };
 
         #----------------------------------------------------------------------
-        "najib@zahrah" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            ./home-manager/home-najib.nix
-          ];
-        };
+        #"najib@zahrah" = home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #  extraSpecialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    ./home-manager/home-najib.nix
+        #  ];
+        #};
+        "najib@zahrah" = mkHome [
+          ./home-manager/user-najib/host-zahrah
+        ] nixpkgs.legacyPackages."x86_64-linux";
 
         #----------------------------------------------------------------------
         #"najib@customdesktop" = home-manager.lib.homeManagerConfiguration {

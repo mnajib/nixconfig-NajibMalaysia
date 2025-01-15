@@ -24,8 +24,10 @@ in
     ../common-configs.nix
     ../common-packages.nix
 
-    ../neovim
+    #../neovim
     #../neovim/lazyvim.nix
+    #
+    # Now define neovim per-host basis
 
     ../helix
 
