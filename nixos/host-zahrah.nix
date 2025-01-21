@@ -1,4 +1,6 @@
-{ pkgs, config, ... }:
+# vim: set ts=2 sw=2 expandtab nowrap number:
+
+{ pkgs, config, lib, ... }:
 {
   nix = {
     #package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
@@ -88,18 +90,8 @@
     mesa
   ];
 
-  #hardware.amdgpu = {
-  #  initrd.enable = true;
-  #  opencl.enable = true;
-  #};
-
   environment.systemPackages = with pkgs; [
-    #nvtop
-    #nvtopPackages.full
     radeontop # T400 zahrah have GPU: AMD ATI Mobility Radeon HD 3450/3470 (RV620/M83). May need to choose 'discrete graphic' in BIOS.
-    #amdgpu_top
-    #xorg.xf86videoamdgpu
-    #lact # Linux AMDGPU Controller. This application allows you to overclock, undervolt, set fans curves of AMD GPUs on a Linux system.
     clinfo
     gpu-viewer
     vulkan-tools
@@ -114,40 +106,15 @@
     haskellPackages.X11-xft
   ];
 
-  #
-  # NOTE:
-  #   01:00.0 VGA compatible controller: NVIDIA Corporation GT218M [NVS 3100M] (rev a2)
-  #
-  #services.xserver.videoDrivers = [ "nouveau" ];
-  #services.xserver.videoDrivers = [ "nvidia" ];
-  #services.xserver.videoDrivers = [ "nvidia" "nvidiaLegacy340" "nouveau" "fbdev" ];
-  #services.xserver.videoDrivers = [ "nvidiaLegacy340" "fbdev" ];
-  #services.xserver.videoDrivers = [ "fbdev" ];
-  services.xserver.videoDrivers = [ "radeon" ];
+  #services.xserver.videoDrivers = [ "radeon" ];
 
-  # To enable hardware accelerated graphics drivers, to allow most graphical applications and environments to use hardware rendering, video encode/decode acceleration, etc. 
-  # This option should be enabled by default by the corresponding modules, so you do not usually have to set it yourself.
-  hardware.graphics.enable = true;
-
-  #hardware.nvidia = {
-  #  package = config.boot.kernelPackages.nvidiaPackages.legacy_340;
-  #  nvidiaSettings = true;
-
-  #  prime = {
-  #    intelBusId = "PCI:0:2:0";
-  #    nvidiaBusId = "PCI:1:0:0";
-  #    #sync.enable = true;
-  #  };
-
-  #  modesetting.enable = true;
-  #  open = false; # true;
-  #  powerManagement.enable = false;
-  #  powerManagement.finegrained = false;
-  #};
-  #hardware.nvidiaOptimus.disable = true; # Completely disable the NVIDIA graphics card and use the integrated graphics processor instead.
+  ## To enable hardware accelerated graphics drivers, to allow most graphical applications and environments to use hardware rendering, video encode/decode acceleration, etc. 
+  ## This option should be enabled by default by the corresponding modules, so you do not usually have to set it yourself.
+  #hardware.graphics.enable = true;
 
   #boot.loader.systemd-boot.enable = true; # gummi-boot for EFI
   #boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.timeout = 10; # in second(s)
   boot.loader.grub = {
     enable = true;
     #version = 2;
@@ -343,19 +310,19 @@
   };
 
   services.xserver.windowManager = {
-    xmonad = {
-      enable = true;
-      enableContribAndExtras = true;
-      extraPackages = haskellPackages: [
-        haskellPackages.xmonad
-        haskellPackages.xmonad-extras
-        haskellPackages.xmonad-contrib
-        haskellPackages.dbus
-        haskellPackages.List
-        haskellPackages.monad-logger
-        haskellPackages.xmobar
-      ];
-    };
+    #xmonad = {
+    #  enable = true;
+    #  enableContribAndExtras = true;
+    #  extraPackages = haskellPackages: [
+    #    haskellPackages.xmonad
+    #    haskellPackages.xmonad-extras
+    #    haskellPackages.xmonad-contrib
+    #    haskellPackages.dbus
+    #    haskellPackages.List
+    #    haskellPackages.monad-logger
+    #    haskellPackages.xmobar
+    #  ];
+    #};
     awesome = {
       enable = true;
     };

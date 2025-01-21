@@ -244,10 +244,12 @@
     wget curl killall
     mtr iproute2 # busybox
     htop mc irssi most mosh coreutils
+    glances
     nload
     zenith                    # Sort of like top or htop but with zoom-able charts, network, and disk usage
     bmon                      # Network bandwidth monitor
     btop
+    glances
     enlightenment.evisum
     tldr # community-driven simplified man pages
 

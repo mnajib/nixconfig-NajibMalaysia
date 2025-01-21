@@ -8,7 +8,7 @@
   ...
 }:
 let
-  barrierConfigDir = ./src/.config/barrier;
+  barrierConfigDir = ./src/.config/barrier; # <--- Change barrier config here
 
   # Map hostnames to their corresponding Barrier config files
   barrierConfigMap = {
