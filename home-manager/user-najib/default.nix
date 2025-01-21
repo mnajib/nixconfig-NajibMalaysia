@@ -139,8 +139,9 @@ in
     xournalpp
     #wpsoffice
 
-    libreoffice-fresh
+    #libreoffice-fresh
     #libreoffice-qt-fresh
+    libreoffice
 
     smlnj
     #waydroid
