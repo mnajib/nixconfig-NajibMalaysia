@@ -463,8 +463,8 @@ with lib;
   hardware.nvidia.powerManagement.finegrained = false;
   hardware.nvidia.open = false;
   #hardware.nvidia.nvidiaSettings = true;
-  ##hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;  # <-- this is tested and work (for dell precision m4800 laptop?)
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390; # <-- on 2025-01-27, This driver is recommended for Quadro K2100M (in Dell Precision M4800 laptop).
+  ##hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;  # <-- this is tested and work (for dell precision m4800 laptop?)
   #----------------------------------------------------------------------------
 
 
@@ -659,7 +659,7 @@ with lib;
 
     windowManager = {
 
-      # Refer nixos/xmonad.nix
+      # Moved to nixos/xmonad.nix
       #xmonad = {
       #  enable = true;
       #  enableContribAndExtras = true;
