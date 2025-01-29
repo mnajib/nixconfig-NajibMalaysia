@@ -145,6 +145,8 @@ in
     #libreoffice-qt-fresh
     libreoffice
 
+    opera
+
     smlnj
     #waydroid
     #kmymoney
