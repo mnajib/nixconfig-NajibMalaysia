@@ -40,7 +40,7 @@ with lib;
         hostName = "sakinah.localdomain";
         #protocol = "ssh"; # "ssh-ng"
         sshUser = "najib";
-        #maxJobs = 1;
+        maxJobs = 1;
         system = "x86_64-linux";
         #speedFactor = 2;
         #supportedFeatures = [
@@ -51,17 +51,17 @@ with lib;
         #];
       }
 
-      {
-        hostName = "asmak";
-        sshUser = "najib";
-        maxJobs = 2;
-        systems = [ "x86_64-linux" ];
-      }
+      #{
+      #  hostName = "asmak";
+      #  sshUser = "najib";
+      #  maxJobs = 2;
+      #  systems = [ "x86_64-linux" ];
+      #}
 
       {
         hostName = "taufiq";
         sshUser = "najib";
-        #maxJobs = 3;
+        maxJobs = 3;
         systems = [ "x86_64-linux" ];
       }
 
@@ -82,7 +82,7 @@ with lib;
       {
         hostName = "khawlah";
         sshUser = "najib";
-        #maxJobs = 2;
+        maxJobs = 2;
         systems = [ "x86_64-linux" ];
       }
 
@@ -169,16 +169,11 @@ with lib;
     #./nitter.nix
 
     #./xdg-kde.nix
-    #./xdg.nix
-    ./xdg-gnome.nix
+    ./xdg.nix
 
     ./opengl2.nix
 
-    #./stylix.nix
-
-    #./host-khadijah-Xorg-nvidia.nix
-
-    ./xmonad.nix
+    ./stylix.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -232,7 +227,6 @@ with lib;
 
     #nvtop # has been rename to nvtopPackages.full
     nvtopPackages.full
-    glances
 
     pciutils
     file
@@ -344,38 +338,8 @@ with lib;
   #boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12.zfs;
 
   boot.kernelParams = [
-    #"i915.modeset=1" # to enable i915
-    #"i915.modeset=0" # to disable i915
-    #"modprobe.blacklist=nvidia,nvidia_drm,nvidia_modeset" # blacklist nvidia modules
-
-    #"nouveau.modeset=1" # enable nouveau
-    "nouveau.modeset=0" # disable nouveau
-
-    #"nvidia.modeset=1" # enable nvidia
-    #"descrete" # prefer a discrete GPU over an integrated GPU
-    #"modprobe.blacklist=nvidia,nvidia_drm,nvidia_modeset" # blacklist nvidia modules
-    #"nvidia.modeset=0" # disable nvidia
-
-    "nvidia-drm.modeset=1" "i915.modeset=1"
-
+    #"i915.modeset=0" "nouveau.modeset=1"                                        # to disable i915 and enable nouveau
     "video=eDP-1:1920x1080" "video=VGA-1:1280x1024" "video=DP-1-3:1280x1024"    #
-  ];
-
-  boot.blacklistedKernelModules = [
-    "nouveau"
-    "nouveau_modeset"
-    #"nvidia"
-    #"i915"
-  ];
-
-  boot.kernelModules = [
-    #"i915"
-    "nvidia"
-  ];
-
-  boot.initrd.availableKernelModules = [
-    "i915"
-    "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm"
   ];
 
   #
@@ -428,22 +392,22 @@ with lib;
 
   #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390; # Latest Legacy GPU version (390.xx series): 390.143 that support the graphic card.
 
-  hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
+  #hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
 
-  hardware.nvidia.prime.sync.enable = true;
+  #hardware.nvidia.prime.sync.enable = true;
   #
   # OR
   #
   # Dedicated GPU only activated when needed
-  #hardware.nvidia.prime.offload = {
-  #  enable = true;
-  #  # With enebleOffloadCmd = true, we can do as below.
-  #  #   In general:
-  #  #     nvidia-offload some-game
-  #  #   steam:
-  #  #     nvidia-offload %command%
-  #  enableOffloadCmd = true;
-  #};
+  hardware.nvidia.prime.offload = {
+    enable = true;
+    # With enebleOffloadCmd = true, we can do as below.
+    #   In general:
+    #     nvidia-offload some-game
+    #   steam:
+    #     nvidia-offload %command%
+    enableOffloadCmd = true;
+  };
   #
   # OR
   #
@@ -459,13 +423,13 @@ with lib;
   #  };
   #};
 
-  #hardware.nvidia.powerManagement.enable = true; #false;
-  #hardware.nvidia.powerManagement.finegrained = true; #false;
-
+  hardware.nvidia.powerManagement.enable = false;
+  hardware.nvidia.powerManagement.finegrained = false;
   hardware.nvidia.open = false;
   #hardware.nvidia.nvidiaSettings = true;
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390; # <-- on 2025-01-27, This driver is recommended for Quadro K2100M (in Dell Precision M4800 laptop).
-  ##hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;  # <-- this is tested and work (for dell precision m4800 laptop?)
+
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390; # <-- nvidia website say I should use this
+  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;  # <-- this is tested and work
   #----------------------------------------------------------------------------
 
 
@@ -476,175 +440,47 @@ with lib;
     enable = true;
     dpi = 96;
 
-    #videoDrivers = [ "modesetting" ];
-    #videoDrivers = [ "modesetting" ];
-    #videoDrivers = [ "nouveau" ];
     #videoDrivers = [ "modesetting" "nvidia" ];
     #videoDrivers = [ "nvidia" "modesetting" ];
-    videoDrivers = [ "nvidia" ];
+    #videoDrivers = [ "nvidia" ];
     # OR
     # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`.
     #videoDrivers = [ "nvidiaLegacy390" ]; #
 
-#    extraConfig = lib.mkAfter ''
-#      Section "Monitor"
-#          Identifier "LaptopMonitor"
-#          Option "Primary" "true"
-#      EndSection
+#    displayManager = {
 #
-#      Section "Monitor"
-#          Identifier "CombineMonitor"
-#          Option "RightOf" "LaptopMonitor"
-#      EndSection
+#      lightdm = {
+#        enable = true;
+#        #background = "";
+#        greeters = {
+#          gtk = { # gtk is the default
+#            enable = true;
+#            indicators = [
+#              "~host"
+#              "~spacer"
+#              "~clock"
+#              "~spacer"
+#              "~session"
+#              "~language"
+#              "~a11y"
+#              "~power"
+#            ];
+#            clock-format = "%F";
+#          };
+#          slick = {
+#            enable = false;
+#          };
+#          enso.enable = false;
+#        };
+#      };
 #
-#      Section "Screen"
-#          Identifier "Screen0"
-#          Device "Device0"
-#          Monitor "LaptopMonitor"
-#          SubSection "Display"
-#              Depth 24
-#              Virtual 4480 1080
-#          EndSubSection
-#      EndSection
-#    '';
-
-    #extraConfig = lib.mkAfter ''
-    #  # -----------------------------------------------
-    #  # Layout
-    #  # -----------------------------------------------
-    #
-    #  Section "ServerLayout"
-    #      Identifier "Layout[all]"
-    #      Screen 0 "Screen0" 0 0               # Place Screen0 (eDP) at position 0x0
-    #      Screen 1 "Screen1" RightOf "Screen0" # Place Screen1 (VGA + DP) to the right of Screen0
-    #  EndSection
-    #
-    #  # -----------------------------------------------
-    #  # Devices
-    #  # -----------------------------------------------
-    #
-    #  # Device configuration for modesetting (Intel GPU)
-    #  Section "Device"
-    #      Identifier "Device-modesetting[0]"
-    #      Driver "modesetting"
-    #      BusID "PCI:0:2:0"                    # Intel GPU Bus ID
-    #      Option "AccelMethod" "none"
-    #      Option "DRI" "3" # Enable PRIME support
-    #  EndSection
-    #
-    #  # Device configuration for NVIDIA GPU
-    #  Section "Device"
-    #      Identifier "Device-nvidia[0]"
-    #      Driver "nvidia"
-    #      Option "AllowEmptyInitialConfiguration" "True"
-    #      Option "SidebandSocketPath" "/run/nvidia-xdriver/"
-    #      Option "Coolbits" "28" # Enable PRIME and manual setting
-    #      BusID "PCI:1:0:0"                    # NVIDIA GPU Bus ID
-    #  EndSection
-    #
-    #  # -----------------------------------------------
-    #  # Monitors
-    #  # -----------------------------------------------
-    #
-    #  Section "Monitor"
-    #      Identifier "Monitor0"                # Laptop display (eDP)
-    #  EndSection
-    #
-    #  Section "Monitor"
-    #      Identifier "Monitor1"                # External VGA monitor
-    #  EndSection
-    #
-    #  Section "Monitor"
-    #      Identifier "Monitor2"                # External DP monitor
-    #  EndSection
-    #
-    #  # -----------------------------------------------
-    #  # Screens
-    #  # -----------------------------------------------
-    #
-    #  Section "Screen"
-    #      Identifier "Screen0"                 # Screen for Monitor0 (laptop display)
-    #      Device "Device-modesetting[0]"       # Use modesetting device
-    #      Monitor "Monitor0"
-    #      SubSection "Display"
-    #          Depth 24
-    #          Virtual 1920 1080               # Resolution for Monitor0
-    #      EndSubSection
-    #  EndSection
-    #
-    #  Section "Screen"
-    #      Identifier "Screen1"                 # Screen for Monitor1 + Monitor2
-    #      Device "Device-nvidia[0]"            # Use NVIDIA device
-    #      Monitor "Monitor1"
-    #      Monitor "Monitor2"
-    #      SubSection "Display"
-    #          Depth 24
-    #          Virtual 2560 1024               # Combine Monitor1 (VGA) and Monitor2 (DP) side-by-side
-    #      EndSubSection
-    #  EndSection
-    #
-    #  # -----------------------------------------------
-    #'';
-
-    # verify that Xinerama is working by checking:
-    # xrandr --verbose | grep -i provider
-    #extraConfig = ''
-    #  Section "ServerFlags"
-    #    Option "Xinerama" "on"
-    #  EndSection
-    #  Section "Device"
-    #    Identifier "NVIDIA GPU"
-    #    Driver "nouveau"
-    #    Option "AllowEmptyInitialConfiguration" "false"
-    #    Option "PrimaryGPU" "true"
-    #    Option "UseDisplayDevice" "DFP-0, DFP-1, DFP-2"
-    #    Option "Xinerama" "on"
-    #  EndSection
-    #'';
-    #  Section "Device"
-    #    Identifier "NVIDIA GPU"
-    #    Driver "nvidia"
-    #    Option "AllowEmptyInitialConfiguration" "false"
-    #    Option "PrimaryGPU" "true"
-    #    Option "UseDisplayDevice" "DFP-0, DFP-1, DFP-2"
-    #    Option "Xinerama" "on"
-    #  EndSection
-    #'';
-
-    displayManager = {
-
-      lightdm = {
-        enable = false; #true;
-        #background = "";
-        greeters = {
-          gtk = { # gtk is the default
-            enable = true;
-            indicators = [
-              "~host"
-              "~spacer"
-              "~clock"
-              "~spacer"
-              "~session"
-              "~language"
-              "~a11y"
-              "~power"
-            ];
-            clock-format = "%F";
-          };
-          slick = {
-            enable = false;
-          };
-          enso.enable = false;
-        };
-      };
-
-      gdm = {
-        enable = true;
-        autoSuspend = false;
-      };
-
-      startx.enable = true; #false;
-    };
+#      #gdm = {
+#      #  enable = false; #true;
+#      #  autoSuspend = false;
+#      #};
+#
+#      startx.enable = false;
+#    };
 
     desktopManager = {
       xterm.enable = false;
@@ -659,28 +495,26 @@ with lib;
     };
 
     windowManager = {
-
-      # Moved to nixos/xmonad.nix
-      #xmonad = {
-      #  enable = true;
-      #  enableContribAndExtras = true;
-      #  extraPackages = haskellPackages: [
-      #    haskellPackages.xmonad
-      #    haskellPackages.xmonad-extras
-      #    haskellPackages.xmonad-contrib
-      #    haskellPackages.dbus
-      #    haskellPackages.List
-      #    haskellPackages.monad-logger
-      #    haskellPackages.xmobar
-      #  ];
-      #};
+      xmonad = {
+        enable = true;
+        enableContribAndExtras = true;
+        extraPackages = haskellPackages: [
+          haskellPackages.xmonad
+          haskellPackages.xmonad-extras
+          haskellPackages.xmonad-contrib
+          haskellPackages.dbus
+          haskellPackages.List
+          haskellPackages.monad-logger
+          haskellPackages.xmobar
+        ];
+      };
 
       awesome = {
         enable = true;
       };
 
       #spectrwm.enable = true;
-      #qtile.enable = true;
+      qtile.enable = true;
       jwm.enable = true;
       #notion.enable = true;
       #leftwm.enable = true;
@@ -692,6 +526,7 @@ with lib;
 
   services.displayManager = {
     #enable = false; # true;
+    enable = true;
 
     #sddm = {
     #  enable = true;
@@ -735,12 +570,11 @@ with lib;
   #    };
 
   services.power-profiles-daemon.enable = false;
-  #powerManagement.enable = false; # Default is true;
   #powerManagement.cpuFreqGovernor = "powersave";
-  powerManagement.cpuFreqGovernor = "performance";
-#  powerManagement.cpufreq.min = 2000000000; # 2000000; # 800000; # Default is 'null';
-#  powerManagement.cpufreq.max = 2600000000; # 2600000; # 3200000; # Default is null;
-  services.upower.enable = true; # firefox seams to complain something about needing this
+  #powerManagement.enable = false; # Default is true;
+  powerManagement.cpufreq.min = 2000000000; # 2000000; # 800000; # Default is 'null';
+  #powerManagement.cpufreq.max = 2600000000; # 2600000; # 3200000; # Default is null;
+  #services.upower.enable = true;
   #powerManagement.powertop.enable = true;
   services.tlp = {
     enable = true; # default is 'false'
@@ -748,16 +582,15 @@ with lib;
       #TLP_PERSISTENT_DEFAULT=1;
       #TLP_DEFAULT_MODE="BAT";
 
-      CPU_SCALING_GOVERNOR_ON_BAT="powersave";
-      #CPU_SCALING_GOVERNOR_ON_AC="powersave";
-      CPU_SCALING_GOVERNOR_ON_AC="performance";
+      CPU_SCALING_GOVERNOR_ON_BAT="performance";#"powersave";
+      CPU_SCALING_GOVERNOR_ON_AC="performance"; #"powersave"; #"performance";
 
       # The following prevents the battery from charging fully to
       # preserve lifetime. Run `tlp fullcharge` to temporarily force
       # full charge.
       # https://linrunner.de/tlp/faq/battery.html#how-to-choose-good-battery-charge-thresholds
       START_CHARGE_THRESH_BAT0=40;
-      STOP_CHARGE_THRESH_BAT0=50;
+      STOP_CHARGE_THRESH_BAT0=80;
 
       # 100 being the maximum, limit the speed of my CPU to reduce
       # heat and increase battery usage:
@@ -765,10 +598,10 @@ with lib;
       #CPU_MAX_PERF_ON_BAT=60;
 
       # CPU frequency
-#      CPU_SCALING_MIN_FREQ_ON_AC="2.0GHz"; # 2000000; # 800000;
-#      CPU_SCALING_MAX_FREQ_ON_AC="2.6GHz"; # 2600000; # 3200000;
-#      CPU_SCALING_MIN_FREQ_ON_BAT="2.0GHz"; # 2000000; #800000;
-#      CPU_SCALING_MAX_FREQ_ON_BAT="2.6GHz"; # 2600000; #3200000; #2300000;
+      CPU_SCALING_MIN_FREQ_ON_AC="2.0GHz"; # 2000000; # 800000;
+      #CPU_SCALING_MAX_FREQ_ON_AC="2.6GHz"; # 2600000; # 3200000;
+      CPU_SCALING_MIN_FREQ_ON_BAT="2.0GHz"; # 2000000; #800000;
+      #CPU_SCALING_MAX_FREQ_ON_BAT="2.6GHz"; # 2600000; #3200000; #2300000;
     };
   };
   services.auto-cpufreq = {

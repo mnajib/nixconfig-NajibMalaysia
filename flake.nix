@@ -453,8 +453,8 @@
           # ---------------------------------------------------------------------------------
           # With enable switchable graphic in BIOS (Dell Precision M4800 laptop).
           # Enable intel and nvidia graphic driver, with enable PRIME
-          ./nixos/host-khadijah-Xorg-intel-nvidia-prime-sync.nix # nvidia always on, best while connected with power
-          #./nixos/host-khadijah-Xorg-intel-nvidia-prime-offload.nix # nvidia on when needed, best while on battery
+          #./nixos/host-khadijah-Xorg-intel-nvidia-prime-sync.nix # nvidia always on, best while connected with power
+          ##./nixos/host-khadijah-Xorg-intel-nvidia-prime-offload.nix # nvidia on when needed, best while on battery
           #
           # ---------------------------------------------------------------------------------
           # Intel + Nouveau
@@ -483,6 +483,9 @@
           # ---------------------------------------------------------------------------------
           # Enable nouveau graphic driver, disable intel and nvidia graphic driver
           #./nixos/host-khadijah-Xorg-nouveau.nix
+          #
+          #
+          ./nixos/host-khadijah-Wayland-nauveau.nix
 
           #{ environment.systemPackages = [ fh.packages.x86_64-linux.default ]; }
 
