@@ -60,8 +60,6 @@
   #fileSystems."/".options = [ "noatime" "discard" ];
 
   #boot.kernelPackages = pkgs.linuxPackages_latest; # XXX: Move this configuration seperate from each host.
-  hardware.enableAllFirmware = true;
-
   networking.networkmanager.enable = true; # <-- will move to host specifix file
 
   #nix.trustedUsers = [ "root" "najib" ]; <-- moved to host-hostname.nix
@@ -225,6 +223,15 @@
     unixODBCDrivers.mariadb
     #unixODBCDrivers.mysql
     unixODBCDrivers.msodbcsql18
+
+    firmware-updater
+    firmware-manager
+    fwts
+    gnome-firmware
+    linux-firmware
+    fwup
+    fwupd
+    fwupd-efi
 
     sshfs # FUSE-based filesystem that allows remote filesystems to be mounted over SSH; mount.fuse.sshfs, mount.sshfs, sshfs
 
@@ -1221,6 +1228,10 @@
 
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
+  hardware.enableAllFirmware = true;
+  services.fwupd = {
+    enable = true;
+  };
 
   #services.locate.enable = true; # default false
   #services.picom.enable = true; #services.compton.enable = true;
