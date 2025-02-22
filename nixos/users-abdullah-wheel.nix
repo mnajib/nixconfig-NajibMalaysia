@@ -21,6 +21,7 @@
 		tmux
 		neovim
 		htop
+		git
 	];
     };
 }

@@ -521,6 +521,12 @@
         };
 
         #----------------------------------------------------------------------
+        nyxora = mkNixos [
+          ./nixos/host-nyxora.nix
+          sops-nix.nixosModules.sops
+        ];
+
+        #----------------------------------------------------------------------
         # Najib's Main Desktop
         #customdesktop = nixpkgs.lib.nixosSystem {
         #  specialArgs = { inherit inputs outputs; };
@@ -795,6 +801,9 @@
         "najib@customdesktop" = mkHome [./home-manager/user-najib/host-customdesktop/default.nix] nixpkgs.legacyPackages."x86_64-linux";
 
         #----------------------------------------------------------------------
+        "najib@nyxora" = mkHome [./home-manager/user-najib/host-nyxora/default.nix] nixpkgs.legacyPackages."x86_64-linux";
+
+        #----------------------------------------------------------------------
         #"najib@khadijah" = home-manager.lib.homeManagerConfiguration {
         #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
         #  extraSpecialArgs = { inherit inputs outputs; };
@@ -844,6 +853,15 @@
 
         #----------------------------------------------------------------------
         "root@customdesktop" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/home-root.nix
+          ];
+        };
+
+        #----------------------------------------------------------------------
+        "root@nyxora" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [

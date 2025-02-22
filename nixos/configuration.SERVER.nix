@@ -134,8 +134,18 @@
     t_fmt="%T";
     d_t_fmt="%F %T %A %Z";
     date_fmt="%F %T %A %Z";
+
     LC_MESSAGES = "en_GB.UTF-8";
+    LC_ADDRESS = "ms_MY.UTF-8";
+    LC_IDENTIFICATION = "ms_MY.UTF-8";
+    #LC_MEASUREMENT = "ms_MY.UTF-8";
+    LC_MONETARY = "ms_MY.UTF-8";
+    LC_NAME = "ms_MY.UTF-8";
+    #LC_NUMERIC = "ms_MY.UTF-8";
+    LC_PAPER = "ms_MY.UTF-8";
+    LC_TELEPHONE = "ms_MY.UTF-8";
     LC_TIME = "en_GB.UTF-8";
+    #LC_TIME = "ms_MY.UTF-8";
   };
 
   time.timeZone = "Asia/Kuala_Lumpur";
@@ -1036,6 +1046,8 @@
     #openttd
   ];
 
+  programs.firefox.enable = true;
+
   #programs.way-cooler.enable = true;
 
   programs.java.enable = true;
@@ -1137,8 +1149,6 @@
 
   #programs.fish.enable = true;
   programs.xonsh.enable = true;
-
-  programs.firefox.enable = true;
 
   #users.users.najib.shell = pkgs.fish;    #pkgs.zsh; # pkgs.fish;
   #users.defaultUserShell = pkgs.fish;    #pkgs.zsh;
