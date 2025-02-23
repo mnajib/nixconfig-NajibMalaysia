@@ -183,7 +183,7 @@
   boot.initrd.availableKernelModules = [
     "ehci_pci" "ahci" "xhci_pci" "ata_piix" "usbhid" "usb_storage" "sd_mod" "mpt3sas"
     "uhci_hcd" "firewire_ohci" "sr_mod" "sdhci_pci"
-    "ums_realtex"
+    "ums_realtek"
     "mpt3sas"
   ];
   boot.initrd.kernelModules = [
