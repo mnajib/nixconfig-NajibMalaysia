@@ -455,11 +455,11 @@
 
     iosevka
 
-    inkscape
+    #inkscape
 
-    gnucash
-    homebank
-    #kmymoney # XXX: compile failed while upgrade keira
+    #gnucash
+    #homebank
+    #kmymoney # compile failed while upgrade keira
 
     gtypist
     tuxtype
@@ -743,7 +743,7 @@
     sxiv
     feh
     evince                              # Documents viewer
-    calibre                             # Comprehensive e-book software
+    #calibre                             # Comprehensive e-book software
     sioyek                              # A PDF viewer designed for research papers and technical books
     #qpdfview
 
