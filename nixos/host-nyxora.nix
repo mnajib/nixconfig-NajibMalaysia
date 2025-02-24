@@ -160,7 +160,7 @@
       #efiSupport = true;
       enableCryptodisk = true;
       copyKernels = true;
-      useOSProber = true;
+      useOSProber = false; #true;
       timeoutStyle = "menu";
       memtest86.enable = true;
 
