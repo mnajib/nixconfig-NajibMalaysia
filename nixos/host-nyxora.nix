@@ -62,7 +62,8 @@
     # Email fetch and serve
     #./email.nix
 
-    ./zfs.nix
+    #./zfs.nix
+    ./zfs-nyxora.nix
 
     #./nfs-server-customdesktop.nix
     ./nfs-client-automount.nix

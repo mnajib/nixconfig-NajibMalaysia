@@ -103,6 +103,7 @@ in
 
   services.sanoid = {
     #enable = true; # Default is "false"
+    interval = "hourly"; # Run this hourly, run syncoid daily to prune ok
 
     templates = {
       default = {
@@ -118,11 +119,6 @@ in
     datasets = {
       "zroot/persist".useTemplate = [ "default" ];
       "zroot/persistSave".useTemplate = [ "default" ];
-    } // lib.optionalAttrs (config.yomaq.disks.zfs.storage.enable && !config.yomaq.disks.amReinstalling) {
-    # This is for the additional zstorage pool I configure in my flake
-    # we'll come back to the "amReinstalling" option later on
-      "zstorage/storage".useTemplate = [ "default" ];
-      "zstorage/persistSave".useTemplate = [ "default" ];
     };
 
   }; # End services.sanoid
@@ -132,6 +128,7 @@ in
 
   services.syncoid = {
     #enable = true; # Default is 'false'
+    interval = "daily"; # important that syncoid runs less often than sanoid
   };
 
 }
