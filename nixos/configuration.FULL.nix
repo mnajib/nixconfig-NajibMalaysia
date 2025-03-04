@@ -250,6 +250,8 @@
     #unixODBCDrivers.mysql
     unixODBCDrivers.msodbcsql18
 
+    glom
+
     firmware-updater
     firmware-manager
     fwts
