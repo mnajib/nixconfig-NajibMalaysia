@@ -71,6 +71,7 @@
     #./nfs-client.nix
 
     #./samba-server-customdesktop.nix
+    ./samba-server-nyxora.nix
     #./samba-client.nix
 
     ./console-keyboard-dvorak.nix
