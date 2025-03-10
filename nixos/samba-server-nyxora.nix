@@ -17,32 +17,9 @@
 
   services.samba = {
     enable = true;
-    enableNmbd = false;                 # Default: true
-    enableWinbindd = false;
+    nmbd.enable = false;                 # Default: true
+    winbindd.enable = false;
 
-    #securityType = "user";              # Default: "user"
-    securityType = "share";              # No authentication
-
-    #extraConfig = ''
-    #  workgroup = WORKGROUP
-    #  server string = customdesktop
-    #  netbios name = customdesktop
-    #  server role = standalone server
-
-    #  log file = /var/log/samba/smbd.%m
-    #  max log size = 50
-
-    #  security = user
-    #  use sendfile = yes
-    #  #max protocol = smb2
-    #  # note: localhost is the ipv6 localhost ::1
-    #  #hosts allow = 192.168.0. 192.168.1. 127.0.0.1 localhost
-    #  hosts allow = 0.0.0.0/0
-    #  hosts deny = 0.0.0.0/0
-    #  dns proxf = no
-    #  guest account = nobody
-    #  map to guest = bad user
-    #'';
     settings = {
       global = {
         workgroup = "WORKGROUP";
@@ -54,6 +31,7 @@
         "max log size" = 50;
 
         security = "user";
+
         "use sendfile" = "yes";
         #max protocol = smb2
         # note: localhost is the ipv6 localhost ::1
@@ -65,7 +43,7 @@
         "map to guest" = "bad user";
         #"vfs objects" = "catia fruit streams_xattr";
 
-	"pam password change" = "yes";
+	      "pam password change" = "yes";
         "usershare allow guests" = "yes";
         "create mask" = 0664;
         "force create mode" = 0664;
@@ -82,9 +60,6 @@
         #"vfs objects" = "acl_xattr catia fruit streams_xattr";
         "inherit permissions" = "yes";
       };
-    };
-
-    shares = {
 
       #public = {
       #  path = "/home/Shares/Public";
@@ -100,7 +75,7 @@
       #  "force user" = "share";
       #  "force group" = "users";
       #};
-
+      
       #private = {
       #  path = "/home/Shares/Private";
       #  browseable = "yes";
@@ -111,58 +86,51 @@
       #  "force user" = "najib";
       #  "force group" = "users";
       #};
-
-      #data = {
+      
       najibzfspool1 = {
-        #path = "/home/nfs/share/DATA";
-        #path = "/home/nfs/share";
-
-        #path = "/MyTank/backups/offsite/najibzfspool1/nfs/share/DATA";
-        #comment = "najibzfspool1 backup with read-only access";
-
         path = "/home/share/public";
-	comment = "Public Read-only access";
-
-	"security" = "user";
-
+        comment = "Public Read-only access";
+      
+        "security" = "user";
+      
         browseable = "yes";
         #"writeable" = "yes";
         "read only" = "yes";            # "no"
         "guest ok" = "yes";
-	"guest account" "nobody";
-
+        "guest account" = "nobody";
+      
         "create mask" = "0644";
         "directory mask" = "0755";
-	#"create mask" = "0666";
-	#"directory mask" = "0777";
-
+        #"create mask" = "0666";
+        #"directory mask" = "0777";
+      
         #"force user" = "najib";        # "share" "cadey" "abdullah"
         #"force user" = "share";         # "share" "cadey" "abdullah"
-	"force user" = "nobody";
+        "force user" = "nobody";
         "force group" = "users";        # "within"
       };
-
+      
       najib = {
         path = "/MyTank/backups/offsite/najibzfspool1/nfs/share/DATA/01 Najib";
-	browseable = "yes";
-	"read only" = "yes"; #"no"; # This is zfs remote backup, should only allow read-only
-
-	# Make this private
-	"guest ok" = "no";
-	"valid users" = "najib";
+        browseable = "yes";
+        "read only" = "yes"; #"no"; # This is zfs remote backup, should only allow read-only
+      
+        # Make this private
+        "guest ok" = "no";
+        "valid users" = "najib";
       };
-
+      
       naqib = {
-        path = "/MyTank/backups/offsite/najibzfspool1/nfs/share/DATA/03 Naqib";
-	browseable = "yes";
-	"read only" = "yes"; #"no"; # This is zfs remote backup, should only allow read-only
-
-	# Make this private
-	"guest ok" = "no";
-	"valid users" = "naqib";
+  	  	path = "/MyTank/backups/offsite/najibzfspool1/nfs/share/DATA/03 Naqib";
+  		  browseable = "yes";
+  		  "read only" = "yes"; #"no"; # This is zfs remote backup, should only allow read-only
+  		
+  		  # Make this private
+  		  "guest ok" = "no";
+  		  "valid users" = "naqib";
       };
 
-    };
+    }; # End services.samba.settings
 
     # Printer Sharing
     # The `samba` packages comes without cups support compiled in;
@@ -171,11 +139,17 @@
     #package = pkgs.sambaFull;
     openFirewall = true;               # To automatically open firewall ports
     #...
-  };
+
+  }; # End services.samba
 
   #systemd.tmpfiles.rules = [ "d /home/Shares/Public 0755 share users" ];
   #systemd.tmpfiles.rules = [ "d /home/nfs/share/DATA 0755 share users" ];
   systemd.tmpfiles.rules = [ "d /home/nfs/share 0755 share users" ];
+  #
+  # Create the shared directory and set permissions
+  #systemd.tmpfiles.rules = [
+  #  "d ${sharedFolder} 0777 nobody nogroup - -"
+  #];
 
   users.users = {
     share = {
@@ -214,11 +188,6 @@
 
   environment.systemPackages = with pkgs; [
     samba # samba client tools (optional)
-  ];
-
-  # Create the shared directory and set permissions
-  systemd.tmpfiles.rules = [
-    "d ${sharedFolder} 0777 nobody nogroup - -"
   ];
 
 }
