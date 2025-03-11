@@ -4,7 +4,7 @@
 { config, lib, pkgs, modulesPath, ... }:
 {
   imports = [
-    (modulesPath + "/profiles/qemu-guest.nix")
+    #(modulesPath + "/profiles/qemu-guest.nix")
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
@@ -27,6 +27,8 @@
       "uhci_hcd" "firewire_ohci" "sr_mod" "sdhci_pci"
       "ums_realtek"
       "mpt3sas"
+
+      "ata_generic" "isci"
     ];
     kernelModules = [
       "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs"
@@ -158,10 +160,35 @@
     #device = "/dev/disk/by-uuid/f7dbf09e-c9b0-4e27-9ded-3a31b43760b0";
     #fsType = "ext4";
 
-    # nyxora
-    device = "/dev/disk/by-uuid/ec57ab7b-769b-407c-90a5-4022e161544e";
-    fsType = "ext4";
+    # nyxora (vm)
+    #device = "/dev/disk/by-uuid/ec57ab7b-769b-407c-90a5-4022e161544e";
+    #fsType = "ext4";
+    #
+    # nyxora (physical hardware, HP Z420)
+    device = "MyStation/local/root";
+    fsType = "zfs";
   };
+
+  fileSystems."/boot" =                                                                                                                                       
+    { device = "/dev/disk/by-uuid/4237-2B9B";                                                                                                                 
+      fsType = "vfat";                                                                                                                                        
+      options = [ "fmask=0022" "dmask=0022" ];                                                                                                                
+    };                                                                                                                                                        
+                                                                                                                                                              
+  fileSystems."/nix" =                                                                                                                                        
+    { device = "MyStation/local/nix";                                                                                                                         
+      fsType = "zfs";                                                                                                                                         
+    };                                                                                                                                                        
+                                                                                                                                                              
+  fileSystems."/home" =                                                                                                                                       
+    { device = "MyStation/safe/home";                                                                                                                         
+      fsType = "zfs";                                                                                                                                         
+    };                                                                                                                                                        
+                                                                                                                                                              
+  fileSystems."/persist" =                                                                                                                                    
+    { device = "MyStation/safe/persist";                                                                                                                      
+      fsType = "zfs";                                                                                                                                         
+    };
 
   swapDevices =  [
     #{ device = "/dev/disk/by-uuid/54a11355-d334-46c5-8cbb-43369d08fd8a"; } # swap on 500GB HD. This HDD is failing
@@ -180,6 +207,11 @@
     #  #priority = 0;
     #  size = (1024 * 12) * 2;
     #}
+
+    # nyxora (physically on Z420)
+    { device = "/dev/disk/by-uuid/cd472af8-a300-4c06-8c53-b26710f16397"; }                                                                                  
+    { device = "/dev/disk/by-uuid/12e7efc0-480c-4960-be2a-8a7ce64db443"; }
+
   ];
 
   networking.useDHCP = lib.mkDefault true;

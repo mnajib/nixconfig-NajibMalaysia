@@ -181,10 +181,11 @@
   #  inputs.nixpkgs.follows = "nixpkgs";
   #};
 
-  inputs.kmonad = {
-    url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
+  #inputs.kmonad = {
+  #  #url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
+  #  url = "git+https://github.com/kmonad/kmonad";
+  #  inputs.nixpkgs.follows = "nixpkgs";
+  #};
 
   #}; # End 'inputs'.
   #-------------------------------------------------------------------
@@ -216,7 +217,7 @@
     nix-doom-emacs,
     nix-ld,
     #expose-cuda,
-    kmonad,
+    #kmonad,
     nixvim,
     neovim-config-NajibMalaysia,
     stylix,
@@ -591,7 +592,7 @@
           #hardware.nixosModules.common-pc-ssd
           hardware.nixosModules.common-pc-laptop-ssd
 
-          kmonad.nixosModules.default
+          #kmonad.nixosModules.default
 
           #lix-module.nixosModules.default
 

@@ -32,6 +32,8 @@ nix flake metadata
 nix flake show
 nix flake update
 
+nix flake update --extra-experimental-features nix-command --extra-experimental-features flakes
+
 nix develop
 nix develop --extra-experimental-features 'nix-command flakes'
 

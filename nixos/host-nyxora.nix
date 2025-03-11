@@ -96,8 +96,8 @@
 
     #./hosts2.nix
 
-    #./configuration.FULL.nix
-    ./configuration.SERVER.nix
+    ./configuration.FULL.nix
+    #./configuration.SERVER.nix
 
     #./kodi.nix
 
@@ -118,14 +118,14 @@
     #./jupyter.nix # jupyter-hub? jupyter-notebook?
     #./invidious.nix # for watch youtube. Need postgresql database
 
-    ./xdg.nix
-    ./opengl.nix
+    #./xdg.nix
+    #./opengl.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   #
-  networking.hostId = "e8213168";
+  networking.hostId = "a070cd92"; #"e8213168";
   networking.hostName = "nyxora";
 
   nix.settings.trusted-users = [
@@ -152,12 +152,12 @@
 
   #--------------------------------------------------------
   boot.loader = {
-    #systemd-boot.enable = true;
-    #efi.canTouchEfiVariables = true;
-    timeout = 100;
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+    timeout = 10;
 
     grub = {
-      enable = true;
+      #enable = true;
       #version = 2;
       #efiSupport = true;
       enableCryptodisk = true;
@@ -199,6 +199,10 @@
     #"bcachefs"
     #"ntfs"
   ];
+
+  boot.initrd.postDeviceCommands = lib.mkAfter ''                                                                                                             
+    zfs rollback -r MyStation/local/root@blank                                                                                                                
+  '';
 
   #
   # NOTE:
@@ -320,32 +324,36 @@
   #xdg.portal.enable = true;
   #xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # OR enable gnome desktopManager
 
-
   # Disable all power/screen saver; leave it to tv hardware
-  powerManagement.enable = false;
-  services.upower.enable = false;
-  powerManagement.powertop.enable = false;
-  services.tlp.enable = false;
-  services.power-profiles-daemon.enable = false;
-  services.auto-cpufreq = {
-    enable = true;
-  };
+  #powerManagement.enable = false;
+  #services.upower.enable = false;
+  #powerManagement.powertop.enable = false;
+  #services.tlp.enable = false;
+  #services.power-profiles-daemon.enable = false;
+  #services.auto-cpufreq = {
+  #  enable = true;
+  #};
 
   systemd.watchdog.rebootTime = "10m";
 
   #nix.maxJobs = 4;
 
-  #environment.systemPackages = with pkgs; [
-  environment.systemPackages = [
+  environment.systemPackages = with pkgs; [
+  #environment.systemPackages = [
     #pkgs.blender
     #pkgs.virtualboxWithExtpack
 
     # use in wayland
-    pkgs.gnome-randr
-    pkgs.foot
+    gnome-randr
+    foot
   ];
 
   #virtualisation.virtualbox.host.enable = true;
+
+  # Copy the NixOS configuration file and link it from the resulting system                                                                                   
+  # (/run/current-system/configuration.nix). This is useful in case you                                                                                       
+  # accidentally delete configuration.nix.                                                                                                                    
+  #system.copySystemConfiguration = true; # not supporetd with flakes
 
   system.stateVersion = "24.11";
 }
