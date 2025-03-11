@@ -40,7 +40,9 @@ in
     #
     #./emacs-with-doom.nix
 
-    # NOTE: nix-doom-emacs: This project has been broken for more than a year due to Doom's excessive divergence from emacs-overlay's package set, which is not Doom's fault but rather a missing Elisp package locking mechanism on our end.
+    # NOTE: nix-doom-emacs: This project has been broken for more than a year due to Doom's
+    # excessive divergence from emacs-overlay's package set, which is not Doom's fault but
+    # rather a missing Elisp package locking mechanism on our end.
     #nix-doom-emacs.hmModule
 
     #./hyprland.nix

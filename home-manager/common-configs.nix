@@ -92,9 +92,10 @@ in
     pulseaudio = true;
   };
 
-  colorscheme = lib.mkDefault colorSchemes.dracula;
+  #colorscheme = lib.mkDefault colorSchemes.dracula;
   #colorscheme = lib.mkDefault colorSchemes.nord;
   #colorscheme = lib.mkDefault colorSchemes.najib;
+  colorscheme = lib.mkDefault colorScheme;
 
   #home.sessionVariables = {
     #EDITOR = "nvim";       # yi vis nvim kak vim nano rasa jak
