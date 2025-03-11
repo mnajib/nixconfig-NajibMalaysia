@@ -169,12 +169,6 @@
     fsType = "zfs";
   };
 
-  fileSystems."/boot" =                                                                                                                                       
-    { device = "/dev/disk/by-uuid/4237-2B9B";                                                                                                                 
-      fsType = "vfat";                                                                                                                                        
-      options = [ "fmask=0022" "dmask=0022" ];                                                                                                                
-    };                                                                                                                                                        
-                                                                                                                                                              
   fileSystems."/nix" =                                                                                                                                        
     { device = "MyStation/local/nix";                                                                                                                         
       fsType = "zfs";                                                                                                                                         
@@ -190,6 +184,12 @@
       fsType = "zfs";                                                                                                                                         
     };
 
+  fileSystems."/boot" =                                                                                                                                       
+    { device = "/dev/disk/by-uuid/4237-2B9B";                                                                                                                 
+      fsType = "vfat";                                                                                                                                        
+      options = [ "fmask=0022" "dmask=0022" ];                                                                                                                
+    };                                                                                                                                                        
+                                                                                                                                                              
   swapDevices =  [
     #{ device = "/dev/disk/by-uuid/54a11355-d334-46c5-8cbb-43369d08fd8a"; } # swap on 500GB HD. This HDD is failing
     #{ device = "/dev/disk/by-uuid/600ebd52-edd2-4c42-b3b1-b8d8a6cb5acf"; } # swap partition on 254GB SSD

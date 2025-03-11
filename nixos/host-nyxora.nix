@@ -159,24 +159,40 @@
     grub = {
       #enable = true;
       #version = 2;
-      #efiSupport = true;
+      efiSupport = true;
       enableCryptodisk = true;
       copyKernels = true;
       useOSProber = false; #true;
       timeoutStyle = "menu";
       memtest86.enable = true;
 
-      #mirroredBoots = [
+      mirroredBoots = [
         #{
           #devices = [ "/dev/disk/by-id/wwn-0x5000cca7c5e11b3c" ];
           #path = "/boot2";
         #}
-      #];
+	{
+	  devices = [
+	    "/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
+	    #"/dev/disk/by-if/wwn-0x50014ee65ba9826e-part2"
+	  ];
+	  path = "/boot";
+	}
+	{
+	  devices = [
+	    #"/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
+	    "/dev/disk/by-if/wwn-0x50014ee65ba9826e-part2"
+	  ];
+	  path = "/boot2";
+	}
+      ];
 
       devices = [
         #"/dev/disk/by-id/wwn-0x5000c500a837f420" # 500GB HDD from sakinah
         #"/dev/disk/by-id/wwn-0x5000039fe7c9db77" # HDD from HP ProDesk Naqib
-        "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0"
+        #"/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0"
+	"/dev/disk/by-id/wwn-0x5000c500a837f420"
+	"/dev/disk/by-if/wwn-0x50014ee65ba9826e"
       ];
 
     }; # End boot.loader.grub
