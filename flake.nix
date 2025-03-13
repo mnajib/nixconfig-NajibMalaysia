@@ -181,10 +181,11 @@
   #  inputs.nixpkgs.follows = "nixpkgs";
   #};
 
-  inputs.kmonad = {
-    url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
+  #inputs.kmonad = {
+  #  #url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
+  #  url = "git+https://github.com/kmonad/kmonad";
+  #  inputs.nixpkgs.follows = "nixpkgs";
+  #};
 
   #}; # End 'inputs'.
   #-------------------------------------------------------------------
@@ -216,7 +217,7 @@
     nix-doom-emacs,
     nix-ld,
     #expose-cuda,
-    kmonad,
+    #kmonad,
     nixvim,
     neovim-config-NajibMalaysia,
     stylix,
@@ -524,6 +525,12 @@
         };
 
         #----------------------------------------------------------------------
+        nyxora = mkNixos [
+          ./nixos/host-nyxora.nix
+          sops-nix.nixosModules.sops
+        ];
+
+        #----------------------------------------------------------------------
         # Najib's Main Desktop
         #customdesktop = nixpkgs.lib.nixosSystem {
         #  specialArgs = { inherit inputs outputs; };
@@ -588,7 +595,7 @@
           #hardware.nixosModules.common-pc-ssd
           hardware.nixosModules.common-pc-laptop-ssd
 
-          kmonad.nixosModules.default
+          #kmonad.nixosModules.default
 
           #lix-module.nixosModules.default
 
@@ -801,6 +808,9 @@
         "najib@customdesktop" = mkHome [./home-manager/user-najib/host-customdesktop/default.nix] nixpkgs.legacyPackages."x86_64-linux";
 
         #----------------------------------------------------------------------
+        "najib@nyxora" = mkHome [./home-manager/user-najib/host-nyxora/default.nix] nixpkgs.legacyPackages."x86_64-linux";
+
+        #----------------------------------------------------------------------
         #"najib@khadijah" = home-manager.lib.homeManagerConfiguration {
         #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
         #  extraSpecialArgs = { inherit inputs outputs; };
@@ -854,6 +864,16 @@
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
             ./home-manager/home-root.nix
+          ];
+        };
+
+        #----------------------------------------------------------------------
+        "root@nyxora" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            #./home-manager/home-root.nix
+            ./home-manager/user-root/host-nyxora
           ];
         };
 

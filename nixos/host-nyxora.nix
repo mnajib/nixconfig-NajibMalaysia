@@ -21,7 +21,8 @@
     #./hardware-specific-config/ # box
     #./hardware-specific-config/ # harddisk
 
-    ./hardware-configuration-customdesktop.nix
+    #./hardware-configuration-customdesktop.nix
+    ./hardware-configuration-nyxora.nix
 
     #./bootEFI.nix
     #./bootBIOS.nix
@@ -33,9 +34,9 @@
 
     # Internal/private network DNS server
     #./dnsmasq.nix
-    ./unbound.nix
+    #./unbound.nix
 
-    #./users-abdullah-wheel.nix
+    ./users-abdullah-wheel.nix
     #./users-anak2.nix
     #./users-naqib.nix
     #./users-naqib-wheel.nix
@@ -48,7 +49,7 @@
     #./anbox.nix
     #./virtualbox.nix
 
-    ./typesetting.nix
+    #./typesetting.nix
 
     #./syncthing.nix
 
@@ -61,14 +62,16 @@
     # Email fetch and serve
     #./email.nix
 
-    ./zfs.nix
+    #./zfs.nix
+    ./zfs-nyxora.nix
 
-    ./nfs-server-customdesktop.nix
+    #./nfs-server-customdesktop.nix
     ./nfs-client-automount.nix
     #./nfs-client-automount-games.nix
     #./nfs-client.nix
 
     #./samba-server-customdesktop.nix
+    ./samba-server-nyxora.nix
     #./samba-client.nix
 
     ./console-keyboard-dvorak.nix
@@ -92,7 +95,9 @@
     #./forgejo-sqlite.nix
 
     #./hosts2.nix
+
     ./configuration.FULL.nix
+    #./configuration.SERVER.nix
 
     #./kodi.nix
 
@@ -113,16 +118,15 @@
     #./jupyter.nix # jupyter-hub? jupyter-notebook?
     #./invidious.nix # for watch youtube. Need postgresql database
 
-    ./xdg.nix
-    ./opengl.nix
+    #./xdg.nix
+    #./opengl.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   #
-  # custom desktop
-  networking.hostId = "7b2076ba";
-  networking.hostName = "customdesktop"; # "tv"; # tv.desktop.local
+  networking.hostId = "a070cd92"; #"e8213168";
+  networking.hostName = "nyxora";
 
   nix.settings.trusted-users = [
     "root" "najib"
@@ -147,11 +151,10 @@
   systemd.services.NetworkManager-wait-online.enable = false;
 
   #--------------------------------------------------------
-  # XXX: aaa
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
-    timeout = 100;
+    timeout = 10;
 
     grub = {
       #enable = true;
@@ -159,24 +162,63 @@
       efiSupport = true;
       enableCryptodisk = true;
       copyKernels = true;
-      useOSProber = true;
+      useOSProber = false; #true;
       timeoutStyle = "menu";
       memtest86.enable = true;
 
-      #mirroredBoots = [
+      mirroredBoots = [
         #{
           #devices = [ "/dev/disk/by-id/wwn-0x5000cca7c5e11b3c" ];
           #path = "/boot2";
         #}
-      #];
+	{
+	  devices = [
+	    "/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
+	    #"/dev/disk/by-if/wwn-0x50014ee65ba9826e-part2"
+	  ];
+	  path = "/boot";
+	}
+	{
+	  devices = [
+	    #"/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
+	    "/dev/disk/by-if/wwn-0x50014ee65ba9826e-part2"
+	  ];
+	  path = "/boot2";
+	}
+      ];
 
       devices = [
         #"/dev/disk/by-id/wwn-0x5000c500a837f420" # 500GB HDD from sakinah
-        "/dev/disk/by-id/wwn-0x5000039fe7c9db77" # HDD from HP ProDesk Naqib
+        #"/dev/disk/by-id/wwn-0x5000039fe7c9db77" # HDD from HP ProDesk Naqib
+        #"/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0"
+	"/dev/disk/by-id/wwn-0x5000c500a837f420"
+	"/dev/disk/by-if/wwn-0x50014ee65ba9826e"
       ];
 
     }; # End boot.loader.grub
   }; # End boot.loader
+
+  boot.initrd.availableKernelModules = [
+    "ehci_pci" "ahci" "xhci_pci" "ata_piix" "usbhid" "usb_storage" "sd_mod" "mpt3sas"
+    "uhci_hcd" "firewire_ohci" "sr_mod" "sdhci_pci"
+    "ums_realtek"
+    "mpt3sas"
+  ];
+  boot.initrd.kernelModules = [
+    "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs"
+    #"ntfs"
+    "kvm-intel"
+  ];
+  boot.initrd.supportedFilesystems = [
+    "ext4" "btrfs" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid"
+    "zfs"
+    #"bcachefs"
+    #"ntfs"
+  ];
+
+  boot.initrd.postDeviceCommands = lib.mkAfter ''                                                                                                             
+    zfs rollback -r MyStation/local/root@blank                                                                                                                
+  '';
 
   #
   # NOTE:
@@ -200,9 +242,24 @@
     #"video=VGA-0:1280x1024@60me"
     #"video=VGA-1:1280x1024@60me"
   #];
-  #boot.supportedFilesystems = [ "ext4" "btrfs" "xfs" "vfat" ]; # "zfs" bcachefs
-  #boot.initrd.supportedFilesystems = [ "ext4" "btrfs" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" ]; # "zfs" bcachefs
-  #boot.loader.grub.copyKernels = true;
+
+  boot.extraModulePackages = [];
+
+  boot.kernelModules = [
+    "kvm-intel"
+    #"snd-ctxfi" "snd-hda-intel"
+    #"snd-ca0106"
+  ];
+
+  boot.supportedFilesystems = [
+    "ext4" "btrfs" "xfs" "vfat"
+    "zfs"
+    #"bcachefs"
+    "ntfs"
+    "dm-crypt" "dm-snapshot" "dm-raid"
+  ];
+
+  #--------------------------------------------------------
 
   #services.btrfs.autoScrub = {
   #  enable = true;
@@ -241,9 +298,6 @@
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
-  #boot.kernelModules = [ "snd-ctxfi" "snd-ca0106" "snd-hda-intel" ];
-  #boot.kernelModules = [ "snd-ctxfi" "snd-hda-intel" ];
-
   services.logind.extraConfig = "RuntimeDirectorySize=4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001
 
   services.libinput.enable = true;
@@ -270,13 +324,13 @@
     #];
 
     #displayManager.sddm.enable = true;
-    #displayManager.gdm.enable = true;
-    displayManager.lightdm.enable = true;
+    displayManager.gdm.enable = true;
+    #displayManager.lightdm.enable = true;
 
     #desktopManager.plasma5.enable = true;
     #desktopManager.xfce.enable = true;
     #desktopManager.mate.enable = true;
-    #desktopManager.gnome.enable = true;
+    desktopManager.gnome.enable = true;
     #desktopManager.enlightenment.enable = true;
 
   }; # End services.xserver
@@ -286,35 +340,36 @@
   #xdg.portal.enable = true;
   #xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # OR enable gnome desktopManager
 
-
   # Disable all power/screen saver; leave it to tv hardware
-  powerManagement.enable = false;
-  services.upower.enable = false;
-  powerManagement.powertop.enable = false;
-  services.tlp.enable = false;
-  services.power-profiles-daemon.enable = false;
-  services.auto-cpufreq = {
-    enable = true;
-  };
+  #powerManagement.enable = false;
+  #services.upower.enable = false;
+  #powerManagement.powertop.enable = false;
+  #services.tlp.enable = false;
+  #services.power-profiles-daemon.enable = false;
+  #services.auto-cpufreq = {
+  #  enable = true;
+  #};
 
   systemd.watchdog.rebootTime = "10m";
 
   #nix.maxJobs = 4;
 
-  #environment.systemPackages = with pkgs; [
-  environment.systemPackages = [
+  environment.systemPackages = with pkgs; [
+  #environment.systemPackages = [
     #pkgs.blender
     #pkgs.virtualboxWithExtpack
 
     # use in wayland
-    pkgs.gnome-randr
-    pkgs.foot
+    gnome-randr
+    foot
   ];
 
   #virtualisation.virtualbox.host.enable = true;
 
-  #system.stateVersion = "22.05";
-  #system.stateVersion = "22.11";
-  #system.stateVersion = "23.05";
-  system.stateVersion = "23.11";
+  # Copy the NixOS configuration file and link it from the resulting system                                                                                   
+  # (/run/current-system/configuration.nix). This is useful in case you                                                                                       
+  # accidentally delete configuration.nix.                                                                                                                    
+  #system.copySystemConfiguration = true; # not supporetd with flakes
+
+  system.stateVersion = "24.11";
 }

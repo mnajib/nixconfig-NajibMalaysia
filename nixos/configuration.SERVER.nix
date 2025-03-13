@@ -60,6 +60,8 @@
   #fileSystems."/".options = [ "noatime" "discard" ];
 
   #boot.kernelPackages = pkgs.linuxPackages_latest; # XXX: Move this configuration seperate from each host.
+  hardware.enableAllFirmware = true;
+
   networking.networkmanager.enable = true; # <-- will move to host specifix file
 
   #nix.trustedUsers = [ "root" "najib" ]; <-- moved to host-hostname.nix
@@ -133,16 +135,16 @@
     d_t_fmt="%F %T %A %Z";
     date_fmt="%F %T %A %Z";
 
-    LC_MESSAGES = "en_GB.UTF-8";                                                                                                                              
-    LC_ADDRESS = "ms_MY.UTF-8";                                                                                                                               
-    LC_IDENTIFICATION = "ms_MY.UTF-8";                                                                                                                        
-    #LC_MEASUREMENT = "ms_MY.UTF-8";                                                                                                                          
-    LC_MONETARY = "ms_MY.UTF-8";                                                                                                                              
-    LC_NAME = "ms_MY.UTF-8";                                                                                                                                  
-    #LC_NUMERIC = "ms_MY.UTF-8";                                                                                                                              
-    LC_PAPER = "ms_MY.UTF-8";                                                                                                                                 
-    LC_TELEPHONE = "ms_MY.UTF-8";                                                                                                                             
-    LC_TIME = "en_GB.UTF-8";                                                                                                                                  
+    LC_MESSAGES = "en_GB.UTF-8";
+    LC_ADDRESS = "ms_MY.UTF-8";
+    LC_IDENTIFICATION = "ms_MY.UTF-8";
+    #LC_MEASUREMENT = "ms_MY.UTF-8";
+    LC_MONETARY = "ms_MY.UTF-8";
+    LC_NAME = "ms_MY.UTF-8";
+    #LC_NUMERIC = "ms_MY.UTF-8";
+    LC_PAPER = "ms_MY.UTF-8";
+    LC_TELEPHONE = "ms_MY.UTF-8";
+    LC_TIME = "en_GB.UTF-8";
     #LC_TIME = "ms_MY.UTF-8";
   };
 
@@ -227,32 +229,6 @@
     socat
     redis
 
-    csvq
-    csvtk
-    csvkit
-    csview
-    csv2md
-    csvtool
-    csvlens
-    csvdiff
-    csv2svg
-    csv2odf
-    csv-tui
-    csvquote
-    xlsx2csv
-    qsv
-    xsv
-    clevercsv
-    graph-cli
-    zsv
-    textql
-    tabview
-    tidy-viewer
-    tabiew
-    miller
-    json-plot
-    clevercsv
-
     unixODBC
     unixODBCDrivers.sqlite
     unixODBCDrivers.psql
@@ -260,20 +236,7 @@
     #unixODBCDrivers.mysql
     unixODBCDrivers.msodbcsql18
 
-    glom
-
-    firmware-updater
-    firmware-manager
-    fwts
-    gnome-firmware
-    linux-firmware
-    fwup
-    fwupd
-    fwupd-efi
-
     sshfs # FUSE-based filesystem that allows remote filesystems to be mounted over SSH; mount.fuse.sshfs, mount.sshfs, sshfs
-
-    beep
 
     cachix
 
@@ -492,11 +455,11 @@
 
     iosevka
 
-    inkscape
+    #inkscape
 
-    gnucash
-    homebank
-    #kmymoney # XXX: compile failed while upgrade keira
+    #gnucash
+    #homebank
+    #kmymoney # compile failed while upgrade keira
 
     gtypist
     tuxtype
@@ -780,7 +743,7 @@
     sxiv
     feh
     evince                              # Documents viewer
-    calibre                             # Comprehensive e-book software
+    #calibre                             # Comprehensive e-book software
     sioyek                              # A PDF viewer designed for research papers and technical books
     #qpdfview
 
@@ -1268,10 +1231,6 @@
 
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
-  hardware.enableAllFirmware = true;
-  services.fwupd = {
-    enable = true;
-  };
 
   #services.locate.enable = true; # default false
   #services.picom.enable = true; #services.compton.enable = true;

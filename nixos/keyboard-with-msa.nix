@@ -1,8 +1,11 @@
 {
-
   #services.xserver.layout = "us,us,msa,msa";
   #services.xserver.xkbVariant = "dvorak,,najib,macnajib";
+
   services.xserver.xkb = {
+    #layout = "us";
+    #variant = "dvorak";
+
     layout = "us,us,msa";
     variant = "dvorak,,najib";
     options = "grp:shift_caps_toggle";
