@@ -34,7 +34,7 @@
 
     # Internal/private network DNS server
     #./dnsmasq.nix
-    #./unbound.nix
+    ./unbound.nix
 
     ./users-abdullah-wheel.nix
     #./users-anak2.nix
