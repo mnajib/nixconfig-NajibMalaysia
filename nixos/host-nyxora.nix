@@ -216,8 +216,8 @@
     #"ntfs"
   ];
 
-  boot.initrd.postDeviceCommands = lib.mkAfter ''                                                                                                             
-    zfs rollback -r MyStation/local/root@blank                                                                                                                
+  boot.initrd.postDeviceCommands = lib.mkAfter ''
+    zfs rollback -r MyStation/local/root@blank
   '';
 
   #
@@ -324,7 +324,10 @@
     #];
 
     #displayManager.sddm.enable = true;
-    displayManager.gdm.enable = true;
+    displayManager.gdm = {
+      enable = true;
+      wayland = false;
+    };
     #displayManager.lightdm.enable = true;
 
     #desktopManager.plasma5.enable = true;
