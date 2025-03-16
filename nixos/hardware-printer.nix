@@ -18,7 +18,6 @@
     #defaultShared = false;
     openFirewall = true;
     #browsed.enable = true;
-    gutenprint = true;
     drivers = with pkgs; [
       gutenprint # Drivers for many different printers from many different vendors.
       #gutenprintBin # Additional, binary-only drivers for some printers.
@@ -36,12 +35,14 @@
 
       cnijfilter2 # Drivers for some Canon Pixma devices (Proprietary driver)
     ];
-    extraConf = ''
-    ##  <Location />
-        Order allow,deny
-        Allow all
-    ##  </Location>
-    '';
+
+    #extraConf = ''
+    ###  <Location />
+    #    Order allow,deny
+    #    Allow all
+    ###  </Location>
+    #'';
+
   };
 
   # Enable Avahi Service: Use Avahi to broadcast the printer as a zero-conf service on the network. This step is crucial for AirPrint compatibility.
@@ -101,7 +102,14 @@
   #  ensureDefaultPrinter = "Dell_1250c";
   #};
 
-  hardware.sane.enable = true;
+  hardware.sane = {
+    enable = true;
+    openFirewall = true;
+    extraBackends = with pkgs; [
+      hplipWithPlugin
+      sane-airscan
+    ];
+  };
 
   services.system-config-printer.enable = true;
   programs.system-config-printer.enable = true;
