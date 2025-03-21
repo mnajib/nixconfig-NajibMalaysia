@@ -116,6 +116,13 @@ in
   # Add stuff for your user as you see fit:
   # programs.neovim.enable = true;
 
+  programs.ghostty = {
+    enable = true;
+    enableBashIntegration = true;
+    enableFishIntegration = true;
+    enableZshIntegration = true;
+  };
+
   home.packages = with pkgs; [
     #tmux
     mtm
