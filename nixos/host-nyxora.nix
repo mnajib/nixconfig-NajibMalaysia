@@ -171,28 +171,28 @@
           #devices = [ "/dev/disk/by-id/wwn-0x5000cca7c5e11b3c" ];
           #path = "/boot2";
         #}
-	{
-	  devices = [
-	    "/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
-	    #"/dev/disk/by-if/wwn-0x50014ee65ba9826e-part2"
-	  ];
-	  path = "/boot";
-	}
-	{
-	  devices = [
-	    #"/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
-	    "/dev/disk/by-if/wwn-0x50014ee65ba9826e-part2"
-	  ];
-	  path = "/boot2";
-	}
+        {
+          devices = [
+            "/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
+            #"/dev/disk/by-id/wwn-0x50014ee65ba9826e-part2"
+          ];
+          path = "/boot";
+        }
+        {
+          devices = [
+            #"/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
+            "/dev/disk/by-id/wwn-0x50014ee65ba9826e-part2"
+          ];
+          path = "/boot2";
+        }
       ];
 
       devices = [
         #"/dev/disk/by-id/wwn-0x5000c500a837f420" # 500GB HDD from sakinah
         #"/dev/disk/by-id/wwn-0x5000039fe7c9db77" # HDD from HP ProDesk Naqib
         #"/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0"
-	"/dev/disk/by-id/wwn-0x5000c500a837f420"
-	"/dev/disk/by-if/wwn-0x50014ee65ba9826e"
+        "/dev/disk/by-id/wwn-0x5000c500a837f420"
+        "/dev/disk/by-id/wwn-0x50014ee65ba9826e"
       ];
 
     }; # End boot.loader.grub
@@ -309,9 +309,9 @@
     #package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
     #
     # Card Nvidia Quadro K620 (in HP Z420 nyxora). --> Display Driver 570.133.07
-    #package = config.boot.kernelPackages.nvidiaPackages.stable;
-    #package = config.boot.kernelPackages.nvidiaPackages.latest;
-    package = config.boot.kernelPackages.nvidiaPackages.production;
+    #package = config.boot.kernelPackages.nvidiaPackages.stable; # v 565.77
+    #package = config.boot.kernelPackages.nvidiaPackages.latest; # v 565.77
+    package = config.boot.kernelPackages.nvidiaPackages.production; # v 550.135
   };
 
   services.logind.extraConfig = "RuntimeDirectorySize=4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001
