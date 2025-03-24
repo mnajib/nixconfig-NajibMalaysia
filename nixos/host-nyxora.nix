@@ -298,6 +298,22 @@
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+    open = false;
+    nvidiaSettings = true;
+
+    # Card Nvidia GeForce GT 720 (in acer aspire taufiq).
+    #package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+    #
+    # Card Nvidia Quadro K620 (in HP Z420 nyxora). --> Display Driver 570.133.07
+    #package = config.boot.kernelPackages.nvidiaPackages.stable;
+    #package = config.boot.kernelPackages.nvidiaPackages.latest;
+    package = config.boot.kernelPackages.nvidiaPackages.production;
+  };
+
   services.logind.extraConfig = "RuntimeDirectorySize=4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001
 
   services.libinput.enable = true;
@@ -309,6 +325,7 @@
 
     # Test: Cuba disable, sebab SweetHome3D tak dapat jalan
     #videoDrivers = [ "nvidiaLegacy390" ]; #"radeon" "cirrus" "vesa"  "vmware"  "modesetting" ];
+    videoDrivers = [ "nvidia" ];
     #
     #videoDrivers = [ "radeon" ];
 
@@ -324,11 +341,11 @@
     #];
 
     #displayManager.sddm.enable = true;
-    displayManager.gdm = {
-      enable = true;
-      wayland = false;
-    };
-    #displayManager.lightdm.enable = true;
+    #displayManager.gdm = {
+    #  enable = true;
+    #  wayland = false;
+    #};
+    displayManager.lightdm.enable = true;
 
     #desktopManager.plasma5.enable = true;
     #desktopManager.xfce.enable = true;
@@ -369,9 +386,9 @@
 
   #virtualisation.virtualbox.host.enable = true;
 
-  # Copy the NixOS configuration file and link it from the resulting system                                                                                   
-  # (/run/current-system/configuration.nix). This is useful in case you                                                                                       
-  # accidentally delete configuration.nix.                                                                                                                    
+  # Copy the NixOS configuration file and link it from the resulting system
+  # (/run/current-system/configuration.nix). This is useful in case you
+  # accidentally delete configuration.nix.
   #system.copySystemConfiguration = true; # not supporetd with flakes
 
   system.stateVersion = "24.11";
