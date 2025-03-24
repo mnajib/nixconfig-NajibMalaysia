@@ -1,7 +1,12 @@
 { pkgs, config, ... }:
+#let
+#  inherit (pkgs.stdenv.hostPlatform) system;
+#  nixvim-package = inputs.nixvim-config.packages.${system}.default;
+#  extended-nixvim = nixvim-package.extend config.lib.stylix.nixvim.config;
+#in
 {
 
-  stylix.enable = true;
+  programs.stylix.enable = true;
 
   #---------------------------------------------------------------------------
   # nix build nixpkgs#base16-schemes
@@ -73,27 +78,37 @@
   #};
   stylix.fonts = {
     monospace = {
-      #package = pkgs.terminus-nerdfont;
-      #name = "Terminus Nerd Font";
-      #package = pkgs.nerdfonts;
+      #package = pkgs.nerdfont;
+      #name = "0xProto Nerd Font";
       #name = "EnvyCodeR Nerd Font";
       package = pkgs.bront_fonts;
       name = "Bront Ubuntu Mono";
     };
-    serif = config.stylix.fonts.monospace;
-    sansSerif = config.stylix.fonts.monospace;
-    #emoji = config.stylix.fonts.monospace;
+    serif = {
+      #package = pkgs.nerdfont;
+      #name = "EnvyCodeR Nerd Font";
+      package = pkgs.bront_fonts;
+      name = "Bront Ubuntu Mono";
+    };
+    sansSerif = {
+      #package = pkgs.nerdfont;
+      #name = "EnvyCodeR Nerd Font";
+      package = pkgs.bront_fonts;
+      name = "Bront Ubuntu Mono";
+    };
     emoji = {
       package = pkgs.noto-fonts-emoji;
-      #package = pkgs.noto-fonts-color-emoji;
-      #package = pkgs.noto-fonts-monochrome-emoji;
       name = "Noto Color Emoji";
+      #package = pkgs.nerdfont;
+      #name = "EnvyCodeR Nerd Font";
+      #package = pkgs.bront_fonts;
+      #name = "Bront Ubuntu Mono";
     };
   };
 
-  environment.systemPackages = [
-    pkgs.nerdfonts
-    pkgs.bront_fonts
+  home.packages = with pkgs; [
+    nerdfont
+    bront_fonts
   ];
 
   #stylix.fonts.sizes = {
