@@ -115,7 +115,8 @@
   # everything match nicely? Try nix-colors!
   inputs.nix-colors.url = "github:misterio77/nix-colors";
 
-  inputs.stylix.url = "github:danth/stylix";
+  #inputs.stylix.url = "github:danth/stylix";
+  inputs.stylix.url = "github:danth/stylix/release-24.11";
 
   #inputs.fine-cmdline = {
   #  url = "github:VonHeikemen/fine-cmdline.nvim";
@@ -673,15 +674,17 @@
 
           #sops-nix.nixosModules.sops
 
-          nix-ld.nixosModules.nix-ld {
-            programs.nix-ld.dev.enable = true;
-          }
+          #nix-ld.nixosModules.nix-ld {
+          #  programs.nix-ld.dev.enable = true;
+          #}
 
           # Add your model from this list:
           # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
           #hardware.nixosModules.lenovo-thinkpad-x220
 
           #expose-cuda.nixosModules.default
+
+          inputs.stylix.nixosModules.stylix
         ];
 
         #----------------------------------------------------------------------
@@ -1005,7 +1008,11 @@
         #    ./home-manager/user-julia/host-taufiq/default.nix
         #  ];
         #};
-        "najib@taufiq"      = mkHome [./home-manager/user-najib/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
+        "najib@taufiq" = mkHome [
+	  stylix.homeManagerModules.stylix
+	  ./home-manager/user-najib/host-taufiq
+	] nixpkgs.legacyPackages."x86_64-linux";
+
         "julia@taufiq"      = mkHome [./home-manager/user-julia/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
         "naqib@taufiq"      = mkHome [./home-manager/user-naqib/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
         "nurnasuha@taufiq"  = mkHome [./home-manager/user-nurnasuha/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
