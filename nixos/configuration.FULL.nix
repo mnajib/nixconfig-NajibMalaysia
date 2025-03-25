@@ -866,7 +866,7 @@
     gephi                 # A platform for visualizing and manipulating large graphs
     #graphia               # A visualisation tool for the creation and analysis of graphs
 
-    vym freemind treesheets drawio dia minder
+    vym freemind treesheets dia minder drawio
     #ardour audacity avogadro dia freemind treesheets umlet vue xmind jmol
     #krita
 

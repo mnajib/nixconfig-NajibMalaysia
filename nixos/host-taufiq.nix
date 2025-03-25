@@ -100,7 +100,7 @@ with lib;
     #./waydroid.nix
 
     ./3D.nix                            # freecad, qcad, ...
-    ./steam.nix                         # steam for game, blender-LTS, ...
+    #./steam.nix                         # steam for game, blender-LTS, ...
     #./roblox.nix
     #./mame.nix
     #./emulationstation.nix
@@ -132,6 +132,8 @@ with lib;
     #./ai.nix
 
     ./opengl.nix
+
+    ./stylix.nix
   ];
 
   # Dell Precision M4800
@@ -366,6 +368,8 @@ with lib;
     #
     # card: nvidia gt 720 --> driver: nvidia legacy, version 470
     #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+    #
+    # Card: 
     package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
   };
   #----------------------------------------------------------------------------

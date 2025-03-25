@@ -171,28 +171,28 @@
           #devices = [ "/dev/disk/by-id/wwn-0x5000cca7c5e11b3c" ];
           #path = "/boot2";
         #}
-	{
-	  devices = [
-	    "/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
-	    #"/dev/disk/by-if/wwn-0x50014ee65ba9826e-part2"
-	  ];
-	  path = "/boot";
-	}
-	{
-	  devices = [
-	    #"/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
-	    "/dev/disk/by-if/wwn-0x50014ee65ba9826e-part2"
-	  ];
-	  path = "/boot2";
-	}
+        {
+          devices = [
+            "/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
+            #"/dev/disk/by-id/wwn-0x50014ee65ba9826e-part2"
+          ];
+          path = "/boot";
+        }
+        {
+          devices = [
+            #"/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
+            "/dev/disk/by-id/wwn-0x50014ee65ba9826e-part2"
+          ];
+          path = "/boot2";
+        }
       ];
 
       devices = [
         #"/dev/disk/by-id/wwn-0x5000c500a837f420" # 500GB HDD from sakinah
         #"/dev/disk/by-id/wwn-0x5000039fe7c9db77" # HDD from HP ProDesk Naqib
         #"/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0"
-	"/dev/disk/by-id/wwn-0x5000c500a837f420"
-	"/dev/disk/by-if/wwn-0x50014ee65ba9826e"
+        "/dev/disk/by-id/wwn-0x5000c500a837f420"
+        "/dev/disk/by-id/wwn-0x50014ee65ba9826e"
       ];
 
     }; # End boot.loader.grub
@@ -298,6 +298,22 @@
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+    open = false;
+    nvidiaSettings = true;
+
+    # Card Nvidia GeForce GT 720 (in acer aspire taufiq).
+    #package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+    #
+    # Card Nvidia Quadro K620 (in HP Z420 nyxora). --> Display Driver 570.133.07
+    #package = config.boot.kernelPackages.nvidiaPackages.stable; # v 565.77
+    #package = config.boot.kernelPackages.nvidiaPackages.latest; # v 565.77
+    package = config.boot.kernelPackages.nvidiaPackages.production; # v 550.135
+  };
+
   services.logind.extraConfig = "RuntimeDirectorySize=4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001
 
   services.libinput.enable = true;
@@ -309,6 +325,7 @@
 
     # Test: Cuba disable, sebab SweetHome3D tak dapat jalan
     #videoDrivers = [ "nvidiaLegacy390" ]; #"radeon" "cirrus" "vesa"  "vmware"  "modesetting" ];
+    videoDrivers = [ "nvidia" ];
     #
     #videoDrivers = [ "radeon" ];
 
@@ -324,11 +341,11 @@
     #];
 
     #displayManager.sddm.enable = true;
-    displayManager.gdm = {
-      enable = true;
-      wayland = false;
-    };
-    #displayManager.lightdm.enable = true;
+    #displayManager.gdm = {
+    #  enable = true;
+    #  wayland = false;
+    #};
+    displayManager.lightdm.enable = true;
 
     #desktopManager.plasma5.enable = true;
     #desktopManager.xfce.enable = true;
@@ -369,9 +386,9 @@
 
   #virtualisation.virtualbox.host.enable = true;
 
-  # Copy the NixOS configuration file and link it from the resulting system                                                                                   
-  # (/run/current-system/configuration.nix). This is useful in case you                                                                                       
-  # accidentally delete configuration.nix.                                                                                                                    
+  # Copy the NixOS configuration file and link it from the resulting system
+  # (/run/current-system/configuration.nix). This is useful in case you
+  # accidentally delete configuration.nix.
   #system.copySystemConfiguration = true; # not supporetd with flakes
 
   system.stateVersion = "24.11";
