@@ -237,7 +237,8 @@
       #set -g window-status-last-style    bg=green,fg=brightwhite
       #set -g window-status-current-style bg=green,fg=black
       set -g window-status-style          bg=green,fg=brightblack
-      set -g window-status-last-style     bg=green,fg=brightblue
+      #set -g window-status-last-style     bg=green,fg=brightblue
+      set -g window-status-last-style     bg=green,fg=black
       set -g window-status-current-style  bg=green,fg=black
       # ===========================================================
 
