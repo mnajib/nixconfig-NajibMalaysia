@@ -152,7 +152,7 @@ in
     #libreoffice-qt-fresh
     libreoffice
 
-    opera
+    #opera
 
     smlnj
     #waydroid
