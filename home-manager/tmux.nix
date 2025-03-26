@@ -240,6 +240,10 @@
       #set -g window-status-last-style     bg=green,fg=brightblue
       set -g window-status-last-style     bg=green,fg=black
       set -g window-status-current-style  bg=green,fg=black
+
+      # set it same with window-status-style do make it look the same as no changes/activity
+      #set -g window-status-activity-style          bg=green,fg=brightblack
+      set -g monitor-activity off
       # ===========================================================
 
 
