@@ -87,7 +87,9 @@
     copyKernels = true;
     useOSProber = true;
     devices = [
-      "/dev/disk/by-id/wwn-0x5000000000000000"
+      #"/dev/disk/by-id/wwn-0x5000000000000000"
+      "/dev/disk/by-id/ata-ADATA_SU630_2K472L1AJ5FE"
+      "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMWWK0810910"
     ];
     memtest86.enable = true;
     timeoutStyle = "menu";
@@ -100,9 +102,10 @@
     "zfs.zfs_arc_max=2147483648" "zfs.zfs_arc_min=1073741824"                   # Need this to limit RAM usage for zfs cache.
   ];
   #boot.kernelPackages = pkgs.linuxPackages_latest;                             # Need this to make graphical display work on asmak.
-  boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+  #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
   #boot.kernelPackages = pkgs.linuxPackages_5_4;
   #boot.kernelPackages = pkgs.linuxPackages_4_19;
+  boot.kernelPackages = pkgs.linuxPackages_6_6;
 
   # Tuning other ZFS parameters: To tune other attributes of ARC, L2ARC or of ZFS itself via runtime modprobe config, add this to your NixOS configuration (keys and values are examples only!):
   #boot.extraModprobeConfig = ''
@@ -154,6 +157,9 @@
     #mouse = {};
   };
 
+  services.displayManager.defaultSession = "none+xmonad";
+  services.displayManager.sddm.enable = false;
+
   services.xserver = {
     enable = true;
 
@@ -165,9 +171,9 @@
     '';
 
     displayManager = {
-      defaultSession = "none+xmonad";
+      #defaultSession = "none+xmonad";
       lightdm.enable = true;
-      sddm.enable = false;
+      #sddm.enable = false;
       gdm.enable = false;
     };
 

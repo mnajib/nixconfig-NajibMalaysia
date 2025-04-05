@@ -52,6 +52,11 @@
     luks.devices."luks-7a043422-67e9-4f63-8fed-fda6fdd3c107" = { device = "/dev/disk/by-uuid/7a043422-67e9-4f63-8fed-fda6fdd3c107"; preLVM = true; };   # xfs (nixos)
     luks.devices."luks-202a6ed2-a6e2-4192-8592-d5b6507e8123" = { device = "/dev/disk/by-uuid/202a6ed2-a6e2-4192-8592-d5b6507e8123"; preLVM = true; };   # swap
 
+    # AGI SSD 256GB
+    luks.devices. "luks-840017e1-d60a-41bc-8748-951cdaff389b" = { device = "/dev/disk/by-uuid/840017e1-d60a-41bc-8748-951cdaff389b"; preLVM = true; }; # sdb2, swap, 9GB
+    luks.devices. "luks-9ac94f9e-3053-4a44-b3ea-cb5360cdde36" = { device = "/dev/disk/by-uuid/9ac94f9e-3053-4a44-b3ea-cb5360cdde36"; preLVM = true; }; # sdb3, zfs, tank, 217.5GB
+    luks.devices. "luks-368181e9-e540-446e-99ba-762ecb5b1146" = { device = "/dev/disk/by-uuid/368181e9-e540-446e-99ba-762ecb5b1146"; preLVM = true; }; # sdb4, swap, 9GB
+
     #------------------
     # For data storage (zfs pool: najibzfspool1)
     #------------------
@@ -103,7 +108,7 @@
     fsType = "zfs";
   };
 
-  fileSystems."/boot" = { 
+  fileSystems."/boot" = {
     #device = "/dev/disk/by-uuid/bdccf3bb-061c-40d5-82c3-d04ccf603485";
     #fsType = "ext4";
 
