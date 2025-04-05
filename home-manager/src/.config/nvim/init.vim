@@ -7,23 +7,23 @@ set incsearch               " incremental search
 set wildmode=longest,list   " get bash-like tab completions
 
 
-" ----------------------------------------------------------------------------
-"  NOTE: This configuration have been moved into init.lua
-" ----------------------------------------------------------------------------
-" Use different color schemes based on the TERM variable
-if $TERM == "linux"
-  " Use a basic color scheme for 16 colors
-  set t_Co=8  " Set the number of colors to 8 (basic ANSI)
-  set notermguicolors
-  colorscheme default  " Use the default color scheme
-else
-  " Use a color scheme that supports 256 colors
-  set t_Co=256  " Set the number of colors to 256
-  set termguicolors
-  " colorscheme gruvbox  " Example: Use a 256-color scheme like gruvbox
-  colorscheme gruvbox8  " Example: Use a 256-color scheme like gruvbox
-endif
-"------------------------------------------------------------------------------
+" " ----------------------------------------------------------------------------
+" "  NOTE: This configuration have been moved into init.lua
+" " ----------------------------------------------------------------------------
+" " Use different color schemes based on the TERM variable
+" if $TERM == "linux"
+"   " Use a basic color scheme for 16 colors
+"   set t_Co=8  " Set the number of colors to 8 (basic ANSI)
+"   set notermguicolors
+"   colorscheme default  " Use the default color scheme
+" else
+"   " Use a color scheme that supports 256 colors
+"   set t_Co=256  " Set the number of colors to 256
+"   set termguicolors
+"   " colorscheme gruvbox  " Example: Use a 256-color scheme like gruvbox
+"   colorscheme gruvbox8  " Example: Use a 256-color scheme like gruvbox
+" endif
+" "------------------------------------------------------------------------------
 
 
 "if s:is_dark
@@ -202,3 +202,5 @@ set nowrap
 
 set background=light
 set background=dark
+
+set guifont=monospace:h12:w0

@@ -178,8 +178,13 @@
     }; # End boot.loader.grub
   }; # End boot.loader
 
-  #boot.kernelPackages = pkgs.linuxPackages_latest; # XXX: test disable this while trying to solve monitor on build-in VGA, DVI, HDMI not detectded in Xorg, but detected in Wayland.
-  boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+  #
+  # NOTE:
+  #  By default, NixOS will install latest LTS linux kernel
+  #
+  #boot.kernelPackages = pkgs.linuxPackages_latest; # test disable this while trying to solve monitor on build-in VGA, DVI, HDMI not detectded in Xorg, but detected in Wayland.
+  #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+  #boot.kernelPackages = pkgs.linuxPackages_6_6;
   #boot.kernelParams = [
     ##"i915.modeset=0" "nouveau.modeset=1" # to disable i915 and enable nouveau
     #"video=DisplayPort-2:D"
@@ -270,7 +275,7 @@
 
     #desktopManager.plasma5.enable = true;
     #desktopManager.xfce.enable = true;
-    desktopManager.mate.enable = true;
+    #desktopManager.mate.enable = true;
     #desktopManager.gnome.enable = true;
     #desktopManager.enlightenment.enable = true;
 

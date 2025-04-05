@@ -43,43 +43,48 @@ vim.wo.number = true
 
 -- -----------------------------------------------------------------------
 -- To Switch Between 256 Colors and ANSI Colors
--- local function set_color_mode()
---   -- Detect the TERM environment variable
---   -- local term = vim.env.TERM
---   local term = os.getenv("TERM")
+local function set_color_mode()
+  -- Detect the TERM environment variable
+  -- local term = vim.env.TERM
+  local term = os.getenv("TERM")
+
+  -- if term:match("*256color") then
+  --if term:match("256color") then
+  --  vim.opt.termguicolors = true  -- Enable 24-bit colors
+  --  vim.cmd("colorscheme gruvbox8")  -- Example: 256-color theme
+  --  -- vim.cmd("colorscheme default")
+  --elseif term == "xterm" then
+  --  vim.opt.termguicolors = true  -- Fallback to basic 16 colors
+  --  -- vim.cmd("colorscheme default") -- Example: ANSI theme
+  --  vim.cmd("colorscheme gruvbox8") -- Example: ANSI theme
+  --elseif term == "linux" then
+  if term == "linux" then
+    vim.opt.termguicolors = false  -- Fallback to basic 16 colors
+    vim.cmd("colorscheme default") -- Example: ANSI theme
+    --vim.cmd("colorscheme gruvbox8") -- Example: ANSI theme
+    vim.opt.t_Co = 8
+  else
+    vim.opt.termguicolors = true  -- Enable 24-bit colors
+    -- vim.cmd("colorscheme gruvbox8")  -- Example: 256-color theme
+    vim.cmd("colorscheme default")
+--  else
+--    print("Unknown TERM: " .. term .. ", defaulting to ANSI colors.")
+--    vim.opt.termguicolors = false
+--    vim.cmd("colorscheme default")
+--    -- vim.cmd("colorscheme gruvbox8")
+  end
 --
---   -- if term:match("*256color") then
---   if term:match("256color") then
---     vim.opt.termguicolors = true  -- Enable 24-bit colors
---     vim.cmd("colorscheme gruvbox8")  -- Example: 256-color theme
---     -- vim.cmd("colorscheme default")
---   elseif term == "xterm" then
---     vim.opt.termguicolors = true  -- Fallback to basic 16 colors
---     -- vim.cmd("colorscheme default") -- Example: ANSI theme
---     vim.cmd("colorscheme gruvbox8") -- Example: ANSI theme
---   elseif term == "linux" then
---     vim.opt.termguicolors = false  -- Fallback to basic 16 colors
---     -- vim.cmd("colorscheme default") -- Example: ANSI theme
---     vim.cmd("colorscheme gruvbox8") -- Example: ANSI theme
---     vim.opt.t_Co = 8
---   else
---     print("Unknown TERM: " .. term .. ", defaulting to ANSI colors.")
---     vim.opt.termguicolors = false
---     vim.cmd("colorscheme default")
---     -- vim.cmd("colorscheme gruvbox8")
---   end
---
--- end
+end
 -- vim.opt.termguicolors = true  -- Fallback to basic 16 colors
--- vim.cmd("colorscheme gruvbox8") -- Example: ANSI theme
+--vim.cmd("colorscheme gruvbox8") -- Example: ANSI theme
 --
--- -- Run the function on startup
--- set_color_mode()
+-- Run the function on startup
+set_color_mode()
 --
--- -- Optional: Create a command to manually switch color modes
--- vim.api.nvim_create_user_command("ReloadColors", set_color_mode, {})
--- -- Now, when you nedd to switch color modes, simply run:
--- -- :ReloadColors
+-- Optional: Create a command to manually switch color modes
+vim.api.nvim_create_user_command("ReloadColors", set_color_mode, {})
+-- Now, when you nedd to switch color modes, simply run:
+-- :ReloadColors
 -- -----------------------------------------------------------------------
 
 

@@ -11,6 +11,11 @@
     ../default.nix
 
     ../../p2p.nix
+
+    ../../neovim
+    #../../neovim/astronvim.nix
+
+    ../../input-leap.nix
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

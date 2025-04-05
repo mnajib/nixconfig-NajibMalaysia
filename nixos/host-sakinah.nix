@@ -66,6 +66,8 @@
     #./nix-build.nix
     ./nix-garbage-collector.nix
     #./teamviewer.nix
+
+    ./stylix.nix
   ];
 
   # Booting
@@ -136,6 +138,7 @@
     allowedTCPPorts = [
       1110 # NFS cluster
       4045 # NFS lock manager
+      30000 # minetest
     ];
     allowedUDPPorts = [
       1110 # NFS client

@@ -11,8 +11,19 @@
         experimental-features = nix-command flakes
       '';
   };
+  nix.settings.trusted-users = [ "root" "najib" "naqib" ];
+  #
+  #nix.maxJobs = 1;
+  #nix.settings.max-jobs = 1;
+  #nix.settings.cores = 0;
+  #
+  # Note: Already define in configuration.FULL.nix file
+  #
+  #nix.daemonCPUSchedPolicy = "idle";
+  #nix.daemonIOSchedClass = "idle"; # default "best-effort",
+  #nix.daemonIOSchedPriority = 5; # 0(high,default) to 7(low).
 
- imports = [
+  imports = [
     #<nixos-hardware/lenovo/thinkpad/t410> # XXX: temporarily disabled because lazy to add nix channel
     ./hardware-configuration-raudah.nix
     #./hardware-configuration.nix
@@ -21,7 +32,7 @@
     ./thinkpad.nix
 
     #./hosts.nix
-    ./hosts2.nix
+    #./hosts2.nix
 
     #./network-dns.nix
 
@@ -31,8 +42,8 @@
     #./users-naqib.nix
     ./users-naqib-wheel.nix
     ./users-nurnasuha.nix
-    #./users-naim-wheel.nix
-    ./users-naim.nix
+    ./users-naim-wheel.nix
+    #./users-naim.nix
 
     #./nfs-client.nix
     ./nfs-client-automount.nix
@@ -58,15 +69,18 @@
     ./typesetting.nix
     ./nix-garbage-collector.nix
 
-    ./flatpak.nix
+    #./flatpak.nix
+
+    ./mame.nix
+    ./opengl.nix
+    ./xmonad.nix
   ];
 
   environment.systemPackages = with pkgs; [
     vim
     nano
+    #harlequin
   ];
-
-  nix.settings.trusted-users = [ "root" "najib" "naqib" ];
 
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
@@ -76,7 +90,7 @@
 
   hardware.enableAllFirmware = true;
 
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.supportedFilesystems =        [ "ext4" "btrfs" "xfs" "vfat" "ntfs" ];
 
   # Setup keyfile
@@ -176,7 +190,7 @@
 
       WIFI_PWR_ON_AC = "off";
       WIFI_PWR_ON_BAT = "off";
-      DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth wwan";
+      #DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth wwan";
       #DEVICES_TO_ENABLE_ON_STARTUP = "wifi";
     };
   };
@@ -197,33 +211,28 @@
   # Custom script to decrease trackpoint sensitivity
   #...
 
-  services.xserver.libinput.enable = true;
-  services.xserver.libinput.touchpad.disableWhileTyping = true;
-  services.xserver.libinput.touchpad.scrollMethod = "twofinger";
-  services.xserver.libinput.touchpad.tapping = true; #false;
+  services.libinput.enable = true;
+  services.libinput.touchpad.disableWhileTyping = true;
+  services.libinput.touchpad.scrollMethod = "twofinger";
+  services.libinput.touchpad.tapping = true; #false;
 
+  services.xserver.enable = true;
   #----------------------------------------------------------------------------
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.displayManager.defaultSession = "none+xmonad";
+  #services.xserver.displayManager.lightdm.enable = true;
+  #services.xserver.displayManager.defaultSession = "none+xmonad";
+  #services.xserver.displayManager.startx.enable = true;
   #----------------------------------------------------------------------------
   #services.xserver.desktopManager.plasma5.enable = true;
-  services.xserver.desktopManager.lxqt.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+  #services.xserver.desktopManager.lxqt.enable = true;
   #services.xserver.desktopManager.budgie.enable = true;
   #----------------------------------------------------------------------------
   #services.xserver.windowManager.i3.enable = true;
+  services.xserver.windowManager.awesome.enable = true;
   #----------------------------------------------------------------------------
+  services.displayManager.defaultSession = "none+xmonad";
 
   security.rtkit.enable = true;
-
-  #nix.maxJobs = 1;
-  #nix.settings.max-jobs = 1;
-  #nix.settings.cores = 0;
-  #
-  # Note: Already define in configuration.FULL.nix file
-  #
-  #nix.daemonCPUSchedPolicy = "idle";
-  #nix.daemonIOSchedClass = "idle"; # default "best-effort",
-  #nix.daemonIOSchedPriority = 5; # 0(high,default) to 7(low).
 
   #system.stateVersion = "22.05";
   system.stateVersion = "23.05";

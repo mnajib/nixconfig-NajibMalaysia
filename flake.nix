@@ -42,14 +42,16 @@
   #inputs = {
 
   # Nixpkgs
-  #inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-  inputs.nixpkgs.url = "github:nixos/nixpkgs?rev=a04d33c0c3f1a59a2c1cb0c6e34cd24500e5a1dc";
-  #nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
-  #nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/*.tar.gz";   # TODO: use flake hub as much as possible
-  #
   inputs.nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.nixpkgs-master.url = "github:nixos/nixpkgs/master";
-  inputs.nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
+  inputs.nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+  #
+  ##inputs.nixpkgs.url = "github:nixos/nixpkgs?rev=a04d33c0c3f1a59a2c1cb0c6e34cd24500e5a1dc";
+  ##nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
+  ##nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/*.tar.gz";   # TODO: use flake hub as much as possible
+  #inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+  #
   #
   #inputs.fh.url = "https://flakehub.com/f/DeterminateSystems/fh/*.tar.gz";
   #inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.2305.*.tar.gz";
@@ -76,8 +78,9 @@
 
   # Home manager
   inputs.home-manager = {
-    url = "github:nix-community/home-manager";
-    inputs.nixpkgs.follows = "nixpkgs";                   # Forcing another flake (github nix-community home-manager) to use one of our inputs (nixpkgs).
+    #url = "github:nix-community/home-manager";
+    url = "github:nix-community/home-manager/release-24.11";
+    inputs.nixpkgs.follows = "nixpkgs"; # Forcing another flake (github nix-community home-manager) to use one of our inputs (nixpkgs).
   };
 
   #inputs.nixos-mailserver = {
@@ -112,7 +115,8 @@
   # everything match nicely? Try nix-colors!
   inputs.nix-colors.url = "github:misterio77/nix-colors";
 
-  inputs.stylix.url = "github:danth/stylix";
+  #inputs.stylix.url = "github:danth/stylix";
+  inputs.stylix.url = "github:danth/stylix/release-24.11";
 
   #inputs.fine-cmdline = {
   #  url = "github:VonHeikemen/fine-cmdline.nvim";
@@ -148,7 +152,8 @@
     url = "github:mic92/sops-nix";
     #inputs.nixpkgs.follows = "nixpkgs";                   # optional, not necessary for the module
     inputs.nixpkgs.follows = "nixpkgs-unstable";                   # optional, not necessary for the module
-    inputs.nixpkgs-stable.follows = "nixpkgs";            # ???
+    #inputs.nixpkgs-stable.follows = "nixpkgs";            # ???
+    #inputs.nixpkgs-stable.follows = "nixpkgs-stable";            # ???
   };
 
   #inputs.sile.url = "github:sile-typesetter/sile/v0.14.3";
@@ -177,10 +182,11 @@
   #  inputs.nixpkgs.follows = "nixpkgs";
   #};
 
-  inputs.kmonad = {
-    url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
+  #inputs.kmonad = {
+  #  #url = "git+https://github.com/kmonad/kmonad?submodules=1&dir=nix";
+  #  url = "git+https://github.com/kmonad/kmonad";
+  #  inputs.nixpkgs.follows = "nixpkgs";
+  #};
 
   #}; # End 'inputs'.
   #-------------------------------------------------------------------
@@ -212,7 +218,7 @@
     nix-doom-emacs,
     nix-ld,
     #expose-cuda,
-    kmonad,
+    #kmonad,
     nixvim,
     neovim-config-NajibMalaysia,
     stylix,
@@ -444,7 +450,44 @@
           nix-ld.nixosModules.nix-ld
           { programs.nix-ld.dev.enable = true; }
 
-          ./nixos/host-khadijah.nix
+          # ---------------------------------------------------------------------------------
+          # Intel + Nvidia
+          # ---------------------------------------------------------------------------------
+          # With enable switchable graphic in BIOS (Dell Precision M4800 laptop).
+          # Enable intel and nvidia graphic driver, with enable PRIME
+          #./nixos/host-khadijah-Xorg-intel-nvidia-prime-sync.nix # nvidia always on, best while connected with power
+          ##./nixos/host-khadijah-Xorg-intel-nvidia-prime-offload.nix # nvidia on when needed, best while on battery
+          #
+          # ---------------------------------------------------------------------------------
+          # Intel + Nouveau
+          # ---------------------------------------------------------------------------------
+          # Enable intel and nouveau graphic driver, with enable allow both/switchable (PRIME?)
+          #./nixos/host-khadijah-Xorg-intel-nouveau.nix
+          #
+          # ---------------------------------------------------------------------------------
+          # Intel
+          # ---------------------------------------------------------------------------------
+          # Enable intel graphic driver, disable nouveau and nvidia graphic driver
+          # With enable switchable graphic in BIOS (Dell Precision M4800 laptop).
+          # The only problem is, I do not have external display on Display-port of the laptop.
+          # External display on VGA-port of the laptop is working.
+          # If disable switchable graphic in BIOS, it will only display on laptop screen.
+          #./nixos/host-khadijah-Xorg-intel.nix
+          #
+          # ---------------------------------------------------------------------------------
+          # Nvidia
+          # ---------------------------------------------------------------------------------
+          # Enable nvidia graphic driver, disable nouveau and intel graphic driver
+          #./nixos/host-khadijah-Xorg-nvidia.nix
+          #
+          # ---------------------------------------------------------------------------------
+          # Nouveau
+          # ---------------------------------------------------------------------------------
+          # Enable nouveau graphic driver, disable intel and nvidia graphic driver
+          #./nixos/host-khadijah-Xorg-nouveau.nix
+          #
+          #
+          ./nixos/host-khadijah-Wayland-nauveau.nix
 
           #{ environment.systemPackages = [ fh.packages.x86_64-linux.default ]; }
 
@@ -481,6 +524,12 @@
             ./nixos/host-delldesktop.nix
           ];
         };
+
+        #----------------------------------------------------------------------
+        nyxora = mkNixos [
+          ./nixos/host-nyxora.nix
+          sops-nix.nixosModules.sops
+        ];
 
         #----------------------------------------------------------------------
         # Najib's Main Desktop
@@ -547,7 +596,7 @@
           #hardware.nixosModules.common-pc-ssd
           hardware.nixosModules.common-pc-laptop-ssd
 
-          kmonad.nixosModules.default
+          #kmonad.nixosModules.default
 
           #lix-module.nixosModules.default
 
@@ -564,6 +613,8 @@
             # Add your model from this list:
             # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
             hardware.nixosModules.lenovo-thinkpad-x220
+
+            inputs.stylix.nixosModules.stylix
           ];
         };
 
@@ -623,15 +674,17 @@
 
           #sops-nix.nixosModules.sops
 
-          nix-ld.nixosModules.nix-ld {
-            programs.nix-ld.dev.enable = true;
-          }
+          #nix-ld.nixosModules.nix-ld {
+          #  programs.nix-ld.dev.enable = true;
+          #}
 
           # Add your model from this list:
           # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
           #hardware.nixosModules.lenovo-thinkpad-x220
 
           #expose-cuda.nixosModules.default
+
+          inputs.stylix.nixosModules.stylix
         ];
 
         #----------------------------------------------------------------------
@@ -735,13 +788,16 @@
         };
 
         #----------------------------------------------------------------------
-        "najib@zahrah" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            ./home-manager/home-najib.nix
-          ];
-        };
+        #"najib@zahrah" = home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #  extraSpecialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    ./home-manager/home-najib.nix
+        #  ];
+        #};
+        "najib@zahrah" = mkHome [
+          ./home-manager/user-najib/host-zahrah
+        ] nixpkgs.legacyPackages."x86_64-linux";
 
         #----------------------------------------------------------------------
         #"najib@customdesktop" = home-manager.lib.homeManagerConfiguration {
@@ -753,6 +809,9 @@
         #  ];
         #};
         "najib@customdesktop" = mkHome [./home-manager/user-najib/host-customdesktop/default.nix] nixpkgs.legacyPackages."x86_64-linux";
+
+        #----------------------------------------------------------------------
+        "najib@nyxora" = mkHome [./home-manager/user-najib/host-nyxora/default.nix] nixpkgs.legacyPackages."x86_64-linux";
 
         #----------------------------------------------------------------------
         #"najib@khadijah" = home-manager.lib.homeManagerConfiguration {
@@ -812,6 +871,16 @@
         };
 
         #----------------------------------------------------------------------
+        "root@nyxora" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            #./home-manager/home-root.nix
+            ./home-manager/user-root/host-nyxora
+          ];
+        };
+
+        #----------------------------------------------------------------------
         #"naim@zahrah" = home-manager.lib.homeManagerConfiguration {
         #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
         #  extraSpecialArgs = { inherit inputs outputs; };
@@ -861,7 +930,9 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            ./home-manager/home-naqib.nix
+            #./home-manager/home-naqib.nix
+            #./home-manager/user-naqib/default.nix
+            ./home-manager/user-naqib/host-raudah/default.nix
           ];
         };
 
@@ -937,7 +1008,11 @@
         #    ./home-manager/user-julia/host-taufiq/default.nix
         #  ];
         #};
-        "najib@taufiq"      = mkHome [./home-manager/user-najib/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
+        "najib@taufiq" = mkHome [
+	  stylix.homeManagerModules.stylix
+	  ./home-manager/user-najib/host-taufiq
+	] nixpkgs.legacyPackages."x86_64-linux";
+
         "julia@taufiq"      = mkHome [./home-manager/user-julia/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
         "naqib@taufiq"      = mkHome [./home-manager/user-naqib/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
         "nurnasuha@taufiq"  = mkHome [./home-manager/user-nurnasuha/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";

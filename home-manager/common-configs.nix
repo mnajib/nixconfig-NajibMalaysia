@@ -74,6 +74,8 @@ in
     ./zsh.nix
     ./bash.nix # bash shell
     ./garbage-collect.nix
+
+    ./git.nix
   ]
   ++ (builtins.attrValues outputs.homeManagerModules);
   # XXX: TODO: Should be in seperate file packages.nix
@@ -90,9 +92,10 @@ in
     pulseaudio = true;
   };
 
-  colorscheme = lib.mkDefault colorSchemes.dracula;
+  #colorscheme = lib.mkDefault colorSchemes.dracula;
   #colorscheme = lib.mkDefault colorSchemes.nord;
   #colorscheme = lib.mkDefault colorSchemes.najib;
+  colorscheme = lib.mkDefault colorScheme;
 
   #home.sessionVariables = {
     #EDITOR = "nvim";       # yi vis nvim kak vim nano rasa jak
@@ -207,13 +210,13 @@ in
     enable = true;
   };
 
-  programs.wezterm = {
-    enable = true;
-    #package = pkgs.wezterm;
-    #colorSchemes = { ... };
-    #extraConfig = ''
-    #'';
-  };
+  #programs.wezterm = {
+  #  enable = true;
+  #  #package = pkgs.wezterm;
+  #  #colorSchemes = { ... };
+  #  #extraConfig = ''
+  #  #'';
+  #};
 
   programs.termite = {
     enable = true;
@@ -289,6 +292,44 @@ in
 
   programs.command-not-found.enable = true;
 
+  programs.fd.enable = true; # A faster alternative to 'find'
+
+  programs.bat.enable = true; # For file previews
+
+  programs.ranger = {
+    enable = true; # A terminal 'file manager'.
+    #extraPackages =
+    #extraPlugins =
+    extraConfig = ''
+      set column_ratios 0,1,1
+      #set mouse_enabled false
+      set collapse_preview false
+      set sort_directories_first false
+
+      set preview_directories true
+      set preview_files false
+      set perview_images false
+
+      # 'uv' as shortcut to unmark all in all directories
+      # as command 'unmark' only unmarks marked files in the current directory.
+      map uv mark_files all=True val=False
+
+      # Color schemes
+      #Ranger comes with four color schemes: default, jungle, snow and solarized. You can change your color scheme using:
+      set colorscheme solarized
+
+      # Move to trash
+      map DD shell mv %s /home/$${USER}/.local/share/Trash/files/
+      #
+      # Alternatively, use GIO commandline tool provided by glib2 package:
+      #map DD shell gio trash %s
+    '';
+  };
+  #home.file.".config/ranger" = {
+  #  source = ./src/.config/ranger;
+  #  recursive = true;
+  #};
+
   programs.nnn = {
     enable = true;
     extraPackages = with pkgs; [
@@ -319,7 +360,15 @@ in
 
   programs.dircolors.enable = true;
 
-  programs.fzf.enable = true;           # fuzzy finder
+  programs.fzf = {
+    enable = true;           # fuzzy finder
+    enableBashIntegration = true;
+    enableFishIntegration = true;
+    enableZshIntegration = true;
+
+    tmux.enableShellIntegration = true;
+  };
+  #
   programs.skim.enable = true;          # fuzzy finder
 
 # programs.neovim = {
@@ -407,79 +456,6 @@ in
   #  enable = true;
   #};
 
-  programs.git = {
-      enable = true;
-      package = pkgs.gitAndTools.gitFull;
-
-      #userName =  "${name}"; #"Najib Ibrahim";
-      #userEmail = "${email}"; # "mnajib@gmail.com";
-
-      aliases = {
-          co = "checkout";
-          ci = "commit";
-          st = "status";
-          br = "branch";
-          #hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cr)' --graph --date=short --all";
-          hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all";
-          #hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=relative --all";
-          histp = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all -p";
-          type = "cat-file -t";
-          dump = "cat-file -p";
-          branchall = "branch -a -vv";
-          tracked = "ls-tree --full-tree -r --name-only HEAD";
-      };
-      #diff-so-fancy.enable = true;
-      extraConfig = {
-          pull = {
-            rebase = true;
-          };
-          #push = {
-          #  default = "current";
-          #};
-          core = {
-              editor = "vim";
-              excludesfile = "~/.gitignore";
-              whitespace = "trailing-space,space-before-tab";
-          };
-          merge = {
-              tool = "vimdiff";
-          };
-          color = {
-              ui = "auto";
-              #diff = "auto";
-              status = "auto";
-              #branch = "auto";
-              branch = {
-                current = "yellow reverse";
-                remote = "green bold";
-                local = "blue bold";
-              };
-              diff = {
-                meta = "blue bold";
-                frag = "magenta bold";
-                old = "red bold";
-                new = "green bold";
-              };
-          };
-
-          # mkdir /srv/gitrepo/nixconfig-NajibMalaysia.git
-          # chgrp -R users nixconfig-NajibMalaysia.git
-          # git init --bare --shared=0664 /srv/gitrepo/nixconfig-NajibMalaysia.git
-          # git init --bare --shared=group mysharedgitrepo
-          #
-          # git clone --config core.sharedRepository=true
-          #
-          # setfacl -R -m g:<whatever group>:rwX gitrepo
-          # find gitrepo -type d | xargs setfacl -R -m d:g:<whatever group>:rwX
-          #
-          # chmod -vR g+swX /srv/gitrepo
-          safe = {
-            #directory = "/srv/gitrepo/nixconfig-NajibMalaysia.git";
-            #directory = "/srv/gitrepo";
-            directory = "*";
-          };
-      }; # End extraConfig
-  };
 
 #------------------------------------------------------------------------------
   #wayland.windowManager.sway = {
@@ -724,11 +700,6 @@ in
   #    source = ./src/.config/kak;
   #    recursive = true;
   #};
-
-  home.file.".config/ranger" = {
-    source = ./src/.config/ranger;
-    recursive = true;
-  };
 
   #home.file.".config/git" = {
   #  source = ./src/.config/git;

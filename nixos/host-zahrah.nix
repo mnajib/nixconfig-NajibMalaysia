@@ -1,4 +1,6 @@
-{ pkgs, config, ... }:
+# vim: set ts=2 sw=2 expandtab nowrap number:
+
+{ pkgs, config, lib, ... }:
 {
   nix = {
     #package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
@@ -60,6 +62,7 @@
 
     ./flatpak.nix
     #./emulationstation.nix # freeimage no safe?
+    ./mame.nix
 
     #./ai.nix
 
@@ -71,6 +74,8 @@
     #./opengl_with_vaapiIntel.nix
 
     ./stylix.nix
+
+    ./barrier.nix
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -81,9 +86,15 @@
 
   hardware.enableAllFirmware = true;
 
+  hardware.graphics.extraPackages = with pkgs; [
+    mesa
+  ];
+
   environment.systemPackages = with pkgs; [
-    #nvtop
-    #nvtopPackages.full
+    radeontop # T400 zahrah have GPU: AMD ATI Mobility Radeon HD 3450/3470 (RV620/M83). May need to choose 'discrete graphic' in BIOS.
+    clinfo
+    gpu-viewer
+    vulkan-tools
 
     libnotify
 
@@ -95,34 +106,15 @@
     haskellPackages.X11-xft
   ];
 
-  #
-  # NOTE:
-  #   01:00.0 VGA compatible controller: NVIDIA Corporation GT218M [NVS 3100M] (rev a2)
-  #
-  #services.xserver.videoDrivers = [ "nouveau" ];
-  #services.xserver.videoDrivers = [ "nvidia" ];
-  #services.xserver.videoDrivers = [ "nvidia" "nvidiaLegacy340" "nouveau" "fbdev" ];
-  #services.xserver.videoDrivers = [ "nvidiaLegacy340" "fbdev" ];
-  #services.xserver.videoDrivers = [ "fbdev" ];
-  #hardware.nvidia = {
-  #  package = config.boot.kernelPackages.nvidiaPackages.legacy_340;
-  #  nvidiaSettings = true;
+  #services.xserver.videoDrivers = [ "radeon" ];
 
-  #  prime = {
-  #    intelBusId = "PCI:0:2:0";
-  #    nvidiaBusId = "PCI:1:0:0";
-  #    #sync.enable = true;
-  #  };
-
-  #  modesetting.enable = true;
-  #  open = false; # true;
-  #  powerManagement.enable = false;
-  #  powerManagement.finegrained = false;
-  #};
-  #hardware.nvidiaOptimus.disable = true; # Completely disable the NVIDIA graphics card and use the integrated graphics processor instead.
+  ## To enable hardware accelerated graphics drivers, to allow most graphical applications and environments to use hardware rendering, video encode/decode acceleration, etc. 
+  ## This option should be enabled by default by the corresponding modules, so you do not usually have to set it yourself.
+  #hardware.graphics.enable = true;
 
   #boot.loader.systemd-boot.enable = true; # gummi-boot for EFI
   #boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.timeout = 10; # in second(s)
   boot.loader.grub = {
     enable = true;
     #version = 2;
@@ -159,6 +151,11 @@
     #];
   };
 
+
+  boot.kernelParams = [
+    "radeon.modeset=1" # enable radeon
+  ];
+
   services.fstrim.enable = true;
 
   #networking.useDHCP = false;
@@ -186,6 +183,12 @@
     1110          # NFS client
     4045          # NFS lock manager
   ];
+
+  # LACT
+  #systemd.packages = with pkgs; [
+  #  lact
+  #];
+  #systemd.services.lactd.wantedBy = [ "multi-user.target" ];
 
   powerManagement.enable = true;
   services.auto-cpufreq.enable = true;
@@ -280,16 +283,22 @@
   services.xserver.enable = true;
 
   services.xserver.displayManager = {
-    #sddm.enable = true;
-    #gdm.enable = true;
-    #startx.enable = true;
     lightdm.enable = true;
+    #sddm = {
+    #  enable = true;
+    #  wayland.enable = false;
+    #};
+    #gdm = {
+    #  enable = true;
+    #  wayland = false;
+    #};
+    #startx.enable = true;
   };
 
   services.xserver.desktopManager = {
     #plasma5.enable = true;
     #plasma6.enable = true;
-    #gnome.enable = true;
+    gnome.enable = true;
     #xfce.enable = true;
     #pantheon.enable = true;
     #enlightenment.enable = true;
@@ -301,19 +310,19 @@
   };
 
   services.xserver.windowManager = {
-    xmonad = {
-      enable = true;
-      enableContribAndExtras = true;
-      extraPackages = haskellPackages: [
-        haskellPackages.xmonad
-        haskellPackages.xmonad-extras
-        haskellPackages.xmonad-contrib
-        haskellPackages.dbus
-        haskellPackages.List
-        haskellPackages.monad-logger
-        haskellPackages.xmobar
-      ];
-    };
+    #xmonad = {
+    #  enable = true;
+    #  enableContribAndExtras = true;
+    #  extraPackages = haskellPackages: [
+    #    haskellPackages.xmonad
+    #    haskellPackages.xmonad-extras
+    #    haskellPackages.xmonad-contrib
+    #    haskellPackages.dbus
+    #    haskellPackages.List
+    #    haskellPackages.monad-logger
+    #    haskellPackages.xmobar
+    #  ];
+    #};
     awesome = {
       enable = true;
     };
@@ -353,8 +362,8 @@
   };
 
   programs = {
-    #sway.enable = true;
-    #xwayland.enable = true;
+    sway.enable = true;
+    xwayland.enable = true;
 
     firefox.enable = false;
 
@@ -429,7 +438,7 @@
     };
 
     dconf.enable = true;
-    seahorse.enable = true;
+    #seahorse.enable = true;
     fuse.userAllowOther = true;
     mtr.enable = true;
 

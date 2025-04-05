@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
 
   stylix.enable = true;
@@ -8,7 +8,7 @@
   # cd result
   # nix run nixpkgs#eza -- --tree
   #---------------------------------------------------------------------------
-  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
+  #stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
   #
   # OR
   #
@@ -37,45 +37,77 @@
   stylix.cursor.package = pkgs.bibata-cursors;
   stylix.cursor.name = "Bibata-Modern-Ice";
 
+  # NOTE: https://sourcefoundry.org/hack/playground.html
+  #   - Hack
+  #   - Liberation Mono
+  #   - Ubuntu Mono
+  #   - Roboto Mono
+  #   - DejaVu Sans Mono
   #---------------------------------------------------------------------------
+  #stylix.fonts = {
+  #  monospace = {
+  #    package = pkgs.nerdfonts.override {fonts = [ "JetBrainsMono" ];};
+  #    name = "JetBrainsMono Nerd Font Mono";
+  #    #package = pkgs.nerdfonts.override { fonts = [ "FiraMono" ]; };
+  #    #name = "Fira Mono for Powerline (Bold)";
+  #  };
+  #  #monospace = {
+  #  #  package = pkgs.dejavu_fonts;
+  #  #  name = "DejaVu Sans Mono";
+  #  #};
+  #  sansSerif = {
+  #    package = pkgs.dejavu_fonts;
+  #    name = "DejaVu Sans";
+  #  };
+  #  serif = {
+  #    package = pkgs.dejavu_fonts;
+  #    name = "DejaVu Serif";
+  #  };
+  #  emoji = {
+  #    package = pkgs.noto-fonts-emoji;
+  #    name = "Noto Color Emoji";
+  #  };
+  #  #serif = config.stylix.fonts.monospace;
+  #  #sansSerif = config.stylix.fonts.monospace;
+  #  #emoji = config.stylix.fonts.monospace;
+  #};
   stylix.fonts = {
     monospace = {
-      package = pkgs.nerdfonts.override {fonts = [ "JetBrainsMono" ];};
-      name = "JetBrainsMono Nerd Font Mono";
+      #package = pkgs.terminus-nerdfont;
+      #name = "Terminus Nerd Font";
+      #package = pkgs.nerdfonts;
+      #name = "EnvyCodeR Nerd Font";
+      package = pkgs.bront_fonts;
+      name = "Bront Ubuntu Mono";
     };
-    #monospace = {
-    #  package = pkgs.dejavu_fonts;
-    #  name = "DejaVu Sans Mono";
-    #};
-    sansSerif = {
-      package = pkgs.dejavu_fonts;
-      name = "DejaVu Sans";
-    };
-    serif = {
-      package = pkgs.dejavu_fonts;
-      name = "DejaVu Serif";
-    };
+    serif = config.stylix.fonts.monospace;
+    sansSerif = config.stylix.fonts.monospace;
+    #emoji = config.stylix.fonts.monospace;
     emoji = {
       package = pkgs.noto-fonts-emoji;
+      #package = pkgs.noto-fonts-color-emoji;
+      #package = pkgs.noto-fonts-monochrome-emoji;
       name = "Noto Color Emoji";
     };
-    #serif = config.stylix.fonts.monospace;
-    #sansSerif = config.stylix.fonts.monospace;
-    #emoji = config.stylix.fonts.monospace;
   };
 
-  stylix.fonts.sizes = {
-    applications = 12; # 1
-    terminal = 10; # 15;
-    desktop = 10; # 10;
-    popups = 10; # 10;
-  };
+  environment.systemPackages = [
+    pkgs.nerdfonts
+    pkgs.bront_fonts
+  ];
 
-  stylix.opacity = {
-    applications = 1.0;
-    terminal = 1.0;
-    desktop = 1.0;
-    popups = 1.0;
-  };
+  #stylix.fonts.sizes = {
+  #  applications = 9;#12; # 1
+  #  terminal = 9;#10; # 15;
+  #  desktop = 9;#10; # 10;
+  #  popups = 9;#10; # 10;
+  #};
+
+  #stylix.opacity = {
+  #  applications = 1.0;
+  #  terminal = 1.0;
+  #  desktop = 1.0;
+  #  popups = 1.0;
+  #};
 
 }

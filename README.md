@@ -8,6 +8,8 @@
 - https://nixos.wiki/wiki/Comparison_of_NixOS_setups
 - https://nixos.wiki/wiki/Configuration_Collection
 - https://github.com/sjcobb2022/nixos-config
+- https://nixos-and-flakes.thiscute.world/nixos-with-flakes/introduction-to-flakes <--- My favourite
+- https://qiita.com/Sumi-Sumi/items/6de9ee7aab10bc0dbead?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl=en
 
 ### About mime and file association
 - https://wiki.archlinux.org/title/Default_applications#Resource_openers
@@ -29,6 +31,8 @@ nix flake check
 nix flake metadata
 nix flake show
 nix flake update
+
+nix flake update --extra-experimental-features nix-command --extra-experimental-features flakes
 
 nix develop
 nix develop --extra-experimental-features 'nix-command flakes'
@@ -146,6 +150,10 @@ Nix maintains build logs in /nix/var/log/nix/drvs. If you're sure you don't need
   sudo rm -rf /nix/var/log/nix/drvs/*
 
 
+
+#------------------------------------------------------------------------------
+
+sudo nix store optimise
 
 #------------------------------------------------------------------------------
 

@@ -2,9 +2,9 @@
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 
 { inputs, outputs, lib, config, pkgs, ... }:
-#let
-#  hostname = "khadijah";
-#in
+let
+  hostname = "zahrah";
+in
 {
   # You can import other home-manager modules here
   imports = [
@@ -14,6 +14,9 @@
     ../../neovim/lazyvim.nix
 
     ../../helix
+
+    #../../barrier.nix
+    (import ../../barrier.nix { inherit hostname config pkgs lib inputs outputs; }) # Pass hostname and other args
   ];
 
   home.packages = with pkgs; [

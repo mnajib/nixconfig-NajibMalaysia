@@ -24,24 +24,33 @@ in
     ../common-configs.nix
     ../common-packages.nix
 
-    ../neovim
+    #../neovim
     #../neovim/lazyvim.nix
+    #
+    # Now define neovim per-host basis
 
     ../helix
 
     ../time-management.nix
 
-    # My attemp to use nix-doom-emacs
+    # Previously, my attemp to use nix-doom-emacs
     #./emacs.nix
+    # My config with manually download/git clone doomemacs into ~/.config/emacs
+    ../doom-emacs.nix
     #
     #inputs.nix-doom-emacs.hmModule
     #
     #./emacs-with-doom.nix
 
+    # NOTE: nix-doom-emacs: This project has been broken for more than a year due to Doom's excessive divergence from emacs-overlay's package set, which is not Doom's fault but rather a missing Elisp package locking mechanism on our end.
+    #nix-doom-emacs.hmModule
+
     #./hyprland.nix
     #../evince.nix
 
     ../cmus.nix
+
+    ../chemistry.nix
   ];
 
   nixpkgs = {
@@ -82,10 +91,37 @@ in
   home = {
     username = "najib";
     homeDirectory = "/home/najib";
+
+    # NOTE: home.sessionVariables are defined in a file named hm-session-vars.sh.
+    # If you are in a shell provided by a HM module, this file is already sourced
+    # (They are also explicitly sourcing 31 it but it is hidden to the user.). If
+    # you are not using a shell provided by a HM module (e.g. shell provided by
+    # NixOS) or writing your own HM module for a shell, then you need to source that
+    # file yourself to have those sessions variables defined.
+    # Example, for bash:
+    # programs.bash = {
+    #   enable = true;
+    #   sessionVariables = {
+    #     EDITOR = "vim";
+    #   };
+    #   initExtra = ''
+    #     . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+    #   '';
+    # };
+    sessionVariables = {
+      WINIT_X11_SCALE_FACTOR = 0.8;
+    };
   };
 
   # Add stuff for your user as you see fit:
   # programs.neovim.enable = true;
+
+  programs.ghostty = {
+    enable = true;
+    enableBashIntegration = true;
+    enableFishIntegration = true;
+    enableZshIntegration = true;
+  };
 
   home.packages = with pkgs; [
     #tmux
@@ -112,11 +148,12 @@ in
     xournalpp
     #wpsoffice
 
-    libreoffice-fresh
+    #libreoffice-fresh
     #libreoffice-qt-fresh
+    libreoffice
 
-    chemtool
-    marvin
+    #opera
+
     smlnj
     #waydroid
     #kmymoney
@@ -148,6 +185,7 @@ in
 
     #vscode
     vscode-with-extensions
+    #emacs
 
     ssh-ident
 
@@ -157,6 +195,10 @@ in
     #evil-helix # Post-modern modal text editor, with vim keybindings
     #helix-gpt # Code completion LSP for Helix with support for Copilot + OpenAI
   ];
+
+  # Environment variable t...
+  #sessionVariables = {
+  #};
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
@@ -197,11 +239,11 @@ in
     #};
   };
 
-  # XXX:
   #programs.tmux.shell = "\${pkgs.zsh}/bin/zsh";
   #programs.tmux.shell = "${pkgs.zsh}/bin/zsh";
   #programs.tmux.shell = "/run/current-system/sw/bin/zsh";
 
+  # NOTE: nix-doom-emacs: This project has been broken for more than a year due to Doom's excessive divergence from emacs-overlay's package set, which is not Doom's fault but rather a missing Elisp package locking mechanism on our end.
   #programs.doom-emacs = {
   #  enable = true;
   #  # Directory containing my config.el, init.el, and packages.el files

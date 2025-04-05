@@ -9,7 +9,8 @@
   ];
 
   #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;	# Need to use this if want to enable zfs support.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
+
   boot.supportedFilesystems = [
     "ext4" "btrfs" "xfs" "vfat" "ntfs"
     #"zfs"
@@ -49,6 +50,7 @@
   boot.initrd.availableKernelModules = [
     "ehci_pci" "ahci" "firewire_ohci" "sd_mod" "sdhci_pci"
     "xhci_pci" "usb_storage"
+    "radeon"
   ];
 
   #---------------------------------------------------------------------------

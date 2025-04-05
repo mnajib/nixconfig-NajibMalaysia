@@ -60,8 +60,6 @@
   #fileSystems."/".options = [ "noatime" "discard" ];
 
   #boot.kernelPackages = pkgs.linuxPackages_latest; # XXX: Move this configuration seperate from each host.
-  hardware.enableAllFirmware = true;
-
   networking.networkmanager.enable = true; # <-- will move to host specifix file
 
   #nix.trustedUsers = [ "root" "najib" ]; <-- moved to host-hostname.nix
@@ -95,6 +93,8 @@
     #./xdg.nix
     #./xdg-gtk.nix
     #./xdg-kde.nix
+
+    ./doom-emacs.nix
   ];
 
   # Q: Each time I change my configuration.nix and run nixos-rebuild switch,
@@ -132,8 +132,18 @@
     t_fmt="%T";
     d_t_fmt="%F %T %A %Z";
     date_fmt="%F %T %A %Z";
-    LC_MESSAGES = "en_GB.UTF-8";
-    LC_TIME = "en_GB.UTF-8";
+
+    LC_MESSAGES = "en_GB.UTF-8";                                                                                                                              
+    LC_ADDRESS = "ms_MY.UTF-8";                                                                                                                               
+    LC_IDENTIFICATION = "ms_MY.UTF-8";                                                                                                                        
+    #LC_MEASUREMENT = "ms_MY.UTF-8";                                                                                                                          
+    LC_MONETARY = "ms_MY.UTF-8";                                                                                                                              
+    LC_NAME = "ms_MY.UTF-8";                                                                                                                                  
+    #LC_NUMERIC = "ms_MY.UTF-8";                                                                                                                              
+    LC_PAPER = "ms_MY.UTF-8";                                                                                                                                 
+    LC_TELEPHONE = "ms_MY.UTF-8";                                                                                                                             
+    LC_TIME = "en_GB.UTF-8";                                                                                                                                  
+    #LC_TIME = "ms_MY.UTF-8";
   };
 
   time.timeZone = "Asia/Kuala_Lumpur";
@@ -200,10 +210,71 @@
   #  XDG_CACHE_HOME = "${HOME}/var/cache";
   #};
 
+  environment.unixODBCDrivers = with pkgs.unixODBCDrivers; [
+    sqlite
+    psql
+    mariadb
+    #mysql
+    msodbcsql18
+    #msodbcsql17
+    #redshift
+  ];
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   #
   environment.systemPackages = with pkgs; [
+    socat
+    redis
+
+    csvq
+    csvtk
+    csvkit
+    csview
+    csv2md
+    csvtool
+    csvlens
+    csvdiff
+    csv2svg
+    csv2odf
+    csv-tui
+    csvquote
+    xlsx2csv
+    qsv
+    xsv
+    clevercsv
+    graph-cli
+    zsv
+    textql
+    tabview
+    tidy-viewer
+    tabiew
+    miller
+    json-plot
+    clevercsv
+
+    unixODBC
+    unixODBCDrivers.sqlite
+    unixODBCDrivers.psql
+    unixODBCDrivers.mariadb
+    #unixODBCDrivers.mysql
+    unixODBCDrivers.msodbcsql18
+
+    glom
+
+    firmware-updater
+    firmware-manager
+    fwts
+    gnome-firmware
+    linux-firmware
+    fwup
+    fwupd
+    fwupd-efi
+
+    sshfs # FUSE-based filesystem that allows remote filesystems to be mounted over SSH; mount.fuse.sshfs, mount.sshfs, sshfs
+
+    beep
+
     cachix
 
     #unstable.minetest
@@ -218,11 +289,14 @@
     wget curl killall
     mtr iproute2 # busybox
     htop mc irssi most mosh coreutils
+    glances
     nload
     zenith                    # Sort of like top or htop but with zoom-able charts, network, and disk usage
     bmon                      # Network bandwidth monitor
     btop
+    glances
     enlightenment.evisum
+    tldr # community-driven simplified man pages
 
     screen
     tmux
@@ -315,8 +389,11 @@
     #})
     #--------------------------------------------------------------------------
 
-    dzen2    # A general purpose messaging, notification and menuing program for X11
-    gnumake    # install gnumake, needed for ihp
+    dzen2     # A general purpose messaging, notification and menuing program for X11
+    gnumake   # install gnumake, needed for ihp
+    cmake     # needed for doom-emacs vterm
+    libtool   # needed for doom-emacs vterm
+    ispell    # needed for doom-emacs vterm
 
     expect    # tool for automating interactive applications
 
@@ -333,6 +410,8 @@
 
     #qtox    # chat using tox protocol
     #keybase keybase-gui
+
+    bluez # official linux Bluetooth protocol stack
 
     #gnomeExtensions.draw-on-your-screen
     #pentablet-driver
@@ -787,7 +866,7 @@
     gephi                 # A platform for visualizing and manipulating large graphs
     #graphia               # A visualisation tool for the creation and analysis of graphs
 
-    vym freemind treesheets drawio dia minder
+    vym freemind treesheets dia minder drawio
     #ardour audacity avogadro dia freemind treesheets umlet vue xmind jmol
     #krita
 
@@ -1004,6 +1083,8 @@
     #openttd
   ];
 
+  programs.firefox.enable = true;
+
   #programs.way-cooler.enable = true;
 
   programs.java.enable = true;
@@ -1187,6 +1268,10 @@
 
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
+  hardware.enableAllFirmware = true;
+  services.fwupd = {
+    enable = true;
+  };
 
   #services.locate.enable = true; # default false
   #services.picom.enable = true; #services.compton.enable = true;
@@ -1502,6 +1587,17 @@
 
       nerdfonts
       #(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ] })
+      #nerd-fonts.hack
+      #nerd-fonts.fira-code
+      #nerd-fonts.meslo-lg
+      #nerd-fonts.sauce-code-pro
+      #nerd-fonts.terminess-ttf
+      #nerd-fonts.monoid
+      #nerd-fonts.noto
+      #nerd-fonts.iosevka-term
+      #nerd-fonts._0xproto
+      #nerd-fonts.jetbrains-mono
+      #nerd-fonts.ubuntu
 
       jetbrains-mono # An opensource typeface made for developers. suitable for coding
       mononoki # A font for programming and code review
