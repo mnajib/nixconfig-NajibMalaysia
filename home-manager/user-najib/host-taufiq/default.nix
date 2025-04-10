@@ -31,6 +31,8 @@
     #noto-fonts
     #liberation_ttf
     #font-awesome
+
+    mumble
   ];
 
   fonts.fontconfig = {
