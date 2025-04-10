@@ -405,6 +405,8 @@ with lib;
   services.xserver.windowManager.awesome = { enable = true; };
   services.xserver.windowManager.fluxbox = { enable = true; };
   services.xserver.windowManager.jwm = { enable = true; };
+  services.xserver.windowManager.herbstluftwm = { enable = true; };
+  services.xserver.windowManager.notion = { enable = true; };
   services.displayManager.defaultSession = "none+xmonad";
 
   #----------------------------------------------------------------------------
