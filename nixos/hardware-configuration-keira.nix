@@ -79,7 +79,7 @@
 #--------------------------------------------------------------------
 
   fileSystems."/" =
-    { 
+    {
       device = "/dev/disk/by-uuid/15762a77-c5ef-4eb0-9a5e-946646691a37";
       fsType = "btrfs";
       options = [
@@ -89,7 +89,7 @@
     };
 
   fileSystems."/root" =
-    { 
+    {
       device = "/dev/disk/by-uuid/15762a77-c5ef-4eb0-9a5e-946646691a37";
       fsType = "btrfs";
       options = [
@@ -103,8 +103,8 @@
       device = "/dev/disk/by-uuid/15762a77-c5ef-4eb0-9a5e-946646691a37";
       fsType = "btrfs";
       options = [
-        "subvol=home" "compress=zstd" "autodefrag" 
-	#"noatime"
+        "subvol=home" "compress=zstd" "autodefrag"
+        #"noatime"
       ];
     };
 

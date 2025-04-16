@@ -58,7 +58,7 @@
 
     ./hardware-printer.nix
 
-    ./hardware-tablet-wacom.nix
+    #./hardware-tablet-wacom.nix
     #./hardware-tablet-digimend.nix
     #./hardware-tablet-opentabletdriver.nix
 
@@ -92,7 +92,8 @@
   #boot.kernelPackages = pkgs.linuxKernel.packages.latest;
   #boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
   #boot.kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12; # linux_6_11
 
   #boot.loader.systemd-boot.enable = true;
   #boot.loader.efi.canTouchEfiVariables = true;
@@ -134,7 +135,7 @@
     #interval = "weekly";
     #interval = "daily";
     #interval = "*-*-* 03:00:00"; # Daily, start at 03:00:00 ?
-    interval = "*-*-*/2 03:00:00" # ... every two days, at 03:00:00 ?
+    interval = "*-*-*/2 03:00:00"; # ... every two days, at 03:00:00 ?
   };
 
   services.fstrim.enable = true;
