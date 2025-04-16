@@ -781,6 +781,11 @@
     feh
     evince                              # Documents viewer
     calibre                             # Comprehensive e-book software
+    koodo-reader			# Cross-platform ebook reader
+    bookworm				# Simple, focused eBook reader
+    foliate				# Simple and modern GTK eBook reader
+    alexandria				# A minimalistic cross-platform eBook reader
+    koreader				# An ebook reader application supporting PDF, DjVu, EPUB, FB2 and many more formats, running on Cervantes, Kindle, Kobo, PocketBook and Android devices
     sioyek                              # A PDF viewer designed for research papers and technical books
     #qpdfview
 
@@ -897,14 +902,15 @@
 
     #gnomeExtensions.draw-on-your-screen
     #pentablet-driver
-    gromit-mpx  # Desktop annotation tool
-    #xournal     # note-taking application (supposes stylus)
-    xournalpp   # handwriting notetaking software with PDF annotation support
-    rnote       # Simple drawing application to create handwritten notes
-    pdftk       # Command-line tool for working with PDFs
-    #pdfchain   #
-    gnote                 # A note taking application
-    gnome-notes     # Note editor designed to remain simple to use
+    gromit-mpx  	# Desktop annotation tool
+    #xournal     	# note-taking application (supposes stylus)
+    xournalpp   	# handwriting notetaking software with PDF annotation support
+    rnote       	# Simple drawing application to create handwritten notes
+    pdftk       	# Command-line tool for working with PDFs
+    #pdfchain   	#
+    gnote               # A note taking application
+    gnome-notes     	# Note editor designed to remain simple to use
+    rednotebook		# Modern journal that includes a calendar navigation, customizable templates, export functionality and word clouds
 
     screenkey onboard xorg.xkbcomp # xorg.xkbprint
 
