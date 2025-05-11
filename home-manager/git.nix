@@ -31,6 +31,8 @@
           hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all";
           #hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=relative --all";
           histp = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all -p";
+          hist2 = "log --graph --oneline --simplify-by-decoration --all";
+          hist3 = "log --graph --oneline --decorate --all";
           type = "cat-file -t";
           dump = "cat-file -p";
           branchall = "branch -a -vv";
