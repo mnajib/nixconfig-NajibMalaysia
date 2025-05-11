@@ -240,7 +240,7 @@
     csv-tui
     csvquote
     xlsx2csv
-    qsv
+    #qsv
     xsv
     clevercsv
     graph-cli
@@ -1512,17 +1512,24 @@
   # $ cd /nix/var/nix/profiles/system/sw/share/X11/fonts
   # $ fc-query DejaVuSans.ttf | grep '^\s\+family:' | cut -d'"' -f2
   #
+  #
   #==================================================
   # This is working solution as tested on
   # 2022-11-07
   # 2023-04-05
+  # 2025-05-04
+  # NOTE:
+  #   - Must not in zip file, need to extracted
+  #   - Can be in subdirectories
   #--------------------------------------------------
   # fc-list -v | grep -i edward
   # ln -s ~/.fonts ~/.local/share/fonts
+  #
   # rm -vRf ~/.cache/fontconfig
   # fc-cache --really-force --verbose
   # fc-list -v | grep -i edward
   #==================================================
+  #
   #
   fonts = {
     fontconfig.enable = true;
