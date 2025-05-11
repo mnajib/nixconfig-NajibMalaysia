@@ -382,6 +382,15 @@
     # use in wayland
     gnome-randr
     foot
+
+    #android-studio-full
+    android-studio
+  ];
+
+  nixpkgs.config.android_sdk.accept_license = true;
+
+  services.udev.packages = [
+    pkgs.android-udev-rules
   ];
 
   #virtualisation.virtualbox.host.enable = true;
