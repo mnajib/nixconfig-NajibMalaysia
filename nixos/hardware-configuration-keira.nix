@@ -119,15 +119,20 @@
 
 #-------------------------------------------------------------------------------
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/5ec78318-f2c0-4d21-bef9-0bdfea8b6cd2";
-      fsType = "ext4";
-    };
+  #fileSystems."/boot" =
+  #  { device = "/dev/disk/by-uuid/5ec78318-f2c0-4d21-bef9-0bdfea8b6cd2";
+  #    fsType = "ext4";
+  #  };
+  #
+  #fileSystems."/boot2" =
+  #  { device = "/dev/disk/by-uuid/9c121e78-d95a-4462-a9c2-1f8691dcffd3";
+  #    fsType = "ext4";
+  #  };
 
-  fileSystems."/boot2" =
-    { device = "/dev/disk/by-uuid/9c121e78-d95a-4462-a9c2-1f8691dcffd3";
-      fsType = "ext4";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/8be9a8cc-de30-4b60-882a-a3484ed255d6";
+    fsType = "btrfs";
+  };
 
 #-------------------------------------------------------------------------------
 
