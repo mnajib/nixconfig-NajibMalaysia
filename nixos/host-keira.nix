@@ -134,8 +134,8 @@
     #interval = "monthly";
     #interval = "weekly";
     #interval = "daily";
-    #interval = "*-*-* 03:00:00"; # Daily, start at 03:00:00 ?
-    interval = "*-*-*/2 03:00:00"; # ... every two days, at 03:00:00 ?
+    interval = "*-*-* 03:00:00"; # Daily, start at 03:00:00 ?
+    #interval = "*-*-*/2 03:00:00"; # ... every two days, at 03:00:00 ?
   };
 
   services.fstrim.enable = true;
