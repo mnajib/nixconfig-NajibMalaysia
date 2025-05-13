@@ -94,26 +94,59 @@
   #boot.kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
   #boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12; # linux_6_11
+  #boot.kernelPackages = pkgs.linuxPackages_6_6;
+
+  boot.kernelParams = [
+    #"nomodeset"
+  ];
+
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModulePackages = [ ];
+  boot.supportedFilesystems = [ "btrfs" "ext4" "xfs" "vfat" "zfs" "ntfs" ];
+
+  boot.initrd = {
+    availableKernelModules = [ "ehci_pci" "ahci" "xhci_pci" "ata_piix" "usbhid" "usb_storage" "sd_mod" "mpt3sas" "sdhci_pci" ];
+    kernelModules =        [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ];
+    supportedFilesystems = [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ];
+  };
 
   #boot.loader.systemd-boot.enable = true;
   #boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.timeout = 10;
   boot.loader.grub = {
     enable = true;
+    timeoutStyle = "menu";
+    efiSupport = false;
     enableCryptodisk = true;
     copyKernels = true;
-    #useOSProber = true; # XXX:
+    useOSProber = true; # XXX:
+    memtest86.enable = true;
     #backgroundColor = "#7EBAE4"; # lightblue
 
     #------------------------------------------
     # BIOS
     #------------------------------------------
-    devices = [
-      #"/dev/disk/by-id/wwn-0x5000c5002ea341bc"
-      #"/dev/disk/by-id/wwn-0x5000c5002ec8a164"
-      "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK0803806"                     # /dev/sda
-      "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1017188"                     # /dev/sdb
-    ];
+    #devices = [
+    #  #"/dev/disk/by-id/wwn-0x5000c5002ea341bc"
+    #  #"/dev/disk/by-id/wwn-0x5000c5002ec8a164"
+    #  "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK0803806"                     # /dev/sda
+    #  "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1017188"                     # /dev/sdb
+    #];
     #efiSupport = true;
+    mirroredBoots = [
+
+      {
+        devices = [ "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK0803806" ];
+        path = "/boot";
+      }
+
+      {
+        devices = [ "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1017188" ];
+        path = "/boot2";
+      }
+
+    ];
+    #------------------------------------------
 
     #------------------------------------------
     # EFI
@@ -126,7 +159,12 @@
     #    path = "/boot2";
     #  }
     #];
+    #------------------------------------------
+
   };
+
+  services.smartd.enable = true;
+  services.fstrim.enable = true;
 
   services.btrfs.autoScrub = {
     enable = true;
@@ -137,8 +175,6 @@
     interval = "*-*-* 03:00:00"; # Daily, start at 03:00:00 ?
     #interval = "*-*-*/2 03:00:00"; # ... every two days, at 03:00:00 ?
   };
-
-  services.fstrim.enable = true;
 
   #----------------------------------------------------------
   # Thinkpad T410 Shah Alam RM100 (price include T60)
@@ -179,7 +215,7 @@
   powerManagement.cpuFreqGovernor = "powersave";
   #powerManagement.cpufreq.min = 800000;
   powerManagement.cpufreq.max = 2000000; # Guna 1500,000 KHz pada zahrah.
-
+  services.power-profiles-daemon.enable = false;
   services.tlp = {
     enable = true;
     settings = {
@@ -241,27 +277,27 @@
     touchpad.tapping = true; #false;
   };
 
+  services.displayManager.defaultSession = "none+xmonad";
+
   services.xserver = {
     enable = true;
-
     displayManager = {
       #sddm.enable = true;
       lightdm.enable = true;
-      defaultSession = "none+xmonad";
-
+      gdm.enable = false;
       sessionCommands = ''
         xset -dpms
         xset s blank
         xset s 120
       '';
+      #defaultSession = "none+xmonad";
     };
-
     desktopManager = {
       #plasma5.enable = true;
       #xfce.enable = true;
       #lxqt.enable = true;
+      gnome.enable = true;
     };
-
     windowManager = {
       jwm.enable = true;
       icewm.enable = true;
@@ -278,6 +314,9 @@
     haskellPackages.xmobar
     haskellPackages.X11
     haskellPackages.X11-xft
+
+    parted
+    gparted
   ];
 
   #system.stateVersion = "22.05";
