@@ -135,7 +135,7 @@
   #};
 
   fileSystems."/boot" = {
-    device = "12CE-A600";
+    device = "/dev/disk/by-uuid/12CE-A600";
     fsType = "vfat";
   };
 
