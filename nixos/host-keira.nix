@@ -166,13 +166,16 @@
   services.smartd.enable = true;
   services.fstrim.enable = true;
 
+  # To list all timer:
+  #   systemctl list-timers
   services.btrfs.autoScrub = {
     enable = true;
-    fileSystems = [ "/" ];
+    #fileSystems = [ "/" ]; # Default: all
     #interval = "monthly";
     #interval = "weekly";
     #interval = "daily";
-    interval = "*-*-* 03:00:00"; # Daily, start at 03:00:00 ?
+    #interval = "*-*-* 03:00:00"; # Daily, start at 03:00:00 ?
+    interval = "02:00";
     #interval = "*-*-*/2 03:00:00"; # ... every two days, at 03:00:00 ?
   };
 
