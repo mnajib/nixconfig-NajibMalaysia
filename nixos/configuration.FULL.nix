@@ -25,16 +25,6 @@
 #
 #in
 {
-  #boot.kernelModules = [ "snd-ctxfi" "snd-ca0106" "snd-hda-intel" ];
-  #boot.kernelParams = [ "nomodeset" "i915.modeset=0" ];
-
-  #Bboot.loader.grub.useOSProber = true;
-  #boot.loader.systemd-boot.enable = true;
-  #boot.loader.grub.splashImage = ./grub-background-najibbox.png;
-
-  # XXX: move to host spesific (eg.: host-asmak.nix)
-  #boot.supportedFilesystems =        [ "ext4" "zfs" "btrfs" "xfs" ]; # "bcachefs"
-  #boot.initrd.supportedFilesystems = [ "ext4" "zfs" "btrfs" "xfs" ];
 
   # XXX:
   systemd.services.rtkit-daemon.serviceConfig.LogLevelMax=5;
@@ -52,17 +42,7 @@
 # Regarding your specific need as worded in the title, LogLevelMax=5 (notice) should suffice (6 as reported in comments).
 #
 
-  #boot.loader.grub.copyKernels = true;  # To avoid boot error "external pointer tables not supported" when the number of hardlinks in the nix store gets very high.
-  #services.zfs.autoScrub.enable = true; # Regular scrubbing of ZFS pools is recommended
-
-  #services.fstrim.enable = true; # utk trim SSD
-  # no access time and continuous TRIM for SSD
-  #fileSystems."/".options = [ "noatime" "discard" ];
-
-  #boot.kernelPackages = pkgs.linuxPackages_latest; # XXX: Move this configuration seperate from each host.
   networking.networkmanager.enable = true; # <-- will move to host specifix file
-
-  #nix.trustedUsers = [ "root" "najib" ]; <-- moved to host-hostname.nix
 
   # a workaround for error:
   #   store path starts with illegal character '.'
@@ -86,7 +66,7 @@
 
   imports = [
     ./users-najib.nix
-    ./garbage-collect.nix
+    #./garbage-collect.nix
     ./sqlite.nix
 
     # Check: load in per-host config
@@ -94,7 +74,7 @@
     #./xdg-gtk.nix
     #./xdg-kde.nix
 
-    ./doom-emacs.nix
+    #./doom-emacs.nix
   ];
 
   # Q: Each time I change my configuration.nix and run nixos-rebuild switch,
@@ -133,16 +113,16 @@
     d_t_fmt="%F %T %A %Z";
     date_fmt="%F %T %A %Z";
 
-    LC_MESSAGES = "en_GB.UTF-8";                                                                                                                              
-    LC_ADDRESS = "ms_MY.UTF-8";                                                                                                                               
-    LC_IDENTIFICATION = "ms_MY.UTF-8";                                                                                                                        
-    #LC_MEASUREMENT = "ms_MY.UTF-8";                                                                                                                          
-    LC_MONETARY = "ms_MY.UTF-8";                                                                                                                              
-    LC_NAME = "ms_MY.UTF-8";                                                                                                                                  
-    #LC_NUMERIC = "ms_MY.UTF-8";                                                                                                                              
-    LC_PAPER = "ms_MY.UTF-8";                                                                                                                                 
-    LC_TELEPHONE = "ms_MY.UTF-8";                                                                                                                             
-    LC_TIME = "en_GB.UTF-8";                                                                                                                                  
+    LC_MESSAGES = "en_GB.UTF-8";
+    LC_ADDRESS = "ms_MY.UTF-8";
+    LC_IDENTIFICATION = "ms_MY.UTF-8";
+    #LC_MEASUREMENT = "ms_MY.UTF-8";
+    LC_MONETARY = "ms_MY.UTF-8";
+    LC_NAME = "ms_MY.UTF-8";
+    #LC_NUMERIC = "ms_MY.UTF-8";
+    LC_PAPER = "ms_MY.UTF-8";
+    LC_TELEPHONE = "ms_MY.UTF-8";
+    LC_TIME = "en_GB.UTF-8";
     #LC_TIME = "ms_MY.UTF-8";
   };
 
@@ -294,7 +274,6 @@
     zenith                    # Sort of like top or htop but with zoom-able charts, network, and disk usage
     bmon                      # Network bandwidth monitor
     btop
-    glances
     enlightenment.evisum
     tldr # community-driven simplified man pages
 
@@ -1011,7 +990,6 @@
     libinput
     libinput-gestures
 
-    oneko xcape find-cursor #gnomeExtensions.jiggle hlcursors
     #virtscreen
 
     #synergy synergyWithoutGUI
@@ -1089,7 +1067,7 @@
     #openttd
   ];
 
-  programs.firefox.enable = true;
+  #programs.firefox.enable = true;
 
   #programs.way-cooler.enable = true;
 
@@ -1243,13 +1221,6 @@
 
   documentation.nixos.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ 3450 ]; # 3450 for minetest server
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
   #services.syncthing = {
   #  enable = false; # currently not using handphone
   #  user = "najib";
@@ -1296,169 +1267,12 @@
 
   #services.ddclient.configFile = "/root/nixos/secrets/ddclient.conf"; # default "/etc/ddclient.conf"
 
-  #services.xserver.enable = true;
-  #services.xserver.xautolock.enable = true;
-
-  # Keyboard: setxkbmap -layout us,us,ara,my -variant dvorak,,,
-  #
-  #services.xserver.layout = "us";
-  #services.xserver.xkbVariant = "dvorak";
-  #
-  #services.xserver.layout = "us,us";
-  #services.xserver.xkbVariant = "dvorak,";
-  #
-  #services.xserver.layout = "us,us,ara,my";
-  #services.xserver.xkbVariant = "dvorak,,,";
-  #
-  #services.xserver.layout = "us,us,ara,msa";
-  #services.xserver.xkbVariant = "dvorak,,,";
-  #
-  #services.xserver.layout = "us,us,ara";
-  #services.xserver.xkbVariant = "dvorak,,";
-
   #
   #
   # You can find valid values for these options in
   #   $(nix-build --no-out-link '<nixpkgs>' -A xkeyboard_config)/etc/X11/xkb/rules/base.lst
 
-  #services.xserver.xkbOptions = "grp:shift_caps_toggle";
-
-  #services.xserver.exportConfiguration = true;
-  #services.xserver.extraLayouts.msa = { # msa ? myjawi?
-    #description = "Jawi SIRIM Malaysia";
-    #languages = [ "msa" ]; # msa, may, ms. https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes
-    #layoutFile = builtins.toFile "myjawi.xkb" ''
-    #  xkb_keymap {
-    #    xkb_keycodes { include "evdev+aliases(qwerty)" };
-    #    xkb_types { include "complete" };
-    #    xkb_compatibility { include "complete" };
-    #    //xkb_symbols "pc+msa(jawisirim)+inet(evdev)+group(shift_caps_toggle)" {
-    #    xkb_symbols "basic" {
-    #
-    #    };
-    #    xkb_geometry { include "pc(pc101)" };
-    #  };
-    #'';
-    #keycodesFile = ./xkb/keycodes/msa;   #
-    #typesFile = ./xkb/types/msa;         #
-    #compatFile = ./xkb/compat/msa;       #
-    #symbolsFile = ./xkb/symbols/msa;     # xkb_symbols: The main section that defines what each key does.
-    #geometryFile = ./xkb/geometry/msa;   # xkb_geometry: A completely irrelevant section describing physical keyboard layout. Can be deleted without any consequences.
-  #};
-
-  #let
-  #  compiledLayout = pkgs.runCommand "keyboard-layout" {} ''
-  #    ${pkgs.xorg.xkbcomp}/bin/xkbcomp ${/etc/nixos/najibkeyboardlayout.xkb} $out
-  #    '';
-  #in
-  #  service.xserver.displayManager.sessionCommands = "${pkgs.xorg.xkbcomp}/bin/xkbcomp ${compiledLayout} $DISPLAY";
-  #
-  # Tested and working good!
-  #services.xserver.displayManager.sessionCommands = "${pkgs.xorg.xkbcomp}/bin/xkbcomp ${/etc/nixos/najibkeyboardlayout.xkb} $DISPLAY";
-
-  # Touchpad
-  #services.xserver.libinput.enable = true;
-  #services.xserver.libinput.scrollMethod = "edge"; #"twofinger"; #"edge";
-  #services.xserver.libinput.disableWhileTyping = true;
-
-  #services.xserver.libinput.tapping = false;
-  # Default is 'true', but usually I will set 'false'.
-  # Need tapping for 'asmak' because touchpad left-button (hardware) is mulfucntion.
-  # OR as alternative for 'asmak', I can use command
-  #     xinput list
-  #     xinput list-props "..."
-  #     xinput set-prop "SynPS/2 Synaptics TouchPad" "Synaptics Tap Action" 0
-  # OR
-  #     just attach an USB mouse
-  #
-  #lib.mkIf (config.networking.hostName == "aisyah"){
-    #services.xserver.libinput.scrollMethod = "twofinger";
-    #services.xserver.libinput.tapping = true;
-  #}; else
-    ##services.xserver.libinput.tapping = false;
-    #
-    #services.xserver.libinput = lib.mkIf (config.networking.hostname == "asmak") {
-      ##if networking.hostName == "asmak" then
-        #tapping = true
-      ##else
-      ##tapping = false;
-  #};
-
-  # Trackpoint
-  #hardware.trackpoint.sensitivity = 97; # default 97
-  #hardware.trackpoint.speed = 100; # default 128
-  #hardware.trackpoint.emulateWheel = true;
-
-  # Fingerprint reader
-  # Note: fprintd-enroll
-  #services.fprintd.enable = true;
-
-  # Moved to separate file: hardware-tablet-opentabletdriver.nix, ...
-  ##services.xserver.digimend.enable = true;
-  #services.xserver.wacom.enable = true;
-  ##hardware.opentabletdriver.enable = true;
-
-
-  # --------------------------------------------------------------
-  # Display Manager
-  # --------------------------------------------------------------
-  #services.xserver.displayManager.sddm.enable = true;
-  #services.xserver.displayManager.lightdm.enable = true;
-  #services.xserver.displayManager.startx.enable = true;
-  #services.xserver.displayManager.gdm.enable = true;
-  #services.xserver.displayManager.xpra.enable = true;
-
-  # --------------------------------------------------------------
-  # Desktop Manager
-  # --------------------------------------------------------------
   services.xserver.desktopManager.xterm.enable = false;
-  #services.xserver.desktopManager.plasma5 = {
-  #  enable = true;
-  #  #extraPackages = [
-  #  #  kate
-  #  #];
-  #};
-  #
-  #services.xserver.desktopManager.plasma5.enable = true;
-  #services.xserver.desktopManager.gnome.enable = true; # .gnome3.enable
-  #services.xserver.desktopManager.mate.enable = true;
-  #services.xserver.desktopManager.enlightenment.enable = true;
-  #services.xserver.desktopManager.xfce = {
-    #enable = true;
-
-    # to make xfce workt with xmonad
-    #noDesktop = true;
-    #enableXfwm = false;
-  #};
-  #services.xserver.desktopManager.lxqt.enable = true;
-  #services.xserver.desktopManager.pantheon.enable = true;
-  #services.xserver.desktopManager.cinnamon.enable = true;
-  #services.xserver.desktopManager.kodi = {
-  #   enable = false;
-  #};
-  #services.xserver.desktopManager.lumina.enable = true;
-
-  # --------------------------------------------------------------
-  # Default Desktop Manager
-  # --------------------------------------------------------------
-  #services.xserver.displayManager.defaultSession = "none+xmonad";
-  #services.xserver.desktopManager.default = "plasma5";
-
-  # --------------------------------------------------------------
-  # Window Manager
-  # --------------------------------------------------------------
-  #services.xserver.windowManager.jwm.enable = true;
-  #services.xserver.windowManager.windowmaker.enable = true;
-  #services.xserver.windowManager.dwm.enable = true;
-  ##services.xserver.windowManager.twm.enable = true;
-  #services.xserver.windowManager.icewm.enable = true;
-  #services.xserver.windowManager.i3.enable = true;
-  #services.xserver.windowManager.herbstluftwm.enable = true;
-  #services.xserver.windowManager.fluxbox.enable = true;
-  #services.xserver.windowManager.qtile.enable = true;
-  #services.xserver.windowManager.sawfish.enable = true;
-  #services.dwm-status.enable = true;
-  #
   services.xserver.windowManager.xmonad = {
     enable = true;
     enableContribAndExtras = true;
@@ -1612,19 +1426,4 @@
 
   #system.copySystemConfiguration = true;
 
-  # The NixOS release to be compatible with for stateful data such as databases.
-  #system.stateVersion = "16.09";
-  #system.stateVersion = "17.03";
-  #system.stateVersion = "17.09";
-  #system.stateVersion = "18.03";
-  #system.stateVersion = "18.09";
-  #system.stateVersion = "19.03";
-  #system.stateVersion = "19.09";
-  #system.stateVersion = "20.03";
-  #system.stateVersion = "20.09";
-  #system.stateVersion = "22.05";
-  #system.stateVersion = "22.11";
-  #
-  # XXX: Move this config into host specifix file.
 }
-# vim: nowrap:ts=8
