@@ -46,7 +46,7 @@
     enable = true;
     #packages =  pkgs.tumx;
     clock24 = true;
-    newSession = false;                                     # Automatically spawn a session if trying to attach and none are running.
+    newSession = false; # Automatically spawn a session if trying to attach and none are running.
     mouse = true; # Default: false
 
     resizeAmount = 1;
@@ -68,6 +68,12 @@
     # with who to display currently connected user sessions). Note, this will
     # add a guid wrapper for the group utmp!
     #withUtempter = true;
+
+    #focusEvents = true;
+
+    aggressiveResize = true;
+
+    sensibleOnTop = false; # Run the sensible plugin at the top of the configuration. It is possible to override the sensible settings using the programs.tmux.extraConfig option.
 
     extraConfig = ''
       #set -g mouse-select-window on
@@ -105,10 +111,20 @@
       # '<c-b>:resize-window -a' will resize to the smallest session.
       # '<c-b>:resize-window -A' will set it to 'manual'.
       # '<c-b>:attach-session -d' will redraw the tmux window ???.
-      set -g window-size smallest # 'largest' 'manual'.
-
+      #set -g window-size smallest # 'largest' 'manual' 'latest'.
+      #
       #setw -g aggressive-resive on
       #set-window-option -g aggressive-resize
+      #
+      # By default, when multiple clients (e.g., 2 terminals) are attached to the same session, tmux will choose the smallest client size as the window size.
+      # To change this:
+      # Automatically resize window to match the current client size
+      #set-window-option -g aggressive-resize on
+      # This is useful when:
+      #   You use tmux attach from many devices with different terminal sizes (e.g., laptop vs desktop).
+      #   You want the current terminal to always get the best experience.
+      #
+      # NOTE: should use the aggressiveResize option provided by Home Manager's programs.tmux module.
 
       # Sano split commands: Split panes using | and -
       bind | split-window -h
@@ -303,8 +319,14 @@
     plugins = with pkgs; [
       # ??? To install plugin in tmux using tmux-plugin-manager (TPM)? : prefix + I
 
+      #--------------------------------
+      # cpu
+      #--------------------------------
       tmuxPlugins.cpu
 
+      #--------------------------------
+      # resurrect
+      #--------------------------------
       {
         # To manually save session, press: prefix + Ctrl+s
         # To manually restore session, press: prefix + Ctrl+r
@@ -315,7 +337,10 @@
           set -g @resurrect-save-layouts 'on'
         '';
       }
-      #
+
+      #--------------------------------
+      # continuum
+      #--------------------------------
       {
         plugin = tmuxPlugins.continuum;
         extraConfig = ''
@@ -325,122 +350,19 @@
         '';
       }
 
-      #{
-      #  # Highlights when the prefix key has been pressed, helpful for visibility.
-      #  # https://github.com/tmux-plugins/tmux-prefix-highlight
-      #  plugin = tmuxPlugins.prefix-highlight;
-      #  #plugin = ${tmux-prefix-highlight.outPath}; # XXX: test
-      #  extraConfig = ''
-      #    set -g @prefix_highlight_fg 'yellow'
-      #    set -g @prefix_highlight_bg '#ff0000' # 'red'
-      #
-      #    #set -g @prefix_highlight_show_copy_mode 'on'
-      #    #set -g @prefix_highlight_show_sync_mode 'on'
-      #    #set -g @prefix_highlight_copy_mode_attr 'fg=black,bg=yellow,bold' # default is 'fg=default,bg=yellow'
-      #    #set -g @prefix_highlight_sync_mode_attr 'fg=black,bg=green' # default is 'fg=default,bg=yellow'
-      #    #set -g @prefix_highlight_prefix_prompt 'Wait'
-      #    #set -g @prefix_highlight_copy_prompt 'Copy'
-      #    #set -g @prefix_highlight_sync_prompt 'Sync'
-      #  '';
-      #}
-
-      #{
-      #  # For copying to system clipboard
-      #  # Need a program that store data in the system clipboard (xsel, wl-copy, xclip, ...)
-      #  # Linux has several cut-and-paste clipboards: primary, secondary, and clipboard (default in tmux-yank is clipboard).
-      #  plugin = tmuxPlugins.yank;
-      #  extraConfig = ''
-      #    #set -g @yank_selection_mouse 'clipboard' # or 'primary' or 'secondary'
-      #  '';
-      #}
-
       #--------------------------------
-      #{
-      #  plugin = tmuxPlugins.fingers;
-      #  extraConfig = ''
-      #    set -g @thumbs-key T
-      #  '';
-      #}
-      #
-      #{
-      #  plugin = tmuxPlugins.tmux-thumbs;
-      #  extraConfig = ''
-      #    set -g @thumbs-key T
-      #  '';
-      #}
+      # tmux-fzf
       #--------------------------------
-
       {
         plugin = tmuxPlugins.tmux-fzf;
       }
 
+      #--------------------------------
+      # fzf-tmux-url
+      #--------------------------------
       {
         plugin = tmuxPlugins.fzf-tmux-url;
       }
-
-      #{
-      #  plugin = tmuxPlugins.tmux-floax;
-      #  extraConfig = ''
-      #    set -g @floax-bind 'p'
-      #    set -g @floax-width '80%'
-      #    set -g @floax-height '80%'
-      #    set -g @floax-border-color 'magenta'
-      #    set -g @floax-text-color 'blue'
-      #    set -g @floax-change-path 'true'
-      #  '';
-      #}
-
-      #{
-      #  plugin = tmuxPlugins.catppuccin;
-      #  extraConfig = ''
-      #    set -g @catppuccin_flavor "latte"
-      #
-      #    #-----------------------------------------------
-      #    # session
-      #    #-----------------------------------------------
-      #    set -g @catppuccin_session_icon "null" # ""
-      #    #set -g @catppuccin_session_color "#{?client_prefix,$thm_red,$thm_green}"
-      #    set -g @catppuccin_session_text "#S "
-      #
-      #    #-----------------------------------------------
-      #    # window
-      #    #-----------------------------------------------
-      #    #set -g @catppuccin_window_separator "null"
-      #    #set -g @catppuccin_window_left_separator " " # " "
-      #    #set -g @catppuccin_window_right_separator " " # ""
-      #    #set -g @catppuccin_window_middle_separator ":"    # "█"
-      #
-      #    #set -g @catppuccin_window_number_position "left"  # "right"
-      #
-      #    #set -g @catppuccin_window_default_color  "#c6c6c6"          # "#{thm_blue}"           # warna bg bila tak aktif
-      #    #set -g @catppuccin_window_default_background "#757575"      # "#{thm_gray}"           # warna tulisan bila tak aktif
-      #    #set -g @catppuccin_window_current_color  "#7c7f93"          # "#{thm_blue}"           # warna bg bila aktif
-      #    #set -g @catppuccin_window_current_background "#ffffff"      # "#{thm_gray}"           # warna tulisan bila aktif
-      #
-      #    #set -g @catppuccin_window_default_fill "all"                          # "number"
-      #    ##set -g @catppuccin_window_default_text "#W"
-      #    #set -g @catppuccin_window_current_fill "all"                          # "number"
-      #    ##set -g @catppuccin_window_current_text "#W#{?window_zoomed_flag,(),}"
-      #    #set -g @catppuccin_window_current_text "#W#{?window_zoomed_flag,*Z,*}"
-      #
-      #    #-----------------------------------------------
-      #    # status
-      #    #-----------------------------------------------
-      #    set -g @catppuccin_status_modules_left "session"
-      #    #set -g @catppuccin_status_modules_right "directory date_time"
-      #
-      #    #set -g @catppuccin_status_left_separator "null"                       # " "
-      #    #set -g @catppuccin_status_right_separator "null"                      # " "
-      #    #set -g @catppuccin_status_right_separator_inverse "no"
-      #
-      #    #set -g @catppuccin_status_fill "all"                                  # "icon"
-      #    #set -g @catppuccin_status_connect_separator "yes"                     # "no"
-      #
-      #    ##set -g @catppuccin_directory_text "#{b:pane_current_path}"
-      #    ##set -g @catppuccin_meetings_text "#($HOME/.config/tmux/scripts/cal.sh)"
-      #    ##set -g @catppuccin_date_time_text "%H:%M"
-      #  '';
-      #}
 
     ];
   };
