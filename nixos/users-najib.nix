@@ -25,6 +25,7 @@
       "bluetooth"
       #"fuse"
       "dialout"
+      "kvm"
     ];
 
     #shell = pkgs.zsh; # path/location of the shell program

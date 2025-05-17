@@ -119,15 +119,30 @@
 
 #-------------------------------------------------------------------------------
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/5ec78318-f2c0-4d21-bef9-0bdfea8b6cd2";
-      fsType = "ext4";
-    };
+  #fileSystems."/boot" =
+  #  { device = "/dev/disk/by-uuid/5ec78318-f2c0-4d21-bef9-0bdfea8b6cd2";
+  #    fsType = "ext4";
+  #  };
+  #
+  fileSystems."/boot2" = {
+    device = "/dev/disk/by-uuid/2c1117f5-aae7-45c3-bc3e-398366175d6e";
+    fsType = "btrfs";
+  };
 
-  fileSystems."/boot2" =
-    { device = "/dev/disk/by-uuid/9c121e78-d95a-4462-a9c2-1f8691dcffd3";
-      fsType = "ext4";
-    };
+  #fileSystems."/boot" = {
+  #  device = "/dev/disk/by-uuid/d681e6b7-0872-4b4d-a47c-a6488d217697";
+  #  fsType = "btrfs";
+  #};
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/12CE-A600";
+    fsType = "vfat";
+  };
+
+  #fileSystems."/boot2" = {
+  #  device = "AFFA-8C59";
+  #  fsType = "vfat";
+  #};
 
 #-------------------------------------------------------------------------------
 

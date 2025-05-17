@@ -41,6 +41,9 @@ in
    #   systemctl enable zfs-auto-snapshot-daily.timer
    # available intervals: frequent, hourly, daily, weekly, monthly
    #
+   # To list all systemd time:
+   #   systemctl list-timers
+   #
    # Recursively (-r) list available snapshots:
    #   zfs list -t snap -r pool/dataset
    #
@@ -73,10 +76,15 @@ in
      #timer = "";
    };
 
+   #
+   # To list all in systemd timer:
+   #   systemctl list-timers
+   #
    autoScrub = {
      enable = true;                  # false is the default.
      #pools = [];                    # If empty, all pools will be scrubbed, empty is default.
-     interval = "daily";            # "Sun, 02:00" is the default. See systemd.time(7) for formatting.
+     #interval = "daily";            # "Sun, 02:00" is the default. See systemd.time(7) for formatting.
+     interval = "03:00";
      #interval = "4days, 02:00";      # Every 3 days interval, at 02:00.
      #interval = "weekly";            # "Sun, 02:00" is the default. See systemd.time(7) for formatting.
      #interval = "Sun, 02:00";            # "Sun, 02:00" is the default. See systemd.time(7) for formatting.

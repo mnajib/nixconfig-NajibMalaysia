@@ -169,27 +169,33 @@
     fsType = "zfs";
   };
 
-  fileSystems."/nix" =                                                                                                                                        
-    { device = "MyStation/local/nix";                                                                                                                         
-      fsType = "zfs";                                                                                                                                         
-    };                                                                                                                                                        
-                                                                                                                                                              
-  fileSystems."/home" =                                                                                                                                       
-    { device = "MyStation/safe/home";                                                                                                                         
-      fsType = "zfs";                                                                                                                                         
-    };                                                                                                                                                        
-                                                                                                                                                              
-  fileSystems."/persist" =                                                                                                                                    
-    { device = "MyStation/safe/persist";                                                                                                                      
-      fsType = "zfs";                                                                                                                                         
+  fileSystems."/nix" =
+    { device = "MyStation/local/nix";
+      fsType = "zfs";
     };
 
-  fileSystems."/boot" =                                                                                                                                       
-    { device = "/dev/disk/by-uuid/4237-2B9B";                                                                                                                 
-      fsType = "vfat";                                                                                                                                        
-      options = [ "fmask=0022" "dmask=0022" ];                                                                                                                
-    };                                                                                                                                                        
-                                                                                                                                                              
+  fileSystems."/home" =
+    { device = "MyStation/safe/home";
+      fsType = "zfs";
+    };
+
+  fileSystems."/persist" =
+    { device = "MyStation/safe/persist";
+      fsType = "zfs";
+    };
+
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/4237-2B9B";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
+    };
+
+  fileSystems."/boot2" =
+    { device = "/dev/disk/by-uuid/423B-CFCE";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
+    };
+
   swapDevices =  [
     #{ device = "/dev/disk/by-uuid/54a11355-d334-46c5-8cbb-43369d08fd8a"; } # swap on 500GB HD. This HDD is failing
     #{ device = "/dev/disk/by-uuid/600ebd52-edd2-4c42-b3b1-b8d8a6cb5acf"; } # swap partition on 254GB SSD
@@ -209,7 +215,7 @@
     #}
 
     # nyxora (physically on Z420)
-    { device = "/dev/disk/by-uuid/cd472af8-a300-4c06-8c53-b26710f16397"; }                                                                                  
+    { device = "/dev/disk/by-uuid/cd472af8-a300-4c06-8c53-b26710f16397"; }
     { device = "/dev/disk/by-uuid/12e7efc0-480c-4960-be2a-8a7ce64db443"; }
 
   ];
