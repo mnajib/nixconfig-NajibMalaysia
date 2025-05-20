@@ -1346,19 +1346,36 @@
   #
   #
   fonts = {
-    fontconfig.enable = true;
-    fontDir.enable = true;              # Create a directiry with links to all fonts in /run/current-system/sw/share/X11/fonts
 
+    fontconfig.enable = true;
+    #
     # System-wide default font(s). Multiple fonts may be listed in case multiple languages must be supported.
     #fontconfig.defaultFonts.serif = [ "DejaVu Serif" ];
     #fontconfig.defaultFonts.emoji = [ "Noto Color Emoji" ];
     #fontconfig.defaultFonts.sansSerif = [ "DejaVu Sans" ];
     #fontconfig.defaultFonts.monospace = [ "DejaVu Sans Mono" ]; # "jetbrains mono"
+    #
     fontconfig.defaultFonts.monospace = [
       "Fira Mono for Powerline (Bold)"
       "DejaVu Sans Mono"
       "jetbrains mono"
     ];
+    #
+    #fontconfig.defaultFonts = {
+    #  # --- Prioritize bitmap/monospace fonts ---
+    #  monospace = [ "Terminus" "DejaVu Sans Mono" "Liberation Mono" ];  # Fallback chain
+    #  sansSerif = [ "DejaVu Sans" "Liberation Sans" ];  # Avoid anti-aliased fonts
+    #  serif = [ "DejaVu Serif" "Liberation Serif" ];
+    #  #emoji = [];
+    #};
+
+    #fontconfig.antialias = false; # Disable anti-aliasing globally
+    #fontconfig.hinting = {
+    #  enable = true; # Force hinting for sharpness
+    #  style = "full"; # Maximum hinting
+    #};
+
+    fontDir.enable = true;              # Create a directiry with links to all fonts in /run/current-system/sw/share/X11/fonts
 
     #enableCoreFonts = true;
     enableGhostscriptFonts = true;
