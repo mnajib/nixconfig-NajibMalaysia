@@ -53,6 +53,8 @@ in
     ../chemistry.nix
 
     ../git.nix
+
+    ../alacritty.nix
   ];
 
   #nixpkgs = {
