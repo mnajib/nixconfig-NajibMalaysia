@@ -88,13 +88,18 @@
   };
 
   swapDevices =  [
-    { device = "/dev/disk/by-uuid/0a2a334b-66f7-4fa3-aea1-d111a480e83f"; }
+
+    # HDD
+    #{ device = "/dev/disk/by-uuid/0a2a334b-66f7-4fa3-aea1-d111a480e83f"; }
 
     #{
     #  device = "/swap/swapfile";
     #  #priority = 0;
     #  size = (1024 * 12) * 2;
     #}
+
+    # SSD
+    { device = "/dev/disk/by-uuid/ebf3dd4d-a564-49cd-bd45-11a509ee41fd"; }
   ];
 
   networking.useDHCP = lib.mkDefault true;

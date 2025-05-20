@@ -684,7 +684,7 @@
 
           #expose-cuda.nixosModules.default
 
-          inputs.stylix.nixosModules.stylix
+          #inputs.stylix.nixosModules.stylix
         ];
 
         #----------------------------------------------------------------------
@@ -1009,9 +1009,9 @@
         #  ];
         #};
         "najib@taufiq" = mkHome [
-	  stylix.homeManagerModules.stylix
-	  ./home-manager/user-najib/host-taufiq
-	] nixpkgs.legacyPackages."x86_64-linux";
+          #stylix.homeManagerModules.stylix
+          ./home-manager/user-najib/host-taufiq
+        ] nixpkgs.legacyPackages."x86_64-linux";
 
         "julia@taufiq"      = mkHome [./home-manager/user-julia/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";
         "naqib@taufiq"      = mkHome [./home-manager/user-naqib/host-taufiq] nixpkgs.legacyPackages."x86_64-linux";

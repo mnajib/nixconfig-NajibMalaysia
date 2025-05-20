@@ -131,9 +131,9 @@ with lib;
 
     #./ai.nix
 
-    ./opengl.nix
+    #./opengl.nix
 
-    ./stylix.nix
+    #./stylix.nix
   ];
 
   # Dell Precision M4800
@@ -389,6 +389,11 @@ with lib;
   ##services.xserver.videoDrivers = [ "nvidiaLegacy390" ]; #
 
   services.xserver.displayManager.lightdm.enable = true;
+  #services.xserver.displayManager.gdm = {
+  #  enable = true;
+  #  wayland = true;
+  #};
+  services.xserver.desktopManager.gnome.enable = true;
   services.xserver.windowManager.xmonad = {
     enable = true;
     enableContribAndExtras = true;

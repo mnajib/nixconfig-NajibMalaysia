@@ -51,6 +51,8 @@ in
     ../cmus.nix
 
     ../chemistry.nix
+
+    ../git.nix
   ];
 
   nixpkgs = {
