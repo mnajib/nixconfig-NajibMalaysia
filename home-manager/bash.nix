@@ -56,6 +56,7 @@ in
     #   PS1='\n\[\033[1;32m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$\[\033[0m\] '
     # Change to:
     initExtra = ''
+      # Common variables
       c_brightyellow='\[\e[1;93m\]'
       c_brightgreen='\[\e[1;92m\]'
       c_brightcyan='\[\e[1;96m\]'
@@ -65,7 +66,15 @@ in
       c_title='\[\e]0;\u@\h: \w\a\]'
       c_bell='\[\a\]'
       c_date='\D{%Y-%m-%d} \t'
-      export PS1="''\${c_bell}''\${c_brightyellow}[''\${c_date}] ''\${c_brightgreen}[''\${c_title}''\${c_brightcyan}\u@\h''\${c_brightgreen}:\w]\''\$ ''\${c_default}"
+
+      # Root user (red prompt)
+      if [ "$(id -u)" -eq 0 ]; then
+        c_red='\[\e[1;31m\]'
+        export PS1="''\${c_bell}''\${c_red}[''\${c_date}] [''\${c_title}''\${c_red}\u@\h:\w]\''\$ ''\${c_default}"
+      else
+        # Normal user (original colorful prompt)
+        export PS1="''\${c_bell}''\${c_brightyellow}[''\${c_date}] ''\${c_brightgreen}[''\${c_title}''\${c_brightcyan}\u@\h''\${c_brightgreen}:\w]\''\$ ''\${c_default}"
+      fi
     '';
 
     #shellOptions = [
