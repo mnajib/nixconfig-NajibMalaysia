@@ -179,7 +179,7 @@ in
     xpra
     bootiso
     virt-manager
-    kitty
+    #kitty
     #jfbview
     #qmmp
     ed  # an implemintation of the standard unix editor
