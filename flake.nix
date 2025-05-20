@@ -529,6 +529,25 @@
         nyxora = mkNixos [
           ./nixos/host-nyxora.nix
           sops-nix.nixosModules.sops
+
+          home-manager.nixosModules.home-manager {
+
+            home-manager = {
+              useGlobalPkgs = true; # Use the global nixpkgs instance
+              useUserPackages = true; # Install packages to user profile
+
+              users.root = import ./home-manager/user-root/host-nyxora;
+              users.najib = import ./home-manager/user-najib/host-nyxora;
+
+              # Share the same (this flake?) inputs with home-manager
+              extraSpecialArgs = {
+                inherit inputs outputs;
+              };
+
+            }; # End home-manager
+
+          } # End home-manager.nixosModule.home-manager
+
         ];
 
         #----------------------------------------------------------------------
