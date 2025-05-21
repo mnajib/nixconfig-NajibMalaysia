@@ -124,23 +124,24 @@ in
     enable = true;
     #theme = "Space Gray Eighties";
 
-    #font = {
-      #package = pkgs.dejavu_fonts;
-      #package = pkgs.jetbrains-mono;
-      #name = "DejaVu Sans";
-      #size = "12"; #"13"; # "8";
-    #};
-
     font = {
-      name = "Hack Nerd Font";  # Ensure Nerd Fonts are installed
-      size = 8.0;
+      package = pkgs.dejavu_fonts;
+      #package = pkgs.jetbrains-mono;
+      name = "DejaVu Sans";
+      size = "8"; #"12"; #"13"; # "8";
     };
+
+    #font = {
+    #  name = "Hack Nerd Font";  # Ensure Nerd Fonts are installed
+    #  size = 8.0;
+    #};
 
     settings = {
       #background = "#${config.colorScheme.palette.base00}";
       #foreground = "#${config.colorScheme.palette.base05}";
 
       #window_padding_width = 15;
+
       foreground = "#${colors.base05}";
       background = "#${colors.base00}";
       selection_background = "#${colors.base05}";
