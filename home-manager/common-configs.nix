@@ -81,16 +81,16 @@ in
   # XXX: TODO: Should be in seperate file packages.nix
 
   nixpkgs.overlays = builtins.attrValues outputs.overlays;
-  nixpkgs.config = {
-    allowUnfree = true;
-    allowUnfreePredicate = _: true;
-    permittedInsecurePackages = [
-      #"nix-2.15.3"
-      #"electron-25.9.0"
-    ];
-    #firefox.enableAdobeFlash = false;
-    pulseaudio = true;
-  };
+  #nixpkgs.config = {
+  #  allowUnfree = true;
+  #  allowUnfreePredicate = _: true;
+  #  permittedInsecurePackages = [
+  #    #"nix-2.15.3"
+  #    #"electron-25.9.0"
+  #  ];
+  #  #firefox.enableAdobeFlash = false;
+  #  pulseaudio = true;
+  #};
 
   #colorscheme = lib.mkDefault colorSchemes.dracula;
   #colorscheme = lib.mkDefault colorSchemes.nord;

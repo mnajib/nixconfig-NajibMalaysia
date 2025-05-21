@@ -322,6 +322,7 @@
   #------------------------------------
   services.xserver = {
     enable = true;
+    dpi = 96;
 
     # Test: Cuba disable, sebab SweetHome3D tak dapat jalan
     #videoDrivers = [ "nvidiaLegacy390" ]; #"radeon" "cirrus" "vesa"  "vmware"  "modesetting" ];
