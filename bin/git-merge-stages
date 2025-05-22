@@ -105,7 +105,7 @@ merge_stages() {
 main() {
   # Checks if the number of arguments is not exactly 1
   if [[ $# -ne 1 ]]; then
-    echo -e "${RED}Usage: git merge-stages <branch-suffix>\nExample: git merge-stages taufiq${NC}"
+    echo -e "${RED}Usage: git-merge-stages <branch-suffix>\nExample: git-merge-stages taufiq${NC}"
     exit 1
   fi
 
