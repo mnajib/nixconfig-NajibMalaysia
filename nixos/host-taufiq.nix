@@ -191,7 +191,7 @@ with lib;
     gparted
     fatresize
     kate
-
+    #kitty
     #blender
     #freecad
   ];

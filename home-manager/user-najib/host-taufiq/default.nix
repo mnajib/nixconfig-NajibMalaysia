@@ -33,6 +33,8 @@
     #font-awesome
 
     mumble
+
+    kitty # terminal emulator
   ];
 
   fonts.fontconfig = {

@@ -1,0 +1,140 @@
+#!/usr/bin/env bash
+# vim: set filetype=sh:
+
+# Strict mode for better error handling
+set -eo pipefail
+
+# Define colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Global state for rollback
+declare -g original_branch beta_original alpha_original suffix_global rollback_needed
+
+# Cleanup function with atomic rollback
+cleanup() {
+  # Only proceed if we captured valid original states
+  [[ -z "${beta_original}" || -z "${alpha_original}" ]] && return
+
+  if [[ "${rollback_needed}" -eq 1 ]]; then
+    echo -e "\n${RED}ERROR: Initiating rollback...${NC}"
+
+    # Reset branches using direct reference updates
+    git update-ref "refs/heads/beta-${suffix_global}" "${beta_original}" && \
+      echo -e "${GREEN}Restored beta-${suffix_global} to ${beta_original:0:7}${NC}"
+
+    git update-ref "refs/heads/alpha-${suffix_global}" "${alpha_original}" && \
+      echo -e "${GREEN}Restored alpha-${suffix_global} to ${alpha_original:0:7}${NC}"
+
+    # Return to original branch with force checkout
+    git checkout -f "${original_branch}" >/dev/null 2>&1 && \
+      echo -e "${GREEN}Returned to original branch: ${original_branch}${NC}"
+  fi
+}
+
+# Enhanced validation
+validate_environment() {
+  # Check Git installation
+  if ! command -v git &> /dev/null; then
+    echo -e "${RED}Error: Git is not installed${NC}" >&2
+    exit 1
+  fi
+
+  # Verify we're in a Git repo
+  if [[ ! -d .git ]]; then
+    echo -e "${RED}Error: Not a Git repository${NC}" >&2
+    exit 1
+  fi
+
+  # Check for clean working tree
+  if ! git diff-index --quiet HEAD --; then
+    echo -e "${RED}Error: Working directory contains uncommitted changes${NC}" >&2
+    exit 1
+  fi
+
+  # Ensure we're on a branch (not detached HEAD)
+  if ! git symbolic-ref HEAD >/dev/null 2>&1; then
+    echo -e "${RED}Error: Detached HEAD state - check out a branch first${NC}" >&2
+    exit 1
+  fi
+}
+
+# Transactional git operations
+execute_git_command() {
+  local command="$1"
+  local message="$2"
+
+  echo -e "${YELLOW}▶ ${command}${NC}"
+  if eval "$command"; then
+    echo -e "${GREEN}✓ ${message}${NC}"
+    return 0
+  else
+    echo -e "${RED}✗ Failed: ${message}${NC}" >&2
+    return 1
+  fi
+}
+
+# Core workflow with transaction tracking
+merge_stages() {
+  local suffix="$1"
+  local branches=("dev-${suffix}" "alpha-${suffix}" "beta-${suffix}")
+
+  # Pre-validate all branches
+  for branch in "${branches[@]}"; do
+    if ! git show-ref --verify --quiet "refs/heads/${branch}"; then
+      echo -e "${RED}Error: Missing branch ${branch}${NC}" >&2
+      exit 1
+    fi
+  done
+
+  # Execute merge sequence
+  execute_git_command "git checkout beta-${suffix}" "Checkout beta-${suffix}" || return 1
+  #execute_git_command "git merge alpha-${suffix} --no-ff --log" "Merge alpha → beta" || return 1
+  execute_git_command "git merge alpha-${suffix} --log" "Merge beta → alpha" || return 1
+
+  execute_git_command "git checkout alpha-${suffix}" "Checkout alpha-${suffix}" || return 1
+  #execute_git_command "git merge dev-${suffix} --no-ff --log" "Merge dev → alpha" || return 1
+  execute_git_command "git merge dev-${suffix} --log" "Merge alpha → dev" || return 1
+
+  execute_git_command "git checkout dev-${suffix}" "Checkout dev-${suffix}" || return 1
+}
+
+# Main control flow
+main() {
+  # Checks if the number of arguments is not exactly 1
+  if [[ $# -ne 1 ]]; then
+    echo -e "${RED}Usage: git-merge-stages <branch-suffix>\nExample: git-merge-stages taufiq${NC}"
+    exit 1
+  fi
+
+  # Basic checks (Git exists, in repo, etc.)
+  validate_environment
+
+  # Capture initial state
+  echo "Capturing initial state"
+  suffix_global="$1"
+  original_branch=$(git symbolic-ref --short HEAD)
+  echo "$original_branch"
+  beta_original=$(git rev-parse "beta-${suffix_global}")
+  echo "$beta_original"
+  alpha_original=$(git rev-parse "alpha-${suffix_global}")
+  echo "$alpha_original"
+
+  # NOW set the trap (after successful state capture)
+  trap cleanup EXIT  # Set cleanup trap first
+  rollback_needed=1  # Assume rollback needed until successful completion
+
+  # Core operations (where rollback might be needed)
+  echo -e "${YELLOW}Starting staged merges for '${suffix_global}' environment...${NC}"
+  merge_stages "${suffix_global}"
+
+  # Success - disable rollback
+  rollback_needed=0
+  echo -e "\n${GREEN}Staged merges completed successfully!${NC}"
+  git log --oneline -n 3 --graph --all
+}
+
+# Execute main with arguments
+main "$@"
