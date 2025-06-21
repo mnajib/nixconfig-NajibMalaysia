@@ -9,11 +9,11 @@
 
     terminus_font  # The classic Terminus (bitmap-friendly)
     # Optional: Terminus Nerd Font if you need symbols
-    (nerdfonts.override { fonts = [ "Terminus" ]; })
+    #(nerdfonts.override { fonts = [ "Terminus" ]; })
 
     hack-font  # Standard Hack
     # Optional: Hack Nerd Font if you need symbols (e.g., for tmux status line)
-    (nerdfonts.override { fonts = [ "Hack" ]; })
+    #(nerdfonts.override { fonts = [ "Hack" ]; })
 
     unifont # another bitmap option, good for legacy displays. Older/low-DPI screens can make small text look blurry or pixelated, even with optimized fonts.
 

@@ -19,7 +19,7 @@
     xorg.xwininfo
     mc
     ncdu                           # Disc space usage analyzer
-    diskonaut                      # Disk space usage analyzer
+    #diskonaut                      # Disk space usage analyzer
     bc
     rlwrap                         # A readline wrapper
     unzip

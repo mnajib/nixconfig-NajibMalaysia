@@ -190,7 +190,7 @@ with lib;
     gcc
     gparted
     fatresize
-    kate
+    #kate
     #kitty
     #blender
     #freecad
@@ -369,7 +369,7 @@ with lib;
     # card: nvidia gt 720 --> driver: nvidia legacy, version 470
     #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
     #
-    # Card: 
+    # Card:
     package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
   };
   #----------------------------------------------------------------------------

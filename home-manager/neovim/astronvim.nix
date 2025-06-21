@@ -32,9 +32,9 @@ in
     #vimdiffAlias = true;
 
     extraPackages = with pkgs; [
-      nerdfonts
-      #nerd-fonts._0xproto
-      #nerd-fonts.jetbrains-mono
+      #nerdfonts
+      nerd-fonts._0xproto
+      nerd-fonts.jetbrains-mono
 
       gcc
       gnumake

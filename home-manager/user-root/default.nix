@@ -164,7 +164,7 @@ in
     duc
     dua
     epr
-    xpra
+    #xpra
     bootiso
     virt-manager
     kitty

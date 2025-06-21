@@ -74,7 +74,7 @@
     plasmatube # kirigami youtube video player
     ktorrent # powerful bit torrent client
     kaddressbook # to manage contacts
-    kate # modern text editor
+    #kate # modern text editor
     tokodon # a mastodon client
     kalzium # periodic table of elements
     #itinerary # itinerary and boarding pass management application. Disabled because used insecure olm

@@ -242,7 +242,7 @@ with lib;
 
     gparted
     fatresize
-    kate
+    #kate
 
     kdenlive
     pcsx2 # games emulator

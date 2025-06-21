@@ -42,15 +42,10 @@
   #inputs = {
 
   # Nixpkgs
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+  inputs.nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
   inputs.nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.nixpkgs-master.url = "github:nixos/nixpkgs/master";
-  inputs.nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
-  #
-  ##inputs.nixpkgs.url = "github:nixos/nixpkgs?rev=a04d33c0c3f1a59a2c1cb0c6e34cd24500e5a1dc";
-  ##nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
-  ##nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/*.tar.gz";   # TODO: use flake hub as much as possible
-  #inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
   #
   #
   #inputs.fh.url = "https://flakehub.com/f/DeterminateSystems/fh/*.tar.gz";
@@ -79,8 +74,8 @@
   # Home manager
   inputs.home-manager = {
     #url = "github:nix-community/home-manager";
-    url = "github:nix-community/home-manager/release-24.11";
-    inputs.nixpkgs.follows = "nixpkgs"; # Forcing another flake (github nix-community home-manager) to use one of our inputs (nixpkgs).
+    url = "github:nix-community/home-manager/release-25.05";
+    inputs.nixpkgs.follows = "nixpkgs-unstable"; # "nixpkgs" # Forcing another flake (github nix-community home-manager) to use one of our inputs (nixpkgs).
   };
 
   #inputs.nixos-mailserver = {
@@ -102,7 +97,7 @@
     # If you are not running an unstable channel of nixpkgs, select the corresponding branch of nixvim.
     # url = "github:nix-community/nixvim/nixos-24.05";
 
-    inputs.nixpkgs.follows = "nixpkgs";
+    inputs.nixpkgs.follows = "nixpkgs-unstable"; #"nixpkgs";
   };
 
   inputs.neovim-config-NajibMalaysia.url = "github:mnajib/neovim-config-NajibMalaysia";
@@ -116,7 +111,7 @@
   inputs.nix-colors.url = "github:misterio77/nix-colors";
 
   #inputs.stylix.url = "github:danth/stylix";
-  inputs.stylix.url = "github:danth/stylix/release-24.11";
+  inputs.stylix.url = "github:danth/stylix/release-25.05";
 
   #inputs.fine-cmdline = {
   #  url = "github:VonHeikemen/fine-cmdline.nvim";
@@ -126,7 +121,7 @@
   inputs.hyprland = {
     #url = "github:hyprwm/hyprland";
     url = "git+https://github.com/hyprwm/hyprland?submodules=1";
-    inputs.nixpkgs.follows = "nixpkgs-unstable";
+    inputs.nixpkgs.follows = "nixpkgs-unstable"; #"nixpkgs"
     #plugin_name = {
     #  url = "github:maintener/plugin_name";
     #  inputs.hyprland.follows = "hyprland";                 # IMPORTANT
@@ -160,7 +155,7 @@
 
   inputs.nixos-generators = {
     url = "github:nix-community/nixos-generators";
-    inputs.nixpkgs.follows = "nixpkgs";
+    inputs.nixpkgs.follows = "nixpkgs-unstable"; #"nixpkgs";
   };
 
   inputs.dnsblacklist = {

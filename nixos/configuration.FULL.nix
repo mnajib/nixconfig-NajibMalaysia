@@ -221,7 +221,7 @@
     csvquote
     xlsx2csv
     #qsv
-    xsv
+    xan #xsv
     clevercsv
     graph-cli
     zsv
@@ -283,8 +283,8 @@
     byobu
     zellij
 
-    xpra
-    run-scaled
+    #xpra
+    #run-scaled
 
     file lsof tree syslinux
     iw
@@ -310,7 +310,7 @@
     ghostscript
 
     geteltorito woeusb #k3b
-    ventoy-bin
+    #ventoy-bin
 
     #stack
 
@@ -551,7 +551,7 @@
     #---------------------------------------------------------------
 
     dmidecode
-    hardinfo
+    #hardinfo
     lshw
     hwinfo
     neofetch
@@ -564,7 +564,7 @@
     hdparm
     lsscsi
 
-    diskonaut           # a terminal disk space navigator
+    #diskonaut           # a terminal disk space navigator
     duf
     diskus
     dfc
@@ -837,7 +837,7 @@
     gnome-screenshot
     gnome-system-monitor
     totem
-    plots
+    #plots
     gnome-graphs # Simple, yet powerful tool that allows you to plot and manipulate your data with ease
     gnome-weather
     gnome-decoder         # Scan and Generate QR Codes
@@ -877,7 +877,10 @@
     gramps
 
     #zathura
-    ghostwriter mindforger #notes-up
+
+    #ghostwriter
+    mindforger
+    #notes-up
 
     #gnomeExtensions.draw-on-your-screen
     #pentablet-driver
@@ -994,8 +997,6 @@
 
     #synergy synergyWithoutGUI
     barrier     # share keyboard & mouse; remote
-
-    diskonaut   # a terminal disk space navigator
 
     iosevka
 
@@ -1429,19 +1430,19 @@
 
       iosevka
 
-      nerdfonts
+      #nerdfonts
       #(nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ] })
-      #nerd-fonts.hack
-      #nerd-fonts.fira-code
-      #nerd-fonts.meslo-lg
-      #nerd-fonts.sauce-code-pro
-      #nerd-fonts.terminess-ttf
-      #nerd-fonts.monoid
-      #nerd-fonts.noto
-      #nerd-fonts.iosevka-term
-      #nerd-fonts._0xproto
-      #nerd-fonts.jetbrains-mono
-      #nerd-fonts.ubuntu
+      nerd-fonts.hack
+      nerd-fonts.fira-code
+      nerd-fonts.meslo-lg
+      nerd-fonts.sauce-code-pro
+      nerd-fonts.terminess-ttf
+      nerd-fonts.monoid
+      nerd-fonts.noto
+      nerd-fonts.iosevka-term
+      nerd-fonts._0xproto
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.ubuntu
 
       jetbrains-mono # An opensource typeface made for developers. suitable for coding
       mononoki # A font for programming and code review
