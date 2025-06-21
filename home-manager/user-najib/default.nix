@@ -144,7 +144,7 @@ in
     #retroarchFull # retroarch
     tig
     treesheets
-    unrar
+    #unrar
     vue
     vym
     xarchiver
@@ -188,12 +188,12 @@ in
     sakura # a terminal emulator based on GTK and VTE
 
     #vscode
-    vscode-with-extensions
+    #vscode-with-extensions
     #emacs
 
     ssh-ident
 
-    geogebra6 # Dynamic mathematics software with graphics, algebra and spreadsheets
+    #geogebra6 # Dynamic mathematics software with graphics, algebra and spreadsheets
 
     #helix # Post-modern modal text editor
     #evil-helix # Post-modern modal text editor, with vim keybindings

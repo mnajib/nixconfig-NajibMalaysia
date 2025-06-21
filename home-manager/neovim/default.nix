@@ -57,7 +57,7 @@ in
       arduino-language-server
       nixd nil
       shfmt
-      packer
+      #packer
       lua
       luarocks-nix
       fd

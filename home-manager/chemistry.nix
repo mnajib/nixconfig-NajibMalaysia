@@ -4,6 +4,6 @@
     jmol # Java 3D viewer for chemical structures
     avogadro2 # (3D) Molecule editor and visualizer
 
-    marvin # not opensource
+    #marvin # not opensource
   ];
 }

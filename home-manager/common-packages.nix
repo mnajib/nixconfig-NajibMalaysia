@@ -59,7 +59,7 @@
     vlc
     shutter                        # Screenshots
     #zathura                        # Document viewer
-    dropbox                        #unstable.dropbox
+    #dropbox                        #unstable.dropbox
     wpa_supplicant_gui
     qucs-s #qucs                           # Integrated circuit simulator. qucs has been removed because it depended on qt4. Try using qucs-s
     #ngspice                        # The Next Generation Spice (Electronic Circuit Simulator)

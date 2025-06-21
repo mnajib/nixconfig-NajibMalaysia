@@ -399,7 +399,7 @@
         #    #];
         #
         #    #------------------------------------------------------------------
-        #    # nix-ld
+        #    # nix-ldrg
         #    # Ref:
         #    #   - https://github.com/Mic92/nix-ld
         #    #   - https://unix.stackexchange.com/questions/522822/different-methods-to-run-a-non-nixos-executable-on-nixos

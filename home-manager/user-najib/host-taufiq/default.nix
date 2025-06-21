@@ -21,7 +21,7 @@
   home.stateVersion = "24.11";
 
   home.packages = with pkgs; [
-    plex-desktop
+    #plex-desktop
 
     #source-code-pro  # For "Source Code Pro"
     #noto-fonts       # For "Noto Sans/Serif"
