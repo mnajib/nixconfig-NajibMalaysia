@@ -4,6 +4,7 @@
   pkgs, config,
   lib, home,
   vars, host,
+  inputs, outputs,  # For home-manager
   ...
 }:
 {
@@ -45,6 +46,8 @@
     #./users-nurnasuha-wheel.nix
     ./users-nurnasuha.nix
     ./users-julia.nix
+
+    inputs.home-manager.nixosModules.home-manager
 
     #./anbox.nix
     #./virtualbox.nix
@@ -94,6 +97,8 @@
     ./gitea.nix
     #./forgejo-sqlite.nix
 
+    ./tabby.nix # self-hosted AI coding assistant
+
     #./hosts2.nix
 
     ./configuration.FULL.nix
@@ -121,6 +126,15 @@
     #./xdg.nix
     #./opengl.nix
   ];
+
+  home-manager = {
+    extraSpecialArgs = { inherit inputs outputs; };
+    users = {
+      # Import your home-manager configuration
+      najib = import ../home-manager/user-najib;
+      root = import ../home-manager/user-root;
+    };
+  };
 
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
@@ -386,6 +400,8 @@
 
     #android-studio-full
     android-studio
+
+    inputs.home-manager.packages.${pkgs.system}.default # To install (globbally, instead of per user) home-manager packages
   ];
 
   nixpkgs.config.android_sdk.accept_license = true;

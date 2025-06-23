@@ -8,9 +8,12 @@
   #lib,
   ...
 }:{
+
   environment.systemPackages = [
     #pkgs.appimage-run-tests
     pkgs.appimage-run
-    pkgs.appimagekit
+    #pkgs.appimagekit
   ];
+
+  programs.appimage.enable = true;
 }
