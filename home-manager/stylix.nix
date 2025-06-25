@@ -39,8 +39,8 @@
   # cd result
   # nix run nixpkgs#eza -- --tree --level 3
   #---------------------------------------------------------------------------
-  stylix.cursor.package = pkgs.bibata-cursors;
-  stylix.cursor.name = "Bibata-Modern-Ice";
+  #stylix.cursor.package = pkgs.bibata-cursors;
+  #stylix.cursor.name = "Bibata-Modern-Ice";
 
   # NOTE: https://sourcefoundry.org/hack/playground.html
   #   - Hack

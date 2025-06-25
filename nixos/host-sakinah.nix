@@ -101,7 +101,7 @@
       #vaapiIntel # conflic with nixos-hardware config
       libvdpau-va-gl
       vaapiVdpau
-      mesa.drivers
+      mesa #mesa.drivers
     ];
     extraPackages32 = with pkgs.pkgsi686Linux; [
       libva

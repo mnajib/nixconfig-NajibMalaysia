@@ -114,7 +114,8 @@
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
-  powerManagement.enable = true;
+  #powerManagement.enable = true;
+  #
   services.tlp.enable = true;
   services.auto-cpufreq.enable = true;
 
@@ -132,6 +133,8 @@
   #  2049 # nfs server
   #];
 
+  services.xserver.enable = true;
+
   services.xserver.libinput.enable = true;
   services.xserver.libinput.touchpad.disableWhileTyping = false;
   services.xserver.libinput.touchpad.scrollMethod = "edge";
@@ -140,7 +143,8 @@
   #services.xserver.displayManager.sddm.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
   #services.xserver.desktopManager.plasma5.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
+  #services.xserver.desktopManager.xfce.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
 
   system.stateVersion = "22.05";
 }

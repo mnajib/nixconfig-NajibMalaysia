@@ -74,7 +74,7 @@
     #./nfs-client.nix
 
     #./samba-server-customdesktop.nix
-    ./samba-server-nyxora.nix
+    #./samba-server-nyxora.nix
     #./samba-client.nix
 
     ./console-keyboard-dvorak.nix
@@ -86,7 +86,7 @@
     #./synergy-client.nix # barrier
 
     ./hardware-printer.nix
-    ./hardware-tablet-wacom.nix
+    #./hardware-tablet-wacom.nix
 
     ./zramSwap.nix
 
@@ -94,10 +94,8 @@
     #./btrbk-tv.nix # XXX: Temporarily disabled as the HDD is failing.
 
     #./gogs.nix
-    ./gitea.nix
+    #./gitea.nix
     #./forgejo-sqlite.nix
-
-    ./tabby.nix # self-hosted AI coding assistant
 
     #./hosts2.nix
 
@@ -116,7 +114,7 @@
     #./steam.nix
 
     ./flatpak.nix
-    ./appimage.nix
+    #./appimage.nix
 
     ./walkie-talkie.nix
 
@@ -125,6 +123,11 @@
 
     #./xdg.nix
     #./opengl.nix
+
+    #./tabby.nix # self-hosted AI coding assistant
+    #./ai.nix
+
+    ./tenda-usb-wifi-dongle.nix
   ];
 
   home-manager = {
@@ -257,12 +260,17 @@
     #"video=VGA-1:1280x1024@60me"
   #];
 
-  boot.extraModulePackages = [];
+  #boot.extraModulePackages = [
+    #config.boot.kernelPackages.rtl8821cu
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    #rtl8821cu # now in file tenda-usb-wifi-dongle.nix
+  ];
 
   boot.kernelModules = [
     "kvm-intel"
     #"snd-ctxfi" "snd-hda-intel"
     #"snd-ca0106"
+    #"8821cu" # usb wifi dongle. now in separate file tenda-usb-wifi-dongle.nix
   ];
 
   boot.supportedFilesystems = [
@@ -376,10 +384,10 @@
   #xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # OR enable gnome desktopManager
 
   # Disable all power/screen saver; leave it to tv hardware
-  #powerManagement.enable = false;
-  #services.upower.enable = false;
-  #powerManagement.powertop.enable = false;
-  #services.tlp.enable = false;
+  #powerManagement.enable = true;
+  #powerManagement.powertop.enable = true;
+  #services.upower.enable = true;
+  #services.tlp.enable = true;
   #services.power-profiles-daemon.enable = false;
   #services.auto-cpufreq = {
   #  enable = true;
@@ -402,6 +410,9 @@
     android-studio
 
     inputs.home-manager.packages.${pkgs.system}.default # To install (globbally, instead of per user) home-manager packages
+
+    usb-modeswitch
+    usb-modeswitch-data
   ];
 
   nixpkgs.config.android_sdk.accept_license = true;

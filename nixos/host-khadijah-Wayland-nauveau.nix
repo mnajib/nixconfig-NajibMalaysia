@@ -238,7 +238,7 @@ with lib;
     fatresize
     #kate
 
-    kdenlive
+    #kdenlive
     pcsx2 # games emulator
 
     #----------------------------------

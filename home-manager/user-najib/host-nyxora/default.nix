@@ -10,6 +10,7 @@
   imports = [
     ../default.nix
     ../../neovim
+    #../../ai.nix
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
