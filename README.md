@@ -20,6 +20,7 @@ nix develop --extra-experimental-features 'nix-command flakes'
 sudo nixos-rebuild dry-build --flake .
 sudo nixos-rebuild dry-build --flake .#khawlah
 sudo nixos-rebuild build     --flake .#khawlah
+sudo nixos-rebuild test      --flake .#khawlah
 sudo nixos-rebuild boot      --flake .#khawlah
 sudo nixos-rebuild switch    --flake .#khawlah
 
@@ -28,9 +29,4 @@ home-manager build  --flake .
 home-manager build  --flake .#najib@khawlah
 home-manager switch --flake .#najib@khawlah
 home-manager switch --flake .#najib@khawlah -b backup
-
-sudo nixos-rebuild dry-build  --flake .#zahrah    --target-host naim@zahrah     --build-host ali@sumayah    --use-remote-sudo
-sudo nixos-rebuild boot       --flake .#zahrah    --target-host naim@zahrah     --build-host ali@sumayah    --use-remote-sudo
-sudo nixos-rebuild test       --flake .#zahrah    --target-host naim@zahrah     --build-host ali@sumayah    --use-remote-sudo
-sudo nixos-rebuild switch     --flake .#zahrah    --target-host naim@zahrah     --build-host ali@sumayah    --use-remote-sudo
 ```
