@@ -528,8 +528,8 @@
           home-manager.nixosModules.home-manager {
 
             home-manager = {
-              useGlobalPkgs = true; # Use the global nixpkgs instance
-              useUserPackages = true; # Install packages to user profile
+              #useGlobalPkgs = true; # Use the global nixpkgs instance
+              #useUserPackages = true; # Install packages to user profile
 
               users.root = import ./home-manager/user-root/host-nyxora;
               users.najib = import ./home-manager/user-najib/host-nyxora;
@@ -703,8 +703,8 @@
           home-manager.nixosModules.home-manager {
 
             home-manager = {
-              useGlobalPkgs = true; # Use the global nixpkgs instance
-              useUserPackages = true; # Install packages to user profile
+              #useGlobalPkgs = true; # Use the global nixpkgs instance
+              #useUserPackages = true; # Install packages to user profile
 
               users.root = import ./home-manager/user-root/host-taufiq;
               users.najib = import ./home-manager/user-najib/host-taufiq;

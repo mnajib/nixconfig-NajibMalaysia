@@ -10,10 +10,26 @@
 {
   nix = {
     #package = pkgs.nixFlakes;
-    #settings.max-jobs = 2;
+
+    settings = {
+      #max-jobs = 2;
+
+      trusted-users = [
+        "root" "najib"
+        "nurnasuha"
+        "naqib"
+        #"abdullah"
+      ];
+
+    }; # End nix.settings = { ... };
+
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+  }; # End nix = { ... };
+
+  nixpkgs.config = {
+    allowUnfree = true;
   };
 
   imports = [
@@ -127,7 +143,7 @@
     #./tabby.nix # self-hosted AI coding assistant
     #./ai.nix
 
-    ./tenda-usb-wifi-dongle.nix
+    #./tenda-usb-wifi-dongle.nix
   ];
 
   home-manager = {
@@ -144,13 +160,6 @@
   #
   networking.hostId = "a070cd92"; #"e8213168";
   networking.hostName = "nyxora";
-
-  nix.settings.trusted-users = [
-    "root" "najib"
-    "nurnasuha"
-    "naqib"
-    #"abdullah"
-  ];
 
   networking.useDHCP = false;
   #networking.interfaces.enp7s0.useDHCP = true;
