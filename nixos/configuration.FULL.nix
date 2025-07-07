@@ -957,7 +957,7 @@
     wcalc # A command line (CLI) calculator
     quich # The advanced terminal (CLI) calculator
     kalker  # A command line (CLI) calculator that supports math-like syntax with user-defined variables, functions, derivation, integration, and complex numbers
-    deepin.deepin-calculator  # A easy to use calculator for ordinary users
+    #deepin.deepin-calculator  # A easy to use calculator for ordinary users
     pantheon.elementary-calculator # GUI Calculator app designed for elementary OS
     mate.mate-calc # GUI calculator for the MATE desktop
     lumina.lumina-calculator # Scientific calculator for the Lumina Desktop
