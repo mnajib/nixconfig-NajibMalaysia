@@ -173,8 +173,8 @@ in
     ed  # an implemintation of the standard unix editor
     sakura # a terminal emulator based on GTK and VTE
 
-    #vscode
-    vscode-with-extensions
+    vscode
+    #vscode-with-extensions
     #emacs
 
     ssh-ident
