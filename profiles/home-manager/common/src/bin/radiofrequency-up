@@ -1,0 +1,1 @@
+sudo rfkill unblock all

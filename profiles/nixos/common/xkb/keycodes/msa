@@ -1,0 +1,3 @@
+//xkb_keymap {
+	xkb_keycodes { include "evdev+aliases(qwerty)" };
+//};

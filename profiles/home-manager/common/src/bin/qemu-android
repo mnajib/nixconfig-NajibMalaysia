@@ -1,0 +1,2 @@
+#!/bin/sh
+qemu-kvm -soundhw es1370 -net nic -net user -cdrom ${1} 

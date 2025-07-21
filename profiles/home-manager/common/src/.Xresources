@@ -1,0 +1,27 @@
+!
+! To see the currently loaded resorces:
+!     $ xrdb -query -all
+!
+
+! Include Najib Xresources Color Scheme
+!#include ".Xresources.d/XresourcesColorScheme-NajibMalaysia-v3.Xresources"
+!#include ".Xresources.d/XresourcesColorScheme-NajibMalaysia-v4.Xresources"
+#include ".Xresources.d/XresourcesColorScheme-NajibMalaysia-v5.Xresources"
+
+#include ".Xresources.d/rxvt-unicode.Xresources"
+!#include ".Xresources.d/xterm.Xresources"
+!#include ".Xresources.d/fonts.Xresources"
+!#include ".Xresources.d/xscreensaver.Xresources"
+
+!-------------------------------------------------------------------------------
+! Xft settings
+!-------------------------------------------------------------------------------
+
+!Xft.dpi:                    96
+!Xft.antialias:              false
+!Xft.rgba:                   rgb
+!Xft.hinting:                true
+!Xft.hintstyle:              hintslight
+
+! Xterm*Foreground: white
+! XTerm*Background: black

@@ -684,7 +684,8 @@
         #  ]; # End 'modules'.
         #}; #End: taufiq = nixpkgs.lib.nixosSystem
         taufiq = mkNixos [
-          ./nixos/host-taufiq.nix
+          #./nixos/host-taufiq.nix
+          ./profiles/nixos/hosts/taufiq/configuration.nix
 
           #sops-nix.nixosModules.sops
 
@@ -700,23 +701,23 @@
 
           #inputs.stylix.nixosModules.stylix
 
-          home-manager.nixosModules.home-manager {
-
-            home-manager = {
-              #useGlobalPkgs = true; # Use the global nixpkgs instance
-              #useUserPackages = true; # Install packages to user profile
-
-              users.root = import ./home-manager/user-root/host-taufiq;
-              users.najib = import ./home-manager/user-najib/host-taufiq;
-
-              # Share the same (this flake?) inputs with home-manager
-              extraSpecialArgs = {
-                inherit inputs outputs;
-              };
-
-            }; # End home-manager
-
-          } # End home-manager.nixosModule.home-manager
+          #home-manager.nixosModules.home-manager {
+          #
+          #  home-manager = {
+          #    #useGlobalPkgs = true; # Use the global nixpkgs instance
+          #    #useUserPackages = true; # Install packages to user profile
+          #
+          #    users.root = import ./home-manager/user-root/host-taufiq;
+          #    users.najib = import ./home-manager/user-najib/host-taufiq;
+          #
+          #    # Share the same (this flake?) inputs with home-manager
+          #    extraSpecialArgs = {
+          #      inherit inputs outputs;
+          #    };
+          #
+          #  }; # End home-manager
+          #
+          #} # End home-manager.nixosModule.home-manager
 
         ];
 
