@@ -137,6 +137,9 @@ with lib;
     #./opengl.nix
 
     #./stylix.nix
+
+    # Services
+    #./invidious.nix # Need postgresql
   ];
 
   home-manager = {

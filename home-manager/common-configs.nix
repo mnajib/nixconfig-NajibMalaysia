@@ -353,7 +353,7 @@ in
 
       set preview_directories true
       set preview_files false
-      set perview_images false
+      #set perview_images false
 
       # 'uv' as shortcut to unmark all in all directories
       # as command 'unmark' only unmarks marked files in the current directory.
@@ -361,7 +361,7 @@ in
 
       # Color schemes
       #Ranger comes with four color schemes: default, jungle, snow and solarized. You can change your color scheme using:
-      set colorscheme solarized
+      #set colorscheme solarized
 
       # Move to trash
       map DD shell mv %s /home/$${USER}/.local/share/Trash/files/
