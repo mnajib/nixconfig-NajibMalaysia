@@ -1,0 +1,27 @@
+#!/run/current-system/sw/bin/env bash
+read_dom () {
+    local IFS=\>
+    read -d \< ENTITY CONTENT
+}
+
+curl -k --silent "https://www.e-solat.gov.my/index.php?r=esolatApi/xmlfeed&zon=WLY01" > /tmp/wsp-$USER.xml
+
+NAMASOLAT=()
+MASASOLAT=()
+while read_dom; do
+    if [[ $ENTITY = "title" && $CONTENT = "eSolat JAKIM : Waktu Solat Hari Ini" ]]; then
+        echo -ne ""
+    elif [[ $ENTITY = "description" && $CONTENT = "Kuala Lumpur,Putrajaya" ]]; then
+        echo -ne ""
+    elif [[ $ENTITY = "title" || $ENTITY = "description" ]]; then
+        if [[ $ENTITY = "title" ]]; then
+            NAMASOLAT+=("$CONTENT")
+        elif [[ $ENTITY = "description" ]]; then
+            MASASOLAT+=(`printf '%.5s' "$CONTENT"`)
+        fi
+    fi
+done < /tmp/wsp-$USER.xml
+
+for i in "${!NAMASOLAT[@]}"; do 
+    echo -ne "<${NAMASOLAT[$i]} ${MASASOLAT[$i]}> "
+done

@@ -35,6 +35,8 @@
     mumble
 
     kitty # terminal emulator
+    dillo-plus # web browser but without javascript
+    chisel # TCP/UDP tunnel over HTTP
   ];
 
   fonts.fontconfig = {

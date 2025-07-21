@@ -1,0 +1,4 @@
+//xkb_keymap {
+	//xkb_compatibility { include "complete" };
+	xkb_compat { include "complete" };
+//};

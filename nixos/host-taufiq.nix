@@ -1,6 +1,7 @@
 {
   pkgs, config, lib, home,
   vars, host,
+  inputs, outputs, # need for home-manager
   ...
 }:
 #let
@@ -89,6 +90,8 @@ with lib;
     ./users-julia-wheel.nix
     ./users-abdullah-wheel.nix
 
+    inputs.home-manager.nixosModules.home-manager
+
     ./nfs-client-automount.nix
     #./nfs-client-automount-games.nix
     #./nfs-client.nix
@@ -134,7 +137,18 @@ with lib;
     #./opengl.nix
 
     #./stylix.nix
+
+    # Services
+    #./invidious.nix # Need postgresql
   ];
+
+  home-manager = {
+    extraSpecialArgs = { inherit inputs outputs; };
+    users = {
+      root = import ../home-manager/user-root/host-taufiq;
+      najib = import ../home-manager/user-najib/host-taufiq;
+    }; # End home-manager.users = { ... };
+  }; # End home-manager = { ... };
 
   # Dell Precision M4800
   networking.hostName = "taufiq";   # "cheetah";
@@ -194,12 +208,16 @@ with lib;
     #kitty
     #blender
     #freecad
+
+    inputs.home-manager.packages.${pkgs.system}.default # To install (globally, instead of per user) home-manager packages
   ];
+  #
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
   #  environment.systemPackages = [
   #    pkgs.nvtop
   #  ];
   #};
+  #
   #config.environment = {
   #environment = {
   #  systemPackages =
