@@ -145,7 +145,7 @@
 
     qbittorrent
     bottles
-    zeroadPackages.zeroad-unwrapped
+    zeroad-unwrapped
     minetest
     firefox
     brave

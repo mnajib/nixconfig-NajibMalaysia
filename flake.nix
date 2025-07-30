@@ -722,6 +722,11 @@
         ];
 
         #----------------------------------------------------------------------
+        sumayah = mkNixos [
+          ./profiles/nixos/hosts/sumayah/configuration.nix
+        ];
+
+        #----------------------------------------------------------------------
         # Laptop Thinkpad T410 (without nvidia) Julia
         keira = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
