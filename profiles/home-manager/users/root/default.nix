@@ -133,27 +133,17 @@ in
     #qtox
     #retroarchFull # retroarch
     tig
-    treesheets
     unrar
     vue
     vym
     xarchiver
     #xmind-8-update8
     xournalpp
-    #wpsoffice
-
-    libreoffice-fresh
-    #libreoffice-qt-fresh
 
     smlnj
-    #waydroid
-    #kmymoney
-    #anbox
     #pmbootstrap
     #xwayland
     #tribler
-    webtorrent_desktop
-    tor-browser
     duf
     gdmap
     ncdu
@@ -180,8 +170,6 @@ in
 
     ssh-ident
 
-    geogebra6 # Dynamic mathematics software with graphics, algebra and spreadsheets
-
     #helix # Post-modern modal text editor
     #evil-helix # Post-modern modal text editor, with vim keybindings
     #helix-gpt # Code completion LSP for Helix with support for Copilot + OpenAI
@@ -205,8 +193,8 @@ in
   #programs.jq.enable = true;                    # ??? lightweight and flexible command-line JSON processor
   #programs.bat.enable = true;                   # ??? battery?
   programs.command-not-found.enable = true;      # Whether interactive shells should show which Nix package (if any) provides a missing command.
-  programs.dircolors.enable = true;
-  programs.htop.enable = true;
+  #programs.dircolors.enable = true;
+  #programs.htop.enable = true;
   programs.info.enable = true;
   #programs.eza.enable = true;
 
@@ -248,6 +236,7 @@ in
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
+  # NOTE: Do NOT define here, do it in host specific (example: profiles/home-manager/users/root/sumayah/default.nix).
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   #home.stateVersion = "22.05";
 }

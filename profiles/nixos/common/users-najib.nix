@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
-  users.users.najib = {
+  users.users.najib = lib.mkForce {
     description = "Muhammad Najib Bin Ibrahim";
     uid = 1001;
     isNormalUser = true;

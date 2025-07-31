@@ -224,8 +224,13 @@
       # Left Status
       # -----------------------------------------------------------
       set -g status-left-length 200 #
+
       #set -g status-left "#{?client_prefix,#[bg=#ff0000],} #{session_name} "
-      # Turns status-left blue if the window is zoomed, pink if the prefix is active, and yellow in copy mode.
+
+      # Turns status-left
+      #   blue if the window is zoomed,
+      #   pink if the prefix is active, and
+      #   yellow in copy mode.
       set -g status-left "\
       #[bg=cyan] \
       #[bg=cyan,fg=black]\
@@ -233,10 +238,10 @@
       #{?client_prefix,#[bg=red],}\
       #{?pane_in_mode,#[bg=yellow],}\
        \
-      tmux #{session_name}\
+      [#{session_name}]\
        \
       #[default] "
-      #
+
       # tmux #{session_id}:#{session_name}
       # tmux #(echo #{session_id} | sed 's/^\\$//'):#{session_name}
 
@@ -259,6 +264,7 @@
 
       # set it same with window-status-style do make it look the same as no changes/activity
       #set -g window-status-activity-style          bg=green,fg=brightblack
+      # or/and just turn-off the function
       set -g monitor-activity off
       # ===========================================================
 
