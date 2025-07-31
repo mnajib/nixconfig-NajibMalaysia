@@ -240,7 +240,7 @@ in
     #text = ''
     #'';
     #source = ./src/.config/qutebrowser/stylesheet/mydarkmodefix.css;
-    source = ./src/.config/qutebrowser;
+    source = ../src/.config/qutebrowser;
     #source = src/.Xresources.d;
     recursive = true;
     #target = ".config/qutebrowser/stylesheet/mydarkmodefix.css"; # Path to target file relative to HOME
@@ -494,7 +494,7 @@ in
     #autoComplete = [ "prompt" ];
     #scrollOff.lines = 1;
     #scrollOff.columns = 1;
-    extraConfig = builtins.readFile ./src/.config/kak/kakrc;
+    extraConfig = builtins.readFile ../src/.config/kak/kakrc;
   };
 
   #programs.chromium = {
@@ -557,7 +557,7 @@ in
   #  } + "/Xresources.dark"
   #);
   #
-  xresources.extraConfig = builtins.readFile ./src/.Xresources;
+  xresources.extraConfig = builtins.readFile ../src/.Xresources;
   home.file.".Xresources.d" = {
     source = src/.Xresources.d;
     recursive = true;

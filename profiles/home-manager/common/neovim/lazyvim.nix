@@ -23,11 +23,11 @@ in
     ];
 
     # Custom vimrc lines
-    extraConfig = builtins.readFile ../src/.config/nvim/init.vim;
+    extraConfig = builtins.readFile ../../src/.config/nvim/init.vim;
 
     #extraLuaPackages = [];
 
-    extraLuaConfig = builtins.readFile ../src/.config/nvim/init.lua;
+    extraLuaConfig = builtins.readFile ../../src/.config/nvim/init.lua;
 
     # Use Nix Package search engine to find even more plugins:
     # https://search.nixos.org/packages
