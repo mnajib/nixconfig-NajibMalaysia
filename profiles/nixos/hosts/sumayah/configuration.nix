@@ -125,8 +125,8 @@ in
   home-manager = {
     extraSpecialArgs = { inherit inputs outputs; };
     users = {
-      #najib = import (./. + "/${hmDir}/najib/sumayah");
       root = import (./. + "/${hmDir}/root/sumayah");
+      najib = import (./. + "/${hmDir}/najib/sumayah");
     };
   };
 
