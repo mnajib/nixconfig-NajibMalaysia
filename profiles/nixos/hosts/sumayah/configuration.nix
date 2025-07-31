@@ -2,13 +2,31 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
-
+{
+  config, pkgs,
+  inputs, outputs, # Need for home-manager ?
+  ...
+}:
+let
+  commonDir = "../../common";
+  hmDir = "../../../home-manager/users";
+in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./turn-off-rgb.nix
+
+      (./. + "/${commonDir}/users-najib.nix")
+      (./. + "/${commonDir}/users-naqib-wheel.nix")
+      (./. + "/${commonDir}/users-naim.nix")
+      (./. + "/${commonDir}/users-nurnasuha.nix")
+      (./. + "/${commonDir}/users-julia.nix")
+
+      inputs.home-manager.nixosModules.home-manager
+
+      (./. + "/${commonDir}/nfs-client-automount.nix")
+      (./. + "/${commonDir}/zramSwap.nix")
     ];
 
   # Bootloader.
@@ -65,7 +83,7 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -102,6 +120,14 @@
     packages = with pkgs; [
     #  thunderbird
     ];
+  };
+
+  home-manager = {
+    extraSpecialArgs = { inherit inputs outputs; };
+    users = {
+      #najib = import (./. + "/${hmDir}/najib/sumayah");
+      root = import (./. + "/${hmDir}/root/sumayah");
+    };
   };
 
   nixpkgs.config.android_sdk.accept_license = true;
@@ -169,6 +195,8 @@
     mumble
     
     openrgb-with-all-plugins
+
+    #inputs.home-manager.packages.${pkgs.system}.default # To install home-manager packages
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
