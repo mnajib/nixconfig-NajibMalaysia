@@ -513,12 +513,12 @@
 
         #----------------------------------------------------------------------
         # Najib's Dell Desktop (formerly used as firewall/router; currently being use as TV/media player)
-        delldesktop = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [
-            ./nixos/host-delldesktop.nix
-          ];
-        };
+        #delldesktop = nixpkgs.lib.nixosSystem {
+        #  specialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    ./nixos/host-delldesktop.nix
+        #  ];
+        #};
 
         #----------------------------------------------------------------------
         nyxora = mkNixos [
