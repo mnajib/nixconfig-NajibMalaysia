@@ -14,6 +14,7 @@ in
     ../default.nix
 
     #(./. + "/${commonDir}/helix")
+    (./. + "/${commonDir}/neovim")
   ];
 
   programs.git = lib.mkForce {
