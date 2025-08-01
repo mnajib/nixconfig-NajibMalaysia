@@ -1,20 +1,22 @@
 { lib, pkgs, config, ... }:
 let
   forgejo_port = 3000;
-  forgejo_user = "git";
-  forgejo_group = "git";
+  forgejo_user = "forgejo"; #"git";
+  forgejo_group = "forgejo"; #"git";
   forgejo_stateDir = "/MyTank/services/forgejo"; # "/mnt/data/forgejo";
 in
 {
-  users.users.git = {
+  #users.users.git = {
+  users.users.forgejo = {
     isSystemUser = true;
-    group = "git";
+    #group = "git";
+    group = "forgejo";
     #home = "/var/lib/forgejo";
     home = "/MyTank/services/forgejo";
     createHome = true;
   };
-
-  users.groups.git = {};
+  #users.groups.git = {};
+  users.groups.forgejo = {};
 
   services.forgejo = {
     enable = true;
