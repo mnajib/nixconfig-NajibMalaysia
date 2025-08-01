@@ -1,67 +1,53 @@
 { lib, pkgs, config, ... }:
 let
-  cfg = config.services.forgejo;
-  srv = cfg.settings.server;
-  port_number = 3001;
+  forgejo_port = 3000;
+  forgejo_user = "git";
+  forgejo_group = "git";
+  forgejo_stateDir = "/MyTank/services/forgejo"; # "/mnt/data/forgejo";
 in
 {
-  services.nginx = {
-    virtualHosts.${cfg.settings.server.DOMAIN} = {
-      forceSSL = true;
-      enableACME = true;
-      extraConfig = ''
-        client_max_body_size 512M;
-      '';
-      locations."/".proxyPass = "http://localhost:${toString srv.HTTP_PORT}";
-    };
+  users.users.git = {
+    isSystemUser = true;
+    group = "git";
+    #home = "/var/lib/forgejo";
+    home = "/MyTank/services/forgejo";
+    createHome = true;
   };
+
+  users.groups.git = {};
 
   services.forgejo = {
     enable = true;
-    database.type = "sqlite3";
-    lfs.enable = true; # Enable support for Git Large File Storage
 
-    stateDir = "/mnt/data/forgejo";
+    user = forgejo_user;
+    group = forgejo_group;
+
+    stateDir = forgejo_stateDir;
+
+    database.type = "sqlite3";
 
     settings = {
       server = {
         DOMAIN = "${config.networking.hostName}";
         # You need to specify this to remove the port from URLs in the web UI.
-        ROOT_URL = "https://${srv.DOMAIN}/";
-        HTTP_PORT = port_number;
+        #ROOT_URL = "https://${srv.DOMAIN}/";
+        #HTTP_PORT = port_number;
       };
-      service.DISABLE_REGISTRATION = true; # You can temporarily allow registration to create an admin user.
-
-      # Add support for actions, based on act: https://github.com/nektos/act
-      #actions = {
-      #  ENABLED = true;
-      #  DEFAULT_ACTIONS_URL = "github";
-      #};
-
-      # Sending emails is completely optional
-      # You can send a test email from the web UI at:
-      # Profile Picture > Site Administration > Configuration >  Mailer Configuration 
-      #mailer = {
-      #  ENABLED = true;
-      #  SMTP_ADDR = "mail.example.com";
-      #  FROM = "noreply@${srv.DOMAIN}";
-      #  USER = "noreply@${srv.DOMAIN}";
-      #};
 
     }; # End services.forgejo.settings
 
-    secrets = {
-      metrics = {
-        TOKEN = "/run/keys/forgejo-metrics-token";
-      };
-      camo = {
-        HMAC_KEY = "/run/keys/forgejo-camo-hmac";
-      };
-      service = {
-        HCAPTCHA_SECRET = "/run/keys/forgejo-hcaptcha-secret";
-        HCAPTCHA_SITEKEY = "/run/keys/forgejo-hcaptcha-sitekey";
-      };
-    };
+    #secrets = {
+    #  metrics = {
+    #    TOKEN = "/run/keys/forgejo-metrics-token";
+    #  };
+    #  camo = {
+    #    HMAC_KEY = "/run/keys/forgejo-camo-hmac";
+    #  };
+    #  service = {
+    #    HCAPTCHA_SECRET = "/run/keys/forgejo-hcaptcha-secret";
+    #    HCAPTCHA_SITEKEY = "/run/keys/forgejo-hcaptcha-sitekey";
+    #  };
+    #};
 
     #mailerPasswordFile = config.age.secrets.forgejo-mailer-password.path;
 
@@ -80,8 +66,13 @@ in
     ];
   };
 
-  networking.firewall.allowedTCPPorts = [
-    port_number
-  ];
-
+  networking.firewall = {
+    allowedTCPPorts = [
+      forgejo_port
+      #3000
+    ];
+    allowedUDPPorts = [
+      #...
+    ];
+  };
 }

@@ -37,7 +37,9 @@ in
     allowUnfree = true;
   };
 
-  imports = [
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+  in [
     # TODO:
     #./hostname-specific-config/customdesktop.nix
     #./hardware-specific-config/ # box
@@ -45,7 +47,8 @@ in
 
     ./hardware-configuration.nix
 
-    (./. + "${commonDir}/configuration.FULL.nix")
+    #(./. + "${commonDir}/configuration.FULL.nix")
+    (fromCommon "configuration.FULL.nix")
     #./configuration.SERVER.nix
 
     #./bootEFI.nix
@@ -64,11 +67,12 @@ in
     #./users-anak2.nix
     #./users-naqib.nix
     #./users-naqib-wheel.nix
+    #./users-nurnasuha-wheel.nix
     (./. + "/${commonDir}/users-naqib.nix")
     (./. + "/${commonDir}/users-naim.nix")
-    #./users-nurnasuha-wheel.nix
     (./. + "/${commonDir}/users-nurnasuha.nix")
     (./. + "/${commonDir}/users-julia.nix")
+    #(fromCommon "users-najib.nix")
 
     inputs.home-manager.nixosModules.home-manager
 
@@ -119,6 +123,8 @@ in
     #./gogs.nix
     #./gitea.nix
     #./forgejo-sqlite.nix
+    #(./. + "/${commonDir}/forgejo-sqlite.nix")
+    (fromCommon "forgejo-sqlite.nix")
 
     #./hosts2.nix
 
