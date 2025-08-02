@@ -634,18 +634,27 @@
           ];
         };
 
+
         #----------------------------------------------------------------------
         # Laptop Thinkpad x220 Julia
-        manggis = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [
-            ./nixos/host-manggis.nix
+        #manggis = nixpkgs.lib.nixosSystem {
+        #  specialArgs = { inherit inputs outputs; };
+        #  modules = [
+        #    ./nixos/host-manggis.nix
+        #
+        #    # Add your model from this list:
+        #    # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+        #    hardware.nixosModules.lenovo-thinkpad-x220
+        #  ];
+        #};
+        manggis = mkNixos [
+          ./profiles/nixos/hosts/manggis/configuration.nix
 
-            # Add your model from this list:
-            # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
-            hardware.nixosModules.lenovo-thinkpad-x220
-          ];
-        };
+          # Add your model from this list:
+          # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+          hardware.nixosModules.lenovo-thinkpad-x220
+        ];
+
 
         #----------------------------------------------------------------------
         # HP DeskPro
