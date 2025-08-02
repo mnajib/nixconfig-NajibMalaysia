@@ -21,10 +21,10 @@
 
   boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/c84ed0e7-e049-4acd-af79-de0d4d782631";
 
-  fileSystems."/mnt/cifsshare" =
-    { device = "systemd-1";
-      fsType = "autofs";
-    };
+  #fileSystems."/mnt/cifsshare" =
+  #  { device = "systemd-1";
+  #    fsType = "autofs";
+  #  };
 
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/5310efa8-7d70-4f87-a720-cb5436205c2d";

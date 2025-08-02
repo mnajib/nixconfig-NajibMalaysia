@@ -230,7 +230,7 @@ in
 
     # services.xserver.displayManager
     displayManager = {
-      defaultSession = "none+xmonad";
+      #defaultSession = "none+xmonad";
 
       lightdm = {
         enable = true;
