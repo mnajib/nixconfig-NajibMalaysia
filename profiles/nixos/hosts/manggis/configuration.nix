@@ -88,13 +88,23 @@ in
     (fromCommon "opengl.nix")
   ];
 
-  home-manager = {
+  #
+  # NOTE:
+  #   journalctl -e --unit home-manager-najib.service --follow
+  #   journalctl -e --unit home-manager-root.service --follow
+  #
+  home-manager = let
+    userImport = user: import (./. + "/${hmDir}/${user}/${hostName}");
+  in {
     extraSpecialArgs = {
       inherit inputs outputs;
     };
     users = {
-      najib = import (./. + "/${hmDir}/najib/${hostName}");
-      root = import (./. + "/${hmDir}/root/${hostName}");
+      #najib = import (./. + "/${hmDir}/najib/${hostName}");
+      #root = import (./. + "/${hmDir}/root/${hostName}");
+
+      najib = userImport "najib";
+      root = userImport "root";
     };
   };
 
@@ -236,8 +246,8 @@ in
         enable = true;
         #background = "";
         greeters = {
-          gtk.enable = false;
-          slick.enable = true;
+          gtk.enable = true;
+          slick.enable = false;
           mini.enable = false;
           tiny.enable = false;
           enso.enable = false;

@@ -59,6 +59,13 @@ let
   inherit (inputs.nix-colors.lib-contrib { inherit pkgs; }) colorschemeFromPicture nixWallpaperFromScheme;
 in
 {
+  #
+  # NOTE:
+  #   journalctl -e --unit home-manager-najib.service --follow
+  #   journalctl -e --unit home-manager-root.service --follow
+  #
+  #lib.home-manager.backupFileExtension = "backup";
+
   # XXX: TODO: Better if not import here; but import from user specific file
   imports = [
     inputs.nix-colors.homeManagerModule
