@@ -3,20 +3,16 @@
 
 { inputs, outputs, lib, config, pkgs, ... }:
 let
-  username = "najib";
+  username = "root";
   hostname = "khadijah";
-  stateVersion = "23.11"; # "22.05";
-  commonDir = "../../../common";
-in {
+  stateVersion = "22.05";
+in
+{
   # You can import other home-manager modules here
-  imports = let
-    fromCommon = name: ./. + "/${toString commonDir}/${name}";
-  in [
+  imports = [
     ../default.nix
-
-    (fromCommon "neovim")
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = stateVersion; #"22.05";
+  home.stateVersion = stateVersion;
 }

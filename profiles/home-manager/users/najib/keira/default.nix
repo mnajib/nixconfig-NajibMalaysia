@@ -4,7 +4,7 @@
 { inputs, outputs, lib, config, pkgs, ... }:
 let
   username = "najib";
-  hostname = "khadijah";
+  hostname = "keira";
   stateVersion = "23.11"; # "22.05";
   commonDir = "../../../common";
 in {

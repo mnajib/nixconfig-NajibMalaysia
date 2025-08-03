@@ -682,6 +682,7 @@
           ];
         };
 
+
         #----------------------------------------------------------------------
         # Acer Aspire
         #leopard = nixpkgs.lib.nixosSystem {
@@ -740,47 +741,57 @@
 
         ];
 
+
         #----------------------------------------------------------------------
         sumayah = mkNixos [
           ./profiles/nixos/hosts/sumayah/configuration.nix
         ];
 
+
         #----------------------------------------------------------------------
         # Laptop Thinkpad T410 (without nvidia) Julia
-        keira = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          system = "x86_64-linux";
-          #system = nixpkgs.hostPlatform;
-          modules = [
-            ./nixos/host-keira.nix
+        #keira = nixpkgs.lib.nixosSystem {
+        #  specialArgs = { inherit inputs outputs; };
+        #  system = "x86_64-linux";
+        #  #system = nixpkgs.hostPlatform;
+        #  modules = [
+        #    ./nixos/host-keira.nix
+        #
+        #    # Add your model from this list:
+        #    # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+        #    hardware.nixosModules.lenovo-thinkpad-t410
+        #
+        #    #nix-ld.nixosModules.nix-ld
+        #    #{ programs.nix-ld.dev.enable = true; }
+        #
+        #    #home-manager.nixosModules.home-manager {
+        #    #  home-manager = {
+        #    #    useGlobalPkgs = true;
+        #    #    useUserPackages = true;
+        #    #    users.najib = import ./home-manager/home-najib.nix {
+        #    #      inherit pkgs;
+        #    #      inherit pkgsUnstable;
+        #    #      inherit impermanence;
+        #    #      inherit nur;
+        #    #    };
+        #    #    users.julia = import ./home-manager/home-julia.nix {
+        #    #      inherit pkgs;
+        #    #      inherit pkgsUnstable;
+        #    #      inherit impermanence;
+        #    #      inherit nur;
+        #    #    };
+        #    #  };
+        #    #}
+        #  ];
+        #};
 
-            # Add your model from this list:
-            # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
-            hardware.nixosModules.lenovo-thinkpad-t410
+        keira = mkNixos [
+          ./profiles/nixos/hosts/keira/configuration.nix
 
-            #nix-ld.nixosModules.nix-ld
-            #{ programs.nix-ld.dev.enable = true; }
+          # Add your model from this list: http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+          hardware.nixosModules.lenovo-thinkpad-t410
+        ];
 
-            #home-manager.nixosModules.home-manager {
-            #  home-manager = {
-            #    useGlobalPkgs = true;
-            #    useUserPackages = true;
-            #    users.najib = import ./home-manager/home-najib.nix {
-            #      inherit pkgs;
-            #      inherit pkgsUnstable;
-            #      inherit impermanence;
-            #      inherit nur;
-            #    };
-            #    users.julia = import ./home-manager/home-julia.nix {
-            #      inherit pkgs;
-            #      inherit pkgsUnstable;
-            #      inherit impermanence;
-            #      inherit nur;
-            #    };
-            #  };
-            #}
-          ];
-        };
 
         #----------------------------------------------------------------------
         # Laptop Thinkpad T61/R61 (dalam bilik tidur)
