@@ -9,7 +9,7 @@ in
 {
   #users.users.git = {
   #users.users.forgejo = {
-  users.users.forgejo_user = {
+  users.users.${forgejo_user} = {
     isSystemUser = true;
     #group = "git";
     #group = "forgejo";
@@ -21,7 +21,7 @@ in
   };
   #users.groups.git = {};
   #users.groups.forgejo = {};
-  users.groups.forgejo_group = {};
+  users.groups.${forgejo_group} = {};
 
   services.forgejo = {
     enable = true;

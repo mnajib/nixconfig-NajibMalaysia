@@ -71,7 +71,7 @@ in
     # Internal/private network DNS server
     #./dnsmasq.nix
     #(./. + "/${commonDir}/unbound.nix")
-    (fromCommon "unbound.nix")
+    #(fromCommon "unbound.nix")
 
     #./users-abdullah-wheel.nix
     #./users-anak2.nix
@@ -172,6 +172,7 @@ in
 
     (fromCommon "xdg.nix")
     (fromCommon "opengl.nix")
+    (fromCommon "xmonad.nix")
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -371,8 +372,16 @@ in
     #desktopManager.plasma5.enable = true;
     #desktopManager.xfce.enable = true;
     #desktopManager.mate.enable = true;
-    #desktopManager.gnome.enable = true;
+    desktopManager.gnome.enable = true;
     #desktopManager.enlightenment.enable = true;
+
+    windowManager = {
+      awesome.enable = true;
+      fluxbox.enable = true;
+      jwm.enable = true;
+      herbstluftwm.enable = true;
+      notion.enable = true;
+    };
 
   }; # End services.xserver
   #------------------------------------

@@ -7,16 +7,17 @@ let
 in
 {
   #users.users.git = {
-  users.users.forgejo = {
+  users.users.${forgejo_user} = {
     isSystemUser = true;
     #group = "git";
-    group = "forgejo";
+    #group = "forgejo";
+    group = forgejo_group;
     #home = "/var/lib/forgejo";
     home = "/MyTank/services/forgejo";
     createHome = true;
   };
   #users.groups.git = {};
-  users.groups.forgejo = {};
+  users.groups.${forgejo_group} = {};
 
   services.forgejo = {
     enable = true;
