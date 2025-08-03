@@ -2,17 +2,21 @@
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 
 { inputs, outputs, lib, config, pkgs, ... }:
-#let
-#  hostname = "khadijah";
-#in
-{
+let
+  username = "najbi";
+  hostname = "khadijah";
+  stateVersion = "23.11"; # "22.05";
+  commonDir = "../../../common";
+in {
   # You can import other home-manager modules here
-  imports = [
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+  in [
     ../default.nix
 
-    ../../neovim
+    (fromCommon "neovim")
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "22.05";
+  home.stateVersion = stateVersion; #"22.05";
 }

@@ -1,15 +1,17 @@
 # vim:set ts=2 sw=2 nowrap number
 
 {
-  pkgs, config,
-  lib, home,
-  vars, host,
+  pkgs, config, lib,
+  home,
+  vars, host, # ?
+  inputs, outputs, # Need for home-manager
   ...
 }:
 let
   commonDir = "../../common";
   hmDir = "../../../home-manager/users";
-  stateVersion = "24.11";
+  stateVersion = "23.11"; #"24.11";
+  hostName = "customdesktop";
 in
 {
 
@@ -37,6 +39,12 @@ in
     allowUnfree = true;
   };
 
+  # Copy the NixOS configuration file and link it from the resulting system
+  # (/run/current-system/configuration.nix). This is useful in case you
+  # accidentally delete configuration.nix.
+  # But, is not supported with flakes.
+  #system.copySystemConfiguration = true;
+
   imports = let
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
   in [
@@ -46,6 +54,8 @@ in
     #./hardware-specific-config/ # harddisk
 
     ./hardware-configuration.nix
+
+    inputs.home-manager.nixosModules.home-manager
 
     #./configuration.FULL.nix
     (fromCommon "configuration.FULL.nix")
@@ -74,11 +84,12 @@ in
     #(./. + "/${commonDir}/users-nurnasuha.nix")
     #(./. + "/${commonDir}/users-julia.nix")
 
+    (fromCommon "users-a-wheel.nix")
     (fromCommon "users-najib.nix")
     (fromCommon "users-naqib.nix")
     (fromCommon "users-naim.nix")
     (fromCommon "users-nurnasuha.nix")
-    (fromCommon "users-julia")
+    (fromCommon "users-julia.nix")
 
     #./anbox.nix
     #./virtualbox.nix
@@ -98,6 +109,7 @@ in
 
     #(./. + "/${commonDir}/zfs.nix")
     (fromCommon "zfs.nix")
+    (fromCommon "btrfs.nix")
 
     #(./. + "/${commonDir}/nfs-server-customdesktop.nix")
     #(./. + "/${commonDir}/nfs-client-automount.nix")
@@ -184,36 +196,52 @@ in
   systemd.services.NetworkManager-wait-online.enable = false;
 
   #--------------------------------------------------------
-  # XXX: aaa
+  #boot.loader = {
+  #  systemd-boot.enable = true;
+  #  efi.canTouchEfiVariables = true;
+  #  timeout = 10; #100;
+  #
+  #  grub = {
+  #    #enable = true;
+  #    #version = 2;
+  #    efiSupport = true;
+  #    enableCryptodisk = true;
+  #    copyKernels = true;
+  #    useOSProber = true;
+  #    timeoutStyle = "menu";
+  #    memtest86.enable = true;
+  #
+  #    #mirroredBoots = [
+  #      #{
+  #        #devices = [ "/dev/disk/by-id/wwn-0x5000cca7c5e11b3c" ];
+  #        #path = "/boot2";
+  #      #}
+  #    #];
+  #
+  #    devices = [
+  #      #"/dev/disk/by-id/wwn-0x5000c500a837f420" # 500GB HDD from sakinah
+  #      "/dev/disk/by-id/wwn-0x5000039fe7c9db77" # HDD from HP ProDesk Naqib
+  #    ];
+  #
+  #  }; # End boot.loader.grub
+  #}; # End boot.loader
+  #
   boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
-    timeout = 100;
-
+    timeout = 10;
     grub = {
-      #enable = true;
-      #version = 2;
-      efiSupport = true;
+      enable = true;
+      efiSupport = false;
       enableCryptodisk = true;
       copyKernels = true;
-      useOSProber = true;
-      timeoutStyle = "menu";
-      memtest86.enable = true;
-
-      #mirroredBoots = [
-        #{
-          #devices = [ "/dev/disk/by-id/wwn-0x5000cca7c5e11b3c" ];
-          #path = "/boot2";
-        #}
-      #];
-
+      useOSProber = false; #true;
       devices = [
-        #"/dev/disk/by-id/wwn-0x5000c500a837f420" # 500GB HDD from sakinah
-        "/dev/disk/by-id/wwn-0x5000039fe7c9db77" # HDD from HP ProDesk Naqib
+	"/dev/disk/by-id/ata-HUA722010CLA330_43W7625_42C0400IBM_JPW9L0HZ0JD0ZC"
+	"/dev/disk/by-id/ata-WDC_WD10SPCX-75KHST0_WXU1AA60XS04"
       ];
-
-    }; # End boot.loader.grub
-  }; # End boot.loader
+      memtest86.enable = true;
+      timeoutStyle = "menu";
+    };
+  };
 
   #
   # NOTE:
@@ -240,6 +268,23 @@ in
   #boot.supportedFilesystems = [ "ext4" "btrfs" "xfs" "vfat" ]; # "zfs" bcachefs
   #boot.initrd.supportedFilesystems = [ "ext4" "btrfs" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" ]; # "zfs" bcachefs
   #boot.loader.grub.copyKernels = true;
+  #
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModulePackages = [];
+  boot.supportedFilesystems = [ "btrfs"  "ext4" "xfs" "vfat" "zfs" "nfs" ];
+
+  boot.initrd = {
+    availableKernelModules = [ "ehci_pci" "ahci" "xhci_pci" "ata_piix" "usbhid" "usb_storage" "sd_mod" "mpt3sas" "sdhci_pci" ];
+    kernelModules =          [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ];
+    supportedFilesystems =   [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ];
+  };
+
+  boot.kernelParams = [
+    # Changing the ZFS Adaptive Replacement Cache (ARC) size: To change the maximum and size of the ARC to (for example) 2 GB and 1 GB, add this to your NixOS configuration:
+    "zfs.zfs_arc_max=2147483648" "zfs.zfs_arc_min=1073741824"                   # Need this to limit RAM usage for zfs cache.
+
+    "nohibernate"
+  ];
 
   #services.btrfs.autoScrub = {
   #  enable = true;
@@ -254,8 +299,20 @@ in
 
   services.smartd.enable = true;
 
-  services.openssh.settings.PermitRootLogin = "yes";                            #
-  #services.openssh.settings.PermitRootLogin = "prohibit-password";             # Needed for btrbk
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "yes";
+      #PermitRootLogin = "prohibit-password";             # Needed for btrbk
+    };
+  };
+
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+
+  programs.mtr.enable = true;
 
   #networking.firewall.enable = false;
   # open port 24800 for barrier server?/client?
@@ -338,20 +395,50 @@ in
 
   #nix.maxJobs = 4;
 
-  #environment.systemPackages = with pkgs; [
-  environment.systemPackages = [
-    #pkgs.blender
-    #pkgs.virtualboxWithExtpack
+  environment.systemPackages = with pkgs; [
+    vim
+    neovim
+    dig
+    git
+    tmux
+    firefox
+    gnome-terminal
+    gnome-console
+    alacritty
+    enlightenment.terminology
+    wget
+    nnn ranger
+
+    #blender
+    #virtualboxWithExtpack
 
     # use in wayland
-    pkgs.gnome-randr
-    pkgs.foot
+    gnome-randr
+    foot
   ];
 
   #virtualisation.virtualbox.host.enable = true;
 
+  #
+  # NOTE:
+  #   journalctl -e --unit home-manager-najib.service --follow
+  #   journalctl -e --unit home-manager-root.service --follow
+  #
+  home-manager = let
+    userImport = user: import (./. + "/${hmDir}/${user}/${hostName}");
+  in {
+    extraSpecialArgs = {
+      inherit inputs outputs;
+    };
+    users = {
+      najib = userImport "najib";
+      root = userImport "root";
+    };
+  };
+
   #system.stateVersion = "22.05";
   #system.stateVersion = "22.11";
   #system.stateVersion = "23.05";
-  system.stateVersion = "23.11";
+  #system.stateVersion = "23.11";
+  system.stateVersion = stateVersion;
 }

@@ -8,32 +8,35 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "ehci_pci" "ata_piix" "ums_realtek" "usb_storage" "usbhid" "sd_mod" "sr_mod" ];
-  boot.initrd.kernelModules = [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ];
-  boot.initrd.supportedFilesystems = [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ]; #"zfs" "bcachefs"
-
-  boot.supportedFilesystems = [ "btrfs" "ext4" "xfs" "vfat" "zfs" "ntfs" ]; #"zfs" "bcachefs"
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "mpt3sas" "usbhid" "usb_storage" "sd_mod" ];
+  boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/457a3ab5-e938-4b2a-bc5f-3679a2124c43";
-      fsType = "btrfs";
-      options = [ "subvol=@" ];
+    { device = "Riyadh/nixos-root";
+      fsType = "zfs";
+    };
+
+  fileSystems."/home" =
+    { device = "Riyadh/nixos-home";
+      fsType = "zfs";
+    };
+
+  fileSystems."/root" =
+    { device = "Riyadh/nixos-root-user";
+      fsType = "zfs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/91373185-8c7f-4563-bd78-716dbbd9f874";
-      fsType = "ext4";
+    { device = "/dev/disk/by-uuid/b4d2a502-05ea-4b3b-adf5-25e08dc3062a";
+      fsType = "btrfs";
     };
 
-  # open luks encrypted swap partition
-  boot.initrd.luks.devices."luks-2979c787-abca-462b-b4ac-19a0296faa00".device = "/dev/disk/by-uuid/2979c787-abca-462b-b4ac-19a0296faa00";
-
-  swapDevices = [
-    #{ device = "/dev/disk/by-uuid/20f8e570-0f49-4a52-975a-92285ad9475e"; }
-    { device = "/dev/mapper/luks-2979c787-abca-462b-b4ac-19a0296faa00"; }
-  ];
+  swapDevices =
+    [ { device = "/dev/disk/by-uuid/308f9910-8fe6-426c-a11c-fd4a4db5a8ea"; }
+      { device = "/dev/disk/by-uuid/f85dd076-4b8d-4d0f-b763-182eb4610d90"; }
+    ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -41,10 +44,7 @@
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp2s0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp3s0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp4s0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp5s0.useDHCP = lib.mkDefault true;
 
-  nixpkgs.hostPlatform.system = "x86_64-linux";
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

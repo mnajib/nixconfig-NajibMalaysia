@@ -547,6 +547,7 @@
 
         ]; # End nixosConfigurations.nyxora
 
+
         #----------------------------------------------------------------------
         # Najib's Main Desktop
         #customdesktop = nixpkgs.lib.nixosSystem {
@@ -557,9 +558,16 @@
         #  ];
         #};
         customdesktop = mkNixos [
-          ./nixos/host-customdesktop.nix
-          sops-nix.nixosModules.sops
+          #./nixos/host-customdesktop.nix
+          ./profiles/nixos/hosts/customdesktop/configuration.nix
+          
+	  sops-nix.nixosModules.sops
+
+          # Add your model from this list:
+          # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix
+          #hardware.nixosModules.lenovo-thinkpad-x220
         ];
+
 
         #----------------------------------------------------------------------
         # Thinkpad Farid bagi, problem
