@@ -124,7 +124,8 @@ in
     #./gitea.nix
     #./forgejo-sqlite.nix
     #(./. + "/${commonDir}/forgejo-sqlite.nix")
-    (fromCommon "forgejo-sqlite.nix")
+    #(fromCommon "forgejo-sqlite.nix")
+    (fromCommon "forgejo-sqlite-nyxora.nix")
 
     #./hosts2.nix
 

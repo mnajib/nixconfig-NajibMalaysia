@@ -146,7 +146,8 @@ in
     #./gitea.nix
 
     #./forgejo-sqlite.nix
-    (fromCommon "forgejo-sqlite.nix")
+    #(fromCommon "forgejo-sqlite.nix")
+    (fromCommon "forgejo-sqlite-customdesktop.nix")
 
     #./hosts2.nix
     #./kodi.nix
