@@ -15,18 +15,23 @@ in
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+
+      inputs.home-manager.nixosModules.home-manager
+
       ./turn-off-rgb.nix
 
+      (./. + "/${commonDir}/users-a-wheel.nix")
       (./. + "/${commonDir}/users-najib.nix")
       (./. + "/${commonDir}/users-naqib-wheel.nix")
       (./. + "/${commonDir}/users-naim.nix")
       (./. + "/${commonDir}/users-nurnasuha.nix")
       (./. + "/${commonDir}/users-julia.nix")
 
-      inputs.home-manager.nixosModules.home-manager
-
       (./. + "/${commonDir}/nfs-client-automount.nix")
       (./. + "/${commonDir}/zramSwap.nix")
+
+      #(./. + "/${commonDir}/xmonad.nix")
+      (./. + "/${commonDir}/window-managers.nix")
     ];
 
   # Bootloader.
@@ -104,23 +109,23 @@ in
   services.hardware.openrgb.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.a = {
-    isNormalUser = true;
-    description = "a";
-    extraGroups = [ "networkmanager" "wheel" "kvm" "adbusers" ];
-    packages = with pkgs; [
-    #  thunderbird
-    ];
-  };
+  #users.users.a = {
+  #  isNormalUser = true;
+  #  description = "a";
+  #  extraGroups = [ "networkmanager" "wheel" "kvm" "adbusers" ];
+  #  packages = with pkgs; [
+  #  #  thunderbird
+  #  ];
+  #};
 
-  users.users.najib = {
-    isNormalUser = true;
-    description = "najib";
-    extraGroups = [ "networkmanager" "wheel" "kvm" "adbusers" ];
-    packages = with pkgs; [
-    #  thunderbird
-    ];
-  };
+  #users.users.najib = {
+  #  isNormalUser = true;
+  #  description = "najib";
+  #  extraGroups = [ "networkmanager" "wheel" "kvm" "adbusers" ];
+  #  packages = with pkgs; [
+  #  #  thunderbird
+  #  ];
+  #};
 
   home-manager = {
     extraSpecialArgs = { inherit inputs outputs; };
@@ -132,7 +137,7 @@ in
 
   nixpkgs.config.android_sdk.accept_license = true;
 
-  programs.adb.enable = true;  
+  programs.adb.enable = true;
 
   # Install firefox.
   programs.firefox.enable = true;
@@ -193,7 +198,7 @@ in
     simplex-chat-desktop
     #keet # (unfree) P2P chat
     mumble
-    
+
     openrgb-with-all-plugins
 
     #inputs.home-manager.packages.${pkgs.system}.default # To install home-manager packages
