@@ -1,3 +1,0 @@
-//xkb_keymap {
-	xkb_types { include "complete" };
-//};

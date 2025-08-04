@@ -1,4 +1,0 @@
-//xkb_keymap {
-	xkb_geometry { include "pc(pc101)" };
-	//xkb_geometry "msa" { include "pc(pc101)" };
-//};

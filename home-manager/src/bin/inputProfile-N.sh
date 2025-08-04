@@ -1,3 +1,0 @@
-setKeyboardDvorak
-toggleTouchpadEnableDisable
-sleep 1
