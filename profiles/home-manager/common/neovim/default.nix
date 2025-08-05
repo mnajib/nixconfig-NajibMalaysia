@@ -10,18 +10,29 @@
 {
   config,
   pkgs,
-  #inputs,
-  #lib,
-  #outputs,
-  ... }:
-let#packages
+  lib,
+  inputs,
+  outputs,
+  ...
+}:
+let
   #color = pkgs.writeText "color.vim" (import ./theme.nix config.colorscheme);
+  inherit (inputs.nix-colors) colorSchemes;
+  #inherit (inputs.nix-colors.lib-contrib { inherit pkgs; }) colorschemeFromPicture nixWallpaperFromScheme;
+
+  configPath = ../../src/.config/nvim;
 in
 {
 
-  home.packages = with pkgs; [
-    #gcc
+  imports = [
+    inputs.nix-colors.homeManagerModule
   ];
+
+  colorscheme = lib.mkDefault colorSchemes.dracula;
+
+  #home.packages = with pkgs; [
+    #gcc
+  #];
 
   programs.neovim = {
     enable = true;
@@ -30,6 +41,7 @@ in
     #viAlias = true;
     #vimAlias = true;
     #vimdiffAlias = true;
+    #withNodeJs = true;  # optional: for plugins that use Node.js
 
     extraPackages = with pkgs; [
       gcc
@@ -68,12 +80,12 @@ in
     ];
 
     # Custom vimrc lines
-    extraConfig = builtins.readFile ../../src/.config/nvim/init.vim;
+    #extraConfig = builtins.readFile ../../src/.config/nvim/init.vim;
 
     #extraLuaPackages = [];
 
     # Custom lua lines
-    extraLuaConfig = builtins.readFile ../../src/.config/nvim/init.lua;
+    #extraLuaConfig = builtins.readFile ../../src/.config/nvim/init.lua;
 
     # Use Nix Package search engine to find even more plugins:
     # https://search.nixos.org/packages
@@ -147,5 +159,20 @@ in
     ]; # End programs.neovim.plugins
 
   }; # End programs.neovim
+
+
+  home.file.".config/nvim/init.lua" = {
+    #source = "${configPath}/init.lua";
+    source = configPath + "/init.lua";
+  };
+
+  # Recursively copy the lua/ directory with all its files
+  home.file.".config/nvim/lua" = {
+    #source = "${configPath}/lua";
+    source = configPath + "/lua";
+    recursive = true;
+  };
+
+
 
 } # End let ... in { ... }

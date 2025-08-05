@@ -560,8 +560,8 @@
         customdesktop = mkNixos [
           #./nixos/host-customdesktop.nix
           ./profiles/nixos/hosts/customdesktop/configuration.nix
-          
-	  sops-nix.nixosModules.sops
+
+          sops-nix.nixosModules.sops
 
           # Add your model from this list:
           # http://github.com/NixOS/nixos-hardware/blob/master/flake.nix

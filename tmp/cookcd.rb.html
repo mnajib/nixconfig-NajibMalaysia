@@ -1,0 +1,929 @@
+<html>
+<head>
+<title>/usr/local/sbin/cookcd.rb.html</title>
+<meta name="Generator" content="Vim/6.4">
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#000000" text="#f5deb3">
+<pre>
+<font color="#ff80ff">#!/usr/local/bin/ruby -w</font>
+<font color="#80a0ff">#</font>
+<font color="#80a0ff"># vim:sw=2 ts=8:et sta</font>
+<font color="#80a0ff">#</font>
+<font color="#80a0ff">#</font>
+<font color="#80a0ff"># Copyright (c) 2003, 2004, 2005 Ariff Abdullah </font>
+<font color="#80a0ff">#        (skywizard@MyBSD.org.my)</font>
+<font color="#80a0ff"># All rights reserved.</font>
+<font color="#80a0ff">#</font>
+<font color="#80a0ff"># Redistribution and use in source and binary forms, with or without</font>
+<font color="#80a0ff"># modification, are permitted provided that the following conditions</font>
+<font color="#80a0ff"># are met:</font>
+<font color="#80a0ff"># 1. Redistributions of source code must retain the above copyright</font>
+<font color="#80a0ff">#    notice, this list of conditions and the following disclaimer.</font>
+<font color="#80a0ff"># 2. Redistributions in binary form must reproduce the above copyright</font>
+<font color="#80a0ff">#    notice, this list of conditions and the following disclaimer in the</font>
+<font color="#80a0ff">#    documentation and/or other materials provided with the distribution.</font>
+<font color="#80a0ff">#</font>
+<font color="#80a0ff"># THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND</font>
+<font color="#80a0ff"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</font>
+<font color="#80a0ff"># IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</font>
+<font color="#80a0ff"># ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE</font>
+<font color="#80a0ff"># FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</font>
+<font color="#80a0ff"># DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</font>
+<font color="#80a0ff"># OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</font>
+<font color="#80a0ff"># HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</font>
+<font color="#80a0ff"># LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</font>
+<font color="#80a0ff"># OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</font>
+<font color="#80a0ff"># SUCH DAMAGE.</font>
+<font color="#80a0ff">#</font>
+<font color="#80a0ff">#        $MyBSD$</font>
+<font color="#80a0ff">#</font>
+<font color="#80a0ff"># Date: Sat Dec 20 23:07:10 MYT 2003</font>
+<font color="#80a0ff">#   OS: FreeBSD kasumi.MyBSD.org.my 4.7-RELEASE i386</font>
+<font color="#80a0ff">#</font>
+<font color="#80a0ff">#  cookcd.rb(8), IDE/ATAPI cd burner entirely written using ruby.</font>
+<font color="#80a0ff">#  Compatible with burncd (FreeBSD)</font>
+<font color="#80a0ff">#   <a href="http://www.freebsd.org/cgi/cvsweb.cgi/src/usr.sbin/burncd">http://www.freebsd.org/cgi/cvsweb.cgi/src/usr.sbin/burncd</a></font>
+<font color="#80a0ff">#</font>
+<font color="#80a0ff">#  Most of the logic taken from burncd(8) itself, with few differences:</font>
+<font color="#80a0ff">#  (including why this has been written in the first place)</font>
+<font color="#80a0ff">#  * fix burncd broken DAO burning (audio, data/raw). Other type of</font>
+<font color="#80a0ff">#    burning mode not tested (yet). /usr/sbin/burncd generate flaw TOC/CUE</font>
+<font color="#80a0ff">#    resulting broken DAO cd.</font>
+<font color="#80a0ff">#  * automatically truncate wave header if data mode is audio</font>
+<font color="#80a0ff">#  * 10 seconds confirmation timeout before proceed simmilar with cdrecord</font>
+<font color="#80a0ff">#    (use '-y' to supress it)</font>
+<font color="#80a0ff">#</font>
+<font color="#80a0ff">#  Caveat: since this is written entirely using ruby, probably it's</font>
+<font color="#80a0ff">#          compatibility is nowhere but FreeBSD 4.x/5.x /usr/include/sys/cdio.h</font>
+<font color="#80a0ff">#          and /usr/include/sys/cdrio.h</font>
+<font color="#80a0ff">#  </font><span style="background-color: #ffff00"><font color="#0000ff">TODO</font></span><font color="#80a0ff">: Proper machine byte ordering / endianess check</font>
+<font color="#80a0ff">#</font>
+
+<font color="#ff80ff">require</font> <font color="#ffa500">'</font><font color="#ffa0a0">getoptlong</font><font color="#ffa500">'</font>
+
+<font color="#ff80ff">def </font><font color="#40ffff">MIN</font>(x, y)
+  x &gt; y ? y : x
+<font color="#ff80ff">end</font>
+
+<font color="#ff80ff">module </font><font color="#60ff60"><b>IOCCOM</b></font>
+  <font color="#ffa500">PARM_MASK</font> = <font color="#ffa0a0">0x1fff</font>
+  <font color="#ffa500">VOID</font>      = <font color="#ffa0a0">0x20000000</font>
+  <font color="#ffa500">OUT</font>       = <font color="#ffa0a0">0x40000000</font>
+  <font color="#ffa500">IN</font>        = <font color="#ffa0a0">0x80000000</font>
+  <font color="#ffa500">INOUT</font>     = <font color="#ffa500">IN</font>|<font color="#ffa500">OUT</font>
+  <font color="#ffa500">DIRMASK</font>   = <font color="#ffa0a0">0xe0000000</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">PARM_LEN</font>(x)
+    (x &gt;&gt; <font color="#ffa0a0">16</font>) &amp; <font color="#ffa500">PARM_MASK</font>
+  <font color="#ff80ff">end</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">BASECMD</font>(x)
+    x &amp; ~(<font color="#ffa500">PARM_MASK</font> &lt;&lt; <font color="#ffa0a0">16</font>)
+  <font color="#ff80ff">end</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">GROUP</font>(x)
+    (x &gt;&gt; <font color="#ffa0a0">8</font>) &amp; <font color="#ffa0a0">0xff</font>
+  <font color="#ff80ff">end</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">_IOC</font>(inout, group, num, len)
+    inout | ((len &amp; <font color="#ffa500">PARM_MASK</font>) &lt;&lt; <font color="#ffa0a0">16</font>) | ((group.is_a?(<font color="#ffa500">String</font>) ? group[<font color="#ffa0a0">0</font>] : group) &lt;&lt; <font color="#ffa0a0">8</font>) | num
+  <font color="#ff80ff">end</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">_IO</font>(g, n)
+    _IOC(<font color="#ffa500">VOID</font>, g, n, <font color="#ffa0a0">0</font>)
+  <font color="#ff80ff">end</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">_IOR</font>(g, n, t)
+    _IOC(<font color="#ffa500">OUT</font>, g, n, t)
+  <font color="#ff80ff">end</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">_IOW</font>(g, n, t)
+    _IOC(<font color="#ffa500">IN</font>, g, n, t)
+  <font color="#ff80ff">end</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">_IOWR</font>(g, n, t)
+    _IOC(<font color="#ffa500">INOUT</font>, g, n, t)
+  <font color="#ff80ff">end</font>
+  module_function <font color="#ffa500">:PARM_LEN</font>, <font color="#ffa500">:BASECMD</font>, <font color="#ffa500">:GROUP</font>
+  module_function <font color="#ffa500">:_IOC</font>, <font color="#ffa500">:_IO</font>, <font color="#ffa500">:_IOR</font>, <font color="#ffa500">:_IOW</font>, <font color="#ffa500">:_IOWR</font>
+<font color="#ff80ff">end</font>
+
+<font color="#ff80ff">module </font><font color="#60ff60"><b>DISK</b></font>
+  <font color="#ff80ff">class </font>&lt;&lt; <font color="#ffa0a0">self</font>
+    <font color="#ff80ff">include</font> <font color="#ffa500">IOCCOM</font>
+  <font color="#ff80ff">end</font>
+  <font color="#ffa500">DIOCGMEDIASIZE</font> = _IOR(<font color="#ffa500">'</font><font color="#ffa0a0">d</font><font color="#ffa500">'</font>, <font color="#ffa0a0">129</font>, <font color="#ffa0a0">8</font>)
+<font color="#ff80ff">end</font>
+
+<font color="#ff80ff">module </font><font color="#60ff60"><b>CDIO</b></font>
+  <font color="#ff80ff">class </font>&lt;&lt; <font color="#ffa0a0">self</font>
+    <font color="#ff80ff">include</font> <font color="#ffa500">IOCCOM</font>
+  <font color="#ff80ff">end</font>
+  <font color="#ffa500">CDIOCSTART</font> = _IO(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">22</font>)
+  <font color="#ffa500">CDIOCEJECT</font> = _IO(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">24</font>)
+  <font color="#ffa500">CDIOCCLOSE</font> = _IO(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">28</font>)
+  sizeof_ioc_toc_header = [<font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">SC2</font><font color="#ffa500">'</font>).size()
+  <font color="#ffa500">CDIOREADTOCHEADER</font> = _IOR(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">4</font>, sizeof_ioc_toc_header)
+  <font color="#80a0ff"># </font><span style="background-color: #ffff00"><font color="#0000ff">XXX</font></span><font color="#80a0ff"> struct with bitfield black magic art</font>
+  sizeof_cd_toc_entry = [<font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">xC2xN</font><font color="#ffa500">'</font>).size()
+  sizeof_ioc_read_toc_single_entry = [<font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">C2x2</font><font color="#ffa500">'</font>).size() +
+      sizeof_cd_toc_entry
+  <font color="#ffa500">CDIOREADTOCENTRY</font> = _IOWR(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">6</font>, sizeof_ioc_read_toc_single_entry)
+  sizeof_ioc_read_toc_entry = [<font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>, <font color="#ffa500">&quot;</font><font color="#ffa500">\0</font><font color="#ffa500">&quot;</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">C2SP</font><font color="#ffa500">'</font>).size()
+  <font color="#ffa500">CDIOREADTOCENTRYS</font> = _IOWR(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">5</font>, sizeof_ioc_read_toc_entry)
+
+  <font color="#ffa500">CD_LBA_FORMAT</font> = <font color="#ffa0a0">1</font>
+<font color="#ff80ff">end</font>
+
+<font color="#ff80ff">module </font><font color="#60ff60"><b>CDRIO</b></font>
+  <font color="#ff80ff">class </font>&lt;&lt; <font color="#ffa0a0">self</font>
+    <font color="#ff80ff">include</font> <font color="#ffa500">IOCCOM</font>
+  <font color="#ff80ff">end</font>
+  <font color="#ffa500">CDR_DB_RAW</font>          = <font color="#ffa0a0">0x0</font>
+  <font color="#ffa500">CDR_DB_RAW_PQ</font>       = <font color="#ffa0a0">0x1</font>
+  <font color="#ffa500">CDR_DB_RAW_PW</font>       = <font color="#ffa0a0">0x2</font>
+  <font color="#ffa500">CDR_DB_RAW_PW_R</font>     = <font color="#ffa0a0">0x3</font>
+  <font color="#ffa500">CDR_DB_RES_4</font>        = <font color="#ffa0a0">0x4</font>
+  <font color="#ffa500">CDR_DB_RES_5</font>        = <font color="#ffa0a0">0x5</font>
+  <font color="#ffa500">CDR_DB_RES_6</font>        = <font color="#ffa0a0">0x6</font>
+  <font color="#ffa500">CDR_DB_VS_7</font>         = <font color="#ffa0a0">0x7</font>
+  <font color="#ffa500">CDR_DB_ROM_MODE1</font>    = <font color="#ffa0a0">0x8</font>
+  <font color="#ffa500">CDR_DB_ROM_MODE2</font>    = <font color="#ffa0a0">0x9</font>
+  <font color="#ffa500">CDR_DB_XA_MODE1</font>     = <font color="#ffa0a0">0xa</font>
+  <font color="#ffa500">CDR_DB_XA_MODE2_F1</font>  = <font color="#ffa0a0">0xb</font>
+  <font color="#ffa500">CDR_DB_XA_MODE2_F2</font>  = <font color="#ffa0a0">0xc</font>
+  <font color="#ffa500">CDR_DB_XA_MODE2_MIX</font> = <font color="#ffa0a0">0xd</font>
+  <font color="#ffa500">CDR_DB_RES_14</font>       = <font color="#ffa0a0">0xe</font>
+  <font color="#ffa500">CDR_DB_VS_15</font>        = <font color="#ffa0a0">0xf</font>
+
+  <font color="#ffa500">CDR_SESS_CDROM</font>    = <font color="#ffa0a0">0x00</font>
+  <font color="#ffa500">CDR_SESS_CDI</font>      = <font color="#ffa0a0">0x10</font>
+  <font color="#ffa500">CDR_SESS_CDROM_XA</font> = <font color="#ffa0a0">0x20</font>
+  <font color="#ffa500">CDR_SESS_NONE</font>     = <font color="#ffa0a0">0x00</font>
+  <font color="#ffa500">CDR_SESS_FINAL</font>    = <font color="#ffa0a0">0x01</font>
+  <font color="#ffa500">CDR_SESS_RESERVED</font> = <font color="#ffa0a0">0x02</font>
+  <font color="#ffa500">CDR_SESS_MULTI</font>    = <font color="#ffa0a0">0x03</font>
+
+  sizeof_int = [<font color="#ffa0a0">0</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">i</font><font color="#ffa500">'</font>).size()
+  sizeof_cdr_track = [<font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">i3</font><font color="#ffa500">'</font>).size()
+  sizeof_cdr_cuesheet = [<font color="#ffa0a0">0</font>, <font color="#ffa500">&quot;</font><font color="#ffa500">\0</font><font color="#ffa500">&quot;</font>, <font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">iPi3</font><font color="#ffa500">'</font>).size()
+  <font color="#ffa500">CDRIOCBLANK</font>   = _IOW(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">100</font>, sizeof_int)
+  <font color="#ffa500">CDR_B_ALL</font>     = <font color="#ffa0a0">0x0</font>
+  <font color="#ffa500">CDR_B_MIN</font>     = <font color="#ffa0a0">0x1</font>
+  <font color="#ffa500">CDR_B_SESSION</font> = <font color="#ffa0a0">0x6</font>
+
+  <font color="#ffa500">CDIOCRESET</font>              = _IO(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">21</font>)
+  <font color="#ffa500">CDRIOCNEXTWRITEABLEADDR</font> = _IOR(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">101</font>, sizeof_int)
+  <font color="#ffa500">CDRIOCINITWRITER</font>        = _IOW(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">102</font>, sizeof_int)
+  <font color="#ffa500">CDRIOCINITTRACK</font>         = _IOW(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">103</font>, sizeof_cdr_track)
+  <font color="#ffa500">CDRIOCSENDCUE</font>           = _IOW(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">104</font>, sizeof_cdr_cuesheet)
+  <font color="#ffa500">CDRIOCFLUSH</font>             = _IO(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">105</font>)
+  <font color="#ffa500">CDRIOCFIXATE</font>            = _IOW(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">106</font>, sizeof_int)
+  <font color="#ffa500">CDRIOCREADSPEED</font>         = _IOW(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">107</font>, sizeof_int)
+  <font color="#ffa500">CDRIOCWRITESPEED</font>        = _IOW(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">108</font>, sizeof_int)
+  <font color="#ffa500">CDRIOCGETBLOCKSIZE</font>      = _IOR(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">109</font>, sizeof_int)
+  <font color="#ffa500">CDRIOCSETBLOCKSIZE</font>      = _IOW(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">110</font>, sizeof_int)
+  <font color="#ffa500">CDRIOCGETPROGRESS</font>       = _IOR(<font color="#ffa500">'</font><font color="#ffa0a0">c</font><font color="#ffa500">'</font>, <font color="#ffa0a0">111</font>, sizeof_int)
+
+  <font color="#ffa500">CDR_MAX_SPEED</font> = <font color="#ffa0a0">0xffff</font>
+<font color="#ff80ff">end</font>
+
+<font color="#ff80ff">class </font><font color="#60ff60"><b>Burncd</b></font>
+  <font color="#ff80ff">include</font> <font color="#ffa500">CDIO</font>
+  <font color="#ff80ff">include</font> <font color="#ffa500">CDRIO</font>
+  <font color="#ff80ff">include</font> <font color="#ffa500">DISK</font>
+  <font color="#ffa500">BLOCKS</font> = <font color="#ffa0a0">16</font>
+  <font color="#ffa500">BT2CTL</font> = [
+    <font color="#ffa0a0">0x0</font>,  -<font color="#ffa0a0">1</font>,  -<font color="#ffa0a0">1</font>,  -<font color="#ffa0a0">1</font>,  -<font color="#ffa0a0">1</font>,  -<font color="#ffa0a0">1</font>,  -<font color="#ffa0a0">1</font>,  -<font color="#ffa0a0">1</font>,
+    <font color="#ffa0a0">0x4</font>, <font color="#ffa0a0">0x4</font>, <font color="#ffa0a0">0x4</font>, <font color="#ffa0a0">0x4</font>, <font color="#ffa0a0">0x4</font>, <font color="#ffa0a0">0x4</font>,  -<font color="#ffa0a0">1</font>,  -<font color="#ffa0a0">1</font>
+  ]
+  <font color="#ffa500">BT2DF</font>  = [
+    <font color="#ffa0a0">0x0</font>,    -<font color="#ffa0a0">1</font>,   -<font color="#ffa0a0">1</font>,   -<font color="#ffa0a0">1</font>,   -<font color="#ffa0a0">1</font>,   -<font color="#ffa0a0">1</font>,   -<font color="#ffa0a0">1</font>,   -<font color="#ffa0a0">1</font>,
+    <font color="#ffa0a0">0x10</font>, <font color="#ffa0a0">0x30</font>, <font color="#ffa0a0">0x20</font>,   -<font color="#ffa0a0">1</font>, <font color="#ffa0a0">0x21</font>,   -<font color="#ffa0a0">1</font>,   -<font color="#ffa0a0">1</font>,   -<font color="#ffa0a0">1</font>
+  ]
+  <font color="#ff80ff">class </font><font color="#60ff60"><b>InvalidWave</b></font> &lt; <font color="#ffa500">StandardError</font>
+  <font color="#ff80ff">end</font>
+  <font color="#ff80ff">class </font><font color="#60ff60"><b>TrackInfo</b></font>
+    <font color="#ffff60"><b>attr_accessor</b></font> <font color="#ffa500">:fd</font>, <font color="#ffa500">:name</font>, <font color="#ffa500">:size</font>, <font color="#ffa500">:block_size</font>, <font color="#ffa500">:block_type</font>
+    <font color="#ffff60"><b>attr_accessor</b></font> <font color="#ffa500">:pregap</font>, <font color="#ffa500">:addr</font>
+    <font color="#ff80ff">def </font><font color="#40ffff">roundup_blocks</font>
+      (<font color="#ffa500">@size</font> + <font color="#ffa500">@block_size</font> - <font color="#ffa0a0">1</font>) / <font color="#ffa500">@block_size</font>
+    <font color="#ff80ff">end</font>
+  <font color="#ff80ff">end</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">initialize</font>(config)
+    <font color="#ffa500">@do_cleanup</font> = <font color="#ffa0a0">false</font>
+    <font color="#ffa500">@config</font> = config
+    <font color="#ffa500">@do_confirm</font> = <font color="#ffa500">@config</font>[<font color="#ffa500">:confirm</font>]
+    <font color="#ffa500">@fd</font> = <font color="#ffa500">File</font>.open(<font color="#ffa500">@config</font>[<font color="#ffa500">:device</font>], <font color="#ffa500">&quot;</font><font color="#ffa0a0">wb+</font><font color="#ffa500">&quot;</font>)
+    <font color="#ffa500">@saved_block_size</font> = [<font color="#ffa0a0">0</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">i</font><font color="#ffa500">'</font>)
+    <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDRIOGETBLOCKSIZE)</font><font color="#ffa500">'</font> \
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDRIOCGETBLOCKSIZE</font>, <font color="#ffa500">@saved_block_size</font>) &lt; <font color="#ffa0a0">0</font>
+    <font color="#ffa500">@saved_block_size</font> = <font color="#ffa500">@saved_block_size</font>.unpack(<font color="#ffa500">'</font><font color="#ffa0a0">i</font><font color="#ffa500">'</font>)[<font color="#ffa0a0">0</font>]
+    <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDRIOCWRITESPEED)</font><font color="#ffa500">'</font> \
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDRIOCWRITESPEED</font>, [config[<font color="#ffa500">:speed</font>]].pack(<font color="#ffa500">'</font><font color="#ffa0a0">i</font><font color="#ffa500">'</font>)) &lt; <font color="#ffa0a0">0</font>
+    <font color="#ffa500">@do_cleanup</font> = <font color="#ffa0a0">true</font>
+    <font color="#ffa500">@tracks</font> = []
+    <font color="#ffa500">@block_type</font> = <font color="#ffa0a0">nil</font>
+    <font color="#ffa500">@block_size</font> = <font color="#ffa0a0">nil</font>
+    <font color="#ffa500">@wave_check</font> = <font color="#ffa0a0">false</font>
+    <font color="#ffa500">@done_stdin</font> = <font color="#ffa0a0">false</font>
+    <font color="#ffa500">@cdopen</font> = <font color="#ffa0a0">false</font>
+    <font color="#ffa500">@vcdbin</font> = <font color="#ffa0a0">false</font>
+  <font color="#ffff60"><b>end</b></font>
+  <font color="#ffff60"><b>attr_accessor</b></font> <font color="#ffa500">:do_cleanup</font>
+  <font color="#ffff60"><b>attr_reader</b></font> <font color="#ffa500">:block_type</font>, <font color="#ffa500">:block_size</font>, <font color="#ffa500">:wave_check</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">track_type=</font>(type)
+    <font color="#ffff60"><b>case</b></font> type
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">:raw</font>
+        <font color="#ffa500">@block_type</font> = <font color="#ffa500">CDR_DB_RAW</font>
+        <font color="#ffa500">@block_size</font> = <font color="#ffa0a0">2352</font>
+        <font color="#ffa500">@wave_check</font> = <font color="#ffa0a0">false</font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">:audio</font>
+        <font color="#ffa500">@block_type</font> = <font color="#ffa500">CDR_DB_RAW</font>
+        <font color="#ffa500">@block_size</font> = <font color="#ffa0a0">2352</font>
+        <font color="#ffa500">@wave_check</font> = <font color="#ffa0a0">true</font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">:data</font>, <font color="#ffa500">:mode1</font>
+        <font color="#ffa500">@block_type</font> = <font color="#ffa500">CDR_DB_ROM_MODE1</font>
+        <font color="#ffa500">@block_size</font> = <font color="#ffa0a0">2048</font>
+        <font color="#ffa500">@wave_check</font> = <font color="#ffa0a0">false</font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">:mode2</font>
+        <font color="#ffa500">@block_type</font> = <font color="#ffa500">CDR_DB_ROM_MODE2</font>
+        <font color="#ffa500">@block_size</font> = <font color="#ffa0a0">2336</font>
+        <font color="#ffa500">@wave_check</font> = <font color="#ffa0a0">false</font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">:xamode1</font>
+        <font color="#ffa500">@block_type</font> = <font color="#ffa500">CDR_DB_XA_MODE1</font>
+        <font color="#ffa500">@block_size</font> = <font color="#ffa0a0">2048</font>
+        <font color="#ffa500">@wave_check</font> = <font color="#ffa0a0">false</font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">:xamode2</font>
+        <font color="#ffa500">@block_type</font> = <font color="#ffa500">CDR_DB_XA_MODE2_F2</font>
+        <font color="#ffa500">@block_size</font> = <font color="#ffa0a0">2324</font>
+        <font color="#ffa500">@wave_check</font> = <font color="#ffa0a0">false</font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">:vcd</font>
+        <font color="#ffa500">@block_type</font> = <font color="#ffa500">CDR_DB_XA_MODE2_F2</font>;
+        <font color="#ffa500">@block_size</font> = <font color="#ffa0a0">2352</font>
+        <font color="#ffa500">@config</font>[<font color="#ffa500">:dao</font>] = <font color="#ffa0a0">true</font>
+        <font color="#ffa500">@config</font>[<font color="#ffa500">:nogap</font>] = <font color="#ffa0a0">true</font>
+        <font color="#ffa500">@wave_check</font> = <font color="#ffa0a0">false</font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">:vcdbin</font>
+        <font color="#ffa500">@block_type</font> = <font color="#ffa500">CDR_DB_XA_MODE2_F2</font>;
+        <font color="#ffa500">@block_size</font> = <font color="#ffa0a0">2352</font>
+        <font color="#ffa500">@config</font>[<font color="#ffa500">:dao</font>] = <font color="#ffa0a0">true</font>
+        <font color="#ffa500">@config</font>[<font color="#ffa500">:nogap</font>] = <font color="#ffa0a0">false</font>
+        <font color="#ffa500">@wave_check</font> = <font color="#ffa0a0">false</font>
+        <font color="#ffa500">@vcdbin</font> = <font color="#ffa0a0">true</font>
+    <font color="#ffff60"><b>end</b></font>
+  <font color="#ff80ff">end</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">add_track</font>(file)
+    <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@vcdbin</font>
+      <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">ArgumentError</font>, <font color="#ffa500">&quot;</font><font color="#ffa0a0">Already have enough file for vcdbin</font><font color="#ffa500">&quot;</font> \
+          <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@vcdbin</font>.is_a?(<font color="#ffa500">String</font>)
+      <font color="#ffa500">@vcdbin</font> = file
+      <font color="#ffa500">@tracks</font>.clear()
+      track = <font color="#ffa500">TrackInfo</font>.new()
+      track.name = <font color="#ffa500">@vcdbin</font>
+      track.pregap = <font color="#ffa0a0">150</font>
+      track.block_size = <font color="#ffa500">@block_size</font>
+      track.block_type = <font color="#ffa500">@block_type</font>
+      track.size = <font color="#ffa0a0">300</font> * <font color="#ffa500">@block_size</font>
+      <font color="#ffa500">@tracks</font>.push(track)
+      track = <font color="#ffa500">TrackInfo</font>.new()
+      track.name = <font color="#ffa500">@vcdbin</font>
+      track.pregap = <font color="#ffa0a0">150</font>
+      track.block_size = <font color="#ffa500">@block_size</font>
+      track.block_type = <font color="#ffa500">@block_type</font>
+      track.size = <font color="#ffa500">File</font>.size(<font color="#ffa500">@vcdbin</font>) - (<font color="#ffa0a0">300</font> * <font color="#ffa500">@block_size</font>) - (<font color="#ffa0a0">150</font> * <font color="#ffa500">@block_size</font>)
+      <font color="#ffa500">@tracks</font>.push(track)
+    <font color="#ffff60"><b>else</b></font>
+      track = <font color="#ffa500">TrackInfo</font>.new()
+      <font color="#ffff60"><b>if</b></font> file == <font color="#ffa500">'</font><font color="#ffa0a0">-</font><font color="#ffa500">'</font>
+        <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@done_stdin</font>
+          <font color="#ffa500">STDERR</font>.puts <font color="#ffa500">'</font><font color="#ffa0a0">skipping multiple usages of stdin</font><font color="#ffa500">'</font>
+          <font color="#ffff60"><b>return</b></font>
+        <font color="#ffff60"><b>else</b></font>
+          track.fd = <font color="#ffa500">STDIN</font>
+          track.size = -<font color="#ffa0a0">1</font>
+          <font color="#ffa500">@done_stdin</font> = <font color="#ffa0a0">true</font>
+        <font color="#ffff60"><b>end</b></font>
+      <font color="#ffff60"><b>else</b></font>
+        track.fd = <font color="#ffa500">File</font>.open(file, <font color="#ffa500">&quot;</font><font color="#ffa0a0">rb</font><font color="#ffa500">&quot;</font>)
+        track.size = <font color="#ffa500">File</font>.size(file)
+        <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">IOError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">track.size &lt; 0 ?</font><font color="#ffa500">'</font> <font color="#ffff60"><b>if</b></font> track.size &lt; <font color="#ffa0a0">0</font>
+      <font color="#ffff60"><b>end</b></font>
+      track.name = file
+      track.block_size = <font color="#ffa500">@block_size</font>
+      track.block_type = <font color="#ffa500">@block_type</font>
+      <font color="#80a0ff">#</font>
+      <font color="#80a0ff"># </font><span style="background-color: #ffff00"><font color="#0000ff">XXX</font></span><font color="#80a0ff"> something fishy about cdrecord dao mixmode</font>
+      <font color="#80a0ff">#     Only usefull in DAO</font>
+      <font color="#80a0ff">#track.pregap = (@tracks.empty? || (@tracks[-1].block_type == track.block_type)) ? 150 : 255</font>
+      track.pregap = (<font color="#ffa500">@tracks</font>.empty? || (<font color="#ffa500">@tracks</font>[-<font color="#ffa0a0">1</font>].block_type != track.block_type)) ? <font color="#ffa0a0">150</font> : <font color="#ffa0a0">0</font>
+      _setup_wavefile(track) \
+        <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@wave_check</font> &amp;&amp; track.size != -<font color="#ffa0a0">1</font> &amp;&amp; <font color="#ffa500">/</font><font color="#ffa0a0">\.wav$</font><font color="#ffa500">/i</font> =~ track.name
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@config</font>[<font color="#ffa500">:verbose</font>]
+        roundup_blocks = track.roundup_blocks()
+        <font color="#ffa500">STDERR</font>.printf(
+          <font color="#ffa500">&quot;</font><font color="#ffa0a0">adding type 0x%02x file %s size %d KB %d blocks %s</font><font color="#ffa500">\n</font><font color="#ffa500">&quot;</font>,
+          track.block_type, track.name, track.size/<font color="#ffa0a0">1024</font>,
+          roundup_blocks,
+          ((track.size / track.block_size) != roundup_blocks) ?
+            <font color="#ffa500">&quot;</font><font color="#ffa0a0">(0 padded)</font><font color="#ffa500">&quot;</font> :
+            <font color="#ffa500">&quot;&quot;</font>
+        );
+      <font color="#ffff60"><b>end</b></font>
+      <font color="#ffa500">@tracks</font>.push(track)
+    <font color="#ffff60"><b>end</b></font>
+  <font color="#ffff60"><b>end</b></font>
+  <font color="#ff80ff">def </font><font color="#40ffff">_setup_wavefile</font>(track)
+    <font color="#ffff60"><b>begin</b></font>
+      header = track.fd.sysread(<font color="#ffa0a0">44</font>)
+      <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">InvalidWave</font> <font color="#ffff60"><b>unless</b></font> header.size() == <font color="#ffa0a0">44</font>
+      header = header.unpack(<font color="#ffa500">'</font><font color="#ffa0a0">a4Ia4a4Is2I2s2a4I</font><font color="#ffa500">'</font>)
+      <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">InvalidWave</font> <font color="#ffff60"><b>unless</b></font> header[<font color="#ffa0a0">0</font>] == <font color="#ffa500">'</font><font color="#ffa0a0">RIFF</font><font color="#ffa500">'</font> &amp;&amp;
+        header[<font color="#ffa0a0">2</font>] == <font color="#ffa500">'</font><font color="#ffa0a0">WAVE</font><font color="#ffa500">'</font> &amp;&amp; header[<font color="#ffa0a0">3</font>] == <font color="#ffa500">'</font><font color="#ffa0a0">fmt </font><font color="#ffa500">'</font> &amp;&amp;
+        header[<font color="#ffa0a0">6</font>] == <font color="#ffa0a0">2</font> &amp;&amp; header[<font color="#ffa0a0">7</font>] == <font color="#ffa0a0">44100</font> &amp;&amp;
+        header[<font color="#ffa0a0">10</font>] == <font color="#ffa0a0">16</font>
+      track.size -= <font color="#ffa0a0">44</font>
+    <font color="#ffff60"><b>rescue</b></font> <font color="#ffa500">InvalidWave</font>
+      track.fd.sysseek(<font color="#ffa0a0">0</font>, <font color="#ffa500">IO</font>::<font color="#ffa500">SEEK_SET</font>)
+    <font color="#ffff60"><b>end</b></font>
+  <font color="#ff80ff">end</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">burn</font>
+    <font color="#ffff60"><b>unless</b></font> <font color="#ffa500">@tracks</font>.empty?
+      <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDIOCSTART)</font><font color="#ffa500">'</font> \
+        <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDIOCSTART</font>, [<font color="#ffa0a0">0</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">i</font><font color="#ffa500">'</font>)) &lt; <font color="#ffa0a0">0</font>
+      <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDRIOCINITWRITER)</font><font color="#ffa500">'</font> \
+        <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDRIOCINITWRITER</font>, [<font color="#ffa500">@config</font>[<font color="#ffa500">:test_write</font>] ? <font color="#ffa0a0">1</font> : <font color="#ffa0a0">0</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">i</font><font color="#ffa500">'</font>)) &lt; <font color="#ffa0a0">0</font>
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@config</font>[<font color="#ffa500">:dao</font>]
+        do_DAO()
+      <font color="#ffff60"><b>else</b></font>
+        do_TAO()
+      <font color="#ffff60"><b>end</b></font>
+    <font color="#ffff60"><b>end</b></font>
+  <font color="#ffff60"><b>end</b></font>
+  <font color="#ff80ff">def </font><font color="#40ffff">lba2msf</font>(lba)
+    lba += <font color="#ffa0a0">150</font>
+    lba &amp;= <font color="#ffa0a0">0xffffff</font>
+    [lba / (<font color="#ffa0a0">60</font> * <font color="#ffa0a0">75</font>), (lba % (<font color="#ffa0a0">60</font> * <font color="#ffa0a0">75</font>)) / <font color="#ffa0a0">75</font>, (lba % (<font color="#ffa0a0">60</font> * <font color="#ffa0a0">75</font>)) % <font color="#ffa0a0">75</font>]
+  <font color="#ff80ff">end</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">msf2lba</font>(min, sec, frm)
+    (((min * <font color="#ffa0a0">60</font>) + sec) * <font color="#ffa0a0">75</font>) + frm - <font color="#ffa0a0">150</font>
+  <font color="#ff80ff">end</font>
+  <font color="#ffff60"><b>private</b></font> <font color="#ffa500">:lba2msf</font>, <font color="#ffa500">:msf2lba</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">diskinfo</font>
+    <font color="#80a0ff"># </font><span style="background-color: #ffff00"><font color="#0000ff">XXX</font></span><font color="#80a0ff"> sizeof(off_t) == 8, but ruby cannot deal with that!</font>
+    ret = <font color="#ffa500">&quot;</font><font color="#ffa500">\0</font><font color="#ffa500">&quot;</font>*<font color="#ffa0a0">8</font>
+    <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(DIOCGMEDIASIZE)</font><font color="#ffa500">'</font> \
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">DIOCGMEDIASIZE</font>, ret)  &lt; <font color="#ffa0a0">0</font>
+    ret = ret.unpack(<font color="#ffa500">'</font><font color="#ffa0a0">L</font><font color="#ffa500">'</font>)[<font color="#ffa0a0">0</font>]
+    <font color="#ffff60"><b>if</b></font> ret % <font color="#ffa0a0">2352</font> == <font color="#ffa0a0">0</font>
+      blk = ret / <font color="#ffa0a0">2352</font>
+    <font color="#ffff60"><b>elsif</b></font> ret % <font color="#ffa0a0">2048</font> == <font color="#ffa0a0">0</font>
+      blk = ret / <font color="#ffa0a0">2048</font>
+    <font color="#ffff60"><b>else</b></font>
+      <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(DIOCGMEDIASIZE) : Unknown blocksize</font><font color="#ffa500">'</font>
+    <font color="#ffff60"><b>end</b></font>
+    m, s, f = lba2msf(blk - <font color="#ffa0a0">150</font>)
+    <font color="#ffa500">STDOUT</font>.printf(<font color="#ffa500">&quot;</font><font color="#ffa0a0">Total capacity: %02d:%02d:%02d (%d blocks, %d/%d MB)</font><font color="#ffa500">\n</font><font color="#ffa500">&quot;</font>,
+      m, s, f, blk, (blk * <font color="#ffa0a0">2048</font>) / <font color="#ffa0a0">1024</font> / <font color="#ffa0a0">1024</font>, (blk * <font color="#ffa0a0">2352</font>) / <font color="#ffa0a0">1024</font> / <font color="#ffa0a0">1024</font>)
+  <font color="#ffff60"><b>end</b></font>
+  <font color="#ff80ff">def </font><font color="#40ffff">info</font>
+    hdr = [<font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">SC2</font><font color="#ffa500">'</font>)
+    <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDIOREADTOCHEADER)</font><font color="#ffa500">'</font> \
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDIOREADTOCHEADER</font>, hdr) &lt; <font color="#ffa0a0">0</font>
+    hdr = hdr.unpack(<font color="#ffa500">'</font><font color="#ffa0a0">SC2</font><font color="#ffa500">'</font>)
+    ntocentries = hdr[<font color="#ffa0a0">2</font>] - hdr[<font color="#ffa0a0">1</font>] + <font color="#ffa0a0">1</font>
+    toc_buffer = [<font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">xC2xN</font><font color="#ffa500">'</font>) * <font color="#ffa0a0">100</font>
+    sizeof_cd_toc_entry = toc_buffer.size() / <font color="#ffa0a0">100</font>
+    toc_ent = [
+      <font color="#ffa500">CD_LBA_FORMAT</font>, <font color="#ffa0a0">0</font>,
+      (ntocentries + <font color="#ffa0a0">1</font>) * sizeof_cd_toc_entry,
+      toc_buffer
+    ].pack(<font color="#ffa500">'</font><font color="#ffa0a0">C2SP</font><font color="#ffa500">'</font>)
+    <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDIOREADTOCENTRYS)</font><font color="#ffa500">'</font> \
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDIOREADTOCENTRYS</font>, toc_ent) &lt; <font color="#ffa0a0">0</font>
+    tracks = []
+    <font color="#ffa0a0">0</font>.upto(ntocentries) <font color="#ffff60"><b>do</b></font> |<font color="#ffa500">i</font>|
+        ent = toc_buffer.slice!(<font color="#ffa0a0">0</font>, sizeof_cd_toc_entry)
+        bits = ent.slice!(<font color="#ffa0a0">0</font>, <font color="#ffa0a0">2</font>)[<font color="#ffa0a0">1</font> .. -<font color="#ffa0a0">1</font>].unpack(<font color="#ffa500">'</font><font color="#ffa0a0">C</font><font color="#ffa500">'</font>)[<font color="#ffa0a0">0</font>]
+        is_data = ((bits &amp; ~((bits &gt;&gt; <font color="#ffa0a0">4</font>) &lt;&lt; <font color="#ffa0a0">4</font>)) &amp; <font color="#ffa0a0">4</font>) != <font color="#ffa0a0">0</font>
+        track, lba = ent.unpack(<font color="#ffa500">'</font><font color="#ffa0a0">CxN</font><font color="#ffa500">'</font>)
+        is_leadout = (i == ntocentries)
+        <font color="#ffff60"><b>if</b></font> i &gt; <font color="#ffa0a0">0</font>
+          <font color="#ffff60"><b>if</b></font> is_data &amp;&amp; !tracks[-<font color="#ffa0a0">1</font>][<font color="#ffa0a0">2</font>] &amp;&amp; !is_leadout
+            <font color="#80a0ff"># </font><span style="background-color: #ffff00"><font color="#0000ff">XXX</font></span><font color="#80a0ff"> Possible CD-EXTRA</font>
+            tracks[-<font color="#ffa0a0">1</font>] &lt;&lt; (lba - (<font color="#ffa0a0">152</font> * <font color="#ffa0a0">75</font>))
+          <font color="#ffff60"><b>else</b></font>
+            tracks[-<font color="#ffa0a0">1</font>] &lt;&lt; lba
+            tracks[-<font color="#ffa0a0">1</font>][-<font color="#ffa0a0">1</font>] -= <font color="#ffa0a0">150</font> <font color="#ffff60"><b>if</b></font> is_data != tracks[-<font color="#ffa0a0">1</font>][<font color="#ffa0a0">2</font>] &amp;&amp; !is_leadout
+          <font color="#ffff60"><b>end</b></font>
+        <font color="#ffff60"><b>end</b></font>
+        tracks.push([track, lba, is_data, is_leadout])
+    <font color="#ffff60"><b>end</b></font>
+    <font color="#ffa500">STDOUT</font>.printf(
+      <font color="#ffa500">&quot;</font><font color="#ffa0a0">Starting track = %d, ending track = %d, TOC size = %d bytes</font><font color="#ffa500">\n</font><font color="#ffa500">&quot;</font>,
+      hdr[<font color="#ffa0a0">1</font>], hdr[<font color="#ffa0a0">2</font>], hdr[<font color="#ffa0a0">0</font>]
+    )
+    <font color="#ffa500">STDOUT</font>.puts <font color="#ffa500">'</font><font color="#ffa0a0">track     start  duration   block  length   type</font><font color="#ffa500">'</font>
+    <font color="#ffa500">STDOUT</font>.puts <font color="#ffa500">'</font><font color="#ffa0a0">-------------------------------------------------</font><font color="#ffa500">'</font>
+    last_type = <font color="#ffa0a0">nil</font>
+    tracks.each <font color="#ffff60"><b>do</b></font> |<font color="#ffa500">num, lba_start, is_data, is_leadout, lba_end</font>|
+      m, s, f = lba2msf(lba_start)
+      <font color="#ffff60"><b>if</b></font> is_leadout
+        <font color="#ffa500">STDOUT</font>.printf(
+          <font color="#ffa500">&quot;</font><font color="#ffa0a0">%5d  %2d:%02d.%02d         -  %6d       -      -</font><font color="#ffa500">\n</font><font color="#ffa500">&quot;</font>,
+          num, m, s, f, lba_start
+        )
+      <font color="#ffff60"><b>else</b></font>
+        len = lba_end - lba_start
+        dm, ds, df = lba2msf(len - <font color="#ffa0a0">150</font>)
+        <font color="#ffa500">STDOUT</font>.printf(
+          <font color="#ffa500">&quot;</font><font color="#ffa0a0">%5d  %2d:%02d.%02d  %2d:%02d.%02d  %6d  %6d  %5s</font><font color="#ffa500">\n</font><font color="#ffa500">&quot;</font>,
+          num, m, s, f, dm, ds, df, lba_start, len,
+          is_data ? <font color="#ffa500">'</font><font color="#ffa0a0">data</font><font color="#ffa500">'</font> : <font color="#ffa500">'</font><font color="#ffa0a0">audio</font><font color="#ffa500">'</font>
+        )
+      <font color="#ffff60"><b>end</b></font>
+    <font color="#ffff60"><b>end</b></font>
+  <font color="#ffff60"><b>end</b></font>
+  <font color="#ff80ff">def </font><font color="#40ffff">msinfo</font>
+    <font color="#80a0ff"># </font><span style="background-color: #ffff00"><font color="#0000ff">XXX</font></span>
+    <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDRIOCINITTRACK)</font><font color="#ffa500">'</font> \
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDRIOCINITTRACK</font>, [<font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">i3</font><font color="#ffa500">'</font>)) &lt; <font color="#ffa0a0">0</font>
+    header = [<font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">SC2</font><font color="#ffa500">'</font>)
+    <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDIOREADTOCHEADER)</font><font color="#ffa500">'</font> \
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDIOREADTOCHEADER</font>, header) &lt; <font color="#ffa0a0">0</font>
+    single_entry = [
+      <font color="#ffa500">CD_LBA_FORMAT</font>, header.unpack(<font color="#ffa500">'</font><font color="#ffa0a0">SC2</font><font color="#ffa500">'</font>)[<font color="#ffa0a0">2</font>], <font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>, <font color="#ffa0a0">0</font>
+    ].pack(<font color="#ffa500">'</font><font color="#ffa0a0">C2x3C2xN</font><font color="#ffa500">'</font>)
+    <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDIOREADTOCENTRY)</font><font color="#ffa500">'</font> \
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDIOREADTOCENTRY</font>, single_entry) &lt; <font color="#ffa0a0">0</font>
+    addr = [<font color="#ffa0a0">0</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">i</font><font color="#ffa500">'</font>)
+    <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDRIOCNEXTWRITEABLEADDR)</font><font color="#ffa500">'</font> \
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDRIOCNEXTWRITEABLEADDR</font>, addr) &lt; <font color="#ffa0a0">0</font>
+    lasttrack = single_entry.unpack(<font color="#ffa500">'</font><font color="#ffa0a0">C2x3C2xN</font><font color="#ffa500">'</font>)
+    <font color="#ffff60"><b>if</b></font> ((lasttrack[<font color="#ffa0a0">2</font>] &amp; ~((lasttrack[<font color="#ffa0a0">2</font>] &gt;&gt; <font color="#ffa0a0">4</font>) &lt;&lt; <font color="#ffa0a0">4</font>)) &amp; <font color="#ffa0a0">4</font>) != <font color="#ffa0a0">0</font>
+      lastaddr = lasttrack[<font color="#ffa0a0">4</font>]
+    <font color="#ffff60"><b>else</b></font>
+      lastaddr = <font color="#ffa0a0">0</font>
+    <font color="#ffff60"><b>end</b></font>
+    <font color="#ffa500">STDOUT</font>.puts <font color="#ffa500">&quot;</font><font color="#ffa500">#{lastaddr}</font><font color="#ffa0a0">,</font><font color="#ffa500">#{addr.unpack('i')[0]}</font><font color="#ffa500">&quot;</font>
+  <font color="#ffff60"><b>end</b></font>
+  <font color="#ff80ff">def </font><font color="#40ffff">fixate</font>
+    <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@config</font>[<font color="#ffa500">:fixate</font>] &amp;&amp; !<font color="#ffa500">@config</font>[<font color="#ffa500">:dao</font>]
+      confirm()
+      <font color="#ffa500">STDERR</font>.puts <font color="#ffa500">'</font><font color="#ffa0a0">fixating CD, please wait..</font><font color="#ffa500">'</font> <font color="#ffff60"><b>unless</b></font> <font color="#ffa500">@config</font>[<font color="#ffa500">:quiet</font>]
+      <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDRIOCFIXATE)</font><font color="#ffa500">'</font> \
+        <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDRIOCFIXATE</font>, [<font color="#ffa500">@config</font>[<font color="#ffa500">:multi</font>] ? <font color="#ffa0a0">1</font> : <font color="#ffa0a0">0</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">i</font><font color="#ffa500">'</font>)) &lt; <font color="#ffa0a0">0</font>
+    <font color="#ffff60"><b>end</b></font>
+  <font color="#ffff60"><b>end</b></font>
+  <font color="#ff80ff">def </font><font color="#40ffff">eject</font>
+    <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@config</font>[<font color="#ffa500">:eject</font>]
+      <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDIOCEJECT)</font><font color="#ffa500">'</font> \
+        <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDIOCEJECT</font>) &lt; <font color="#ffa0a0">0</font>
+    <font color="#ffff60"><b>end</b></font>
+    <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@config</font>[<font color="#ffa500">:close</font>]
+      sleep(<font color="#ffa0a0">0.5</font>)
+      <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDIOCCLOSE)</font><font color="#ffa500">'</font> \
+        <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDIOCCLOSE</font>) &lt; <font color="#ffa0a0">0</font>
+    <font color="#ffff60"><b>end</b></font>
+  <font color="#ffff60"><b>end</b></font>
+  <font color="#ff80ff">def </font><font color="#40ffff">cleanup</font>
+    <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDRIOCSETBLOCKSIZE</font>, [<font color="#ffa500">@saved_block_size</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">i</font><font color="#ffa500">'</font>)) \
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@do_cleanup</font> &amp;&amp; !<font color="#ffa500">@fd</font>.closed? &amp;&amp; <font color="#ffa500">@saved_block_size</font>.is_a?(<font color="#ffa500">Integer</font>)
+    <font color="#ffa500">@do_cleanup</font> = <font color="#ffa0a0">false</font>
+  <font color="#ffff60"><b>end</b></font>
+  <font color="#ff80ff">def </font><font color="#40ffff">close</font>
+    <font color="#ffa500">@fd</font>.close() <font color="#ffff60"><b>unless</b></font> <font color="#ffa500">@fd</font>.closed?
+    <font color="#ffa500">@tracks</font>.each <font color="#ffff60"><b>do</b></font> |<font color="#ffa500">track</font>|
+      track.fd.close() <font color="#ffff60"><b>if</b></font> track.fd &amp;&amp;  !track.fd.closed?
+    <font color="#ffff60"><b>end</b></font>
+  <font color="#ff80ff">end</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">erase</font>
+    _erase_blank(<font color="#ffa500">CDR_B_ALL</font>)
+  <font color="#ff80ff">end</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">blank</font>
+    _erase_blank(<font color="#ffa500">CDR_B_MIN</font>)
+  <font color="#ff80ff">end</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">_erase_blank</font>(blank)
+    confirm()
+    quiet = <font color="#ffa500">@config</font>[<font color="#ffa500">:quiet</font>]
+    task = (blank == <font color="#ffa500">CDR_B_ALL</font>) ? <font color="#ffa500">'</font><font color="#ffa0a0">eras</font><font color="#ffa500">'</font> : <font color="#ffa500">'</font><font color="#ffa0a0">blank</font><font color="#ffa500">'</font>
+    <font color="#ffa500">STDERR</font>.printf(<font color="#ffa500">&quot;</font><font color="#ffa0a0">%sing CD, please wait..</font><font color="#ffa500">\r</font><font color="#ffa500">&quot;</font>, task) <font color="#ffff60"><b>unless</b></font> quiet
+    <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDRIOCBLANK)</font><font color="#ffa500">'</font> \
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDRIOCBLANK</font>, [blank].pack(<font color="#ffa500">'</font><font color="#ffa0a0">i</font><font color="#ffa500">'</font>)) &lt; <font color="#ffa0a0">0</font>
+    <font color="#80a0ff">#percent = [0].pack('i')</font>
+    <font color="#80a0ff">#_percent = nil</font>
+    <font color="#80a0ff">#error = 0</font>
+    <font color="#80a0ff">#_last = 0</font>
+    ind = <font color="#ffa500">%w[</font><font color="#ffa0a0">- \\ | /</font><font color="#ffa500">]</font>
+    idx = <font color="#ffa0a0">0</font>
+    <font color="#ffff60"><b>while</b></font> <font color="#ffa0a0">true</font>
+      sleep(<font color="#ffa0a0">0.25</font>)
+      <font color="#ffff60"><b>begin</b></font>
+        <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">Errno</font>::<font color="#ffa500">EBUSY</font> <font color="#ffff60"><b>if</b></font> idx % <font color="#ffa0a0">4</font> != <font color="#ffa0a0">0</font>
+        error = <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDIOCRESET</font>)
+      <font color="#ffff60"><b>rescue</b></font> <font color="#ffa500">Errno</font>::<font color="#ffa500">EBUSY</font>
+        error = -<font color="#ffa0a0">1</font>
+      <font color="#ffff60"><b>end</b></font>
+      <font color="#ffff60"><b>if</b></font> error == <font color="#ffa0a0">0</font>
+        <font color="#ffa500">STDERR</font>.printf(<font color="#ffa500">&quot;</font><font color="#ffa0a0">%sing CD - %s DONE          </font><font color="#ffa500">\r</font><font color="#ffa500">&quot;</font>, task, ind[idx % <font color="#ffa0a0">4</font>]) \
+            <font color="#ffff60"><b>unless</b></font> quiet
+        <font color="#ffff60"><b>break</b></font>
+      <font color="#ffff60"><b>else</b></font>
+        <font color="#ffa500">STDERR</font>.printf(<font color="#ffa500">&quot;</font><font color="#ffa0a0">%sing CD - %s               </font><font color="#ffa500">\r</font><font color="#ffa500">&quot;</font>, task, ind[idx % <font color="#ffa0a0">4</font>]) \
+            <font color="#ffff60"><b>unless</b></font> quiet
+      <font color="#ffff60"><b>end</b></font>
+      idx += <font color="#ffa0a0">1</font>
+      <font color="#80a0ff">#error = @fd.ioctl(CDRIOCGETPROGRESS, percent)</font>
+      <font color="#80a0ff">#_percent = percent.unpack('i')[0]</font>
+      <font color="#80a0ff">#_percent = 0 unless _percent.is_a?(Integer)</font>
+      <font color="#80a0ff">#STDERR.printf(&quot;%sing CD - %d %% done     \r&quot;, task, _percent) \</font>
+      <font color="#80a0ff">#      if _percent &gt; 0 &amp;&amp; !quiet</font>
+      <font color="#80a0ff">#break if error != 0 || _percent == 100 || (_percent == 0 &amp;&amp; _last &gt; 90)</font>
+      <font color="#80a0ff">#_last = _percent</font>
+    <font color="#ffff60"><b>end</b></font>
+    <font color="#ffa500">STDERR</font>.print <font color="#ffa500">&quot;</font><font color="#ffa500">\n</font><font color="#ffa500">&quot;</font>
+  <font color="#ffff60"><b>end</b></font>
+  <font color="#ff80ff">def </font><font color="#40ffff">cue_ent</font>(ctl, adr, track, idx, dataform, scms, lba)
+    lba += <font color="#ffa0a0">150</font>
+    <font color="#80a0ff"># litle-endian, unsigned 4Bit truncation</font>
+    [
+      ((ctl &amp; <font color="#ffa0a0">0xf</font>) &lt;&lt; <font color="#ffa0a0">4</font>) | (adr &amp; <font color="#ffa0a0">0xf</font>),
+      track, idx, dataform, scms,
+      lba / (<font color="#ffa0a0">60</font> * <font color="#ffa0a0">75</font>), (lba % (<font color="#ffa0a0">60</font> * <font color="#ffa0a0">75</font>)) / <font color="#ffa0a0">75</font>, (lba % (<font color="#ffa0a0">60</font> * <font color="#ffa0a0">75</font>)) % <font color="#ffa0a0">75</font>
+    ].pack(<font color="#ffa500">'</font><font color="#ffa0a0">C8</font><font color="#ffa500">'</font>)
+  <font color="#ff80ff">end</font>
+  <font color="#ff80ff">def </font><font color="#40ffff">do_DAO</font>
+    verbose = <font color="#ffa500">@config</font>[<font color="#ffa500">:verbose</font>]
+    cdformat = <font color="#ffa500">CDR_SESS_CDROM</font>
+    j = <font color="#ffa0a0">0</font>
+    cue = <font color="#ffa500">''</font>
+    <font color="#ffa500">STDERR</font>.puts <font color="#ffa500">'</font><font color="#ffa0a0">Burning mode: DAO</font><font color="#ffa500">'</font> <font color="#ffff60"><b>if</b></font> verbose
+    addr = [<font color="#ffa0a0">0</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">i</font><font color="#ffa500">'</font>)
+    <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDRIOCNEXTWRITEABLEADDR)</font><font color="#ffa500">'</font> \
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDRIOCNEXTWRITEABLEADDR</font>, addr) &lt; <font color="#ffa0a0">0</font>
+    addr = addr.unpack(<font color="#ffa500">'</font><font color="#ffa0a0">i</font><font color="#ffa500">'</font>)[<font color="#ffa0a0">0</font>]
+    <font color="#ffa500">STDERR</font>.puts <font color="#ffa500">&quot;</font><font color="#ffa0a0">next writeable LBA </font><font color="#ffa500">#{addr}</font><font color="#ffa500">&quot;</font> <font color="#ffff60"><b>if</b></font> verbose
+    <font color="#ffff60"><b>if</b></font> addr != -<font color="#ffa0a0">150</font>
+      <font color="#ffa500">STDERR</font>.puts <font color="#ffa500">&quot;</font><font color="#ffa0a0">resetting next writable LBA!</font><font color="#ffa500">&quot;</font> <font color="#ffff60"><b>if</b></font> verbose
+      addr = -<font color="#ffa0a0">150</font>
+    <font color="#ffff60"><b>end</b></font>
+    prevtrack = <font color="#ffa500">@tracks</font>[<font color="#ffa0a0">0</font>]
+    cue &lt;&lt; cue_ent(
+      <font color="#ffa500">BT2CTL</font>[prevtrack.block_type], <font color="#ffa0a0">0x01</font>, <font color="#ffa0a0">0x00</font>, <font color="#ffa0a0">0x0</font>,
+      (<font color="#ffa500">BT2DF</font>[prevtrack.block_type] &amp; <font color="#ffa0a0">0xf0</font>) |
+      (prevtrack.block_type &lt; <font color="#ffa0a0">8</font> ? <font color="#ffa0a0">0x01</font> : <font color="#ffa0a0">0x04</font>), <font color="#ffa0a0">0x00</font>, addr
+    )
+    <font color="#ffa500">@tracks</font>.each_with_index <font color="#ffff60"><b>do</b></font> |<font color="#ffa500">track, i</font>|
+      <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">track type not supported in DAO mode</font><font color="#ffa500">'</font> \
+        <font color="#ffff60"><b>if</b></font> <font color="#ffa500">BT2CTL</font>[track.block_type] &lt; <font color="#ffa0a0">0</font> || <font color="#ffa500">BT2DF</font>[track.block_type] &lt; <font color="#ffa0a0">0</font>
+      cdformat = <font color="#ffa500">CDR_SESS_CDROM_XA</font> \
+        <font color="#ffff60"><b>if</b></font> track.block_type &gt;= <font color="#ffa500">CDR_DB_XA_MODE1</font>
+      <font color="#ffff60"><b>if</b></font> track.pregap &gt; <font color="#ffa0a0">0</font>
+        cue &lt;&lt; cue_ent(
+          <font color="#ffa500">BT2CTL</font>[track.block_type], <font color="#ffa0a0">0x01</font>, i + <font color="#ffa0a0">1</font>, <font color="#ffa0a0">0x0</font>,
+          <font color="#ffa500">BT2DF</font>[track.block_type], <font color="#ffa0a0">0x00</font>, addr
+        )
+        addr += track.pregap
+      <font color="#ffff60"><b>end</b></font>
+      track.addr = addr
+      <font color="#ffa500">STDERR</font>.puts <font color="#ffa500">&quot;</font><font color="#ffa0a0">track </font><font color="#ffa500">#{i + 1}</font><font color="#ffa0a0">: addr=</font><font color="#ffa500">#{track.addr}</font><font color="#ffa0a0"> pregap=</font><font color="#ffa500">#{track.pregap}</font><font color="#ffa500">&quot;</font> \
+        <font color="#ffff60"><b>if</b></font> verbose
+      cue &lt;&lt; cue_ent(
+        <font color="#ffa500">BT2CTL</font>[track.block_type], <font color="#ffa0a0">0x01</font>, i + <font color="#ffa0a0">1</font>, <font color="#ffa0a0">0x1</font>,
+        <font color="#ffa500">BT2DF</font>[track.block_type], <font color="#ffa0a0">0x00</font>, addr
+      )
+      addr += track.roundup_blocks()
+      prevtrack = track
+    <font color="#ffff60"><b>end</b></font>
+    cue &lt;&lt; cue_ent(
+      <font color="#ffa500">BT2CTL</font>[prevtrack.block_type], <font color="#ffa0a0">0x01</font>, <font color="#ffa0a0">0xaa</font>, <font color="#ffa0a0">0x01</font>,
+      (<font color="#ffa500">BT2DF</font>[prevtrack.block_type] &amp; <font color="#ffa0a0">0xf0</font>) |
+      (prevtrack.block_type &lt; <font color="#ffa0a0">8</font> ? <font color="#ffa0a0">0x01</font> : <font color="#ffa0a0">0x04</font>), <font color="#ffa0a0">0x00</font>, addr
+    )
+    cuesheet = [
+      cue.size(), cue, cdformat,
+      <font color="#ffa500">@config</font>[<font color="#ffa500">:multi</font>] ? <font color="#ffa500">CDR_SESS_MULTI</font> : <font color="#ffa500">CDR_SESS_NONE</font>,
+      <font color="#ffa500">@config</font>[<font color="#ffa500">:test_write</font>] ? <font color="#ffa0a0">1</font> : <font color="#ffa0a0">0</font>
+    ].pack(<font color="#ffa500">'</font><font color="#ffa0a0">iPi3</font><font color="#ffa500">'</font>)
+    <font color="#ffff60"><b>if</b></font> verbose
+      <font color="#80a0ff"># </font><span style="background-color: #ffff00"><font color="#0000ff">XXX</font></span>
+      <font color="#ffa500">STDERR</font>.print <font color="#ffa500">'</font><font color="#ffa0a0">CUE sheet:</font><font color="#ffa500">'</font>
+      cue.unpack(<font color="#ffa500">&quot;</font><font color="#ffa0a0">C</font><font color="#ffa500">#{cue.size()}</font><font color="#ffa500">&quot;</font>).each_with_index <font color="#ffff60"><b>do</b></font> |<font color="#ffa500">val, i</font>|
+        <font color="#ffff60"><b>if</b></font> i % <font color="#ffa0a0">8</font> == <font color="#ffa0a0">0</font>
+          <font color="#ffa500">STDERR</font>.printf(<font color="#ffa500">&quot;</font><font color="#ffa500">\n</font><font color="#ffa0a0"> %02X</font><font color="#ffa500">&quot;</font>, val)
+        <font color="#ffff60"><b>else</b></font>
+          <font color="#ffa500">STDERR</font>.printf(<font color="#ffa500">&quot;</font><font color="#ffa0a0"> %02X</font><font color="#ffa500">&quot;</font>, val)
+        <font color="#ffff60"><b>end</b></font>
+      <font color="#ffff60"><b>end</b></font>
+      <font color="#ffa500">STDERR</font>.printf(<font color="#ffa500">&quot;</font><font color="#ffa500">\n</font><font color="#ffa500">&quot;</font>)
+    <font color="#ffff60"><b>end</b></font>
+    confirm()
+    <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDRIOCSENDCUE)</font><font color="#ffa500">'</font> \
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDRIOCSENDCUE</font>, cuesheet) &lt; <font color="#ffa0a0">0</font>
+    prevtrack = <font color="#ffa0a0">nil</font>
+    retry_pregap = -<font color="#ffa0a0">1</font>
+    paddr = <font color="#ffa0a0">nil</font>
+    buf = <font color="#ffa500">''</font>
+    <font color="#ffff60"><b>begin</b></font>
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@vcdbin</font>
+        <font color="#ffa500">@tracks</font>.clear()
+        track = <font color="#ffa500">TrackInfo</font>.new()
+        track.name = <font color="#ffa500">@vcdbin</font>
+        track.fd = <font color="#ffa500">File</font>.open(<font color="#ffa500">@vcdbin</font>, <font color="#ffa500">&quot;</font><font color="#ffa0a0">rb</font><font color="#ffa500">&quot;</font>)
+        track.block_size = <font color="#ffa500">@block_size</font>
+        track.block_type = <font color="#ffa500">@block_type</font>
+        track.pregap = <font color="#ffa0a0">150</font>
+        track.addr = <font color="#ffa0a0">0</font>
+        track.size = <font color="#ffa500">File</font>.size(<font color="#ffa500">@vcdbin</font>)
+        <font color="#ffa500">@tracks</font>.push(track)
+      <font color="#ffff60"><b>end</b></font>
+      <font color="#ffa500">@tracks</font>.each_with_index <font color="#ffff60"><b>do</b></font> |<font color="#ffa500">track, i</font>|
+        <font color="#ffff60"><b>if</b></font> track.pregap &gt; <font color="#ffa0a0">0</font>
+          <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDRIOCSETBLOCKSIZE)</font><font color="#ffa500">'</font> \
+            <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDRIOCSETBLOCKSIZE</font>, [track.block_size].pack(<font color="#ffa500">'</font><font color="#ffa0a0">i</font><font color="#ffa500">'</font>)) &lt; <font color="#ffa0a0">0</font>
+          total = track.pregap * track.block_size
+          paddr = track.addr - track.pregap
+          <font color="#ffa500">@fd</font>.sysseek(paddr * track.block_size, <font color="#ffa500">IO</font>::<font color="#ffa500">SEEK_SET</font>)
+          retry_pregap = total <font color="#ffff60"><b>if</b></font> i == <font color="#ffa0a0">0</font> &amp;&amp; paddr &lt; <font color="#ffa0a0">0</font>
+          <font color="#ffa500">STDERR</font>.puts <font color="#ffa500">&quot;</font><font color="#ffa0a0">writing pregap addr = </font><font color="#ffa500">#{paddr}</font><font color="#ffa0a0"> total = </font><font color="#ffa500">#{track.pregap}</font><font color="#ffa0a0"> blocks / </font><font color="#ffa500">#{total}</font><font color="#ffa0a0"> bytes</font><font color="#ffa500">&quot;</font> \
+            <font color="#ffff60"><b>if</b></font> verbose
+          <font color="#ffff60"><b>while</b></font> total &gt; <font color="#ffa0a0">0</font>
+            buf.replace(<font color="#ffa500">&quot;</font><font color="#ffa500">\0</font><font color="#ffa500">&quot;</font>*MIN(track.block_size * <font color="#ffa500">BLOCKS</font>, total))
+            <font color="#80a0ff"># </font><span style="background-color: #ffff00"><font color="#0000ff">XXX</font></span><font color="#80a0ff"> workaround for FreeBSD 5+ GEOM !@#$%^&amp;*</font>
+            <font color="#ffff60"><b>begin</b></font>
+              write_size = <font color="#ffa500">@fd</font>.syswrite(buf)
+            <font color="#ffff60"><b>rescue</b></font> <font color="#ffa500">Errno</font>::<font color="#ffa500">EIO</font> =&gt; exp
+              <font color="#ffff60"><b>if</b></font> retry_pregap == total
+                <font color="#ffa500">@fd</font>.sysseek(track.addr * track.block_size, <font color="#ffa500">IO</font>::<font color="#ffa500">SEEK_SET</font>)
+                retry_pregap = -<font color="#ffa0a0">1</font>
+                <font color="#ffff60"><b>retry</b></font>
+              <font color="#ffff60"><b>end</b></font>
+              <font color="#ffff60"><b>raise</b></font> exp
+            <font color="#ffff60"><b>end</b></font>
+            <font color="#ffff60"><b>if</b></font> buf.size() != write_size
+              <font color="#ffa500">STDERR</font>.puts <font color="#ffa500">&quot;</font><font color="#ffa0a0">pregap: only wrote </font><font color="#ffa500">#{write_size}</font><font color="#ffa0a0"> of </font><font color="#ffa500">#{buf.size}</font><font color="#ffa0a0"> bytes</font><font color="#ffa500">&quot;</font>
+              <font color="#ffff60"><b>break</b></font>
+            <font color="#ffff60"><b>end</b></font>
+            total -= write_size
+          <font color="#ffff60"><b>end</b></font>
+        <font color="#ffff60"><b>end</b></font>
+        <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">write_file</font><font color="#ffa500">'</font> <font color="#ffff60"><b>unless</b></font> write_file(track)
+        prevtrack = track
+      <font color="#ffff60"><b>end</b></font>
+    <font color="#ffff60"><b>rescue</b></font>
+      <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDRIOCFLUSH</font>)
+      <font color="#ffff60"><b>raise</b></font>
+    <font color="#ffff60"><b>end</b></font>
+    <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDRIOCFLUSH</font>)
+  <font color="#ffff60"><b>end</b></font>
+  <font color="#ff80ff">def </font><font color="#40ffff">do_TAO</font>
+    <font color="#ffa500">STDERR</font>.puts <font color="#ffa500">'</font><font color="#ffa0a0">Burning mode: TAO</font><font color="#ffa500">'</font> <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@config</font>[<font color="#ffa500">:verbose</font>]
+    confirm()
+    quiet = <font color="#ffa500">@config</font>[<font color="#ffa500">:quiet</font>]
+    addr = [<font color="#ffa0a0">0</font>].pack(<font color="#ffa500">'</font><font color="#ffa0a0">i</font><font color="#ffa500">'</font>)
+    <font color="#ffa500">@tracks</font>.each <font color="#ffff60"><b>do</b></font> |<font color="#ffa500">track</font>|
+      <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDRIOCINITTRACK)</font><font color="#ffa500">'</font> \
+        <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(
+          <font color="#ffa500">CDRIOCINITTRACK</font>,
+          [
+            track.block_type,
+            <font color="#ffa500">@config</font>[<font color="#ffa500">:preemp</font>] ? <font color="#ffa0a0">1</font> : <font color="#ffa0a0">0</font>,
+            <font color="#ffa500">@config</font>[<font color="#ffa500">:test_write</font>] ? <font color="#ffa0a0">1</font> : <font color="#ffa0a0">0</font>
+          ].pack(<font color="#ffa500">'</font><font color="#ffa0a0">i3</font><font color="#ffa500">'</font>)
+        ) &lt; <font color="#ffa0a0">0</font>
+      <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDRIOCNEXTWRITEABLEADDR)</font><font color="#ffa500">'</font> \
+        <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDRIOCNEXTWRITEABLEADDR</font>, addr) &lt; <font color="#ffa0a0">0</font>
+      track.addr = addr.unpack(<font color="#ffa500">'</font><font color="#ffa0a0">i</font><font color="#ffa500">'</font>)[<font color="#ffa0a0">0</font>]
+      track.addr = <font color="#ffa0a0">0</font> <font color="#ffff60"><b>unless</b></font> track.addr.is_a?(<font color="#ffa500">Integer</font>)
+      <font color="#ffa500">STDERR</font>.puts <font color="#ffa500">&quot;</font><font color="#ffa0a0">next writeable LBA </font><font color="#ffa500">#{track.addr}</font><font color="#ffa500">&quot;</font> <font color="#ffff60"><b>unless</b></font> quiet
+      <font color="#ffff60"><b>begin</b></font>
+        write_file(track)
+      <font color="#ffff60"><b>rescue</b></font>
+        <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDRIOCFLUSH</font>)
+        <font color="#ffff60"><b>raise</b></font>
+      <font color="#ffff60"><b>end</b></font>
+      <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDRIOCFLUSH)</font><font color="#ffa500">'</font> \
+        <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDRIOCFLUSH</font>) &lt; <font color="#ffa0a0">0</font>
+    <font color="#ffff60"><b>end</b></font>
+  <font color="#ffff60"><b>end</b></font>
+  <font color="#ff80ff">def </font><font color="#40ffff">write_file</font>(track)
+    <font color="#ffa500">@tot_size</font> ||= <font color="#ffa0a0">0</font>
+    quiet = <font color="#ffa500">@config</font>[<font color="#ffa500">:quiet</font>]
+    filesize = track.size / <font color="#ffa0a0">1024</font>
+    <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">ioctl(CDRIOCSETBLOCKSIZE)</font><font color="#ffa500">'</font> \
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@fd</font>.ioctl(<font color="#ffa500">CDRIOCSETBLOCKSIZE</font>, [track.block_size].pack(<font color="#ffa500">'</font><font color="#ffa0a0">i</font><font color="#ffa500">'</font>)) &lt; <font color="#ffa0a0">0</font>
+    <font color="#ffff60"><b>begin</b></font>
+      <font color="#ffa500">@fd</font>.sysseek(track.addr * track.block_size, <font color="#ffa500">IO</font>::<font color="#ffa500">SEEK_SET</font>) \
+        <font color="#ffff60"><b>if</b></font> track.addr &gt;= <font color="#ffa0a0">0</font>
+    <font color="#ffff60"><b>rescue</b></font>
+    <font color="#ffff60"><b>end</b></font>
+    <font color="#ffa500">STDERR</font>.puts <font color="#ffa500">&quot;</font><font color="#ffa0a0">addr = </font><font color="#ffa500">#{track.addr}</font><font color="#ffa0a0"> size = </font><font color="#ffa500">#{track.size}</font><font color="#ffa0a0"> blocks = </font><font color="#ffa500">#{track.roundup_blocks()}</font><font color="#ffa500">&quot;</font> \
+      <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@config</font>[<font color="#ffa500">:verbose</font>]
+    <font color="#ffff60"><b>unless</b></font> quiet
+      <font color="#ffff60"><b>if</b></font> track.fd == <font color="#ffa500">STDIN</font>
+        <font color="#ffa500">STDERR</font>.puts <font color="#ffa500">'</font><font color="#ffa0a0">writing from stdin</font><font color="#ffa500">'</font>
+      <font color="#ffff60"><b>else</b></font>
+        <font color="#ffa500">STDERR</font>.puts <font color="#ffa500">&quot;</font><font color="#ffa0a0">writing from file </font><font color="#ffa500">#{track.name}</font><font color="#ffa0a0"> size </font><font color="#ffa500">#{filesize}</font><font color="#ffa0a0"> KB</font><font color="#ffa500">&quot;</font>
+      <font color="#ffff60"><b>end</b></font>
+    <font color="#ffff60"><b>end</b></font>
+    size = <font color="#ffa0a0">0</font>
+    count = <font color="#ffa0a0">0</font>
+    buf = <font color="#ffa500">''</font>
+    res = <font color="#ffa0a0">0</font>
+    mod = <font color="#ffa0a0">0</font>
+    read_size = (track.size == -<font color="#ffa0a0">1</font>) ? track.block_size * <font color="#ffa500">BLOCKS</font> : <font color="#ffa0a0">0</font>
+    <font color="#ffff60"><b>begin</b></font>
+      <font color="#ffff60"><b>while</b></font> <font color="#ffa0a0">true</font>
+        read_size = MIN(track.size - size, track.block_size * <font color="#ffa500">BLOCKS</font>) \
+          <font color="#ffff60"><b>if</b></font> track.size != -<font color="#ffa0a0">1</font>
+        buf.replace(track.fd.sysread(read_size))
+        count = buf.size()
+        <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">IOError</font>, <font color="#ffa500">&quot;</font><font color="#ffa0a0">sysread() &lt; 1</font><font color="#ffa500">&quot;</font> <font color="#ffff60"><b>if</b></font> count &lt; <font color="#ffa0a0">1</font>
+        mod = count % track.block_size
+        <font color="#ffff60"><b>if</b></font> mod != <font color="#ffa0a0">0</font>
+          buf &lt;&lt; <font color="#ffa500">&quot;</font><font color="#ffa500">\0</font><font color="#ffa500">&quot;</font>*(track.block_size - mod)
+          count = buf.size()
+        <font color="#ffff60"><b>end</b></font>
+        <font color="#ffff60"><b>begin</b></font>
+          res = <font color="#ffa500">@fd</font>.syswrite(buf)
+          <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">IOError</font> <font color="#ffff60"><b>unless</b></font> res == count
+        <font color="#ffff60"><b>rescue</b></font> =&gt; err
+          <font color="#ffa500">STDERR</font>.print <font color="#ffa500">&quot;</font><font color="#ffa500">\n</font><font color="#ffa0a0">only wrote </font><font color="#ffa500">#{res || 0}</font><font color="#ffa0a0"> of </font><font color="#ffa500">#{count}</font><font color="#ffa0a0"> bytes err=</font><font color="#ffa500">#{err.class}</font><font color="#ffa500">\n</font><font color="#ffa500">&quot;</font>
+          <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">EOFError</font>
+        <font color="#ffff60"><b>end</b></font>
+        size += count
+        <font color="#ffa500">@tot_size</font> += count
+        <font color="#ffff60"><b>unless</b></font> quiet
+          <font color="#ffa500">STDERR</font>.print <font color="#ffa500">&quot;</font><font color="#ffa0a0">written this track </font><font color="#ffa500">#{size / 1024}</font><font color="#ffa0a0"> KB</font><font color="#ffa500">&quot;</font>
+          <font color="#ffa500">STDERR</font>.print <font color="#ffa500">&quot;</font><font color="#ffa0a0"> (</font><font color="#ffa500">#{(size / 1024) * 100 / filesize}</font><font color="#ffa0a0">%)</font><font color="#ffa500">&quot;</font> \
+            <font color="#ffff60"><b>if</b></font> track.size != -<font color="#ffa0a0">1</font> &amp;&amp; filesize &gt; <font color="#ffa0a0">0</font>
+          <font color="#ffa500">STDERR</font>.print <font color="#ffa500">&quot;</font><font color="#ffa0a0"> total </font><font color="#ffa500">#{@tot_size / 1024}</font><font color="#ffa0a0"> KB</font><font color="#ffa500">\r</font><font color="#ffa500">&quot;</font>
+        <font color="#ffff60"><b>end</b></font>
+        <font color="#ffff60"><b>break</b></font> <font color="#ffff60"><b>if</b></font> track.size != -<font color="#ffa0a0">1</font> &amp;&amp; size &gt;= track.size
+      <font color="#ffff60"><b>end</b></font>
+    <font color="#ffff60"><b>rescue</b></font> <font color="#ffa500">EOFError</font>
+      <font color="#ffff60"><b>raise</b></font> <font color="#ffff60"><b>if</b></font> track.size != -<font color="#ffa0a0">1</font>
+    <font color="#ffff60"><b>end</b></font>
+    <font color="#ffa500">STDERR</font>.print <font color="#ffa500">&quot;</font><font color="#ffa500">\n</font><font color="#ffa500">&quot;</font> <font color="#ffff60"><b>unless</b></font> quiet
+    track.fd.close()
+    <font color="#ffa0a0">true</font>
+  <font color="#ffff60"><b>end</b></font>
+  <font color="#ff80ff">def </font><font color="#40ffff">confirm</font>
+    <font color="#ffff60"><b>if</b></font> <font color="#ffa500">@do_confirm</font>
+      <font color="#80a0ff">#STDERR.print 'Starting real write in 10 seconds. Press Ctrl+C to abort.'</font>
+      <font color="#80a0ff">#9.downto(0) do |i|</font>
+      <font color="#80a0ff">#  sleep(1)</font>
+      <font color="#80a0ff">#  STDERR.print &quot;\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b #{i} seconds. Press Ctrl+C to abort.&quot;</font>
+      <font color="#80a0ff">#end</font>
+      <font color="#ffa0a0">10</font>.downto(<font color="#ffa0a0">0</font>) <font color="#ffff60"><b>do</b></font> |<font color="#ffa500">i</font>|
+        <font color="#ffa500">STDERR</font>.printf(<font color="#ffa500">&quot;</font><font color="#ffa0a0">Starting real write in %2d seconds. Press Ctrl+C to abort.</font><font color="#ffa500">\r</font><font color="#ffa500">&quot;</font>, i)
+        sleep(<font color="#ffa0a0">1</font>)
+      <font color="#ffff60"><b>end</b></font>
+      <font color="#ffa500">STDERR</font>.print <font color="#ffa500">&quot;</font><font color="#ffa500">\n</font><font color="#ffa500">&quot;</font>
+      <font color="#ffa500">@do_confirm</font> = <font color="#ffa0a0">false</font>
+    <font color="#ffff60"><b>end</b></font>
+  <font color="#ff80ff">end</font>
+  <font color="#ffff60"><b>private</b></font> <font color="#ffa500">:_erase_blank</font>, <font color="#ffa500">:_setup_wavefile</font>
+  <font color="#ffff60"><b>private</b></font> <font color="#ffa500">:do_DAO</font>, <font color="#ffa500">:do_TAO</font>, <font color="#ffa500">:write_file</font>, <font color="#ffa500">:cue_ent</font>
+<font color="#ffff60"><b>end</b></font>
+
+config = {
+  <font color="#ffa500">:dao</font> =&gt; <font color="#ffa0a0">false</font>,
+  <font color="#ffa500">:eject</font> =&gt; <font color="#ffa0a0">false</font>,
+  <font color="#ffa500">:close</font> =&gt; <font color="#ffa0a0">false</font>,
+  <font color="#ffa500">:device</font> =&gt; <font color="#ffa500">ENV</font>[<font color="#ffa500">'</font><font color="#ffa0a0">CDROM</font><font color="#ffa500">'</font>] || <font color="#ffa500">'</font><font color="#ffa0a0">/dev/acd0</font><font color="#ffa500">'</font>,
+  <font color="#ffa500">:list</font> =&gt; <font color="#ffa0a0">nil</font>,
+  <font color="#ffa500">:confirm</font> =&gt; <font color="#ffa0a0">true</font>,
+  <font color="#ffa500">:multi</font> =&gt; <font color="#ffa0a0">false</font>,
+  <font color="#ffa500">:nogap</font> =&gt; <font color="#ffa0a0">false</font>,
+  <font color="#ffa500">:preemp</font> =&gt; <font color="#ffa0a0">false</font>,
+  <font color="#ffa500">:quiet</font> =&gt; <font color="#ffa0a0">false</font>,
+  <font color="#ffa500">:speed</font> =&gt; <font color="#ffa0a0">4</font>,
+  <font color="#ffa500">:test_write</font> =&gt; <font color="#ffa0a0">false</font>,
+  <font color="#ffa500">:fixate</font> =&gt; <font color="#ffa0a0">false</font>,
+  <font color="#ffa500">:verbose</font> =&gt; <font color="#ffa0a0">false</font>
+}
+
+<font color="#ff80ff">def </font><font color="#40ffff">usage</font>
+  <font color="#ffa500">STDERR</font>.print &lt;&lt;-<font color="#ffa500">EOF</font>
+<font color="#ffa0a0">Usage: </font><font color="#ffa500">#{File.basename($0)}</font><font color="#ffa0a0"> [-cdelmnpqtvy] [-f device] [-s speed] [command] [command file ...]</font>
+<font color="#ffa500">EOF</font>
+  <font color="#ffff60"><b>exit</b></font>(<font color="#ffa0a0">1</font>)
+<font color="#ff80ff">end</font>
+
+<font color="#ff80ff">def </font><font color="#40ffff">fatal</font>(status, msg)
+  <font color="#ffa500">STDERR</font>.puts <font color="#ffa500">&quot;</font><font color="#ffa500">#{File.basename($0)}</font><font color="#ffa0a0">: </font><font color="#ffa500">#{msg}</font><font color="#ffa500">&quot;</font>
+  <font color="#ffff60"><b>exit</b></font>(status)
+<font color="#ff80ff">end</font>
+
+parser = <font color="#ffa500">GetoptLong</font>.new()
+parser.quiet = <font color="#ffa0a0">true</font>
+parser.set_options(
+  [<font color="#ffa500">'</font><font color="#ffa0a0">-c</font><font color="#ffa500">'</font>, <font color="#ffa500">GetoptLong</font>::<font color="#ffa500">NO_ARGUMENT</font>],
+  [<font color="#ffa500">'</font><font color="#ffa0a0">-d</font><font color="#ffa500">'</font>, <font color="#ffa500">GetoptLong</font>::<font color="#ffa500">NO_ARGUMENT</font>],
+  [<font color="#ffa500">'</font><font color="#ffa0a0">-e</font><font color="#ffa500">'</font>, <font color="#ffa500">GetoptLong</font>::<font color="#ffa500">NO_ARGUMENT</font>],
+  [<font color="#ffa500">'</font><font color="#ffa0a0">-l</font><font color="#ffa500">'</font>, <font color="#ffa500">GetoptLong</font>::<font color="#ffa500">NO_ARGUMENT</font>],
+  [<font color="#ffa500">'</font><font color="#ffa0a0">-m</font><font color="#ffa500">'</font>, <font color="#ffa500">GetoptLong</font>::<font color="#ffa500">NO_ARGUMENT</font>],
+  [<font color="#ffa500">'</font><font color="#ffa0a0">-n</font><font color="#ffa500">'</font>, <font color="#ffa500">GetoptLong</font>::<font color="#ffa500">NO_ARGUMENT</font>],
+  [<font color="#ffa500">'</font><font color="#ffa0a0">-p</font><font color="#ffa500">'</font>, <font color="#ffa500">GetoptLong</font>::<font color="#ffa500">NO_ARGUMENT</font>],
+  [<font color="#ffa500">'</font><font color="#ffa0a0">-q</font><font color="#ffa500">'</font>, <font color="#ffa500">GetoptLong</font>::<font color="#ffa500">NO_ARGUMENT</font>],
+  [<font color="#ffa500">'</font><font color="#ffa0a0">-t</font><font color="#ffa500">'</font>, <font color="#ffa500">GetoptLong</font>::<font color="#ffa500">NO_ARGUMENT</font>],
+  [<font color="#ffa500">'</font><font color="#ffa0a0">-v</font><font color="#ffa500">'</font>, <font color="#ffa500">GetoptLong</font>::<font color="#ffa500">NO_ARGUMENT</font>],
+  [<font color="#ffa500">'</font><font color="#ffa0a0">-y</font><font color="#ffa500">'</font>, <font color="#ffa500">GetoptLong</font>::<font color="#ffa500">NO_ARGUMENT</font>],
+  [<font color="#ffa500">'</font><font color="#ffa0a0">-f</font><font color="#ffa500">'</font>, <font color="#ffa500">GetoptLong</font>::<font color="#ffa500">REQUIRED_ARGUMENT</font>],
+  [<font color="#ffa500">'</font><font color="#ffa0a0">-s</font><font color="#ffa500">'</font>, <font color="#ffa500">GetoptLong</font>::<font color="#ffa500">REQUIRED_ARGUMENT</font>]
+)
+
+<font color="#ffff60"><b>begin</b></font>
+  parser.each <font color="#ffff60"><b>do</b></font> |<font color="#ffa500">opt, arg</font>|
+    <font color="#ffff60"><b>case</b></font> opt
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">'</font><font color="#ffa0a0">-c</font><font color="#ffa500">'</font>
+        config[<font color="#ffa500">:close</font>] = <font color="#ffa0a0">true</font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">'</font><font color="#ffa0a0">-d</font><font color="#ffa500">'</font>
+        config[<font color="#ffa500">:dao</font>] = <font color="#ffa0a0">true</font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">'</font><font color="#ffa0a0">-e</font><font color="#ffa500">'</font>
+        config[<font color="#ffa500">:eject</font>] = <font color="#ffa0a0">true</font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">'</font><font color="#ffa0a0">-l</font><font color="#ffa500">'</font>
+        config[<font color="#ffa500">:list</font>] = arg
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">'</font><font color="#ffa0a0">-m</font><font color="#ffa500">'</font>
+        config[<font color="#ffa500">:multi</font>] = <font color="#ffa0a0">true</font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">'</font><font color="#ffa0a0">-n</font><font color="#ffa500">'</font>
+        config[<font color="#ffa500">:nogap</font>] = <font color="#ffa0a0">true</font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">'</font><font color="#ffa0a0">-p</font><font color="#ffa500">'</font>
+        config[<font color="#ffa500">:preemp</font>] = <font color="#ffa0a0">true</font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">'</font><font color="#ffa0a0">-q</font><font color="#ffa500">'</font>
+        config[<font color="#ffa500">:quiet</font>] = <font color="#ffa0a0">true</font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">'</font><font color="#ffa0a0">-t</font><font color="#ffa500">'</font>
+        config[<font color="#ffa500">:test_write</font>] = <font color="#ffa0a0">true</font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">'</font><font color="#ffa0a0">-v</font><font color="#ffa500">'</font>
+        config[<font color="#ffa500">:verbose</font>] = <font color="#ffa0a0">true</font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">'</font><font color="#ffa0a0">-y</font><font color="#ffa500">'</font>
+        config[<font color="#ffa500">:confirm</font>] = <font color="#ffa0a0">false</font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">'</font><font color="#ffa0a0">-f</font><font color="#ffa500">'</font>
+        fatal(<font color="#ffa0a0">1</font>, <font color="#ffa500">&quot;</font><font color="#ffa0a0">Invalid device: </font><font color="#ffa500">#{arg}</font><font color="#ffa500">&quot;</font>) <font color="#ffff60"><b>unless</b></font> <font color="#ffa500">File</font>.chardev?(arg)
+        config[<font color="#ffa500">:device</font>] = arg
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">'</font><font color="#ffa0a0">-s</font><font color="#ffa500">'</font>
+        <font color="#ffff60"><b>if</b></font> arg.casecmp(<font color="#ffa500">'</font><font color="#ffa0a0">max</font><font color="#ffa500">'</font>) == <font color="#ffa0a0">0</font>
+          config[<font color="#ffa500">:speed</font>] = <font color="#ffa500">CDRIO</font>::<font color="#ffa500">CDR_MAX_SPEED</font>
+        <font color="#ffff60"><b>else</b></font>
+          config[<font color="#ffa500">:speed</font>] = arg.to_i * <font color="#ffa0a0">177</font>
+        <font color="#ffff60"><b>end</b></font>
+        <font color="#ffff60"><b>if</b></font> config[<font color="#ffa500">:speed</font>] &lt;= <font color="#ffa0a0">0</font>
+          fatal(<font color="#ffa0a0">1</font>, <font color="#ffa500">&quot;</font><font color="#ffa0a0">Invalid speed: </font><font color="#ffa500">#{arg}</font><font color="#ffa500">&quot;</font>)
+        <font color="#ffff60"><b>end</b></font>
+    <font color="#ffff60"><b>end</b></font>
+  <font color="#ffff60"><b>end</b></font>
+<font color="#ffff60"><b>rescue</b></font> <font color="#ffa500">GetoptLong</font>::<font color="#ffa500">AmbigousOption</font>, <font color="#ffa500">GetoptLong</font>::<font color="#ffa500">InvalidOption</font>,
+    <font color="#ffa500">GetoptLong</font>::<font color="#ffa500">MissingArgument</font>, <font color="#ffa500">GetoptLong</font>::<font color="#ffa500">NeedlessArgument</font>,
+    <font color="#ffa500">ArgumentError</font> =&gt; err
+  <font color="#ffa500">STDERR</font>.puts <font color="#ffa500">&quot;</font><font color="#ffa500">#{File.basename($0)}</font><font color="#ffa0a0">: </font><font color="#ffa500">#{err.message}</font><font color="#ffa500">&quot;</font>
+  usage()
+<font color="#ffff60"><b>end</b></font>
+
+usage() <font color="#ffff60"><b>if</b></font> <font color="#ffa500">ARGV</font>.empty?
+<font color="#ffff60"><b>begin</b></font>
+  bcd = <font color="#ffa500">Burncd</font>.new(config)
+  <font color="#ffa500">ARGV</font>.each <font color="#ffff60"><b>do</b></font> |<font color="#ffa500">arg</font>|
+    <font color="#ffff60"><b>case</b></font> arg
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">/</font><font color="#ffa0a0">^fixate$</font><font color="#ffa500">/i</font>
+        config[<font color="#ffa500">:fixate</font>] = <font color="#ffa0a0">true</font>
+        <font color="#ffff60"><b>break</b></font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">/</font><font color="#ffa0a0">^msinfo$</font><font color="#ffa500">/i</font>
+        bcd.msinfo()
+        <font color="#ffff60"><b>break</b></font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">/</font><font color="#ffa0a0">^diskinfo$</font><font color="#ffa500">/i</font>
+        bcd.diskinfo()
+        <font color="#ffff60"><b>break</b></font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">/</font><font color="#ffa0a0">^info</font><font color="#ffa500">/i</font>
+        bcd.info()
+        <font color="#ffff60"><b>break</b></font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">/</font><font color="#ffa0a0">^erase$</font><font color="#ffa500">/i</font>
+        bcd.erase()
+        <font color="#ffff60"><b>next</b></font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">/</font><font color="#ffa0a0">^blank$</font><font color="#ffa500">/i</font>
+        bcd.blank()
+        <font color="#ffff60"><b>next</b></font>
+      <font color="#ffff60"><b>when</b></font> <font color="#ffa500">/</font><font color="#ffa0a0">^(raw|audio|data|(xa)?mode[12]|vcd|vcdbin)$</font><font color="#ffa500">/i</font>
+        bcd.track_type = arg.downcase.to_sym
+        <font color="#ffff60"><b>next</b></font>
+    <font color="#ffff60"><b>end</b></font>
+    <font color="#ffff60"><b>raise</b></font> <font color="#ffa500">RuntimeError</font>, <font color="#ffa500">'</font><font color="#ffa0a0">no data format selected</font><font color="#ffa500">'</font> \
+      <font color="#ffff60"><b>unless</b></font> bcd.block_type &amp;&amp; bcd.block_size
+    bcd.add_track(arg)
+  <font color="#ffff60"><b>end</b></font>
+  bcd.burn()
+  bcd.fixate()
+  bcd.cleanup()
+  bcd.eject()
+  bcd.close()
+<font color="#ffff60"><b>rescue</b></font> <font color="#ffa500">Interrupt</font>
+  <font color="#ffa500">STDERR</font>.puts <font color="#ffa500">&quot;</font><font color="#ffa500">\n</font><font color="#ffa0a0">Aborting...</font><font color="#ffa500">&quot;</font>
+  <font color="#ffff60"><b>if</b></font> bcd
+    bcd.cleanup()
+    bcd.close()
+  <font color="#ffff60"><b>end</b></font>
+  <font color="#ffff60"><b>exit</b></font>(<font color="#ffa0a0">1</font>)
+<font color="#ffff60"><b>rescue</b></font> =&gt; err
+  <font color="#ffa500">STDERR</font>.puts <font color="#ffa500">&quot;</font><font color="#ffa500">#{File.basename($0)}</font><font color="#ffa0a0">: </font><font color="#ffa500">#{err.message}</font><font color="#ffa500">&quot;</font>
+  <font color="#ffff60"><b>if</b></font> bcd
+    bcd.cleanup()
+    bcd.close()
+  <font color="#ffff60"><b>end</b></font>
+  <font color="#ffff60"><b>exit</b></font>(<font color="#ffa0a0">1</font>)
+<font color="#ffff60"><b>end</b></font>
+</pre>
+</body>
+</html>
