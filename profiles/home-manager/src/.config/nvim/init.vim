@@ -5,6 +5,7 @@ set mouse=v                 " middle-click paste with
 set hlsearch                " highlight search
 set incsearch               " incremental search
 set wildmode=longest,list   " get bash-like tab completions
+"set termguicolors           " enabling true color
 
 
 " " ----------------------------------------------------------------------------

@@ -91,9 +91,12 @@ vim.api.nvim_create_user_command("ReloadColors", set_color_mode, {})
 
 -- -----------------------------------------------------------------------
 -- Highlight settings for line numbers
--- vim.cmd([[highlight LineNr ctermfg=11 ctermbg=237]])
--- vim.cmd([[highlight LineNr guifg=#525252 guibg=#333333]])
+vim.cmd([[highlight LineNr ctermfg=11 ctermbg=237]])
+vim.cmd([[highlight LineNr guifg=#525252 guibg=#333333]])
 
+-- Highlight Comments
+vim.cmd([[highlight Comment cterm=italic ctermbg=NONE ctermfg=238]])
+vim.cmd([[highlight Comment gui=italic guibg=NONE guifg=#444444]])
 
 
 -- -----------------------------------------------------------------------
