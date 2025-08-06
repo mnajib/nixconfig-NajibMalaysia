@@ -197,8 +197,10 @@
       #
       set -g pane-border-style 'bg=black,fg=white'
       set -g pane-active-border-style 'bg=black,fg=magenta'
-      set -g window-style  'bg=black,fg=default'
-      set -g window-active-style 'bg=black,fg=default'
+      #set -g window-style  'bg=black,fg=default'
+      #set -g window-active-style 'bg=black,fg=default'
+      set -g window-style  'bg=#000000,fg=default'
+      set -g window-active-style 'bg=#000000,fg=default'
 
       # Change colors to easier to see how many windows have open and which one is active
       set -g status-bg cyan                                 # Change the status bar background color

@@ -42,12 +42,8 @@ if vim.fn.has("gui_running") == 1 then
   vim.opt.guioptions = vim.opt.guioptions - 'T'
 end
 
--- Load SkyWizard colorscheme
-require("theme.skywizard")
--- require("theme.NajibMalaysia")
-
-
--- 1. Show invisible characters
+-- ----------------------------------------------------------------------------
+-- Show invisible characters
 vim.opt.list = true
 vim.opt.listchars = {
   trail = "█",
@@ -57,20 +53,12 @@ vim.opt.listchars = {
   nbsp = "•"
 }
 
--- 2. Highlight them in blue
-vim.api.nvim_set_hl(0, "Whitespace", { fg = "Blue", bold = true })
-vim.api.nvim_set_hl(0, "NonText", { fg = "Blue", bold = true })
+-- ----------------------------------------------------------------------------
+-- Load SkyWizard colorscheme
+require("theme.skywizard")
+-- require("theme.NajibMalaysia")
 
-
--- Set color column at 40, 60, and 80
-vim.opt.colorcolumn = { 40, 60, 80 }
-
--- Highlight the color column
-vim.api.nvim_set_hl(0, "ColorColumn", {
-  bg = "#111111"
-})
-
-
+-- ----------------------------------------------------------------------------
 -- Optional keymaps (can be moved to separate Lua module)
 vim.keymap.set('i', '<F1>', '<Esc>:q<CR>')
 vim.keymap.set('n', '<F1>', ':q<CR>')

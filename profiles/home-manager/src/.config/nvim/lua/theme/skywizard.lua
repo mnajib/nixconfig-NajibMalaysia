@@ -1,11 +1,18 @@
 -- ~/.config/nvim/lua/theme/skywizard.lua
+--
+-- I try to follow colour scheme that used (and maybe also originally created) by Ariff Abdullah (aka SkyWizard)
+-- as I not found where did I save the vimrc file personally gaved by him to me.
+--
+-- Current list of applied setting can be displayed using command ':hi' in neovim.
 
+-- ----------------------------------------------------------------------------
 vim.cmd("hi clear")
 vim.o.background = "dark"
 vim.g.colors_name = "skywizard"
 
 local hl = vim.api.nvim_set_hl
 
+-- ----------------------------------------------------------------------------
 -- Base UI
 --hl(0, "Normal",        { fg = "#aaaaaa", bg = "#000000" })
 hl(0, "Normal",        { fg = "LightGrey", bg = "Black" })
@@ -40,7 +47,7 @@ hl(0, "Identifier",    { fg = "#40ffff" })                  -- $foo
 hl(0, "Statement",       { fg = "#ffff60", bold = true })
 hl(0, "Keyword",       { fg = "#ffff60", bold = true })     -- def, end, return
 
--- Oren --> Coklat 
+-- Oren --> Coklat
 hl(0, "Tag",       { fg = "Orange" })
 --hl(0, "Special",       { fg = "#f99157" })                  -- special chars
 hl(0, "Special",       { fg = "Orange" })                  -- special chars
@@ -60,5 +67,33 @@ hl(0, "Error",          { fg = "White", bg = "Red" })
 hl(0, "Todo",          { fg = "Blue", bg = "Yellow" })
 
 -- Cursor
-hl(0, "Cursor",        { fg = "#000000", bg = "#cccccc" })
+ hl(0, "Cursor",        { fg = "#000000", bg = "#cccccc" })
+--hl(0, "Cursor",        { fg = "#000000", bg = "#ffffff" })
+-- hl(0, "Cursor", { fg = "Black", bg = "Yellow" })
+-- hl(0, "lCursor", { fg = "White", bg = "Red" })
 
+-- ----------------------------------------------------------------------------
+-- 1. Show invisible characters
+vim.opt.list = true
+vim.opt.listchars = {
+  trail = "█",
+  tab = ">-",
+  extends = "»",
+  precedes = "«",
+  nbsp = "•"
+}
+
+-- 2. Highlight them in blue
+vim.api.nvim_set_hl(0, "Whitespace", { fg = "Blue", bold = true })
+vim.api.nvim_set_hl(0, "NonText", { fg = "Blue", bold = true })
+
+-- ----------------------------------------------------------------------------
+-- Set color column at 40, 60, and 80
+vim.opt.colorcolumn = { 40, 60, 80 }
+
+-- Highlight the color column
+vim.api.nvim_set_hl(0, "ColorColumn", {
+  bg = "#111111"
+})
+
+-- ----------------------------------------------------------------------------

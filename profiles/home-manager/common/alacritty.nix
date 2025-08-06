@@ -62,7 +62,8 @@
         };
         cursor = {
           text = "0x000000";
-          cursor = "0xFFFFFF";
+          #cursor = "0xFFFFFF";
+          cursor = "0xFEF100";
         };
       };
 
