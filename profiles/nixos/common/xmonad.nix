@@ -36,6 +36,7 @@
     dmenu
     killall
     networkmanagerapplet
+    alacritty alacritty-theme
   ];
 
   services.xserver.windowManager = {
