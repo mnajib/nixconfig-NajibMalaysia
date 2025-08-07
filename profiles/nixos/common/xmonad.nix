@@ -37,6 +37,7 @@
     killall
     networkmanagerapplet
     alacritty alacritty-theme
+    xlockmore
   ];
 
   services.xserver.windowManager = {
