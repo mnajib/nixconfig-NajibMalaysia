@@ -19,12 +19,13 @@
   #  ##xdg-desktop-portal-kde
   #  #pkgs.xdg-desktop-portal-gnome
   #];
-  #environment.systemPackages = [
-  #  pkgs.xdg-desktop-portal-gtk
-  #  #pkgs.xdg-desktop-portal-gnome
-  #  #pkgs.flatpak
-  #  #pkgs.gnome.gnome-software
-  #];
+
+  environment.systemPackages = with pkgs; [
+    #xdg-desktop-portal-gtk
+    #xdg-desktop-portal-gnome
+    #flatpak
+     gnome-software
+  ];
 
   services.flatpak.enable = true;
 }
