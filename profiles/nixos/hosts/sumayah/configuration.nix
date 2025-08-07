@@ -10,35 +10,48 @@
 let
   commonDir = "../../common";
   hmDir = "../../../home-manager/users";
+  hostName = "sumayah";
+  stateVersion = "24.11";
 in
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+  in [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    inputs.home-manager.nixosModules.home-manager
+    ./turn-off-rgb.nix
 
-      inputs.home-manager.nixosModules.home-manager
+    #(fromCommon "configuration.FULL.nix")
 
-      ./turn-off-rgb.nix
+    #(./. + "/${commonDir}/users-a-wheel.nix")
+    #(./. + "/${commonDir}/users-najib.nix")
+    #(./. + "/${commonDir}/users-naqib-wheel.nix")
+    #(./. + "/${commonDir}/users-naim.nix")
+    #(./. + "/${commonDir}/users-nurnasuha.nix")
+    #(./. + "/${commonDir}/users-julia.nix")
+    (fromCommon "users-a-wheel.nix")
+    (fromCommon "users-najib.nix")
+    (fromCommon "users-julia.nix")
+    (fromCommon "users-anak2.nix")
 
-      (./. + "/${commonDir}/users-a-wheel.nix")
-      (./. + "/${commonDir}/users-najib.nix")
-      (./. + "/${commonDir}/users-naqib-wheel.nix")
-      (./. + "/${commonDir}/users-naim.nix")
-      (./. + "/${commonDir}/users-nurnasuha.nix")
-      (./. + "/${commonDir}/users-julia.nix")
+    #(./. + "/${commonDir}/nfs-client-automount.nix")
+    #(./. + "/${commonDir}/zramSwap.nix")
+    (fromCommon "nfs-client-automount.nix")
+    (fromCommon "zramSwap.nix")
 
-      (./. + "/${commonDir}/nfs-client-automount.nix")
-      (./. + "/${commonDir}/zramSwap.nix")
+    #(./. + "/${commonDir}/xmonad.nix")
+    #(./. + "/${commonDir}/window-managers.nix")
+    (fromCommon "window-managers.nix")
 
-      #(./. + "/${commonDir}/xmonad.nix")
-      (./. + "/${commonDir}/window-managers.nix")
-    ];
+    (fromCommon "3D.nix")
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "sumayah"; #"nixos"; # Define your hostname.
+  #networking.hostName = "sumayah"; #"nixos"; # Define your hostname.
+  networking.hostName = hostName; #"nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -127,11 +140,16 @@ in
   #  ];
   #};
 
-  home-manager = {
+  home-manager = let
+    userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}" );
+  in
+  {
     extraSpecialArgs = { inherit inputs outputs; };
     users = {
-      root = import (./. + "/${hmDir}/root/sumayah");
-      najib = import (./. + "/${hmDir}/najib/sumayah");
+      #root = import (./. + "/${hmDir}/root/${hostName}");
+      #najib = import (./. + "/${hmDir}/najib/${hostName}");
+      root = userImport "root";
+      najib = userImport "najib";
     };
   };
 
@@ -229,6 +247,7 @@ in
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  #system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = stateVersion;
 
 }
