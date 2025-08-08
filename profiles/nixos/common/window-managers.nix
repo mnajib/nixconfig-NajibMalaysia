@@ -36,6 +36,7 @@ in
     trayer
 
     feh
+    nitrogen
 
     dmenu
     rofi
