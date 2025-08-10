@@ -38,6 +38,10 @@
     networkmanagerapplet
     alacritty alacritty-theme
     xlockmore
+
+    picom       # compositor manager; try to use picom for gromit-mpx (screen annotation) in xmonad (window manager).
+    fluxbox     # Need this because I need to use command 'fbsetroot' to set plain black background when using xmonad
+    gxmessage   # use it for display keybinding
   ];
 
   services.xserver.windowManager = {
