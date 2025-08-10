@@ -155,6 +155,8 @@ in
     #./ai.nix
 
     #./tenda-usb-wifi-dongle.nix
+
+    (fromCommon "window-managers.nix")
   ];
 
   home-manager = {
