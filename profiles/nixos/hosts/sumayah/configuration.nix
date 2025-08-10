@@ -4,6 +4,7 @@
 
 {
   config, pkgs,
+  lib,
   inputs, outputs, # Need for home-manager ?
   ...
 }:
@@ -21,7 +22,10 @@ in
     inputs.home-manager.nixosModules.home-manager
     ./turn-off-rgb.nix
 
-    #(fromCommon "configuration.FULL.nix")
+    (fromCommon "configuration.FULL.nix")
+
+    (fromCommon "console-keyboard-dvorak.nix")
+    (fromCommon "keyboard-with-msa.nix")
 
     #(./. + "/${commonDir}/users-a-wheel.nix")
     #(./. + "/${commonDir}/users-najib.nix")
@@ -67,16 +71,16 @@ in
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "ms_MY.UTF-8";
-    LC_IDENTIFICATION = "ms_MY.UTF-8";
-    LC_MEASUREMENT = "ms_MY.UTF-8";
-    LC_MONETARY = "ms_MY.UTF-8";
-    LC_NAME = "ms_MY.UTF-8";
-    LC_NUMERIC = "ms_MY.UTF-8";
-    LC_PAPER = "ms_MY.UTF-8";
-    LC_TELEPHONE = "ms_MY.UTF-8";
-    LC_TIME = "ms_MY.UTF-8";
+  i18n.extraLocaleSettings =  {
+    LC_ADDRESS = lib.mkForce "ms_MY.UTF-8";
+    LC_IDENTIFICATION = lib.mkForce "ms_MY.UTF-8";
+    LC_MEASUREMENT = lib.mkForce "ms_MY.UTF-8";
+    LC_MONETARY = lib.mkForce "ms_MY.UTF-8";
+    LC_NAME = lib.mkForce "ms_MY.UTF-8";
+    LC_NUMERIC = lib.mkForce "ms_MY.UTF-8";
+    LC_PAPER = lib.mkForce "ms_MY.UTF-8";
+    LC_TELEPHONE = lib.mkForce "ms_MY.UTF-8";
+    LC_TIME = lib.mkForce "ms_MY.UTF-8";
   };
 
   # Enable the X11 windowing system.
@@ -89,10 +93,10 @@ in
   services.flatpak.enable = true;
 
   # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "dvorak";
-  };
+  #services.xserver.xkb = {
+  #  layout = "us";
+  #  variant = "dvorak";
+  #};
 
   # Configure console keymap
   console.keyMap = "dvorak";
@@ -205,6 +209,7 @@ in
     #barrier
 
     libreoffice
+    popcorntime
 
     telegram-desktop
     whatsie # whatsapp client
