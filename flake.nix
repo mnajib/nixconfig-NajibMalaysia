@@ -71,28 +71,22 @@
     };
   };
 
-  outputs = inputs@{ flake-parts, ... }:
+  outputs = inputs@{ flake-parts, self, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ "x86_64-linux" ];
+      systems = [ "x86_64-linux" "aarch64-linux" ];
 
       imports = [
         #inputs.stylix.flakeModule
         #inputs.hyprland.flakeModule
       ];
 
-      perSystem = { config, self, pkgs, system, inputs, ... }:
+      perSystem = { config, self, pkgs, system, inputs, outputs, ... }:
         let
           inherit (self) outputs;
-          mkNixos = modules:
-            pkgs.lib.nixosSystem {
-              inherit modules;
-              specialArgs = { inherit inputs outputs; };
-            };
-          mkHome = modules:
-            inputs.home-manager.lib.homeManagerConfiguration {
-              inherit modules pkgs;
-              extraSpecialArgs = { inherit inputs outputs; };
-            };
+          #pkgs = import nixpkgs { inherit system; };
+          #pkgsStable = import nixpkgs-stable { inherit system; };
+          #pkgsUnstable = import nixpkgs-unstable { inherit system; };
+          #pkgsMaster = import nixpkgs-master { inherit system; };
         in
         {
           packages = {
@@ -105,13 +99,23 @@
 
         };
 
-      flake = {
+      flake = let
+        inherit (self) outputs;
+
+        mkNixos = system: modules:
+          inputs.nixpkgs.lib.nixosSystem {
+            inherit system modules;
+            specialArgs = { inherit inputs outputs; };
+          };
+
+      in {
         #overlays = import ./overlays { inherit inputs outputs; };
         overlays = import ./overlays { inherit inputs; };
         nixosModules = import ./modules/nixos;
         homeManagerModules = import ./modules/home-manager;
 
         nixosConfigurations = {
+
           khawlah = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = { inherit inputs; };
@@ -119,6 +123,7 @@
               ./nixos/host-khawlah.nix
             ];
           };
+
           khadijah = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = { inherit inputs; };
@@ -129,6 +134,7 @@
               inputs.stylix.nixosModules.stylix
             ];
           };
+
           raudah = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = { inherit inputs; };
@@ -136,6 +142,7 @@
               ./nixos/host-raudah.nix
             ];
           };
+
           mahirah = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = { inherit inputs; };
@@ -143,6 +150,7 @@
               ./nixos/host-mahirah.nix
             ];
           };
+
           nyxora = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = { inherit inputs; };
@@ -158,6 +166,7 @@
               inputs.sops-nix.nixosModules.sops
             ];
           };
+
           asmak = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = { inherit inputs; };
@@ -166,6 +175,7 @@
               inputs.stylix.nixosModules.stylix
             ];
           };
+
           zahrah = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = { inherit inputs; };
@@ -177,6 +187,7 @@
               inputs.stylix.nixosModules.stylix
             ];
           };
+
           sakinah = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = { inherit inputs; };
@@ -186,6 +197,7 @@
               inputs.stylix.nixosModules.stylix
             ];
           };
+
           manggis = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = { inherit inputs; };
@@ -194,6 +206,7 @@
               inputs.hardware.nixosModules.lenovo-thinkpad-x220
             ];
           };
+
           hidayah = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = { inherit inputs; };
@@ -203,13 +216,19 @@
               { programs.nix-ld.dev.enable = true; }
             ];
           };
-          taufiq = inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./profiles/nixos/hosts/taufiq/configuration.nix
-            ];
-          };
+
+          #taufiq = inputs.nixpkgs.lib.nixosSystem {
+          #  system = "x86_64-linux";
+          #  specialArgs = { inherit inputs; };
+          #  modules = [
+          #    ./profiles/nixos/hosts/taufiq/configuration.nix
+          #  ];
+          #};
+          taufiq = mkNixos "x86_64-linux" [
+          #taufiq = self.flake.mkNixos "x86_64-linux" [
+            ./profiles/nixos/hosts/taufiq/configuration.nix
+          ];
+
           sumayah = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             specialArgs = { inherit inputs; };
