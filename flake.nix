@@ -100,12 +100,20 @@
         };
 
       flake = let
+
         inherit (self) outputs;
 
         mkNixos = system: modules:
           inputs.nixpkgs.lib.nixosSystem {
             inherit system modules;
             specialArgs = { inherit inputs outputs; };
+          };
+
+        mkHome = system: modules:
+          inputs.home-manager.lib.homeManagerConfiguration {
+            pkgs = inputs.nixpkgs.legacyPackages.${system};
+            inherit modules;
+            extraSpecialArgs = { inherit inputs outputs; };
           };
 
       in {
@@ -116,106 +124,67 @@
 
         nixosConfigurations = {
 
-          khawlah = inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./nixos/host-khawlah.nix
-            ];
-          };
+          khawlah = mkNixos "x86_64-linux" [
+            ./profiles/nixos/hosts/khawlah/configuration.nix
+          ];
 
-          khadijah = inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              inputs.nix-ld.nixosModules.nix-ld
-              { programs.nix-ld.dev.enable = true; }
-              ./nixos/host-khadijah-Wayland-nauveau.nix
-              inputs.stylix.nixosModules.stylix
-            ];
-          };
+          khadijah = mkNixos "x86_64-linux" [
+            inputs.nix-ld.nixosModules.nix-ld
+            { programs.nix-ld.dev.enable = true; }
+            ./profiles/nixos/hosts/khadijah/host-khadijah-Wayland-nauveau.nix
+            #./profiles/nixos/hosts/khadijah/configuration.nix
+            inputs.stylix.nixosModules.stylix
+          ];
 
-          raudah = inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./nixos/host-raudah.nix
-            ];
-          };
+          raudah = mkNixos "x86_64-linux" [
+            ./profiles/nixos/hosts/raudah/configuration.nix
+          ];
 
-          mahirah = inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./nixos/host-mahirah.nix
-            ];
-          };
+          mahirah = mkNixos "x86_64-linux" [
+            ./profiles/nixos/hosts/mahirah/configuration.nix
+          ];
 
-          nyxora = inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./profiles/nixos/hosts/nyxora/configuration.nix
-            ];
-          };
-          customdesktop = inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./profiles/nixos/hosts/customdesktop/configuration.nix
-              inputs.sops-nix.nixosModules.sops
-            ];
-          };
+          nyxora = mkNixos "x86_64-linux" [
+            ./profiles/nixos/hosts/nyxora/configuration.nix
+          ];
 
-          asmak = inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./nixos/host-asmak.nix
-              inputs.stylix.nixosModules.stylix
-            ];
-          };
+          customdesktop = mkNixos "x86_64-linux" [
+            ./profiles/nixos/hosts/customdesktop/configuration.nix
+            inputs.sops-nix.nixosModules.sops
+          ];
 
-          zahrah = inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./nixos/host-zahrah.nix
-              inputs.hardware.nixosModules.lenovo-thinkpad
-              inputs.hardware.nixosModules.common-cpu-intel
-              inputs.hardware.nixosModules.common-pc-laptop-ssd
-              inputs.stylix.nixosModules.stylix
-            ];
-          };
+          asmak = mkNixos "x86_64-linux" [
+            ./profiles/nixos/hosts/asmak/configuration.nix
+            inputs.stylix.nixosModules.stylix
+          ];
 
-          sakinah = inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./nixos/host-sakinah.nix
-              inputs.hardware.nixosModules.lenovo-thinkpad-x220
-              inputs.stylix.nixosModules.stylix
-            ];
-          };
+          zahrah = mkNixos "x86_64-linux" [
+            ./profiles/nixos/hosts/zahrah/configuration.nix
+            inputs.hardware.nixosModules.lenovo-thinkpad
+            inputs.hardware.nixosModules.common-cpu-intel
+            inputs.hardware.nixosModules.common-pc-laptop-ssd
+            inputs.stylix.nixosModules.stylix
+          ];
 
-          manggis = inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./profiles/nixos/hosts/manggis/configuration.nix
-              inputs.hardware.nixosModules.lenovo-thinkpad-x220
-            ];
-          };
+          sakinah = mkNixos "x86_64-linux" [
+            ./profiles/nixos/hosts/sakinah/configuration.nix
+            inputs.hardware.nixosModules.lenovo-thinkpad-x220
+            inputs.stylix.nixosModules.stylix
+          ];
 
-          hidayah = inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./nixos/host-hidayah.nix
-              inputs.nix-ld.nixosModules.nix-ld
-              { programs.nix-ld.dev.enable = true; }
-            ];
-          };
+          manggis = mkNixos "x86_64-linux" [
+            ./profiles/nixos/hosts/manggis/configuration.nix
+            inputs.hardware.nixosModules.lenovo-thinkpad-x220
+          ];
+
+          hidayah = mkNixos "x86_64-linux" [
+            ./profiles/nixos/hosts/hidayah/configuration.nix
+            inputs.nix-ld.nixosModules.nix-ld
+            { programs.nix-ld.dev.enable = true; }
+          ];
+
+          # NOTE: to test / dry-build nixos for host 'taufiq'
+          #   nixos-rebuild dry-build --flake .#taufiq
 
           #taufiq = inputs.nixpkgs.lib.nixosSystem {
           #  system = "x86_64-linux";
@@ -224,233 +193,51 @@
           #    ./profiles/nixos/hosts/taufiq/configuration.nix
           #  ];
           #};
-          taufiq = mkNixos "x86_64-linux" [
           #taufiq = self.flake.mkNixos "x86_64-linux" [
+          taufiq = mkNixos "x86_64-linux" [
             ./profiles/nixos/hosts/taufiq/configuration.nix
           ];
 
-          sumayah = inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./profiles/nixos/hosts/sumayah/configuration.nix
-            ];
-          };
-          keira = inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./profiles/nixos/hosts/keira/configuration.nix
-              inputs.hardware.nixosModules.lenovo-thinkpad-t410
-            ];
-          };
-          maryam = inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = { inherit inputs; };
-            modules = [
-              ./nixos/host-maryam.nix
-            ];
-          };
-        };
+          sumayah = mkNixos "x86_64-linux" [
+            ./profiles/nixos/hosts/sumayah/configuration.nix
+          ];
+
+          keira = mkNixos "x86_64-linux" [
+            ./profiles/nixos/hosts/keira/configuration.nix
+            inputs.hardware.nixosModules.lenovo-thinkpad-t410
+          ];
+
+        }; # End of 'nixosConfigurations = { ... };'
 
         homeConfigurations = {
-          "najib@khawlah" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-najib/host-khawlah
-            ];
-          };
-          "najib@raudah" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/home-najib.nix
-            ];
-          };
-          "najib@zahrah" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-najib/host-zahrah
-            ];
-          };
-          "najib@customdesktop" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-najib/host-customdesktop/default.nix
-            ];
-          };
-          "najib@nyxora" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-najib/host-nyxora/default.nix
-            ];
-          };
-          "najib@khadijah" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-najib/host-khadijah
-            ];
-          };
-          "najib@maryam" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/home-najib.nix
-            ];
-          };
-          "najib@mahirah" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/home-najib.nix
-            ];
-          };
-          "najib@delldesktop" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/home-najib.nix
-            ];
-          };
-          "root@customdesktop" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/home-root.nix
-            ];
-          };
-          "root@nyxora" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-root/host-nyxora
-            ];
-          };
-          "naim@zahrah" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-naim/host-zahrah
-            ];
-          };
-          "naim@khadijah" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/home-naim.nix
-            ];
-          };
-          "naim@sakinah" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-naim/host-sakinah
-            ];
-          };
-          "naqib@asmak" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-naqib/host-asmak
-            ];
-          };
-          "naqib@sakinah" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-naqib/host-sakinah
-            ];
-          };
-          "naqib@raudah" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-naqib/host-raudah/default.nix
-            ];
-          };
-          "najib@asmak" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/home-najib.nix
-            ];
-          };
-          "naqib@hidayah" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-naqib/host-hidayah/default.nix
-            ];
-          };
-          "nurnasuha@sakinah" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-nurnasuha/host-sakinah
-            ];
-          };
-          "nurnasuha@customdesktop" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-nurnasuha/host-customdesktop/default.nix
-            ];
-          };
-          "julia@keira" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-julia/host-keira/default.nix
-            ];
-          };
-          "julia@manggis" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-julia/host-manggis/default.nix
-            ];
-          };
-          "najib@taufiq" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-najib/host-taufiq
-            ];
-          };
-          "julia@taufiq" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-julia/host-taufiq
-            ];
-          };
-          "naqib@taufiq" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-naqib/host-taufiq
-            ];
-          };
-          "nurnasuha@taufiq" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-nurnasuha/host-taufiq
-            ];
-          };
-          "naim@taufiq" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            extraSpecialArgs = { inherit inputs; };
-            modules = [
-              ./home-manager/user-naim/host-taufiq
-            ];
-          };
-        };
+
+          #"najib@taufiq" = inputs.home-manager.lib.homeManagerConfiguration {
+          #  pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+          #  extraSpecialArgs = { inherit inputs; };
+          #  modules = [
+          #    ./home-manager/user-najib/host-taufiq
+          #  ];
+          #};
+          "najib@taufiq" = mkHome "x86_64-linux" [
+            ./profiles/home-manager/users/najib/taufiq
+          ];
+
+          "root@taufiq" = mkHome "x86_64-linux" [
+            ./profiles/home-manager/users/root/taufiq
+          ];
+
+          # NOTE: to dry-build a Home Manager configuration for the user 'najib@taufiq':
+          #   nix build ".#homeConfigurations.najib@taufiq.activationPackage" --dry-run
+          #
+          # The flake-native way to dry-run a Home Manager build is nix build
+          # ".#homeConfigurations.<user>@<host>.activationPackage" --dry-run
+          # which we've discussed. To actually build and activate, you'd use
+          # something like nix run ".#homeConfigurations.<user>@<host>.activationPackage".
+          # This is more explicit than home-manager switch because it targets a
+          # specific output in your flake
+
+        }; # End of 'homeConfigurations = { ... };'
+
       };
     };
 }
