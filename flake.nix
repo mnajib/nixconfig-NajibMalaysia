@@ -104,14 +104,16 @@
         inherit (self) outputs;
 
         mkNixos = system: modules:
-          inputs.nixpkgs.lib.nixosSystem {
+          inputs.nixpkgs.lib.nixosSystem { # <-- Use inputs.nixpkgs
+          #inputs.nixpkgs-unstable.lib.nixosSystem { # <-- Use inputs.nixpkgs-unstable
             inherit system modules;
             specialArgs = { inherit inputs outputs; };
           };
 
         mkHome = system: modules:
           inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.${system};
+            pkgs = inputs.nixpkgs.legacyPackages.${system}; # <-- Use inputs.nixpkgs
+            #pkgs = inputs.nixpkgs-unstable.legacyPackages.${system}; # <-- Use inputs.nixpkgs-unstable
             inherit modules;
             extraSpecialArgs = { inherit inputs outputs; };
           };
@@ -123,6 +125,8 @@
         homeManagerModules = import ./modules/home-manager;
 
         nixosConfigurations = {
+          # NOTE: to test / dry-build nixos for host 'taufiq'
+          #   nixos-rebuild dry-build --flake .#taufiq
 
           khawlah = mkNixos "x86_64-linux" [
             ./profiles/nixos/hosts/khawlah/configuration.nix
@@ -148,6 +152,14 @@
             ./profiles/nixos/hosts/nyxora/configuration.nix
           ];
 
+          #customdesktop = inputs.nixpkgs-unstable.lib.nixosSystem {  # <-- Use inputs.nixpkgs-unstable
+          #  system = "x86_64-linux";
+          #  modules = [
+          #    ./profiles/nixos/hosts/customdesktop/configuration.nix
+          #    /* ... */
+          #  ];
+          #};
+          #
           customdesktop = mkNixos "x86_64-linux" [
             ./profiles/nixos/hosts/customdesktop/configuration.nix
             inputs.sops-nix.nixosModules.sops
@@ -183,17 +195,6 @@
             { programs.nix-ld.dev.enable = true; }
           ];
 
-          # NOTE: to test / dry-build nixos for host 'taufiq'
-          #   nixos-rebuild dry-build --flake .#taufiq
-
-          #taufiq = inputs.nixpkgs.lib.nixosSystem {
-          #  system = "x86_64-linux";
-          #  specialArgs = { inherit inputs; };
-          #  modules = [
-          #    ./profiles/nixos/hosts/taufiq/configuration.nix
-          #  ];
-          #};
-          #taufiq = self.flake.mkNixos "x86_64-linux" [
           taufiq = mkNixos "x86_64-linux" [
             ./profiles/nixos/hosts/taufiq/configuration.nix
           ];
@@ -210,22 +211,6 @@
         }; # End of 'nixosConfigurations = { ... };'
 
         homeConfigurations = {
-
-          #"najib@taufiq" = inputs.home-manager.lib.homeManagerConfiguration {
-          #  pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-          #  extraSpecialArgs = { inherit inputs; };
-          #  modules = [
-          #    ./home-manager/user-najib/host-taufiq
-          #  ];
-          #};
-          "najib@taufiq" = mkHome "x86_64-linux" [
-            ./profiles/home-manager/users/najib/taufiq
-          ];
-
-          "root@taufiq" = mkHome "x86_64-linux" [
-            ./profiles/home-manager/users/root/taufiq
-          ];
-
           # NOTE: to dry-build a Home Manager configuration for the user 'najib@taufiq':
           #   nix build ".#homeConfigurations.najib@taufiq.activationPackage" --dry-run
           #
@@ -235,6 +220,29 @@
           # something like nix run ".#homeConfigurations.<user>@<host>.activationPackage".
           # This is more explicit than home-manager switch because it targets a
           # specific output in your flake
+
+          #"najib@taufiq" = inputs.home-manager.lib.homeManagerConfiguration {
+          #  pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+          #  extraSpecialArgs = { inherit inputs; };
+          #  modules = [
+          #    ./home-manager/user-najib/host-taufiq
+          #  ];
+          #};
+          "najib@taufiq" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/taufiq ];
+
+          "root@taufiq" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/root/taufiq ];
+
+          "julia@manggis" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/julia/manggis ];
+          "julia@keira" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/julia/keira ];
+
+          "nurnasuha@manggis" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/nurnasuha/manggis ];
+          "nurnasuha@asmak" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/nurnasuha/asmak ];
+
+          "naqib@sumayah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/sumayah ];
+          "naqib@asmak" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/asmak ];
+
+          "naim@manggis" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naim/manggis ];
+          "naim@keira" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naim/keira ];
 
         }; # End of 'homeConfigurations = { ... };'
 
