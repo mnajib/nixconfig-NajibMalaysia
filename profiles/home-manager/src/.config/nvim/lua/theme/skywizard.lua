@@ -23,12 +23,19 @@ hl(0, "CursorLineNr",  { fg = "#ffcc66", bg = "#1a1a1a", bold = true })
 hl(0, "ColorColumn",   { bg = "#111111" })
 
 -- Syntax groups (exact color codes from Ariff's HTML Vim)
+-- brighter
 --hl(0, "Comment",       { fg = "#666666", italic = true })   -- // comment
 --hl(0, "Comment",       { fg = "#80a0ff", italic = true })   -- // comment
+--hl(0, "Comment",       { fg = "#80a0ff", italic = true })   -- // comment
+hl(0, "Comment",       { fg = "#777777", italic = true })   -- // comment
+--hl(0, "Comment",       { fg = "#666666", italic = true })   -- // comment
+--hl(0, "Comment",       { fg = "#555555", italic = true })   -- // comment
+--hl(0, "Comment",       { fg = "#4a4a4a", italic = true })   -- // comment
 --hl(0, "Comment",       { fg = "#444444", italic = true })   -- // comment
-hl(0, "Comment",       { fg = "#333333", italic = true })   -- // comment
+--hl(0, "Comment",       { fg = "#333333", italic = true })   -- // comment
 --hl(0, "Comment",       { fg = "#2a2a2a", italic = true })   -- // comment
 --hl(0, "Comment",       { fg = "#1a1a1a", italic = true })   -- // comment
+-- darker
 
 -- oren --> merah cair ?
 hl(0, "String",        { fg = "#ffa0a0" })                  -- "hello"
