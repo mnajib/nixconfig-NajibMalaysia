@@ -246,7 +246,7 @@ in
       "uhci_hcd" "firewire_ohci" "sr_mod" "sdhci_pci"
       "ums_realtek"
       "mpt3sas"
-      "ata_generic" "iscsi"
+      "ata_generic" #"iscsi"
     ];
     kernelModules = [
       "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs"
