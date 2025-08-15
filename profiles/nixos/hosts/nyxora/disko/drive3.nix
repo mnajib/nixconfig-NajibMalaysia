@@ -1,6 +1,6 @@
 # disko-config.nix
 {
-  disko.devices = {
+  #disko.devices = {
 
     #--------------------------------------------------------------------------
     #disk.sdh = {
@@ -13,7 +13,8 @@
         partitions = {
           boot_bios = {
             size = "1M";
-            type = "bios_grub";
+            #type = "bios_grub";
+            type = "EF02"; # use MBR
           };
           boot_efi = {
             size = "1G";
@@ -42,6 +43,6 @@
     };
     #--------------------------------------------------------------------------
 
-  }; # End disko.devices = { ... };
+  #}; # End disko.devices = { ... };
 }
 
