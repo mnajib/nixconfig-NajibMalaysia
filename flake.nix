@@ -1,5 +1,6 @@
 {
-  description = "NajibOS";
+  description = "My NixOS Config";
+
   nixConfig = {
     extra-substituters = [
       "https://nix-community.cachix.org"
@@ -16,6 +17,8 @@
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
+
+    disko.url = "github:nix-community/disko";
 
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-1.tar.gz";
@@ -149,7 +152,18 @@
           ];
 
           nyxora = mkNixos "x86_64-linux" [
+            # To test build
+            #   nixos-rebuild dry-build --flake .#nyxora
+            # To build and apply
+            #   nixos-rebuild switch --flake .#nyxora
             ./profiles/nixos/hosts/nyxora/configuration.nix
+
+            inputs.disko.nixosModules.disko
+
+            # To apply disko
+            #   nix run 3#nixosConfigurations.nyxora.config.system.build.disko
+            # 'nixos-rebuild' will ignore the partitioning (by 'disko') step by default.
+            #{ disko.devices = import ./profile/nixos/hosts/nyxora/disko-GCNL.nix {}; }
           ];
 
           #customdesktop = inputs.nixpkgs-unstable.lib.nixosSystem {  # <-- Use inputs.nixpkgs-unstable
@@ -209,6 +223,87 @@
           ];
 
         }; # End of 'nixosConfigurations = { ... };'
+
+        # Make disko shortcut
+        #  nix run .#disko-nyxora-newmirror
+        #apps.x86_64-linux.disko-nyxora-GCNL = {
+        #apps.x86_64-linux = {
+        apps = {
+          x86_64-linux = {
+
+            #--------------------------------------------------------------------
+            # for host nyxora
+            #--------------------------------------------------------------------
+
+            # To apply disko to drive ...7G9F only:
+            #   nix run .#disko-nyxora-7G9F
+            disko-nyxora-7G9F = let system = "x86_64-linux"; in {
+              type = "app";
+              #program = "${self.nixosConfigurations.nyxora.config.system.build.disko}/bin/disko";
+              program = toString (inputs.nixpkgs.legacyPackages.${system}.writeShellScript "disko-nyxora-7G9F" ''
+                exec ${self.nixosConfigurations.nyxora.config.system.build.disko} \
+                  --arg devices "(import ./profile/nixos/hosts/nyxora/disko-7G9F.nix {})"
+              '');
+            };
+
+            # To apply disko to drive ...4S78 only:
+            #   nix run .#disko-nyxora-4S78
+            disko-nyxora-4S78 = let system = "x86_64-linux"; in {
+              type = "app";
+              #program = "${self.nixosConfigurations.nyxora.config.system.build.disko}/bin/disko";
+              program = toString (inputs.nixpkgs.legacyPackages.${system}.writeShellScript "disko-nyxora-4S78" ''
+                exec ${self.nixosConfigurations.nyxora.config.system.build.disko} \
+                  --arg devices "(import ./profile/nixos/hosts/nyxora/disko-4S78.nix {})"
+              '');
+            };
+
+            # To apply disko to drive ...GCNL only:
+            #   nix run .#disko-nyxora-GCNL
+            disko-nyxora-GCNL = let system = "x86_64-linux"; in {
+              type = "app";
+              #program = "${self.nixosConfigurations.nyxora.config.system.build.disko}/bin/disko";
+              program = toString (inputs.nixpkgs.legacyPackages.${system}.writeShellScript "disko-nyxora-GCNL" ''
+                exec ${self.nixosConfigurations.nyxora.config.system.build.disko} \
+                  --arg devices "(import ./profile/nixos/hosts/nyxora/disko-GCNL.nix {})"
+              '');
+            };
+
+            # To apply disko to drive ...7G9F and drive...GCNL :
+            #   nix run .#disko-nyxora-7G9F-GCNL
+            disko-nyxora-7G9F-GCNL = let system = "x86_64-linux"; in {
+              type = "app";
+              #program = "${self.nixosConfigurations.nyxora.config.system.build.disko}/bin/disko";
+              program = toString (inputs.nixpkgs.legacyPackages.${system}.writeShellScript "disko-nyxora-7G9F-GCNL" ''
+                exec ${self.nixosConfigurations.nyxora.config.system.build.disko} \
+                  --arg devices "(nixpkgs.lib.mkMerge [
+                    (import ./profile/nixos/hosts/nyxora/disko-7G9F.nix {})
+                    (import ./profile/nixos/hosts/nyxora/disko-GCNL.nix {})
+                  ])"
+              '');
+            };
+
+            # To apply disko to the all three drives
+            #   nix run .#disko-nyxora-all
+            disko-nyxora-all = let system = "x86_64-linux"; in {
+              type = "app";
+              #program = "${self.nixosConfigurations.nyxora.config.system.build.disko}/bin/disko";
+              program = toString (inputs.nixpkgs.legacyPackages.${system}.writeShellScript "disko-nyxora-all" ''
+                exec ${self.nixosConfigurations.nyxora.config.system.build.disko} \
+                  --arg devices "(nixpkgs.lib.mkMerge [
+                    (import ./profile/nixos/hosts/nyxora/disko-7G9F.nix {})
+                    (import ./profile/nixos/hosts/nyxora/disko-4S78.nix {})
+                    (import ./profile/nixos/hosts/nyxora/disko-GCNL.nix {})
+                  ])"
+              '');
+            };
+
+            #--------------------------------------------------------------------
+            # for host customdesktop
+            #--------------------------------------------------------------------
+            # ...
+
+          }; # End apps.x86_64-linux = { ... };
+        }; # End apps = { ... };
 
         homeConfigurations = {
           # NOTE: to dry-build a Home Manager configuration for the user 'najib@taufiq':
