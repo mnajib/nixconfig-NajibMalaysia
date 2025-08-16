@@ -16,10 +16,13 @@ local hl = vim.api.nvim_set_hl
 -- Base UI
 --hl(0, "Normal",        { fg = "#aaaaaa", bg = "#000000" })
 hl(0, "Normal",        { fg = "LightGrey", bg = "Black" })
---hl(0, "LineNr",        { fg = "#444444", bg = "#000000" })
-hl(0, "LineNr",        { fg = "#525252", bg = "#333333" })
 hl(0, "CursorLine",    { bg = "#1a1a1a" })
+
+--hl(0, "LineNr",        { fg = "#444444", bg = "#000000" })
+--hl(0, "LineNr",        { fg = "#525252", bg = "#333333" })
+hl(0, "LineNr",        { fg = "#696969", bg = "#333333" })
 hl(0, "CursorLineNr",  { fg = "#ffcc66", bg = "#1a1a1a", bold = true })
+
 hl(0, "ColorColumn",   { bg = "#111111" })
 
 -- Syntax groups (exact color codes from Ariff's HTML Vim)

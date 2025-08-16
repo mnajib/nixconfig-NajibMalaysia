@@ -1,14 +1,14 @@
 -- ~/.config/nvim/init.lua
 
-vim.opt.termguicolors = true
-vim.opt.background = "dark"
-vim.cmd("syntax enable")
-
 -- Enable italics for terminal (place at top of file)
 vim.cmd([[
   let &t_ZH = "\e[3m"
   let &t_ZR = "\e[23m"
 ]])
+
+vim.opt.termguicolors = true
+vim.opt.background = "dark"
+vim.cmd("syntax enable")
 
 vim.cmd("colorscheme desert") -- you can try 'default', 'elflord', etc.
 
