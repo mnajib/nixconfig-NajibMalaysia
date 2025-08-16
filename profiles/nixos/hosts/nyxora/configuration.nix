@@ -236,11 +236,9 @@ in
       ];
 
       devices = [
-        #"/dev/disk/by-id/wwn-0x5000c500a837f420" # 500GB HDD from sakinah
-        #"/dev/disk/by-id/wwn-0x5000039fe7c9db77" # HDD from HP ProDesk Naqib
-        #"/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0"
         "/dev/disk/by-id/wwn-0x5000c500a837f420"
         "/dev/disk/by-id/wwn-0x50014ee65ba9826e"
+        "/dev/disk/by-id/wwn-0x5000c5003fe08743"
       ];
 
     }; # End boot.loader.grub
