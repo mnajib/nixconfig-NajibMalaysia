@@ -101,9 +101,9 @@
         set-option -sa terminal-features ",xterm*:RGB"
 
         # Enable italics in tmux
-        set -g default-terminal "tmux-256color"
-        set -ag terminal-overrides ",xterm-256color:RGB"
-        set -ag terminal-overrides ",*:sitm=\E[3m"
+        #set -g default-terminal "tmux-256color"
+        #set -ag terminal-overrides ",xterm-256color:RGB"
+        #set -ag terminal-overrides ",*:sitm=\E[3m"
       }
 
       set -g detach-on-destroy off  # Do not exit from tmux when closing a session
