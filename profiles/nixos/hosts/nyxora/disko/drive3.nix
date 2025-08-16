@@ -12,7 +12,7 @@
         type = "gpt";
         partitions = {
           boot_bios = {
-            size = "1M";
+            size = "2M"; #"1M";
             #type = "bios_grub";
             type = "EF02"; # use MBR
           };
@@ -22,7 +22,7 @@
             content = {
               type = "filesystem";
               format = "vfat";
-              mountpoint = "/boot3"; # temp mountpoint. named to avoid conflict with existing /boot and /boot2, for now
+              mountpoint = "/boot1003"; # temp mountpoint. named to avoid conflict with existing /boot and /boot2, for now
             };
           };
           swap = {

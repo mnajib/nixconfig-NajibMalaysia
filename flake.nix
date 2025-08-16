@@ -290,22 +290,22 @@
 
             inputs.disko.nixosModules.disko
 
-            (import ./profiles/nixos/hosts/nyxora/disko/default.nix {
-              #lib = nixpkgs.lib;
-              lib = inputs.nixpkgs.lib;
-
-              # enable (enable = true) to let disko apply the config to the drive.
-              # disable (enable = false) to let disko ignore/do nothing to the drive.
-              #
-              # To dry-run:
-              #   nix run .#nixosConfigurations.nyxora.config.system.build.disko -- \
-              #     --arg devices "(import ./profiles/nixos/hosts/nyxora/disko/default.nix { lib = import <nixpkgs/lib>; enableDrive1 = true; enableDrive2 = false; enableDrive3 = true; })" \
-              #     --dry-run
-              # or use shortcut as defined in apps.x86_64-linux.disko-nyxora-dry.
-              enableDrive1 = false;
-              enableDrive2 = false;
-              enableDrive3 = true;
-            })
+#           (import ./profiles/nixos/hosts/nyxora/disko/default.nix {
+#             #lib = nixpkgs.lib;
+#             lib = inputs.nixpkgs.lib;
+#
+#             # enable (enable = true) to let disko apply the config to the drive.
+#             # disable (enable = false) to let disko ignore/do nothing to the drive.
+#             #
+#             # To dry-run:
+#             #   nix run .#nixosConfigurations.nyxora.config.system.build.disko -- \
+#             #     --arg devices "(import ./profiles/nixos/hosts/nyxora/disko/default.nix { lib = import <nixpkgs/lib>; enableDrive1 = true; enableDrive2 = false; enableDrive3 = true; })" \
+#             #     --dry-run
+#             # or use shortcut as defined in apps.x86_64-linux.disko-nyxora-dry.
+#             enableDrive1 = false;
+#             enableDrive2 = false;
+#             enableDrive3 = true;
+#           })
 
             # To apply disko
             #   nix run 3#nixosConfigurations.nyxora.config.system.build.disko

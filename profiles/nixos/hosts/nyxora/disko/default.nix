@@ -2,7 +2,7 @@
   lib, # is a must
   enableDrive1 ? false, # if the key is missing, take the default value (after the '?')
   enableDrive2 ? false,
-  enableDrive3 ? true #false
+  enableDrive3 ? false #true #false
 }:
 
 let
