@@ -10,10 +10,11 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
+    #nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.follows = "nixpkgs-stable"; # Make 'nixpkgs' point to nixpkgs-stable
 
     flake-parts.url = "github:hercules-ci/flake-parts";
 
