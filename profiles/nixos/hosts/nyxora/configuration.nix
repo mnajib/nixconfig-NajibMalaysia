@@ -226,6 +226,13 @@ in
           ];
           path = "/boot2";
         }
+        {
+          devices = [
+            #"/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
+            "/dev/disk/by-id/wwn-0x5000c5003fe08743-part2"  # "/dev/disk/by-id/ata-ST3500413AS_Z2ALGCNL-part2"
+          ];
+          path = "/boot3";
+        }
       ];
 
       devices = [
