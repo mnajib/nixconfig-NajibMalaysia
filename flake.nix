@@ -1,5 +1,6 @@
 {
-  description = "NajibOS";
+  description = "My NixOS Config";
+
   nixConfig = {
     extra-substituters = [
       "https://nix-community.cachix.org"
@@ -17,6 +18,8 @@
     nixpkgs.follows = "nixpkgs-stable"; # Make 'nixpkgs' point to nixpkgs-stable
 
     flake-parts.url = "github:hercules-ci/flake-parts";
+
+    disko.url = "github:nix-community/disko";
 
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-1.tar.gz";
@@ -74,6 +77,7 @@
 
   outputs = inputs@{ flake-parts, self, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
+
       systems = [ "x86_64-linux" "aarch64-linux" ];
 
       imports = [
@@ -98,7 +102,130 @@
 
           formatter = pkgs.alejandra;
 
-        };
+#         #
+#         # Usage:
+#         #
+#         #   To Dry-run with only drive3
+#         #     nix run .#disko-nyxora-dry -- --enableDrive3
+#         #
+#         #   Dry-run with drive2 and drive3
+#         #     nix run .#disko-nyxora-dry -- --enableDrive2 --enableDrive3
+#         #
+#         #   Dry-run with all (3) drives
+#         #     nix run .#disko-nyxora-dry -- --enableDrive1 --enableDrive2 --enableDrive3
+#         #   or
+#         #     nix run .#disko-nyxora-dry
+#         #
+#         apps.disko-nyxora-dry = {
+#           type = "app";
+#           program = toString (pkgs.writeShellScript "disko-nyxora-dry" ''
+#             ${pkgs.nixos-install-tools}/bin/disko \
+#               --dry-run \
+#               --mode disko \
+#               --devices "$(${pkgs.nix}/bin/nix eval --raw .#nixosConfigurations.nyxora.config.disko.devices)"
+#           '');
+#         }; # End apps.disko-nyxora-dry = { ... };
+
+#         apps.disko-nyxora-dry2 = {
+#           type = "app";
+#           program = toString (pkgs.writeShellScript "disko-nyxora-dry2" ''
+#             set -e
+
+#             enableDrive1=false
+#             enableDrive2=false
+#             enableDrive3=false
+#             anyFlag=false
+
+#             # Parse CLI args
+#             while [[ $# -gt 0 ]]; do
+#               case "$1" in
+#                 --enableDrive1) enableDrive1=true; anyFlag=true ;;
+#                 --enableDrive2) enableDrive2=true; anyFlag=true ;;
+#                 --enableDrive3) enableDrive3=true; anyFlag=true ;;
+#                 *) echo "Unknown option: $1" >&2; exit 1 ;;
+#               esac
+#               shift
+#             done
+
+#             # If no flags given, enable all drives
+#             if [[ "$anyFlag" == "false" ]]; then
+#               enableDrive1=true
+#               enableDrive2=true
+#               enableDrive3=true
+#             fi
+
+#             # Run disko in dry-run mode with selected drives
+#             nix run ".#nixosConfigurations.nyxora.config.system.build.diskoScript" -- \
+#               --arg devices "(
+#                 import ./profiles/nixos/hosts/nyxora/disko/default.nix {
+#                   lib = import <nixpkgs/lib>;
+#                   enableDrive1 = ''${enableDrive1};
+#                   enableDrive2 = ''${enableDrive2};
+#                   enableDrive3 = ''${enableDrive3};
+#                 }
+#               )" \
+#               --dry-run
+#           '');
+#         }; # End apps.disko-nyxora-dry2 = { ... };
+
+#         apps.disko-nyxora-dry3 = {
+#           type = "app";
+#           program = toString (pkgs.writeShellScript "disko-nyxora-dry3" ''
+#             set -euo pipefail
+
+#             enableDrive1=false
+#             enableDrive2=false
+#             enableDrive3=false
+#             anyFlag=false
+
+#             # Parse CLI args
+#             while [[ $# -gt 0 ]]; do
+#               case "$1" in
+#                 --enableDrive1) enableDrive1=true; anyFlag=true ;;
+#                 --enableDrive2) enableDrive2=true; anyFlag=true ;;
+#                 --enableDrive3) enableDrive3=true; anyFlag=true ;;
+#                 *) echo "Unknown option: $1" >&2; exit 1 ;;
+#               esac
+#               shift
+#             done
+
+#             # If no flags given, enable all drives
+#             if [[ "$anyFlag" == "false" ]]; then
+#               enableDrive1=true
+#               enableDrive2=true
+#               enableDrive3=true
+#             fi
+
+#             # Convert bash bools to Nix bools
+#             nixBool() {
+#               if [[ "$1" == "true" ]]; then
+#                 echo "true"
+#               else
+#                 echo "false"
+#               fi
+#             }
+
+#             #diskoTarget=$(
+#             #  nix eval --raw .#nixosConfigurations.nyxora.config.system.build \
+#             #    | grep -q diskoScript && echo diskoScript || echo disko
+#             #)
+
+#             #nix run ".#nixosConfigurations.nyxora.config.system.build.$diskoTarget" -- \
+#             nix run ".#nixosConfigurations.nyxora.config.system.build.diskoScript" -- \
+#               --arg devices "(
+#                   import ./profiles/nixos/hosts/nyxora/disko/default.nix {
+#                     lib = import ${pkgs.path + "/lib"};
+#                     enableDrive1 = $(nixBool "$enableDrive1");
+#                     enableDrive2 = $(nixBool "$enableDrive2");
+#                     enableDrive3 = $(nixBool "$enableDrive3");
+#                   }
+#               )" \
+#               --dry-run
+#           '');
+#         }; # End apps.disko-nyxora-dry3 = { ... };
+
+
+        }; # End perSystem = {}: let .. in { ... };
 
       flake = let
 
@@ -149,8 +276,52 @@
             ./profiles/nixos/hosts/mahirah/configuration.nix
           ];
 
-          nyxora = mkNixos "x86_64-linux" [
+          nyxora = let
+            # Toggle these to true/false before running nixos-rebuild or nix run
+            # Only enabled drive will be process
+            enableDrive1 = false;
+            enableDrive2 = false;
+            enableDrive3 = true;
+          in mkNixos "x86_64-linux" [
+            # To test build
+            #   nixos-rebuild dry-build --flake .#nyxora
+            # To build and apply
+            #   nixos-rebuild switch --flake .#nyxora
             ./profiles/nixos/hosts/nyxora/configuration.nix
+
+            inputs.disko.nixosModules.disko
+
+            (import ./profiles/nixos/hosts/nyxora/disko/default.nix {
+              #lib = nixpkgs.lib;
+              lib = inputs.nixpkgs.lib;
+
+              # enable (enable = true) to let disko apply the config to the drive.
+              # disable (enable = false) to let disko ignore/do nothing to the drive.
+              #
+              # To dry-run:
+              #   nix run .#nixosConfigurations.nyxora.config.system.build.disko -- \
+              #     --arg devices "(import ./profiles/nixos/hosts/nyxora/disko/default.nix { lib = import <nixpkgs/lib>; enableDrive1 = true; enableDrive2 = false; enableDrive3 = true; })" \
+              #     --dry-run
+              # or use shortcut as defined in apps.x86_64-linux.disko-nyxora-dry.
+              enableDrive1 = false;
+              enableDrive2 = false;
+              enableDrive3 = true;
+            })
+
+            # To apply disko
+            #   nix run 3#nixosConfigurations.nyxora.config.system.build.disko
+            # 'nixos-rebuild' will ignore the partitioning (by 'disko') step by default.
+            #{ disko.devices = import ./profile/nixos/hosts/nyxora/disko-GCNL.nix {}; }
+
+            #{
+            #  disko.devices = inputs.nixpkgs.lib.mkMerge (
+            #    []
+            #    ++ inputs.nixpkgs.lib.optional enableDrive1 (import ./profiles/nixos/hosts/nyxora/disko-7G9F.nix { })
+            #    ++ inputs.nixpkgs.lib.optional enableDrive2 (import ./profiles/nixos/hosts/nyxora/disko-4S78.nix { })
+            #    ++ inputs.nixpkgs.lib.optional enableDrive3 (import ./profiles/nixos/hosts/nyxora/disko-GCNL.nix { })
+            #  );
+            #}
+
           ];
 
           #customdesktop = inputs.nixpkgs-unstable.lib.nixosSystem {  # <-- Use inputs.nixpkgs-unstable
@@ -247,6 +418,6 @@
 
         }; # End of 'homeConfigurations = { ... };'
 
-      };
-    };
+      }; # End of 'flake = let ... in { ... };'
+    }; # End of 'flake-parts.lib.mkFlake { inherit inputs; } { ... };
 }

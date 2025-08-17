@@ -16,19 +16,29 @@ local hl = vim.api.nvim_set_hl
 -- Base UI
 --hl(0, "Normal",        { fg = "#aaaaaa", bg = "#000000" })
 hl(0, "Normal",        { fg = "LightGrey", bg = "Black" })
---hl(0, "LineNr",        { fg = "#444444", bg = "#000000" })
-hl(0, "LineNr",        { fg = "#525252", bg = "#333333" })
 hl(0, "CursorLine",    { bg = "#1a1a1a" })
+
+--hl(0, "LineNr",        { fg = "#444444", bg = "#000000" })
+--hl(0, "LineNr",        { fg = "#525252", bg = "#333333" })
+hl(0, "LineNr",        { fg = "#696969", bg = "#333333" })
 hl(0, "CursorLineNr",  { fg = "#ffcc66", bg = "#1a1a1a", bold = true })
+
 hl(0, "ColorColumn",   { bg = "#111111" })
 
 -- Syntax groups (exact color codes from Ariff's HTML Vim)
+-- brighter
 --hl(0, "Comment",       { fg = "#666666", italic = true })   -- // comment
 --hl(0, "Comment",       { fg = "#80a0ff", italic = true })   -- // comment
+--hl(0, "Comment",       { fg = "#80a0ff", italic = true })   -- // comment
+hl(0, "Comment",       { fg = "#777777", italic = true })   -- // comment
+--hl(0, "Comment",       { fg = "#666666", italic = true })   -- // comment
+--hl(0, "Comment",       { fg = "#555555", italic = true })   -- // comment
+--hl(0, "Comment",       { fg = "#4a4a4a", italic = true })   -- // comment
 --hl(0, "Comment",       { fg = "#444444", italic = true })   -- // comment
-hl(0, "Comment",       { fg = "#333333", italic = true })   -- // comment
+--hl(0, "Comment",       { fg = "#333333", italic = true })   -- // comment
 --hl(0, "Comment",       { fg = "#2a2a2a", italic = true })   -- // comment
 --hl(0, "Comment",       { fg = "#1a1a1a", italic = true })   -- // comment
+-- darker
 
 -- oren --> merah cair ?
 hl(0, "String",        { fg = "#ffa0a0" })                  -- "hello"

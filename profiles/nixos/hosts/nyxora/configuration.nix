@@ -239,27 +239,31 @@ in
     }; # End boot.loader.grub
   }; # End boot.loader
 
-  boot.initrd.availableKernelModules = [
-    "ehci_pci" "ahci" "xhci_pci" "ata_piix" "usbhid" "usb_storage" "sd_mod" "mpt3sas"
-    "uhci_hcd" "firewire_ohci" "sr_mod" "sdhci_pci"
-    "ums_realtek"
-    "mpt3sas"
-  ];
-  boot.initrd.kernelModules = [
-    "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs"
-    #"ntfs"
-    "kvm-intel"
-  ];
-  boot.initrd.supportedFilesystems = [
-    "ext4" "btrfs" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid"
-    "zfs"
-    #"bcachefs"
-    #"ntfs"
-  ];
+  boot.initrd = {
+    availableKernelModules = [
+      "sym53c8xx"
+      "ehci_pci" "ahci" "xhci_pci" "ata_piix" "usbhid" "usb_storage" "sd_mod" "mpt3sas"
+      "uhci_hcd" "firewire_ohci" "sr_mod" "sdhci_pci"
+      "ums_realtek"
+      "mpt3sas"
+      "ata_generic" #"iscsi"
+    ];
+    kernelModules = [
+      "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs"
+      #"ntfs"
+      "kvm-intel"
+    ];
+    supportedFilesystems = [
+      "ext4" "btrfs" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid"
+      "zfs"
+      #"bcachefs"
+      #"ntfs"
+    ];
 
-  boot.initrd.postDeviceCommands = lib.mkAfter ''
-    zfs rollback -r MyStation/local/root@blank
-  '';
+    postDeviceCommands = lib.mkAfter ''
+      zfs rollback -r MyStation/local/root@blank
+    '';
+  };
 
   #
   # NOTE:
