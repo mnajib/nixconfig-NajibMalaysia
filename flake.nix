@@ -292,8 +292,8 @@
             #   nixos-rebuild switch --flake .#nyxora
             ./profiles/nixos/hosts/nyxora/configuration.nix
 
-            inputs.disko.nixosModules.disko
-
+#           inputs.disko.nixosModules.disko
+#
 #           (import ./profiles/nixos/hosts/nyxora/disko/default.nix {
 #             #lib = nixpkgs.lib;
 #             lib = inputs.nixpkgs.lib;
