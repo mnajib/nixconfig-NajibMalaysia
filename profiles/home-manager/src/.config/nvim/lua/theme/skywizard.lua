@@ -30,8 +30,8 @@ hl(0, "ColorColumn",   { bg = "#111111" })
 --hl(0, "Comment",       { fg = "#666666", italic = true })   -- // comment
 --hl(0, "Comment",       { fg = "#80a0ff", italic = true })   -- // comment
 --hl(0, "Comment",       { fg = "#80a0ff", italic = true })   -- // comment
-hl(0, "Comment",       { fg = "#777777", italic = true })   -- // comment
---hl(0, "Comment",       { fg = "#666666", italic = true })   -- // comment
+--hl(0, "Comment",       { fg = "#777777", italic = true })   -- // comment
+hl(0, "Comment",       { fg = "#666666", italic = true })   -- // comment
 --hl(0, "Comment",       { fg = "#555555", italic = true })   -- // comment
 --hl(0, "Comment",       { fg = "#4a4a4a", italic = true })   -- // comment
 --hl(0, "Comment",       { fg = "#444444", italic = true })   -- // comment
