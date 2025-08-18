@@ -54,7 +54,8 @@
     escapeTime = 10;  # 0 # use '0' to zero-out escape time delay
     historyLimit = 10000; # 1000000
     keyMode = "vi";
-    #terminal = "screen-256color";
+    terminal = "screen-256color";
+    #terminal = "tmux-256color";
 
     prefix = "C-b";
     #shortcut = "b";                                        # Default is "b".
