@@ -211,10 +211,10 @@
   #---------------------------------------------------------------------------
   # Shared Storage
   #---------------------------------------------------------------------------
-  # fileSystems."/MyTank/services" =
-  #  { device = "MyTank/services";
-  #    fsType = "zfs";
-  #  };
+   fileSystems."/MyTank/services" =
+    { device = "MyTank/services";
+      fsType = "zfs";
+    };
 
   #fileSystems."/MyTank/shared" =
   #  { device = "MyTank/shared";
@@ -231,10 +231,10 @@
   #    fsType = "zfs";
   #  };
 
-  #fileSystems."/MyTank/backups/offsite" =
-  #  { device = "MyTank/backups/offsite";
-  #    fsType = "zfs";
-  #  };
+  fileSystems."/MyTank/backups/offsite" =
+    { device = "MyTank/backups/offsite";
+      fsType = "zfs";
+    };
 
   #fileSystems."/MyTank/shared/projects" =
   #  { device = "MyTank/shared/projects";
