@@ -65,7 +65,9 @@ in
   # Need to mount the my zfs storage first
   systemd.services.forgejo = {
     after = [
-      "mnt-data.automount"
+      "MyTank-services.mount"
+      "zfs-mount.service"
+      #"mnt-data.automount"
     ];
   };
 

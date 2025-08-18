@@ -201,14 +201,20 @@
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
+  fileSystems."/boot3" =
+    { device = "/dev/disk/by-uuid/2CA8-8859";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
+    };
+
 
   #---------------------------------------------------------------------------
   # Shared Storage
   #---------------------------------------------------------------------------
-  # fileSystems."/MyTank/services" =
-  #  { device = "MyTank/services";
-  #    fsType = "zfs";
-  #  };
+   fileSystems."/MyTank/services" =
+    { device = "MyTank/services";
+      fsType = "zfs";
+    };
 
   #fileSystems."/MyTank/shared" =
   #  { device = "MyTank/shared";
@@ -225,10 +231,10 @@
   #    fsType = "zfs";
   #  };
 
-  #fileSystems."/MyTank/backups/offsite" =
-  #  { device = "MyTank/backups/offsite";
-  #    fsType = "zfs";
-  #  };
+  fileSystems."/MyTank/backups/offsite" =
+    { device = "MyTank/backups/offsite";
+      fsType = "zfs";
+    };
 
   #fileSystems."/MyTank/shared/projects" =
   #  { device = "MyTank/shared/projects";
@@ -280,6 +286,7 @@
     # nyxora (physically on Z420)
     { device = "/dev/disk/by-uuid/cd472af8-a300-4c06-8c53-b26710f16397"; }
     { device = "/dev/disk/by-uuid/12e7efc0-480c-4960-be2a-8a7ce64db443"; }
+    { device = "/dev/disk/by-uuid/f8df46f9-f349-4dfe-9880-87f67dbf52e2"; }
 
   ];
 

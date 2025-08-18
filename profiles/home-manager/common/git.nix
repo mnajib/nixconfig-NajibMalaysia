@@ -22,17 +22,31 @@
       #userName =  "${name}"; #"Najib Ibrahim";
       #userEmail = "${email}"; # "mnajib@gmail.com";
 
+      #
+      # To list all aliases:
+      #   git config --get-regexp ^alias\.
+      #
       aliases = {
+          aliases       = "config --get-regexp ^alias\\.";                      # List all aliases (global + local)
+          aliases-user  = "config --global --get-regexp ^alias\\.";             # List only user-level aliases
+          aliases-local = "config --local --get-regexp ^alias\\.";              # List only repo-level aliases
+
           co = "checkout";
           ci = "commit";
           st = "status";
           br = "branch";
-          #hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cr)' --graph --date=short --all";
-          hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all";
-          #hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=relative --all";
-          histp = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all -p";
-          hist2 = "log --graph --oneline --simplify-by-decoration --all";
-          hist3 = "log --graph --oneline --decorate --all";
+
+          #hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cr)' --graph --date=short --all";           #
+          hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all";            #
+          #hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=relative --all";        #
+          histp = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all -p";        #
+          hist2 = "log --graph --oneline --simplify-by-decoration --all";                   #
+          hist3 = "log --graph --oneline --decorate --all";                                 #
+          hist4 = "log --stat --graph --pretty=format:'%h - %an: %s (%cd)' --all";          # '--pretty=format:' show custom commit info.
+          hist5 = "log --graph --pretty=format:'%h - %an: %s (%cd)' --numstat --all";       # '--numstat' show files changed with numerac stats, easier to compute percentages.
+          hist6 = "log --graph --pretty=format:'%C(yellow)%h%Creset - %C(cyan)%an%Creset: %s %Cgreen(%cd)' --stat --all";         # '--stat' show files changed and lines added/deleted (summary).
+          hist7 = "log --graph --pretty=format:'%C(yellow)%h%Creset - %C(cyan)%an%Creset: %s %Cgreen(%cd)' -p --all";             # '-p' show full patch/diff per commit.
+
           type = "cat-file -t";
           dump = "cat-file -p";
           branchall = "branch -a -vv";

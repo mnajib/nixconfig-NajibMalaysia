@@ -21,7 +21,7 @@
             content = {
               type = "filesystem";
               format = "vfat";
-              mountpoint = "/boot3"; # temp mountpoint. named to avoid conflict with existing /boot and /boot2, for now
+              mountpoint = "/boot1001"; # temp mountpoint. named to avoid conflict with existing /boot and /boot2, for now
             };
           };
           swap = {
