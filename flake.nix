@@ -28,55 +28,81 @@
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-1.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      #inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+
     hardware.url = "github:NixOS/nixos-hardware/master";
-    nixvim = {
-      url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-    neovim-config-NajibMalaysia.url = "github:mnajib/neovim-config-NajibMalaysia";
-    nur.url = "github:nix-community/NUR";
+
+    #nixvim = {
+    #  url = "github:nix-community/nixvim";
+    #  inputs.nixpkgs.follows = "nixpkgs-unstable";
+    #};
+
+    #neovim-config-NajibMalaysia.url = "github:mnajib/neovim-config-NajibMalaysia";
+
+    #nur.url = "github:nix-community/NUR";
+
     impermanence.url = "github:nix-community/impermanence";
+
     nix-colors.url = "github:misterio77/nix-colors";
+
     stylix.url = "github:danth/stylix/release-25.05";
+
     hyprland = {
       url = "git+https://github.com/hyprwm/hyprland?submodules=1";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      #inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+
     hyprwn-contrib = {
       url = "github:hyprwm/contrib";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      #inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+
     hyprkeys = {
       url = "github:hyprland-community/hyprkeys";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      #inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+
     nh = {
       url = "github:viperML/nh?ref=fe4a96a0b0b0662dba7c186b4a1746c70bbcad03";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      #inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+
     sops-nix = {
       url = "github:mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      #inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      #inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+
     dnsblacklist = {
       url = "github:notracking/hosts-blocklists";
       flake = false;
     };
+
     seaweedfs.url = "github:/mitchty/nixos-seaweedfs/wip";
+
     nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
+
     nix-ld = {
       url = "github:Mic92/nix-ld";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  };
+
+  }; # End of 'inputs = { ... };'
 
   outputs = inputs@{ flake-parts, self, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
