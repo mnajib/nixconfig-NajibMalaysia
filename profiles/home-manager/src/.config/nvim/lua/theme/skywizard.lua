@@ -6,104 +6,113 @@
 -- Current list of applied setting can be displayed using command ':hi' in neovim.
 
 -- ----------------------------------------------------------------------------
-vim.cmd("hi clear")
-vim.o.background = "dark"
-vim.g.colors_name = "skywizard"
+local M = {}
 
-local hl = vim.api.nvim_set_hl
+local function Hi(group, opts)
+  vim.api.nvim_set_hl(0, group, opts)
+end
 
--- ----------------------------------------------------------------------------
--- Base UI
---hl(0, "Normal",        { fg = "#aaaaaa", bg = "#000000" })
-hl(0, "Normal",        { fg = "LightGrey", bg = "Black" })
-hl(0, "CursorLine",    { bg = "#1a1a1a" })
+-- function M.setup()
+  --vim.cmd("hi clear")
+  vim.o.background = "dark"
+  vim.g.colors_name = "skywizard"
 
---hl(0, "LineNr",        { fg = "#444444", bg = "#000000" })
---hl(0, "LineNr",        { fg = "#525252", bg = "#333333" })
-hl(0, "LineNr",        { fg = "#696969", bg = "#333333" })
-hl(0, "CursorLineNr",  { fg = "#ffcc66", bg = "#1a1a1a", bold = true })
+  -- Search related
+  Hi("IncSearch",                       { reverse = true })
+  Hi("Search",                          { bg = "#444444", fg = "#ffffff" })
 
-hl(0, "ColorColumn",   { bg = "#111111" })
+  -- Command-line completion
+  Hi("WildMenu",                        { fg = "Black", bg = "Yellow" })
 
--- Syntax groups (exact color codes from Ariff's HTML Vim)
--- brighter
---hl(0, "Comment",       { fg = "#666666", italic = true })   -- // comment
---hl(0, "Comment",       { fg = "#80a0ff", italic = true })   -- // comment
---hl(0, "Comment",       { fg = "#80a0ff", italic = true })   -- // comment
---hl(0, "Comment",       { fg = "#777777", italic = true })   -- // comment
---hl(0, "Comment",       { fg = "#666666", italic = true })   -- // comment
---hl(0, "Comment",       { fg = "#555555", italic = true })   -- // comment
-hl(0, "Comment",       { fg = "#4a4a4a", italic = true })   -- // comment
---hl(0, "Comment",       { fg = "#444444", italic = true })   -- // comment
---hl(0, "Comment",       { fg = "#333333", italic = true })   -- // comment
---hl(0, "Comment",       { fg = "#2a2a2a", italic = true })   -- // comment
---hl(0, "Comment",       { fg = "#1a1a1a", italic = true })   -- // comment
--- darker
+  -- UI elements
+  Hi("Visual",                          { bg = "#285577" })
+  Hi("CursorLine",                      { bg = "#1c1c1c" })
+  --Hi("StatusLine",                      { fg = "#ffffff", bg = "#005f87", bold = true })
+  --Hi("StatusLineNC",                    { fg = "#aaaaaa", bg = "#262626" })
+  Hi("StatusLine",                      { reverse = true, bold = true })
+  Hi("StatusLineNC",                    { reverse = true })
 
--- oren --> merah cair ?
-hl(0, "String",        { fg = "#ffa0a0" })                  -- "hello"
-hl(0, "Constant",      { fg = "#ffa0a0" })                  -- TRUE, FALSE
-hl(0, "Character",     { fg = "#ffa0a0" })
-hl(0, "Number",        { fg = "#ffa0a0" })                  -- 123
-hl(0, "Boolean",        { fg = "#ffa0a0" })
-hl(0, "Float",        { fg = "#ffa0a0" })
+  -- Diagnostics (if you want to override LSP colors)
+  Hi("DiagnosticError",                 { fg = "#ff5f5f" })
+  Hi("DiagnosticWarn",                  { fg = "#ffaf00" })
+  Hi("DiagnosticInfo",                  { fg = "#5fafff" })
+  Hi("DiagnosticHint",                  { fg = "#5fff5f" })
 
---hl(0, "Function",      { fg = "#81a2be" })                  -- do_something()
-hl(0, "Function",      { fg = "#40ffff" })                  -- do_something()
---hl(0, "Identifier",    { fg = "#f99157" })                  -- $foo
-hl(0, "Identifier",    { fg = "#40ffff" })                  -- $foo
+  -- Base UI
+  Hi( "Normal",                         { fg = "LightGrey", bg = "Black" })
+  Hi( "CursorLine",                     { bg = "#1a1a1a" })
 
--- Kuning
-hl(0, "Statement",       { fg = "#ffff60", bold = true })
-hl(0, "Keyword",       { fg = "#ffff60", bold = true })     -- def, end, return
+  Hi( "LineNr",                         { fg = "#696969", bg = "#333333" })
+  Hi( "CursorLineNr",                   { fg = "#ffcc66", bg = "#1a1a1a", bold = true })
 
--- Oren --> Coklat
-hl(0, "Tag",       { fg = "Orange" })
---hl(0, "Special",       { fg = "#f99157" })                  -- special chars
-hl(0, "Special",       { fg = "Orange" })                  -- special chars
-hl(0, "SpecialChar",       { fg = "Orange" })
-hl(0, "Delimiter",       { fg = "Orange" })
-hl(0, "SpecialComment",       { fg = "Orange" })
-hl(0, "Debug",       { fg = "Orange" })
+  Hi( "ColorColumn",                    { bg = "#111111" })
 
--- Hijau
---hl(0, "Type",          { fg = "#b294bb" })                  -- class, module, etc.
-hl(0, "Type",          { fg = "#60ff60", bold = true })                  -- class, module, etc.
+  Hi( "Comment",                        { fg = "#444444", italic = true })
 
--- ungu
-hl(0, "PreProc",       { fg = "#ff80ff" })
+  -- oren --> merah cair ?
+  Hi( "String",                         { fg = "#ffa0a0" })                  -- "hello"
+  Hi( "Constant",                       { fg = "#ffa0a0" })                  -- TRUE, FALSE
+  Hi( "Character",                      { fg = "#ffa0a0" })
+  Hi( "Number",                         { fg = "#ffa0a0" })                  -- 123
+  Hi( "Boolean",                        { fg = "#ffa0a0" })
+  Hi( "Float",                          { fg = "#ffa0a0" })
 
-hl(0, "Error",          { fg = "White", bg = "Red" })
-hl(0, "Todo",          { fg = "Blue", bg = "Yellow" })
+  --hl(0, "Function",                   { fg = "#81a2be" })                  -- do_something()
+  Hi( "Function",                       { fg = "#40ffff" })                  -- do_something()
+  --hl(0, "Identifier",                 { fg = "#f99157" })                  -- $foo
+  Hi( "Identifier",                     { fg = "#40ffff" })                  -- $foo
 
--- Cursor
- hl(0, "Cursor",        { fg = "#000000", bg = "#cccccc" })
---hl(0, "Cursor",        { fg = "#000000", bg = "#ffffff" })
--- hl(0, "Cursor", { fg = "Black", bg = "Yellow" })
--- hl(0, "lCursor", { fg = "White", bg = "Red" })
+  -- Kuning
+  Hi( "Statement",                      { fg = "#ffff60", bold = true })
+  Hi( "Keyword",                        { fg = "#ffff60", bold = true })     -- def, end, return
 
--- ----------------------------------------------------------------------------
--- 1. Show invisible characters
-vim.opt.list = true
-vim.opt.listchars = {
-  trail = "█",
-  tab = ">-",
-  extends = "»",
-  precedes = "«",
-  nbsp = "•"
-}
+  -- Oren --> Coklat
+  Hi( "Tag",                            { fg = "Orange" })
+  --hl(0, "Special",                    { fg = "#f99157" })                  -- special chars
+  Hi( "Special",                        { fg = "Orange" })                  -- special chars
+  Hi( "SpecialChar",                    { fg = "Orange" })
+  Hi( "Delimiter",                      { fg = "Orange" })
+  Hi( "SpecialComment",                 { fg = "Orange" })
+  Hi( "Debug",                          { fg = "Orange" })
 
--- 2. Highlight them in blue
-vim.api.nvim_set_hl(0, "Whitespace", { fg = "Blue", bold = true })
-vim.api.nvim_set_hl(0, "NonText", { fg = "Blue", bold = true })
+  -- Hijau
+  Hi( "Type",                           { fg = "#60ff60", bold = true })                  -- class, module, etc.
 
--- ----------------------------------------------------------------------------
--- Set color column at 40, 60, and 80
-vim.opt.colorcolumn = { 40, 60, 80 }
+  -- ungu
+  Hi( "PreProc",                        { fg = "#ff80ff" })
 
--- Highlight the color column
-vim.api.nvim_set_hl(0, "ColorColumn", {
-  bg = "#111111"
-})
+  Hi( "WarningMsg",                     { fg = "Red" })
+  Hi( "ErrorMsg",                       { fg = "White", bg = "Red" })
+  Hi( "Error",                          { fg = "White", bg = "Red" })
+  Hi( "Todo",                           { fg = "Blue", bg = "Yellow" })
 
--- ----------------------------------------------------------------------------
+  -- hl(0, "IncSearch",                 { reverse = true })
+  Hi( "Title",                          { fg = "Magenta", bold = true })
+  Hi( "WildMenu",                       { fg = "Black", bg = "Yellow" })
+
+  -- Cursor
+  Hi( "Cursor",                         { fg = "#000000", bg = "#cccccc" })
+
+  Hi("Folded",                          { fg = "Cyan", bg = "DarkGrey" })
+  Hi("FoldColumn",                      { fg = "Cyan", bg = "Grey" })
+
+  -- Show invisible characters
+  vim.opt.list = true
+  vim.opt.listchars = {
+    trail = "█",
+    tab = ">-",
+    extends = "»",
+    precedes = "«",
+    nbsp = "•"
+  }
+  Hi( "Whitespace",                     { fg = "Blue", bold = true })
+  Hi( "NonText",                        { fg = "Blue", bold = true })
+
+  -- Color column
+  vim.opt.colorcolumn = { 40, 60, 80 }
+  Hi( "ColorColumn",                    { bg = "#111111" })
+
+-- end
+
+
+-- return M

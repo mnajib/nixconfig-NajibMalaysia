@@ -84,11 +84,11 @@ in
 
     extraConfig = ''
       lua << EOF
+        -- ~/.config/nvim/init.lua
+
         require("nvim-treesitter.configs").setup {
           highlight = { enable = true },
         }
-
-        -- ~/.config/nvim/init.lua
 
         -- Enable italics for terminal (place at top of file)
         --vim.cmd([[
@@ -103,7 +103,9 @@ in
         vim.opt.background = "dark"
         vim.cmd("syntax enable")
 
-        vim.cmd("colorscheme desert") -- you can try 'default', 'elflord', etc.
+        -- Can try 'default', 'elflord', etc.
+        --vim.cmd("colorscheme desert")
+        vim.cmd("colorscheme default")
 
         vim.opt.compatible = false
         vim.opt.ruler = true
@@ -156,6 +158,7 @@ in
         -- ----------------------------------------------------------------------------
         -- Load SkyWizard colorscheme
         require("theme.skywizard")
+        -- require("theme.skywizardb")
         -- require("theme.NajibMalaysia")
 
         -- ----------------------------------------------------------------------------
