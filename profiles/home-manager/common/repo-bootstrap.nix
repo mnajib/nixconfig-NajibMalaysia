@@ -1,12 +1,13 @@
 # profiles/home-manager/common/repo-bootstrap.nix
 {
-  basePath ? "~/src",
+  #basePath ? "~/src",
+  basePath ? "src",
   ...
 }:
 
 {
   programs.repo-bootstrap = {
-    #enable = false; # Default is 'true'.
+    enable = true; #false; # Default is 'true'.
     #autoFetch = true; # default: false
     #linkEnable = false; # default: true
 

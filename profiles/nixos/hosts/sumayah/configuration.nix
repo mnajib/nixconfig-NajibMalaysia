@@ -159,6 +159,8 @@ in
     };
   };
 
+  nix.settings.trusted-users = [ "root" "najib" "naqib" ];
+
   nixpkgs.config.android_sdk.accept_license = true;
 
   programs.adb.enable = true;
