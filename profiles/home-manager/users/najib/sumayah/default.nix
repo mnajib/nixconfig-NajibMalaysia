@@ -25,8 +25,8 @@ in
     #(./. + "/${commonDir}/stylix.nix")
 
     #(fromCommon "repo-bootstrap.nix")  # plain, no params, with helper function
-    #(import ./. + "/${commonDir}/repo-bootstrap.nix" { basePath = "~/Projects"; }) # with params, with helper function
-    (fromCommonWithParams "repo-bootstrap.nix" { basePath = "~/Projects"; })  # with params, without helper function
+    #(import ./. + "/${commonDir}/repo-bootstrap.nix" { basePath = "~/Projects"; }) # with params, without helper function
+    (fromCommonWithParams "repo-bootstrap.nix" { basePath = "~/Projects"; })  # with params, with helper function
   ];
 
   #home.username = "$USER";

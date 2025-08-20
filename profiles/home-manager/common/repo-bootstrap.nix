@@ -46,7 +46,10 @@
       xmonad = {
         enable = false; # Default is 'true'.
         path = "${basePath}/xmonadconfig-NajibMalaysia";
-        link.target = ".xmonad";
+        link = {
+          enable = true;
+          target = ".xmonad";
+        };
         primaryRemote = "github";
 
         remotes = {
@@ -61,7 +64,10 @@
       bin = {
         enable = true; #false; # Default is 'true'
         path = "${basePath}/bin-NajibMalaysia";
-        link.target = "bin";
+        link = {
+          enable = true;
+          target = "bin";
+        };
         primaryRemote = "myforgejo";
 
         remotes = {
