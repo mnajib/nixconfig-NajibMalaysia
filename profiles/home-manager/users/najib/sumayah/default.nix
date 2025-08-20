@@ -1,5 +1,4 @@
-# This is your home-manager configuration file
-# Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
+# profiles/home-manager/users/najib/sumayah/default.nix
 
 { inputs, outputs, lib, config, pkgs, ... }:
 #{ lib, config, pkgs, ... }:
@@ -11,11 +10,23 @@ let
 in
 {
   # You can import other home-manager modules here
-  imports = [
+  imports = let
+    # For simple modules (no params)
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+
+    # For modules that take params
+    fromCommonWithParams = name: params: import (./. + "/${toString commonDir}/${name}") params;
+  in [
     ../default.nix
 
-    (./. + "/${commonDir}/neovim")
+    #(./. + "/${commonDir}/neovim")
+    (fromCommon "neovim")
+
     #(./. + "/${commonDir}/stylix.nix")
+
+    #(fromCommon "repo-bootstrap.nix")  # plain, no params, with helper function
+    #(import ./. + "/${commonDir}/repo-bootstrap.nix" { basePath = "~/Projects"; }) # with params, with helper function
+    (fromCommonWithParams "repo-bootstrap.nix" { basePath = "~/Projects"; })  # with params, without helper function
   ];
 
   #home.username = "$USER";
