@@ -1,9 +1,6 @@
 # nixconfig-NajibMalaysia
 
-```
-===============================================================
- My NixOS + Home Manager Configurations
-===============================================================
+## My NixOS + Home Manager Configurations
 
 This repository contains my NixOS system and Home Manager user
 configurations, managed with flakes. The repo separates:
@@ -20,10 +17,9 @@ configurations, managed with flakes. The repo separates:
 It is a work-in-progress, but parts may be useful to others
 exploring NixOS repo organization.
 
----------------------------------------------------------------
- Repository Structure (Visual Overview)
----------------------------------------------------------------
+## Repository Structure (Visual Overview)
 
+```
 .
 ├── flake.nix
 ├── flake.lock
@@ -58,11 +54,10 @@ exploring NixOS repo organization.
 ├── docs/                               # Notes, workflows, learning materials
 ├── bak/                                # Old experiments
 └── tmp/                                # Scratch space
+```
+## Conceptual Flow
 
----------------------------------------------------------------
- Conceptual Flow
----------------------------------------------------------------
-
+```
             ┌───────────────┐
             │   modules/     │   → reusable, generic pieces
             └───────┬───────┘
@@ -78,10 +73,9 @@ exploring NixOS repo organization.
 │   /hosts/      │       │  -manager/     │
 │ (machines)     │       │ (users)        │
 └───────────────┘       └───────────────┘
+```
 
----------------------------------------------------------------
- Legend
----------------------------------------------------------------
+### Legend
 
 Layer                               Purpose
 ---------------------------------------------------------------
@@ -90,26 +84,32 @@ profiles/                           My curated defaults built from modules
 profiles/nixos/hosts/               Machine-specific configs (hardware, services)
 profiles/home-manager/users/        User-specific configs (per person, per host)
 
----------------------------------------------------------------
- Why This Structure?
----------------------------------------------------------------
+## Why This Structure?
 
- Pros
- ----
+### Pros
  - Clear separation of generic modules vs my defaults (profiles).
  - Scales to many hosts and users.
  - Easy to share individual modules without exposing my whole setup.
  - Hosts and users stay clean: only hardware/identity-specific bits.
 
- Cons
- ----
+### Cons
  - Some duplication between modules/ and profiles/common/.
  - Still evolving: some files are experiments or legacy.
  - Adding a new feature may require editing both a module and a profile.
 
----------------------------------------------------------------
- Current Experiments
----------------------------------------------------------------
+## Home-Manager for user-level Management
+
+I'm still learning my way around NixOS and Home Manager, so this setup represents my current attempt to find a good workflow. From what I understand, this configuration tries to blend the declarative approach with some practical flexibility.
+
+I've created what I believe is a custom Home Manager module (programs.repo-bootstrap) that tries to automatically set up my essential Git repositories when I first log into a new system. I think this helps me get a working environment quickly after a fresh install. But I also wanted to keep the ability to edit files directly when I need to experiment quickly.
+
+As far as I can tell, the way I have it set up means that after the initial setup, my changes to these files won't be overwritten when I run nixos-rebuild switch—though I'm still figuring out if there are edge cases where this might not hold true.
+
+I'm hoping this gives me the best of both approaches: the reliability and reproducibility that everyone says is great about declarative NixOS configuration, plus the hands-on flexibility I'm used to from traditional system management. I can use git to track my changes and revert mistakes, while still benefiting from the consistency that NixOS and Home Manager supposedly provide across different machines.
+
+I'm definitely still learning, so some of my assumptions here might not be completely accurate, but this is what seems to be working for me so far!
+
+## Current Experiments
 
 I am still exploring other repo structures:
 - Adding a roles/ layer (e.g. "server", "workstation").
@@ -117,17 +117,11 @@ I am still exploring other repo structures:
 - Considering flake-parts/dendritic style (feature-driven modularity).
 - and more others
 
----------------------------------------------------------------
- Status
----------------------------------------------------------------
+## Status
 
 ⚠️ Work in progress.
 - Some files are temporary or experimental.
 - Old approaches are kept for history and learning references.
-
-===============================================================
-
-```
 
 ## My Notes
 
