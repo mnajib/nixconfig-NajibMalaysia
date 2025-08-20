@@ -1,5 +1,6 @@
 # nixconfig-NajibMalaysia
 
+
 ## My NixOS + Home Manager Configurations
 
 This repository contains my NixOS system and Home Manager user
@@ -16,6 +17,7 @@ configurations, managed with flakes. The repo separates:
 
 It is a work-in-progress, but parts may be useful to others
 exploring NixOS repo organization.
+
 
 ## Repository Structure Overview
 
@@ -58,21 +60,21 @@ exploring NixOS repo organization.
 ## Conceptual Flow
 
 ```
-            ┌───────────────┐
-            │   modules/     │   → reusable, generic pieces
-            └───────┬───────┘
-                    │
-            ┌───────▼───────┐
-            │   profiles/    │   → curated defaults (system/user)
-            └───────┬───────┘
-                    │
-        ┌───────────┴───────────┐
-        │                       │
-┌───────▼───────┐       ┌───────▼───────┐
-│ profiles/nixos │       │ profiles/home  │
-│   /hosts/      │       │  -manager/     │
-│ (machines)     │       │ (users)        │
-└───────────────┘       └───────────────┘
+            +--------+--------+
+            |     modules/    |      → reusable, generic pieces
+            +--------+--------+
+                     |
+            +--------+--------+
+            |     profiles/   |      → curated defaults (system/user)
+            +--------+--------+
+                     |
+            +--------+---------------------------+
+            |                                    |
+            |                                    |
++-----------+-------------+       +--------------+------------------+
+| profiles/nixos/hosts/   |       | profiles/home-manager/users/    |
+│      (machines)         │       |           (users)               |
++-------------------------+       +---------------------------------+
 ```
 
 Layer                               Purpose
@@ -95,6 +97,7 @@ profiles/home-manager/users/        User-specific configs (per person, per host)
  - Still evolving: some files are experiments or legacy.
  - Adding a new feature may require editing both a module and a profile.
 
+
 ## Home-Manager for user-level Management
 
 I'm still learning my way around NixOS and Home Manager, so this setup represents my current attempt to find a good workflow. From what I understand, this configuration tries to blend the declarative approach with some practical flexibility.
@@ -106,6 +109,65 @@ As far as I can tell, the way I have it set up means that after the initial setu
 I'm hoping this gives me the best of both approaches: the reliability and reproducibility that everyone says is great about declarative NixOS configuration, plus the hands-on flexibility I'm used to from traditional system management. I can use git to track my changes and revert mistakes, while still benefiting from the consistency that NixOS and Home Manager supposedly provide across different machines.
 
 I'm definitely still learning, so some of my assumptions here might not be completely accurate, but this is what seems to be working for me so far!
+
+```
++---------------------------------------------------+
+|              NixOS Rebuild / Home Manager Switch  |
+|                 (nixos-rebuild switch --flake .)  |
++---------------------------------------------------+
+                            |
+                            v
++---------------------------------------------------+
+|           Home Manager Activation Scripts         |
+|     (Runs in sequence after system activation)    |
++---------------------------------------------------+
+                            |
+                            v
++---------------------------------------------------+
+|             repo-bootstrap Activation             |
++---------------------------------------------------+
+| 1. Reads repo config from Nix declaration         |
+| 2. For each enabled repository:                   |
+|    +-----------------------------------------+    |
+|    | - Checks if local repo path exists      |    |
+|    | - If not: clones from primary remote    |    |
+|    | - Configures all defined remotes        |    |
+|    | - Optionally runs git fetch             |    |
+|    | - Creates symlinks if configured        |    |
+|    +-----------------------------------------+    |
++---------------------------------------------------+
+                            |
+                            v
++-------------------+     +-------------------+     +-------------------+
+|   Local Git Repo  |     |   Local Git Repo  |     |   Local Git Repo  |
+| ~/Projects/repo1/ |     | ~/Projects/repo2/ |     |       ...         |
++-------------------+     +-------------------+     +-------------------+
+          |                         |                         |
+          v                         v                         v
++-------------------+     +-------------------+     +-------------------+
+|   Home Symlinks   |     |   Home Symlinks   |     |   Home Symlinks   |
+|    ~/.config/     |     |    ~/bin/         |     |       ...         |
++-------------------+     +-------------------+     +-------------------+
+                            |
+                            v
++---------------------------------------------------+
+|           User Environment Ready!                 |
+|   - Repositories available for direct editing     |
+|   - Symlinks provide convenient access            |
+|   - Git tracks all your changes naturally         |
++---------------------------------------------------+
+```
+
+
+### How It Works
+
+- Declarative Setup: You define your repositories and their properties in your Nix configuration (.nix files)
+- Automatic Bootstrap: When you rebuild your system, the module automatically creates/clones the repositories
+- Persistent Editing: After the initial setup, you can work with the repositories normally using Git and any text editor
+- Non-Destructive: Your changes and commits are preserved across rebuilds - Nix only manages the initial setup
+
+The key idea I'm trying to achieve is that Nix handles the boring setup work, but then gets out of the way so I can work like I normally would with Git and my editor.
+
 
 ## Current Experiments
 
@@ -120,6 +182,7 @@ I am still exploring other repo structures:
 ⚠️ Work in progress.
 - Some files are temporary or experimental.
 - Old approaches are kept for history and learning references.
+
 
 ## My Notes
 
