@@ -39,13 +39,13 @@ in {
             });
             description = "Remote definitions for this repo.";
           };
-      
+
           primaryRemote = lib.mkOption {
             type = lib.types.str;
             default = "origin";
             description = "The remote to use for the initial clone.";
           };
-      
+
           link = {
             enable = lib.mkOption {
               type = lib.types.bool;
@@ -99,7 +99,7 @@ in {
             echo "Configuring remote: ${remoteName}"
             rUrl="${remote.url}"
             rPushUrl="${if remote.pushUrl != null then remote.pushUrl else remote.url}"
-            
+
             if ! ${pkgs.git}/bin/git -C "$path" remote | grep -q "^${remoteName}$"; then
               ${pkgs.git}/bin/git -C "$path" remote add "${remoteName}" "$rUrl"
             fi
@@ -118,7 +118,7 @@ in {
             dest="$HOME/${lib.removePrefix "~/" (toString repo.link.target)}"
             src="$path"
             echo "Checking symlink: $dest -> $src"
-            
+
             if [ -e "$dest" ] && [ ! -L "$dest" ]; then
               backup="$dest.bak-$(date +%s)"
               echo "  Backing up existing $dest → $backup"
