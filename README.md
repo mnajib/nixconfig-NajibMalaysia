@@ -17,7 +17,7 @@ configurations, managed with flakes. The repo separates:
 It is a work-in-progress, but parts may be useful to others
 exploring NixOS repo organization.
 
-## Repository Structure (Visual Overview)
+## Repository Structure Overview
 
 ```
 .
@@ -74,8 +74,6 @@ exploring NixOS repo organization.
 │ (machines)     │       │ (users)        │
 └───────────────┘       └───────────────┘
 ```
-
-### Legend
 
 Layer                               Purpose
 ---------------------------------------------------------------
