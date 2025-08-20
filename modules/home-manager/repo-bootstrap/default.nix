@@ -70,7 +70,31 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  #
+  # NOTE:
+  #
+  # ls -Filahd ~/src/
+  # ls -la ~/Projects/
+  # ls -la ~/bin/
+  # ls -la ~/.local/state/home-manager/generation-*
+  # sudo nixos-rebuild switch --flake . 2>&1 | grep -i "repo-bootstrap\|bootstrap"
+  # sudo nixos-rebuild switch --flake . 2>&1 | grep -A 20 -B 5 "repo-bootstrap"
+  # sudo nixos-rebuild switch --flake . --show-trace 2>&1 | grep -A 10 -B 5 "repo-bootstrap"
+  # sudo nixos-rebuild switch --flake . --show-trace
+  #
+  # ${...} inside bash script is evaluated by Nix first.
+  # lib.removePrefix is a Nix function that removes "~/" prefix. The result becomes part of th ebash script.
+  #
+  # Nix Evaluation vs Bash Execution
+  #   Phase-1: Nix Phase: Everything outside the '' ... '' is evaluated by Nix. This includes function calls like lib.concatStrings, lib.mapAttrsToList, etc.
+  #   Phase-2: Bash Phase: Everything inside '' ... '' becomes a bash script that runs later.
+  #
+  # Escaping and Interpolation
+  #   ${...}          inside bash strings, this is Nix interpolation. Nix evaluates the expression and inserts the result.
+  #   $...:           in the final bash script, this is bash variable expansion.
+  #   "${...}":       Double quotes allow bash variable expansion, while the ${} part of it is Nix interpolation.
+  #
+  config = lib.mkIf cfg.enable {        # Only apply this config if the module is enabled.
     home.activation.repo-bootstrap = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       echo "=== [repo-bootstrap] Starting bootstrap process ==="
       echo "Current user: $(whoami)"
@@ -84,6 +108,7 @@ in {
           echo "Repo path: $path"
           mkdir -p "$(dirname "$path")"
 
+          # Check if git repo exists
           if [ ! -d "$path/.git" ]; then
             echo "Git repo doesn't exist, cloning..."
             primaryRemote="${repo.primaryRemote}"
