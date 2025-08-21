@@ -103,6 +103,8 @@ Cons:
 
 ## Home-Manager for user-level Management
 
+**Use Nix to clone the repositories (initial setup) and Git to manage all subsequent changes and commits.**
+
 I'm still learning my way around NixOS and Home Manager, so this setup represents my current attempt to find a good workflow. From what I understand, this configuration tries to blend the declarative approach with some practical flexibility.
 
 I've created what I believe is a custom Home Manager module (programs.repo-bootstrap) that tries to automatically set up my essential Git repositories when I first log into a new system. I think this helps me get a working environment quickly after a fresh install. But I also wanted to keep the ability to edit files directly when I need to experiment quickly.
@@ -169,7 +171,7 @@ To summarize how it works;
 - Persistent Editing: After the initial setup, you can work with the repositories normally using Git and any text editor
 - Non-Destructive: Your changes and commits are preserved across rebuilds - Nix only manages the initial setup
 
-The key idea I'm trying to achieve is that Nix handles the boring setup work, but then gets out of the way so I can work like I normally would with Git and my editor.
+The key idea I'm trying to achieve is that **Nix handles the boring setup work, but then gets out of the way so I can work like I normally would with Git** and my editor.
 
 
 ## Current Experiments
