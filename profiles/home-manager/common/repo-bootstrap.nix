@@ -14,18 +14,19 @@
     repos = {
 
       #------------------------------------------------------------------------
-      nvim = {
-        enable = false;
-        path = "${basePath}/nvimconfig-NajibMalaysia";
+      kickstart-nix-nvim = {
+        enable = true;
+        #path = "${basePath}/nvimconfig-NajibMalaysia";
+        path = "${basePath}/neovim-config-NajibMalaysia";
         link = {
-          enable = true;
-          target = ".config/nvim";
+          enable = false; #true;
+          #target = ".config/nvim";
         };
         primaryRemote = "github";
         remotes = {
           github = {
-            url = "https://github.com/NajibMalaysia/nvimconfig.git";
-            pushUrl = "git@github.com:NajibMalaysia/nvimconfig.git";
+            url = "https://github.com/mnajib/neovim-config-NajibMalaysia.git";
+            pushUrl = "git@github.com:mnajib/neovim-config-NajibMalaysia.git";
           };
         };
         #link.enable = false; # default: true
@@ -40,8 +41,8 @@
         primaryRemote = "nyxora"; #"github";
         remotes = {
           github = {
-            url = "https://github.com/NajibMalaysia/nixconfig.git";
-            pushUrl = "git@github.com:NajibMalaysia/nixconfig.git";
+            url = "https://github.com/mnajib/nixconfig-NajibMalaysia.git";
+            pushUrl = "git@github.com:mnajib/nixconfig-NajibMalaysia.git";
           };
           nyxora = {
             url = "http://nyxora:3000/najib/nixconfig-NajibMalaysia.git";
@@ -66,17 +67,17 @@
 
         remotes = {
           github = {
-            url = "https://github.com/NajibMalaysia/xmonadconfig.git";
-            pushUrl = "git@github.com:NajibMalaysia/xmonadconfig.git";
+            url = "https://github.com/mnajib/xmonad-config-NajibMalaysia.git";
+            pushUrl = "git@github.com:mnajib/xmonad-config-NajibMalaysia.git";
           };
           nyxora = {
             url = "http://nyxora:3000/najib/xmonad-config.git";
             pushUrl = "ssh://forgejo@nyxora/najib/xmonad-config.git";
           };
-          #customdesktop = {
-          #  url = "";
-          #  pushUrl = "";
-          #};
+          customdesktop = {
+            url = "http://customdesktop:3000/najib/xmonad-config.git";
+            pushUrl = "ssh://forgejo@customdesktop/najib/xmonad-config.git";
+          };
         };
       };
 
