@@ -39,16 +39,17 @@ exploring NixOS repo organization.
 ├── profiles/                           # Opinionated defaults
 │   ├── nixos/
 │   │   ├── common/                     # shared defaults across machines
-│   │   └── hosts/                      # host-specific configs
+│   │   └── hosts/                      # 'host'-specific configs
 │   │       └── nyxora
 │   │           ├── configuration.nix
 │   │           └── hardware-configuration.nix
 │   └── home-manager/
 │       ├── common/                     # shared defaults across users
-│       └── users/                      # per-user configs
+│       └── users/
 │           └── najib                   # user name
+│               ├── default.nix         # 'user'-specific config
 │               └── nyxora              # host name
-│                   └── default.nix     # per user@host
+│                   └── default.nix     # 'user@host'-specific config
 ├── overlays/                           # Custom nixpkgs overlays
 ├── packages/                           # Extra packages not in nixpkgs
 ├── generators/                         # ISO definitions (gnome, hyprland, plasma)
@@ -105,9 +106,9 @@ Cons:
 
 _-- My user-level configuration follows a hybrid strategy. I use Nix to declaratively manage core packages and stable configs, while using Git to imperatively manage complex, evolving configs like my Neovim setup and scripts repository. This gives me reproducible base system with the flexibility for daily development. --_
 
-_Use Nix to clone the repositories (initial setup) and Git to manage all subsequent changes and commits._
-
 This configuration tries to blend the declarative approach with some practical flexibility.
+
+_For the imperatively manage complex config: I use Nix to clone the repositories (for initial setup) and use Git to manage all subsequent changes and commits._
 
 I've created a custom Home Manager module (programs.repo-bootstrap) that tries to automatically set up my essential Git repositories when I first log into a new system. I think this helps me get a working environment quickly after a fresh install. But I also wanted to keep the ability to edit files directly when I need to experiment quickly.
 
