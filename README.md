@@ -107,7 +107,7 @@ _-- My user-level configuration follows a hybrid strategy. I use Nix to declarat
 
 _Use Nix to clone the repositories (initial setup) and Git to manage all subsequent changes and commits._
 
-I'm still learning my way around NixOS and Home Manager, so this setup represents my current attempt to find a good workflow. From what I understand, this configuration tries to blend the declarative approach with some practical flexibility.
+This configuration tries to blend the declarative approach with some practical flexibility.
 
 I've created a custom Home Manager module (programs.repo-bootstrap) that tries to automatically set up my essential Git repositories when I first log into a new system. I think this helps me get a working environment quickly after a fresh install. But I also wanted to keep the ability to edit files directly when I need to experiment quickly.
 
