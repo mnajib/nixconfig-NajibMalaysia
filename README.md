@@ -109,11 +109,7 @@ _Use Nix to clone the repositories (initial setup) and Git to manage all subsequ
 
 I'm still learning my way around NixOS and Home Manager, so this setup represents my current attempt to find a good workflow. From what I understand, this configuration tries to blend the declarative approach with some practical flexibility.
 
-I've created what I believe is a custom Home Manager module (programs.repo-bootstrap) that tries to automatically set up my essential Git repositories when I first log into a new system. I think this helps me get a working environment quickly after a fresh install. But I also wanted to keep the ability to edit files directly when I need to experiment quickly.
-
-As far as I can tell, the way I have it set up means that after the initial setup, my changes to these files won't be overwritten when I run nixos-rebuild switch—though I'm still figuring out if there are edge cases where this might not hold true.
-
-I'm hoping this gives me the best of both approaches: the reliability and reproducibility that everyone says is great about declarative NixOS configuration, plus the hands-on flexibility I'm used to from traditional system management. I can use git to track my changes and revert mistakes, while still benefiting from the consistency that NixOS and Home Manager supposedly provide across different machines.
+I've created a custom Home Manager module (programs.repo-bootstrap) that tries to automatically set up my essential Git repositories when I first log into a new system. I think this helps me get a working environment quickly after a fresh install. But I also wanted to keep the ability to edit files directly when I need to experiment quickly.
 
 I'm definitely still learning, so some of my assumptions here might not be completely accurate, but this is what seems to be working for me so far!
 
@@ -180,8 +176,10 @@ The key idea I'm trying to achieve is that _Nix handles the boring setup work, b
 
 I am still exploring other repo structures:
 - Adding a roles/ layer (e.g. "server", "workstation").
-- Trying modulix to auto-generate host configs from modules.
-- Considering flake-parts/dendritic style (feature-driven modularity).
+- modulix? to auto-generate host configs from modules.
+- flake-parts/dendritic style (feature-driven modularity)?
+- color scheme
+- secret keys management
 - and more others
 
 ## Status
