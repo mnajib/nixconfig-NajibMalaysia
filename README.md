@@ -57,42 +57,45 @@ exploring NixOS repo organization.
 ├── bak/                                # Old experiments
 └── tmp/                                # Scratch space
 ```
-## Conceptual Flow
 
 ```
             +--------+--------+
             |     modules/    |      → reusable, generic pieces
             +--------+--------+
                      |
+                     V
             +--------+--------+
             |     profiles/   |      → curated defaults (system/user)
             +--------+--------+
                      |
+                     V
             +--------+---------------------------+
             |                                    |
-            |                                    |
+            V                                    V
 +-----------+-------------+       +--------------+------------------+
 | profiles/nixos/hosts/   |       | profiles/home-manager/users/    |
 │      (machines)         │       |           (users)               |
 +-------------------------+       +---------------------------------+
 ```
 
+```
 Layer                               Purpose
 ---------------------------------------------------------------
 modules/                            Small, reusable building blocks (generic)
 profiles/                           My curated defaults built from modules
 profiles/nixos/hosts/               Machine-specific configs (hardware, services)
 profiles/home-manager/users/        User-specific configs (per person, per host)
+```
 
-## Why This Structure?
+Why This Structure?
 
-### Pros
+Pros:
  - Clear separation of generic modules vs my defaults (profiles).
  - Scales to many hosts and users.
  - Easy to share individual modules without exposing my whole setup.
  - Hosts and users stay clean: only hardware/identity-specific bits.
 
-### Cons
+Cons:
  - Some duplication between modules/ and profiles/common/.
  - Still evolving: some files are experiments or legacy.
  - Adding a new feature may require editing both a module and a profile.
@@ -159,7 +162,7 @@ I'm definitely still learning, so some of my assumptions here might not be compl
 ```
 
 
-### How It Works
+To summarize how it works;
 
 - Declarative Setup: You define your repositories and their properties in your Nix configuration (.nix files)
 - Automatic Bootstrap: When you rebuild your system, the module automatically creates/clones the repositories
