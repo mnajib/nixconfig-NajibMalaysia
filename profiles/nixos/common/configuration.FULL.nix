@@ -683,6 +683,7 @@
     #---------------------------------------------------------------
 
     telegram-desktop #tdesktop
+    ayugram-desktop
     signal-desktop
     hexchat
     discord discord-ptb

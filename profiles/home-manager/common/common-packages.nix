@@ -93,6 +93,7 @@
     geary
     balsa
     #deltachat-desktop             # used electron version that marked as unsecured?
+    ayugram-desktop                     # a telegram client
 
     fzy                            # CLI fuzzy finder
 
