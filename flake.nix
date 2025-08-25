@@ -12,7 +12,8 @@
 
   inputs = {
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    #nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     #nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs.follows = "nixpkgs-stable"; # Make 'nixpkgs' point to nixpkgs-stable
@@ -371,12 +372,18 @@
             inputs.stylix.nixosModules.stylix
           ];
 
+          #
+          ##nix run nixpkgs#nixos-anywhere -- --flake .#generic --generate-hardware-config nixos-generate-config ./hardware-configuration.nix root@nixos
+          # nix run nixpkgs#nixos-anywhere -- --flake .#zahrah  --generate-hardware-config nixos-generate-config ./hardware-configuration.nix root@nixos
+          #
           zahrah = mkNixos "x86_64-linux" [
             ./profiles/nixos/hosts/zahrah/configuration.nix
+            inputs.home-manager.nixosModules.home-manager
             inputs.hardware.nixosModules.lenovo-thinkpad
             inputs.hardware.nixosModules.common-cpu-intel
             inputs.hardware.nixosModules.common-pc-laptop-ssd
             inputs.stylix.nixosModules.stylix
+            inputs.disko.nixosModules.disko
           ];
 
           sakinah = mkNixos "x86_64-linux" [

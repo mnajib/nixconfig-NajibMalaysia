@@ -3,26 +3,36 @@
 
 { inputs, outputs, lib, config, pkgs, ... }:
 let
+  username = "najib";
   hostname = "zahrah";
+  commonDir = "../../../common";
+  stateVersion = "25.05";
 in
 {
   # You can import other home-manager modules here
-  imports = [
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+    fromCommonWithParams = name: params: import ( ./. + "/${toString commonDir}/${name}" ) params;
+  in [
     ../default.nix
 
-    ../../p2p.nix
+    (fromCommon "p2p.nix")
 
-    ../../neovim
+    (fromCommon "neovim")
     #../../neovim/astronvim.nix
 
-    ../../helix
+    (fromCommon "helix")
 
     #../../barrier.nix
-    (import ../../barrier.nix { inherit hostname config pkgs lib inputs outputs; }) # Pass hostname and other args
+    #(import ../../barrier.nix { inherit hostname config pkgs lib inputs outputs; }) # Pass hostname and other args
+
+    (fromCommonWithParams "repo-bootstrap.nix" { basePath = "~/src"; })
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "22.05";
+  home.stateVersion = "${stateVersion}"; #"22.05";
+
+  fonts.fontconfig.enable = true;
 
   #home.packages = with pkgs; [
     #...
