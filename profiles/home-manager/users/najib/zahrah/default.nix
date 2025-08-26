@@ -1,7 +1,12 @@
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 
-{ inputs, outputs, lib, config, pkgs, ... }:
+{
+  inputs, outputs,
+  lib,
+  config, pkgs,
+  ...
+}:
 let
   username = "najib";
   hostname = "zahrah";
@@ -26,7 +31,9 @@ in
     #../../barrier.nix
     #(import ../../barrier.nix { inherit hostname config pkgs lib inputs outputs; }) # Pass hostname and other args
 
-    (fromCommonWithParams "repo-bootstrap.nix" { basePath = "~/src"; })
+    #(fromCommonWithParams "repo-bootstrap.nix" { basePath = "~/src"; })
+    (fromCommonWithParams "repo-bootstrap.nix" { basePath = "src"; })
+    #(fromCommon "repo-bootstrap.nix")
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
@@ -34,7 +41,7 @@ in
 
   fonts.fontconfig.enable = true;
 
-  #home.packages = with pkgs; [
+  home.packages = with pkgs; [
     #...
-  #];
+  ];
 }

@@ -1,12 +1,14 @@
 # vim: set ts=2 sw=2 expandtab nowrap number:
 
 {
-  pkgs, config, lib,
+  pkgs, config,
+  lib,
   inputs, outputs,
   modulesPath,
   ...
 }:
 let
+  hostName = "zahrah";
   commonDir = "../../common";
   hmDir = "../../../home-manager/users";
   stateVersion = "25.05";
@@ -22,7 +24,7 @@ in
       trusted-users = [
         "root" "najib"
         "naqib"
-        "a" "abdullah"
+        #"a" "abdullah"
       ];
     };
   };
@@ -40,6 +42,7 @@ in
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
     ./hardware-configuration.nix
+    inputs.home-manager.nixosModules.home-manager
 
     (fromCommon "thinkpad.nix")
 
@@ -60,8 +63,8 @@ in
     (fromCommon "configuration.FULL.nix")
     (fromCommon "nix-garbage-collector.nix")
     (fromCommon "flatpak.nix")
-    (fromCommon "opengl.nix")
-    (fromCommon "xdg.nix")
+    #(fromCommon "opengl.nix")
+    #(fromCommon "xdg.nix")
 
     (fromCommon "window-managers.nix")
     #(fromCommon "xmonad.nix")
@@ -78,14 +81,18 @@ in
     #./barrier.nix
   ];
 
-  home-manager = {
+  home-manager = let
+    userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}" );
+  in {
     extraSpecialArgs = { inherit inputs outputs; };
     users = {
       # Import your home-manager configuration
       #najib = import ../home-manager/user-najib;
       #root = import ../home-manager/user-root;
-      najib = import (./. + "/${hmDir}/najib/zahrah");
-      root = import (./. + "/${hmDir}/root/zahrah");
+      #najib = import (./. + "/${hmDir}/najib/zahrah");
+      #root = import (./. + "/${hmDir}/root/zahrah");
+      root = userImport "root";
+      najib = userImport "najib";
     };
   };
 
@@ -114,6 +121,9 @@ in
     gpu-viewer
     vulkan-tools
 
+    gnome-randr
+    foot
+
     libnotify
 
     # Haskell Tools
@@ -124,15 +134,17 @@ in
     haskellPackages.X11-xft
   ];
 
-  services.xserver.videoDrivers = [ "radeon" ];
+  #services.xserver.videoDrivers = [ "radeon" ];
+
+  services.flatpak.enable = true;
 
   ## To enable hardware accelerated graphics drivers, to allow most graphical applications and environments to use hardware rendering, video encode/decode acceleration, etc. 
   ## This option should be enabled by default by the corresponding modules, so you do not usually have to set it yourself.
   #hardware.graphics.enable = true;
 
-  boot.kernelParams = [
-    "radeon.modeset=1" # enable radeon
-  ];
+  #boot.kernelParams = [
+  #  "radeon.modeset=1" # enable radeon
+  #];
 
   boot.loader.grub = {
     efiSupport = true;
@@ -173,7 +185,12 @@ in
     "dm-crypt" "dm-snapshot" "dm-raid"
   ];
 
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "yes";
+    };
+  };
 
   services.fstrim.enable = true;
   services.smartd.enable = true;
@@ -244,8 +261,9 @@ in
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.powersave = false;
   systemd.watchdog.rebootTime = "10m";
-  services.acpid.enable = true;
-  hardware.acpilight.enable = true;
+
+  services.acpid.enable = false; #true;
+  hardware.acpilight.enable = false; #true;
 
   services.thinkfan.enable = true;
   services.thinkfan.levels = [
@@ -314,7 +332,7 @@ in
 
   services.xserver.desktopManager = {
     gnome.enable = true;
-    lxqt.enable = true;
+    #lxqt.enable = true;
   };
 
   services.xserver.windowManager = {
@@ -462,5 +480,6 @@ in
   };
 
 
-  system.stateVersion = "${stateVersion}";
+  #system.stateVersion = "${stateVersion}";
+  system.stateVersion = stateVersion;
 }
