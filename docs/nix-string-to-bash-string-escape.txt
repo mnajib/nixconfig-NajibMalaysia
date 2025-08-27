@@ -1,0 +1,13 @@
+let
+  var1 = "value1";
+in
+''
+  # Nix interpolation
+  a="${var1}"       # → a="value1"
+
+  # Bash runtime expansion
+  b="\${HOME}"      # → b="${HOME}"
+
+  # Mixed: Nix value inside Bash variable ref
+  c="\${${var1}}"   # → c="${value1}"
+''
