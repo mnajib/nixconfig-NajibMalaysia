@@ -27,6 +27,7 @@ let
       # ------------------------------------------------------------------------
       # Repo: ${name}
       # ------------------------------------------------------------------------
+      echo "Processing repo ${name}"
 
       # Skip if this repository is not enabled
       enabled="${enabled}"
@@ -39,6 +40,7 @@ let
       path="${repoPath}"
 
       # Create the parent directory if it doesn't exist
+      echo "Creating $path"
       mkdir -p "$(dirname "$path")"
 
       # Clone the repository if it does not already exist
@@ -91,7 +93,7 @@ in {
 
     basePath = lib.mkOption {
       type = lib.types.str;
-      default = "src";
+      default = "~/src";
       description = "Relative path under $HOME where repositories are stored by default.";
     };
 
@@ -170,6 +172,7 @@ in {
     home.activation.repo-bootstrap = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       echo "[repo-bootstrap] Bootstrapping git repos..."
       ${repoScripts}
+      echo "[repo-bootstrap] Done"
     '';
   };
 }
