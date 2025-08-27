@@ -32,9 +32,14 @@ in
     #(import ../../barrier.nix { inherit hostname config pkgs lib inputs outputs; }) # Pass hostname and other args
 
     #(fromCommonWithParams "repo-bootstrap.nix" { basePath = "~/src"; })
-    (fromCommonWithParams "repo-bootstrap.nix" { basePath = "src"; })
-    #(fromCommon "repo-bootstrap.nix")
+    #(fromCommonWithParams "repo-bootstrap.nix" { basePath = "src"; })
+    (fromCommon "repo-bootstrap.nix")
   ];
+
+  programs.repo-bootstrap = {
+    enable = true;
+    basePath = "~/src";
+  };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "${stateVersion}"; #"22.05";
