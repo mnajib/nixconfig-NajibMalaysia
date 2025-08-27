@@ -386,6 +386,17 @@
             inputs.disko.nixosModules.disko
           ];
 
+          # nix run nixpkgs#nixos-anywhere -- --flake .#maryam  --generate-hardware-config nixos-generate-config ./hardware-configuration.nix root@nixos
+          maryam = mkNixos "x86_64-linux" [
+            ./profiles/nixos/hosts/maryam/configuration.nix
+            inputs.home-manager.nixosModules.home-manager
+            inputs.hardware.nixosModules.lenovo-thinkpad
+            inputs.hardware.nixosModules.common-cpu-intel
+            inputs.hardware.nixosModules.common-pc-laptop-ssd
+            inputs.stylix.nixosModules.stylix
+            inputs.disko.nixosModules.disko
+          ];
+
           sakinah = mkNixos "x86_64-linux" [
             ./profiles/nixos/hosts/sakinah/configuration.nix
             inputs.hardware.nixosModules.lenovo-thinkpad-x220
