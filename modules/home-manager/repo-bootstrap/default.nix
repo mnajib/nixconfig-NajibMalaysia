@@ -3,35 +3,51 @@
 let
   cfg = config.programs.repo-bootstrap;
 
+  # Expand ~ to $HOME for user-facing paths
+  expandHome = path:
+    if path == null then ""
+    else if lib.hasPrefix "~/" path then
+      "$HOME/" + lib.removePrefix "~/" path
+    else
+      path;
+
+  # This function takes the repository name and its configuration.
   buildRepoScript = name: repo:
     let
       enabled = toString repo.enable;
-      repoPath = "$HOME/${cfg.basePath}/${name}";
+      repoPath = expandHome cfg.basePath + "/${name}";
       primaryRemote = repo.primaryRemote;
       cloneUrl = repo.remotes.${primaryRemote}.url;
       autoFetch = toString (repo.autoFetch or cfg.autoFetch);
       linkEnable = toString (repo.link.enable or cfg.linkEnable);
       linkTarget = if repo.link.target == null then "" else repo.link.target;
+      linkTargetPath = expandHome linkTarget;
     in
     ''
       # ------------------------------------------------------------------------
       # Repo: ${name}
       # ------------------------------------------------------------------------
 
+      # Skip if this repository is not enabled
       enabled="${enabled}"
       if [ "$enabled" != "true" ]; then
         echo "  Skipping disabled repo: ${name}"
         exit 0
       fi
 
+      # Define the full path to the repository
       path="${repoPath}"
+
+      # Create the parent directory if it doesn't exist
       mkdir -p "$(dirname "$path")"
 
+      # Clone the repository if it does not already exist
       if [ ! -d "$path/.git" ]; then
         echo "  Cloning ${name} from ${primaryRemote} (${cloneUrl}) into $path"
         git clone "${cloneUrl}" "$path"
       fi
 
+      # Configure all remotes, including setting push URLs
       ${lib.concatStringsSep "\n" (lib.mapAttrsToList (remoteName: remote:
         let
           rUrl = remote.url;
@@ -44,14 +60,16 @@ let
         ''
       ) cfg.repos.${name}.remotes)}
 
+      # Run git fetch if autoFetch is enabled for this repo
       if [ "$autoFetch" = "true" ]; then
         echo "  Fetching ${name}..."
         git -C "$path" fetch --all --prune
       fi
 
-      if [ "$linkEnable" = "true" ] && [ -n "$linkTarget" ]; then
-        dest="$HOME/$linkTarget"
-        src="$HOME/${cfg.basePath}/${name}"
+      # Handle symlinking
+      if [ "${linkEnable}" = "true" ] && [ -n "${linkTargetPath}" ]; then
+        dest="${linkTargetPath}"
+        src="$path"
         if [ -e "$dest" ] && [ ! -L "$dest" ]; then
           backup="$dest.bak-$(date +%s)"
           echo "  Backing up existing $dest -> $backup"
