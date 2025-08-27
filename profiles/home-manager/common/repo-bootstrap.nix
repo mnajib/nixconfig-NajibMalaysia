@@ -1,23 +1,20 @@
 # profiles/home-manager/common/repo-bootstrap.nix
 {
-  #basePath ? "~/src",
-  basePath ? "src",
   ...
 }:
 
 {
   programs.repo-bootstrap = {
     enable = true; #false; # Default is 'true'.
+    basePath = "~/src";
     #autoFetch = true; # default: false
     #linkEnable = false; # default: true
 
     repos = {
 
       #------------------------------------------------------------------------
-      kickstart-nix-nvim = {
+      neovim-config-NajibMalaysia-kickstart-nix-nvim = {
         enable = true;
-        #path = "${basePath}/nvimconfig-NajibMalaysia";
-        path = "${basePath}/neovim-config-NajibMalaysia";
         link = {
           enable = false; #true;
           #target = ".config/nvim";
@@ -34,10 +31,9 @@
       };
 
       #------------------------------------------------------------------------
-      nixos = {
+      nixconfig-NajibMalaysia = {
         enable = true; #false;
         link.enable = false;
-        path = "${basePath}/nixconfig-NajibMalaysia";
         primaryRemote = "nyxora"; #"github";
         remotes = {
           github = {
@@ -56,12 +52,11 @@
       };
 
       #------------------------------------------------------------------------
-      xmonad = {
+      xmonad-config-NajibMalaysia = {
         enable = true; #false; # Default is 'true'.
-        path = "${basePath}/xmonadconfig-NajibMalaysia";
         link = {
           enable = true;
-          target = ".xmonad";
+          target = "~/.xmonad";
         };
         primaryRemote = "nyxora"; #"github";
 
@@ -82,12 +77,11 @@
       };
 
       #------------------------------------------------------------------------
-      bin = {
+      bin-NajibMalaysia = {
         enable = true; #false; # Default is 'true'
-        path = "${basePath}/bin-NajibMalaysia";
         link = {
           enable = true;
-          target = "bin";
+          target = "~/bin";
         };
         primaryRemote = "myforgejo";
 
