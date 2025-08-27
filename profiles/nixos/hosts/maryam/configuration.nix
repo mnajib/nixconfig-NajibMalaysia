@@ -45,6 +45,8 @@ in
     ./hardware-configuration.nix
     inputs.home-manager.nixosModules.home-manager
 
+    (fromCommon "bootBIOSandEFI.nix")
+
     (fromCommon "thinkpad.nix")
 
     #./users-anak2.nix
@@ -149,10 +151,12 @@ in
   #  "radeon.modeset=1" # enable radeon
   #];
 
-  boot.loader.grub = {
-    efiSupport = true;
-    efiInstallAsRemovable = true;
-  };
+  #boot.loader.grub = {
+  #  efiSupport = true;
+  #  efiInstallAsRemovable = true;
+  #};
+
+  universalBoot.enable = true;
 
   boot.initrd = {
     availableKernelModules = [
