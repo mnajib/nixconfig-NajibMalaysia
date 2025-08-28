@@ -1,21 +1,22 @@
 # profiles/home-manager/common/repo-bootstrap.nix
+
 {
   ...
 }:
 
 {
   programs.repo-bootstrap = {
-    enable = true; #false; # Default is 'true'.
+    enable = true;                      # Default is 'false'.
     basePath = "~/src";
-    #autoFetch = true; # default: false
-    #linkEnable = false; # default: true
+    #autofetchEnable = true;            # Default: false
+    #symlinkEnable = true;              # Default: false
 
     repos = {
 
       #------------------------------------------------------------------------
       neovim-config-NajibMalaysia-kickstart-nix-nvim = {
         enable = true;
-        link = {
+        symlink = {
           enable = false; #true;
           #target = ".config/nvim";
         };
@@ -33,7 +34,7 @@
       #------------------------------------------------------------------------
       nixconfig-NajibMalaysia = {
         enable = true; #false;
-        link.enable = false;
+        symlink.enable = false;
         primaryRemote = "nyxora"; #"github";
         remotes = {
           github = {
@@ -54,7 +55,7 @@
       #------------------------------------------------------------------------
       xmonad-config-NajibMalaysia = {
         enable = true; #false; # Default is 'true'.
-        link = {
+        symlink = {
           enable = true;
           target = "~/.xmonad";
         };
@@ -79,7 +80,7 @@
       #------------------------------------------------------------------------
       bin-NajibMalaysia = {
         enable = true; #false; # Default is 'true'
-        link = {
+        symlink = {
           enable = true;
           target = "~/bin";
         };

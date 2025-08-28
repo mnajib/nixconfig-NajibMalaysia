@@ -433,6 +433,8 @@
           # NOTE: to dry-build a Home Manager configuration for the user 'najib@taufiq':
           #   nix build ".#homeConfigurations.najib@taufiq.activationPackage" --dry-run
           #
+          #   home-manager --dry-run build --flake .#najib@maryam
+          #
           # The flake-native way to dry-run a Home Manager build is nix build
           # ".#homeConfigurations.<user>@<host>.activationPackage" --dry-run
           # which we've discussed. To actually build and activate, you'd use
