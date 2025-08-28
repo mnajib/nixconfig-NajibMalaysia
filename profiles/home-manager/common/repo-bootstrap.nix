@@ -1,6 +1,7 @@
 # profiles/home-manager/common/repo-bootstrap.nix
 
 {
+  lib,
   ...
 }:
 

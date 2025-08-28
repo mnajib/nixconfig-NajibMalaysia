@@ -430,10 +430,17 @@
         }; # End of 'nixosConfigurations = { ... };'
 
         homeConfigurations = {
-          # NOTE: to dry-build a Home Manager configuration for the user 'najib@taufiq':
+          # To dry-build a Home Manager configuration for the user 'najib@taufiq':
           #   nix build ".#homeConfigurations.najib@taufiq.activationPackage" --dry-run
           #
+          # To quick check
           #   home-manager --dry-run build --flake .#najib@maryam
+          #
+          #   home-manager build --flake .
+          #   nix eval .#homeConfigurations.najib@maryam.config.programs.repo-bootstrap.repos
+          #
+          # To apply
+          #   home-manager switch --flake .
           #
           # The flake-native way to dry-run a Home Manager build is nix build
           # ".#homeConfigurations.<user>@<host>.activationPackage" --dry-run

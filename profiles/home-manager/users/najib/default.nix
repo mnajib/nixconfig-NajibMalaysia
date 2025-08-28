@@ -10,7 +10,9 @@ let
 in
 {
   # You can import other home-manager modules here
-  imports = [
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+  in [
     # If you want to use modules your own flake exports (from modules/home-manager):
     # outputs.homeManagerModules.example
 
