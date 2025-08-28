@@ -1,3 +1,5 @@
+# modules/home-manager/repo-bootstrap/default.nix
+
 { config, lib, pkgs, ... }:
 
 let
@@ -14,14 +16,15 @@ let
   # This function takes the repository name and its configuration.
   buildRepoScript = name: repo:
     let
-      enabled = toString repo.enable;
+      #enabled = lib.boolToString repo.enable;
+      enabled = toString (repo.enable or false);
       repoPath = expandHome cfg.basePath + "/${name}";
       primaryRemote = repo.primaryRemote;
       cloneUrl = repo.remotes.${primaryRemote}.url;
-      autoFetch = toString (repo.autoFetch or cfg.autoFetch);
-      linkEnable = toString (repo.link.enable or cfg.linkEnable);
-      linkTarget = if repo.link.target == null then "" else repo.link.target;
-      linkTargetPath = expandHome linkTarget;
+      autofetchEnable = toString ((repo.autofetchEnable or false) && (cfg.autofetchEnable or false)); # This way null defaults to false, so only an explicit true will enables it.
+      symlinkEnable = toString ((repo.symlink.enable or false) && (cfg.symlinkEnable or false)); # This way null defaults to false, so only an explicit true will enables it.
+      symlinkTarget = if repo.symlink.target == null then "" else repo.symlink.target;
+      symlinkTargetPath = expandHome symlinkTarget;
     in
     ''
       # ------------------------------------------------------------------------
@@ -30,8 +33,9 @@ let
       echo "Processing repo ${name}"
 
       # Skip if this repository is not enabled
-      enabled="${enabled}"
-      if [ "$enabled" != "true" ]; then
+      #enabled="${enabled}"
+      #if [ "$enabled" != "true" ]; then
+      if [ "${enabled}" != "true" ]; then
         echo "  Skipping disabled repo: ${name}"
         exit 0
       fi
@@ -46,7 +50,7 @@ let
       # Clone the repository if it does not already exist
       if [ ! -d "$path/.git" ]; then
         echo "  Cloning ${name} from ${primaryRemote} (${cloneUrl}) into $path"
-        git clone "${cloneUrl}" "$path"
+        ${pkgs.git}/bin/git clone "${cloneUrl}" "$path"
       fi
 
       # Configure all remotes, including setting push URLs
@@ -56,21 +60,23 @@ let
           rPushUrl = if remote ? pushUrl && remote.pushUrl != null then remote.pushUrl else rUrl;
         in
         ''
-          git -C "$path" remote | grep -q "^${remoteName}$" || git -C "$path" remote add "${remoteName}" "${rUrl}"
-          git -C "$path" remote set-url "${remoteName}" "${rUrl}"
-          git -C "$path" remote set-url --push "${remoteName}" "${rPushUrl}"
+          ${pkgs.git}/bin/git -C "$path" remote | grep -q "^${remoteName}$" || ${pkgs.git}/bin/git -C "$path" remote add "${remoteName}" "${rUrl}"
+          ${pkgs.git}/bin/git -C "$path" remote set-url "${remoteName}" "${rUrl}"
+          ${pkgs.git}/bin/git -C "$path" remote set-url --push "${remoteName}" "${rPushUrl}"
         ''
       ) cfg.repos.${name}.remotes)}
 
       # Run git fetch if autoFetch is enabled for this repo
-      if [ "$autoFetch" = "true" ]; then
+      if [ "$autofetchEnable" = "true" ]; then
         echo "  Fetching ${name}..."
-        git -C "$path" fetch --all --prune
+        ${pkgs.git}/bin/git -C "$path" fetch --all --prune
       fi
 
       # Handle symlinking
-      if [ "${linkEnable}" = "true" ] && [ -n "${linkTargetPath}" ]; then
-        dest="${linkTargetPath}"
+      if [ "${symlinkEnable}" = "true" ] && [ -n "${symlinkTargetPath}" ]; then
+      #if ${symlinkEnable} && [ -n "${symlinkTargetPath}" ]; then
+      echo "symlink enable: ${symlinkEnable}"
+        dest="${symlinkTargetPath}"
         src="$path"
         if [ -e "$dest" ] && [ ! -L "$dest" ]; then
           backup="$dest.bak-$(date +%s)"
@@ -97,13 +103,13 @@ in {
       description = "Relative path under $HOME where repositories are stored by default.";
     };
 
-    autoFetch = lib.mkOption {
+    autofetchEnable = lib.mkOption {
       type = lib.types.bool;
       default = false;
       description = "If true, automatically run `git fetch --all --prune` after syncing repos (can be overridden per repo).";
     };
 
-    linkEnable = lib.mkOption {
+    symlinkEnable = lib.mkOption {
       type = lib.types.bool;
       default = true;
       description = "Global default for whether repos create/update symlinks (can be overridden per repo).";
@@ -114,7 +120,7 @@ in {
         options = {
           enable = lib.mkEnableOption "Enable this repository.";
 
-          link = lib.mkOption {
+          symlink = lib.mkOption {
             type = lib.types.submodule ({ ... }: {
               options = {
                 enable = lib.mkOption {
@@ -156,7 +162,7 @@ in {
             description = "Remote definitions for this repo.";
           };
 
-          autoFetch = lib.mkOption {
+          autofetchEnable = lib.mkOption {
             type = lib.types.nullOr lib.types.bool;
             default = null;
             description = "Override global autoFetch for this repo (true/false). If null, use global setting.";
