@@ -16,13 +16,18 @@ let
   # This function takes the repository name and its configuration.
   buildRepoScript = name: repo:
     let
-      #enabled = lib.boolToString repo.enable;
-      enabled = toString (repo.enable or false);
+      enabled = lib.boolToString repo.enable;
+      #enabled = toString (repo.enable or false);
       repoPath = expandHome cfg.basePath + "/${name}";
       primaryRemote = repo.primaryRemote;
       cloneUrl = repo.remotes.${primaryRemote}.url;
-      autofetchEnable = toString ((repo.autofetchEnable or false) && (cfg.autofetchEnable or false)); # This way null defaults to false, so only an explicit true will enables it.
-      symlinkEnable = toString ((repo.symlink.enable or false) && (cfg.symlinkEnable or false)); # This way null defaults to false, so only an explicit true will enables it.
+
+      #autofetchEnable = toString ((repo.autofetchEnable or false) && (cfg.autofetchEnable or false)); # This way null defaults to false, so only an explicit true will enables it.
+      autofetchEnable = toString (repo.autofetchEnable or false);
+
+      #symlinkEnable = toString ((repo.symlink.enable or false) && (cfg.symlinkEnable or false)); # This way null defaults to false, so only an explicit true will enables it.
+      symlinkEnable = if repo.symlink.enable == null then "" else lib.boolToString repo.symlink.enable;
+
       symlinkTarget = if repo.symlink.target == null then "" else repo.symlink.target;
       symlinkTargetPath = expandHome symlinkTarget;
     in
@@ -46,11 +51,11 @@ let
       path="${repoPath}"
 
       # Create the parent directory if it doesn't exist
-      echo "Creating $path"
+      echo "  Creating $path"
       mkdir -p "$(dirname "$path")"
 
       # Clone the repository if it does not already exist
-      echo "Git clone"
+      echo "  Git clone"
       if [ ! -d "$path/.git" ]; then
         echo "  Cloning ${name} from ${primaryRemote} (${cloneUrl}) into $path"
         ${pkgs.git}/bin/git clone "${cloneUrl}" "$path"
@@ -72,8 +77,8 @@ let
       ) cfg.repos.${name}.remotes)}
 
       # Run git fetch if autoFetch is enabled for this repo
-      echo "Git fetch"
-      if [ "$autofetchEnable" = "true" ]; then
+      echo "  Git fetch"
+      if [ "${autofetchEnable}" = "true" ]; then
         echo "  Fetching ${name}..."
         ${pkgs.git}/bin/git -C "$path" fetch --all --prune
       else
@@ -81,7 +86,7 @@ let
       fi
 
       # Handle symlinking
-      echo "symlink"
+      echo "  symlink"
       if [ "${symlinkEnable}" = "true" ] && [ -n "${symlinkTargetPath}" ]; then
       #if ${symlinkEnable} && [ -n "${symlinkTargetPath}" ]; then
         echo "  symlink enable: ${symlinkEnable}"
