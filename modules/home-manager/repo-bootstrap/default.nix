@@ -38,6 +38,8 @@ let
       if [ "${enabled}" != "true" ]; then
         echo "  Skipping disabled repo: ${name}"
         exit 0
+      else
+        echo "  Continue enabled repo: ${name}"
       fi
 
       # Define the full path to the repository
@@ -48,9 +50,12 @@ let
       mkdir -p "$(dirname "$path")"
 
       # Clone the repository if it does not already exist
+      echo "Git clone"
       if [ ! -d "$path/.git" ]; then
         echo "  Cloning ${name} from ${primaryRemote} (${cloneUrl}) into $path"
         ${pkgs.git}/bin/git clone "${cloneUrl}" "$path"
+      else
+        echo "  Cloning: abort as the repository already exist in $path"
       fi
 
       # Configure all remotes, including setting push URLs
@@ -67,15 +72,19 @@ let
       ) cfg.repos.${name}.remotes)}
 
       # Run git fetch if autoFetch is enabled for this repo
+      echo "Git fetch"
       if [ "$autofetchEnable" = "true" ]; then
         echo "  Fetching ${name}..."
         ${pkgs.git}/bin/git -C "$path" fetch --all --prune
+      else
+        echo "  Fetching disabled"
       fi
 
       # Handle symlinking
+      echo "symlink"
       if [ "${symlinkEnable}" = "true" ] && [ -n "${symlinkTargetPath}" ]; then
       #if ${symlinkEnable} && [ -n "${symlinkTargetPath}" ]; then
-      echo "symlink enable: ${symlinkEnable}"
+        echo "  symlink enable: ${symlinkEnable}"
         dest="${symlinkTargetPath}"
         src="$path"
         if [ -e "$dest" ] && [ ! -L "$dest" ]; then
@@ -88,6 +97,8 @@ let
           mkdir -p "$(dirname "$dest")"
           ln -s "$src" "$dest"
         fi
+      else
+        echo "  symlink disabled"
       fi
     '';
 
