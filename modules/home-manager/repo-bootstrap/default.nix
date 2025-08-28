@@ -51,7 +51,7 @@ let
       path="${repoPath}"
 
       # Create the parent directory if it doesn't exist
-      echo "  Creating $path"
+      echo "  Creating $(dirname \"$path\")"
       mkdir -p "$(dirname "$path")"
 
       # Clone the repository if it does not already exist
