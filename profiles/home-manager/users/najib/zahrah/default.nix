@@ -36,10 +36,30 @@ in
     (fromCommon "repo-bootstrap.nix")
   ];
 
-  programs.repo-bootstrap = {
-    enable = true;
-    basePath = "~/src";
-  };
+  # !!! This will overrides the whole 'programs.repo-bootstrap config imported from 'common/repo-bootstrap.nix' !!!
+  #programs.repo-bootstrap = {
+  #  enable = true;
+  #  basePath = "~/src";
+  #};
+  #
+  # Instead of overriding (which erases repos), extend settings here
+  #programs.repo-bootstrap = lib.mkMerge [
+  #  # Host-specific overrides
+  #  {
+  #    enable = true;
+  #    basePath = "~/src";
+  #    #autoFetch = true; # example override
+  #    #linkEnable = false; # example override
+  #  }
+  #
+  #  # Keep everything imported from common/repo-bootstrap.nix
+  #  config.programs.repo-bootstrap
+  #];
+  #
+  # Instead of setting 'programs.repo-bootstrap' in maryam/default.nix, just import your 'common/repo-bootstrap.nix' and then »
+  # 'repos' comes from 'common/repo-bootstrap.nix'; 'enable' and 'basePath' are overridden, but only those keys, not the whole»
+  programs.repo-bootstrap.enable = true;
+  programs.repo-bootstrap.basePath = "~/src";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "${stateVersion}"; #"22.05";
