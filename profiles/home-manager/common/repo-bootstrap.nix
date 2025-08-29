@@ -7,8 +7,8 @@
 
 {
   programs.repo-bootstrap = {
-    enable = true;                      # Default is 'false'.
-    basePath = "~/src";
+    enable = lib.mkDefault false; #true;                      # Default is 'false'.
+    basePath = lib.mkDefault "~/src";
     #autofetchEnable = true;            # Default: false
     #symlinkEnable = true;              # Default: false
 
@@ -16,7 +16,7 @@
 
       #------------------------------------------------------------------------
       neovim-config-NajibMalaysia-kickstart-nix-nvim = {
-        enable = true;
+        enable = false; #true;
         symlink = {
           enable = false; #true;
           #target = ".config/nvim";
