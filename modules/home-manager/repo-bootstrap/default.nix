@@ -16,19 +16,46 @@ let
   # This function takes the repository name and its configuration.
   buildRepoScript = name: repo:
     let
-      enabled = lib.boolToString repo.enable;
-      #enabled = toString (repo.enable or false);
+
+      #
+      # NOTE: 'or' in Nix means: if left is not null, use it, otherwise fallback to right.
+      #
+
+      #
+      # NOTE:
+      #
+      # lib.boolToString output:
+      #   true → "1"
+      #   false → ""
+      #
+      # toString output:
+      #   true → "true"
+      #   false → "false"
+      #
+
+      enabled = toString (repo.enable or false);
+
       repoPath = expandHome cfg.basePath + "/${name}";
+
       primaryRemote = repo.primaryRemote;
       cloneUrl = repo.remotes.${primaryRemote}.url;
 
-      #autofetchEnable = toString ((repo.autofetchEnable or false) && (cfg.autofetchEnable or false)); # This way null defaults to false, so only an explicit true will enables it.
-      autofetchEnable = toString (repo.autofetchEnable or false);
+      autofetchEnable = toString (
+        (repo.autofetchEnable or false)
+        &&
+        (cfg.autofetchEnable or false)
+      );
 
-      #symlinkEnable = toString ((repo.symlink.enable or false) && (cfg.symlinkEnable or false)); # This way null defaults to false, so only an explicit true will enables it.
-      symlinkEnable = if repo.symlink.enable == null then "" else lib.boolToString repo.symlink.enable;
+      symlinkEnable = toString (
+        (repo.symlink.enable or false)
+        &&
+        (cfg.symlinkEnable or false)
+        &&
+        ((repo.symlink.target or "") != "")
+      );
 
-      symlinkTarget = if repo.symlink.target == null then "" else repo.symlink.target;
+      #symlinkTarget = if repo.symlink.target == null then "" else repo.symlink.target;
+      symlinkTarget = repo.symlink.target or "";
       symlinkTargetPath = expandHome symlinkTarget;
     in
     ''
@@ -55,7 +82,7 @@ let
       mkdir -p "$(dirname "$path")"
 
       # Clone the repository if it does not already exist
-      echo "  Git clone"
+      #echo "  Git clone"
       if [ ! -d "$path/.git" ]; then
         echo "  Cloning ${name} from ${primaryRemote} (${cloneUrl}) into $path"
         ${pkgs.git}/bin/git clone "${cloneUrl}" "$path"
@@ -64,20 +91,24 @@ let
       fi
 
       # Configure all remotes, including setting push URLs
+      echo "  Configure all remotes, including setting push URLs"
       ${lib.concatStringsSep "\n" (lib.mapAttrsToList (remoteName: remote:
         let
           rUrl = remote.url;
           rPushUrl = if remote ? pushUrl && remote.pushUrl != null then remote.pushUrl else rUrl;
         in
         ''
+          #echo "  git remote add ..."
           ${pkgs.git}/bin/git -C "$path" remote | grep -q "^${remoteName}$" || ${pkgs.git}/bin/git -C "$path" remote add "${remoteName}" "${rUrl}"
+          #echo "  git remote set-url ..."
           ${pkgs.git}/bin/git -C "$path" remote set-url "${remoteName}" "${rUrl}"
+          #echo "  git remote set-url --push ..."
           ${pkgs.git}/bin/git -C "$path" remote set-url --push "${remoteName}" "${rPushUrl}"
         ''
       ) cfg.repos.${name}.remotes)}
 
       # Run git fetch if autoFetch is enabled for this repo
-      echo "  Git fetch"
+      #echo "  Git fetch"
       if [ "${autofetchEnable}" = "true" ]; then
         echo "  Fetching ${name}..."
         ${pkgs.git}/bin/git -C "$path" fetch --all --prune
@@ -86,10 +117,10 @@ let
       fi
 
       # Handle symlinking
-      echo "  symlink"
+      #echo "  Symlink"
       if [ "${symlinkEnable}" = "true" ] && [ -n "${symlinkTargetPath}" ]; then
-      #if ${symlinkEnable} && [ -n "${symlinkTargetPath}" ]; then
-        echo "  symlink enable: ${symlinkEnable}"
+        #echo "  symlink enable: ${symlinkEnable}"
+        echo "  Symlink enabled"
         dest="${symlinkTargetPath}"
         src="$path"
         if [ -e "$dest" ] && [ ! -L "$dest" ]; then
@@ -103,7 +134,7 @@ let
           ln -s "$src" "$dest"
         fi
       else
-        echo "  symlink disabled"
+        echo "  Symlink disabled"
       fi
     '';
 
