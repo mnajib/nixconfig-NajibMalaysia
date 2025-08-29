@@ -3,7 +3,7 @@
 
 { inputs, outputs, lib, config, pkgs, ... }:
 let
-  username = "najib";
+  username = "naqib";
   hostname = "zahrah";
   commonDir = "../../../common";
   stateVersion = "25.05";
@@ -17,7 +17,7 @@ in
   in [
     ../default.nix
 
-    (fromCommon "neovim")
+    #(fromCommon "neovim")
     (fromCommon "repo-bootstrap.nix")
   ];
 
