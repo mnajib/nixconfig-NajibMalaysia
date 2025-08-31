@@ -339,7 +339,7 @@ in
 
   services.xserver.desktopManager = {
     gnome.enable = true;
-    #lxqt.enable = true;
+    lxqt.enable = true;
   };
 
   services.xserver.windowManager = {
