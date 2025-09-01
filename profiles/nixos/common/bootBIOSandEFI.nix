@@ -8,7 +8,7 @@
   config = lib.mkIf config.universalBoot.enable {
     boot.loader.grub = {
       enable = true;
-      version = 2;
+      #version = 2;                  # This option does not have any effect anymore
       device = "nodev";              # works across machines
       efiSupport = true;             # install GRUB EFI
       efiInstallAsRemovable = true;  # more portable for EFI firmware

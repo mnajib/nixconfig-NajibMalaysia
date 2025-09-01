@@ -147,9 +147,10 @@ in
   ## This option should be enabled by default by the corresponding modules, so you do not usually have to set it yourself.
   #hardware.graphics.enable = true;
 
-  #boot.kernelParams = [
-  #  "radeon.modeset=1" # enable radeon
-  #];
+  boot.kernelParams = [
+    #"radeon.modeset=1" # enable radeon
+    "vga=787" # set to use display resolution ...
+  ];
 
   #boot.loader.grub = {
   #  efiSupport = true;
