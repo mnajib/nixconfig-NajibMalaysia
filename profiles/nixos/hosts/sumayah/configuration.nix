@@ -27,24 +27,17 @@ in
     (fromCommon "console-keyboard-dvorak.nix")
     (fromCommon "keyboard-with-msa.nix")
 
-    #(./. + "/${commonDir}/users-a-wheel.nix")
-    #(./. + "/${commonDir}/users-najib.nix")
-    #(./. + "/${commonDir}/users-naqib-wheel.nix")
-    #(./. + "/${commonDir}/users-naim.nix")
-    #(./. + "/${commonDir}/users-nurnasuha.nix")
-    #(./. + "/${commonDir}/users-julia.nix")
     (fromCommon "users-a-wheel.nix")
+    (fromCommon "users-naqib-wheel.nix")
     (fromCommon "users-najib.nix")
     (fromCommon "users-julia.nix")
-    (fromCommon "users-anak2.nix")
+    (fromCommon "users-naim.nix")
+    (fromCommon "users-nurnasuha.nix")
+    #(fromCommon "users-anak2.nix")
 
-    #(./. + "/${commonDir}/nfs-client-automount.nix")
-    #(./. + "/${commonDir}/zramSwap.nix")
     (fromCommon "nfs-client-automount.nix")
-    (fromCommon "zramSwap.nix")
+    #(fromCommon "zramSwap.nix") # try to disable zram, in seeking what cause sumayah hang while on high load
 
-    #(./. + "/${commonDir}/xmonad.nix")
-    #(./. + "/${commonDir}/window-managers.nix")
     (fromCommon "window-managers.nix")
 
     (fromCommon "3D.nix")
@@ -160,6 +153,9 @@ in
   };
 
   nix.settings.trusted-users = [ "root" "najib" "naqib" ];
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
 
   nixpkgs.config.android_sdk.accept_license = true;
 
