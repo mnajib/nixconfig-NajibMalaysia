@@ -24,10 +24,21 @@ in
 
     #(./. + "/${commonDir}/stylix.nix")
 
-    #(fromCommon "repo-bootstrap.nix")  # plain, no params, with helper function
+    #
+    # Plain, no params, with helper function
+    #
+    # NOTE: To use different path:
+    #   programs.repo-bootstrap.enable = true;
+    #   programs.repo-bootstrap.basePath = "~/src";
+    #
+    (fromCommon "repo-bootstrap.nix")
+
     #(import ./. + "/${commonDir}/repo-bootstrap.nix" { basePath = "~/Projects"; }) # with params, without helper function
-    (fromCommonWithParams "repo-bootstrap.nix" { basePath = "~/Projects"; })  # with params, with helper function
+    #(fromCommonWithParams "repo-bootstrap.nix" { basePath = "~/Projects"; })  # with params, with helper function
   ];
+
+  programs.repo-bootstrap.enable = true;
+  programs.repo-bootstrap.basePath = "~/Programs";
 
   #home.username = "$USER";
   #home.homeDirectory = "/home/najib";
