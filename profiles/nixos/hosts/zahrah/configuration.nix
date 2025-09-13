@@ -377,6 +377,7 @@ in
   programs = {
     sway.enable = true;
     xwayland.enable = true;
+    river.enable = true;
 
     firefox.enable = false;
 
