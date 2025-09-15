@@ -15,8 +15,10 @@
   ###################################
   services.xserver.enable = true;
 
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland = true;
+  services.xserver.displayManager.gdm.enable = false;
+  services.xserver.displayManager.gdm.wayland = false;
+  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
 
   services.xserver.desktopManager.gnome.enable = true;
   services.desktopManager.plasma6.enable = true;
