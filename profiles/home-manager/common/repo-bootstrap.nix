@@ -85,15 +85,16 @@
           enable = true;
           target = "~/bin";
         };
-        primaryRemote = "myforgejo";
+        primaryRemote = "nyxora";
 
         remotes = {
-          myforgejo = {
+          nyxora = {
             url = "http://nyxora:3000/najib/bin.git";
             pushUrl = "ssh://forgejo@nyxora/najib/bin.git";
           };
-          myforgejo2 = {
+          customdesktop = {
             url = "http://customdesktop:3000/najib/bin.git";
+            pushUrl = "ssh://forgejo@customdesktop/najib/bin.git";
           };
           github = {
             url = "https://github.com/NajibMalaysia/bin-NajibMalaysia.git";
