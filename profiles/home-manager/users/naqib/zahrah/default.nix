@@ -11,7 +11,7 @@ let
 in
 {
   # You can import other home-manager modules here
-  imports = let 
+  imports = let
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
     fromCommonWithParams = name: params: import ( ./. + "/${toString commonDir}/${name}" ) params;
   in [
