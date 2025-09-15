@@ -5,6 +5,7 @@
   lib,
   inputs, outputs,
   modulesPath,
+  # host, home, vars,
   ...
 }:
 let
@@ -68,6 +69,9 @@ in
 
     (fromCommon "window-managers.nix")
     #(fromCommon "xmonad.nix")
+    #./gpu-config.nix
+    ./radeon-legacy.nix
+    ./desktops.nix
 
     (fromCommon "nfs-client.nix")
     #./nfs-client-automount.nix
@@ -93,6 +97,7 @@ in
       #root = import (./. + "/${hmDir}/root/zahrah");
       root = userImport "root";
       najib = userImport "najib";
+      naqib = userImport "naqib";
     };
   };
 
@@ -326,9 +331,9 @@ in
 
   services.xserver.enable = true;
 
-  services.xserver.displayManager = {
-    lightdm.enable = true;
-  };
+  #services.xserver.displayManager = {
+  #  lightdm.enable = true;
+  #};
 
   services.xserver.desktopManager = {
     gnome.enable = true;
