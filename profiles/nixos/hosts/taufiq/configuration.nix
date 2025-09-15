@@ -161,7 +161,7 @@ in with lib;
       #najib = import "${hmDir}/najib/taufiq";
       root = import (./. + "/${hmDir}/root/taufiq");
       najib = import (./. + "/${hmDir}/najib/taufiq");
-      #naqib = import (./. + "/${hmDir}/naqib/taufiq");
+      naqib = import (./. + "/${hmDir}/naqib/taufiq");
     }; # End home-manager.users = { ... };
   }; # End home-manager = { ... };
 
