@@ -137,7 +137,7 @@ in
 
     godot_4
     gdtoolkit_4
-    godot_4-export-templates
+    godot_4-export-templates-bin
 
     #firefox
     #brave

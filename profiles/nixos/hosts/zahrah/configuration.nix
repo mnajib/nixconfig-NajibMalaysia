@@ -340,43 +340,46 @@ in
     #lxqt.enable = true;
   };
 
+  #
+  # XXX: if using gdm; do not enable too many desktop/wm, gdm cannot scroll a long list for user to choose
+  #
   services.xserver.windowManager = {
     awesome = {
       enable = true;
     };
     berry.enable = true;
     notion.enable = true;
-    pekwm.enable = true;
+    #pekwm.enable = true;
     #qtile.enable = true;
-    ratpoison.enable = true;
-    tinywm.enable = true;
-    smallwm.enable = true;
+    #ratpoison.enable = true;
+    #tinywm.enable = true;
+    #smallwm.enable = true;
     #yeahwm.enable = true;
-    mlvwm.enable = true;
-    leftwm.enable = true;
+    #mlvwm.enable = true;
+    #leftwm.enable = true;
     icewm.enable = true;
     i3.enable = true;
-    fvwm3.enable = true;
+    #fvwm3.enable = true;
     bspwm.enable = true;
     openbox.enable = true;
     #mwm.enable = true;
     #lwm.enable = true;
     jwm.enable = true;
     fluxbox.enable = true;
-    windowmaker.enable = true;
+    #windowmaker.enable = true;
     twm.enable = true;
-    spectrwm.enable = true;
+    #spectrwm.enable = true;
     wmderland.enable = true;
-    herbstluftwm.enable = true;
+    #herbstluftwm.enable = true;
 
     #hypr.enable = true;
 
-    clfswm.enable = true;
+    #clfswm.enable = true;
     #stumpwm.enable = true;
-    sawfish.enable = true;
+    #sawfish.enable = true;
     #exwm.enable = true;
 
-    "2bwm".enable = true;
+    #"2bwm".enable = true;
   };
 
   programs = {
