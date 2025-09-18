@@ -13,6 +13,8 @@
     #../../neovim
   ];
 
+  #xdg.portal.enable = true;
+
   #----------------------------------------------------------
   # disable stylix on specifix programs
   #
