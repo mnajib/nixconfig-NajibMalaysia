@@ -478,6 +478,7 @@
           "naqib@sumayah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/sumayah ];
           "naqib@asmak" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/asmak ];
           "naqib@zahrah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/zahrah ];
+          "naqib@raudah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/raudah ];
 
           "naim@manggis" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naim/manggis ];
           "naim@keira" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naim/keira ];
