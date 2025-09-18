@@ -46,8 +46,9 @@ in
     (fromCommon "users-naqib-wheel.nix")
     #(fromCommon "users-naim-wheel.nix")
 
-    #./configuration.MIN.nix
-    (fromCommon "configuration.FULL.nix")
+    #(fromCommon "configuration.FULL.nix")
+    (fromCommon "configuration.MIN.nix")
+    #(fromCommon "locale.nix")
 
     (fromCommon "thinkpad.nix")
 
@@ -69,13 +70,13 @@ in
 
     (fromCommon "zramSwap.nix")
     (fromCommon "nix-garbage-collector.nix")
-    (fromCommon "flatpak.nix")
     (fromCommon "btrfs.nix")
 
     #./btrbk.nix
     (fromCommon "typesetting.nix")
     (fromCommon "jupyter.nix")
 
+    (fromCommon "flatpak.nix")
     (fromCommon "mame.nix")
     (fromCommon "lutris.nix")
     (fromCommon "opengl.nix")
