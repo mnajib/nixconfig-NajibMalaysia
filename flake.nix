@@ -300,6 +300,12 @@
 
           raudah = mkNixos "x86_64-linux" [
             ./profiles/nixos/hosts/raudah/configuration.nix
+            inputs.home-manager.nixosModules.home-manager
+            inputs.hardware.nixosModules.lenovo-thinkpad
+            inputs.hardware.nixosModules.common-cpu-intel
+            inputs.hardware.nixosModules.common-pc-laptop-ssd
+            inputs.stylix.nixosModules.stylix
+            #inputs.disko.nixosModules.disko
           ];
 
           mahirah = mkNixos "x86_64-linux" [

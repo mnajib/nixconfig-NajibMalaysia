@@ -3,15 +3,25 @@
 {
   pkgs,
   config,
+  inputs, outputs,
   ... }:
+let
+  commonDir = "../../common";
+  hmDir = "../../../home-manager/users";
+  hostName = "raudah";
+  stateVersion = "23.05";
+in
 {
   nix = {
+    settings = {
+      trusted-users = [ "root" "najib" "naqib" ];
+    };
+
     #package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
       extraOptions = ''
         experimental-features = nix-command flakes
       '';
   };
-  nix.settings.trusted-users = [ "root" "najib" "naqib" ];
   #
   #nix.maxJobs = 1;
   #nix.settings.max-jobs = 1;
@@ -23,63 +33,76 @@
   #nix.daemonIOSchedClass = "idle"; # default "best-effort",
   #nix.daemonIOSchedPriority = 5; # 0(high,default) to 7(low).
 
-  imports = [
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+  in [
     #<nixos-hardware/lenovo/thinkpad/t410> # XXX: temporarily disabled because lazy to add nix channel
-    ./hardware-configuration-raudah.nix
-    #./hardware-configuration.nix
-    #./hardware-laptopLenovoThinkpadT410eWasteCyberjaya.nix
-    #./hardware-storageSSD001.nix
-    ./thinkpad.nix
+    ./hardware-configuration.nix
+    inputs.home-manager.nixosModules.home-manager
 
-    #./hosts.nix
-    #./hosts2.nix
+    (fromCommon "users-najib.nix")
+    (fromCommon "users-julia.nix")
+    (fromCommon "users-anak2.nix")
+    (fromCommon "users-naqib-wheel.nix")
+    #(fromCommon "users-naim-wheel.nix")
 
-    #./network-dns.nix
+    #./configuration.MIN.nix
+    (fromCommon "configuration.FULL.nix")
 
-    #./users-anak2.nix
-    #./users-najib.nix
-    ./users-julia.nix
-    #./users-naqib.nix
-    ./users-naqib-wheel.nix
-    ./users-nurnasuha.nix
-    ./users-naim-wheel.nix
-    #./users-naim.nix
+    (fromCommon "thinkpad.nix")
 
-    #./nfs-client.nix
-    ./nfs-client-automount.nix
+    #(fromCommon "nfs-client.nix")
+    (fromCommon "nfs-client-automount.nix")
+    (fromCommon "samba-client.nix")
 
-    ./console-keyboard-dvorak.nix
-    ./keyboard-with-msa.nix
+    (fromCommon "console-keyboard-dvorak.nix")
+    (fromCommon "keyboard-with-msa.nix")
     #./keyboard-without-msa.nix
 
     #./audio-pulseaudio.nix
-    ./audio-pipewire.nix
+    (fromCommon "audio-pipewire.nix")
 
-    ./hardware-printer.nix
+    (fromCommon "hardware-printer.nix")
     #./hardware-tablet-wacom.nix
     #./hardware-tablet-digimend.nix
     #./hardware-tablet-opentabletdriver.nix
 
-    ./zramSwap.nix
-
-    #./configuration.MIN.nix
-    ./configuration.FULL.nix
+    (fromCommon "zramSwap.nix")
+    (fromCommon "nix-garbage-collector.nix")
+    (fromCommon "flatpak.nix")
+    (fromCommon "btrfs.nix")
 
     #./btrbk.nix
-    ./typesetting.nix
-    ./nix-garbage-collector.nix
+    (fromCommon "typesetting.nix")
+    (fromCommon "jupyter.nix")
 
-    #./flatpak.nix
+    (fromCommon "mame.nix")
+    (fromCommon "lutris.nix")
+    (fromCommon "opengl.nix")
+    #(fromCommon "xdg.nix")
 
-    ./mame.nix
-    ./opengl.nix
-    ./xmonad.nix
+    (fromCommon "window-managers.nix")
+    (fromCommon "xmonad.nix")
+    #(fromCommon "desktops.nix")
+    ./desktops.nix
   ];
 
+  home-manager = {
+    extraSpecialArgs = { inherit inputs outputs; };
+    users = {
+      root = import (./. + "/${hmDir}/root/raudah");
+      najib = import (./. + "/${hmDir}/najib/raudah");
+      naqib = import (./. + "/${hmDir}/naqib/raudah");
+    };
+  };
+
   environment.systemPackages = with pkgs; [
+    inputs.home-manager.packages.${pkgs.system}.default
     vim
+    bottles
     nano
     #harlequin
+    pciutils
   ];
 
   # For the value of 'networking.hostID', use the following command:
@@ -92,6 +115,8 @@
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.supportedFilesystems =        [ "ext4" "btrfs" "xfs" "vfat" "ntfs" ];
+
+  #services.btrfs.autoScrub = 
 
   # Setup keyfile
   boot.initrd.secrets = {
@@ -143,6 +168,7 @@
   };
 
   services.fstrim.enable = true;
+  services.smartd.enable = true;
 
   networking.networkmanager.enable = true;
   programs.nm-applet.enable = true;
@@ -150,6 +176,10 @@
   #networking.useDHCP = false;
   #networking.interfaces.enp0s25.useDHCP = true;
   #networking.interfaces.wlp3s0.useDHCP = true;
+
+  services.openssh = {
+    enable = true;
+  };
 
   networking.firewall.enable = false;
   networking.firewall.allowedTCPPorts = [
@@ -216,24 +246,47 @@
   services.libinput.touchpad.scrollMethod = "twofinger";
   services.libinput.touchpad.tapping = true; #false;
 
-  services.xserver.enable = true;
+  #services.xserver.enable = true;
   #----------------------------------------------------------------------------
   #services.xserver.displayManager.lightdm.enable = true;
   #services.xserver.displayManager.defaultSession = "none+xmonad";
   #services.xserver.displayManager.startx.enable = true;
   #----------------------------------------------------------------------------
   #services.xserver.desktopManager.plasma5.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  #services.xserver.desktopManager.gnome.enable = true;
   #services.xserver.desktopManager.lxqt.enable = true;
   #services.xserver.desktopManager.budgie.enable = true;
   #----------------------------------------------------------------------------
   #services.xserver.windowManager.i3.enable = true;
-  services.xserver.windowManager.awesome.enable = true;
+  #services.xserver.windowManager.awesome.enable = true;
   #----------------------------------------------------------------------------
-  services.displayManager.defaultSession = "none+xmonad";
+  #services.displayManager.defaultSession = "none+xmonad";
 
   security.rtkit.enable = true;
 
+  #fuse.userAllowOther = true;
+
+  #gnupg.agent = {
+    #enable = true;
+    #enableSSHSupport = true;
+  #};
+
+  #steam = {
+    #enable = true;
+    #gamescopeSession.enable = true;
+    #remotePlay.openFirewall = true;
+    #dedicatedServer.openFirewall = true;
+  #};
+
+  #thunar = {
+    #enable = true;
+    #plugins = with pkgs.xfce; [
+      #thunar-archive-plugin
+      #thunar-volman
+    #];
+  #};
+
   #system.stateVersion = "22.05";
-  system.stateVersion = "23.05";
+  #system.stateVersion = "23.05";
+  system.stateVersion = stateVersion;
 }
