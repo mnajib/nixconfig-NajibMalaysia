@@ -35,6 +35,8 @@ in
     (fromCommon "youtube.nix")
     (fromCommon "evince.nix")
     (fromCommon "time-management.nix")
+
+    (fromCommon "repo-bootstrap.nix")
   ];
 
   nixpkgs = {
@@ -71,6 +73,9 @@ in
     username = "naqib";
     homeDirectory = "/home/naqib";
   };
+
+  programs.repo-bootstrap.enable = true;
+  programs.repo-bootstrap.basePath = "~/src";
 
   # Add stuff for your user as you see fit:
   home.packages = with pkgs; [
