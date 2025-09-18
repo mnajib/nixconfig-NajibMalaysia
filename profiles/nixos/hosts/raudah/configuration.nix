@@ -80,7 +80,7 @@ in
     (fromCommon "mame.nix")
     (fromCommon "lutris.nix")
     (fromCommon "opengl.nix")
-    #(fromCommon "xdg.nix")
+    (fromCommon "xdg.nix")
 
     (fromCommon "window-managers.nix")
     (fromCommon "xmonad.nix")
@@ -101,6 +101,7 @@ in
     inputs.home-manager.packages.${pkgs.system}.default
     vim
     bottles
+    brave
     nano
     #harlequin
     pciutils
