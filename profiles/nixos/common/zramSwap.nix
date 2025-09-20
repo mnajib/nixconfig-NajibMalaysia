@@ -1,8 +1,8 @@
 {
 
-zramSwap = {
-    enable = true;
-    algorithm = "zstd";
-};
+  zramSwap = {
+      enable = true;
+      algorithm = "zstd";
+  };
 
 }
