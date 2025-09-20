@@ -50,9 +50,11 @@ in
     #./hosts2.nix
     #./network-dns.nix
 
-    #./users-najib.nix
+    (fromCommon "users-najib.nix")
     (fromCommon "users-julia-wheel.nix")
-    #./users-anak2.nix
+    (fromCommon "users-naqib-wheel.nix")
+    (fromCommon "users-nurnasuha.nix")
+    (fromCommon "users-naim.nix")
 
     (fromCommon "samba-client.nix")
     (fromCommon "nfs-client.nix")
@@ -105,7 +107,7 @@ in
 
       najib = userImport "najib";
       root = userImport "root";
-      #julia = userImport "julia";
+      julia = userImport "julia";
     };
   };
 

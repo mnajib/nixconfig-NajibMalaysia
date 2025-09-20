@@ -1,14 +1,22 @@
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 
-{ inputs, outputs, lib, config, pkgs, ... }:
+{
+  config, pkgs,
+  lib,
+  inputs, outputs,
+  ...
+}:
 let
   name = "Juliani Jaffar";
   email = "jung_jue@yahoo.com";
+  commonDir = "../../common";
 in
 {
   # You can import other home-manager modules here
-  imports = [
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+  in [
     # If you want to use modules your own flake exports (from modules/home-manager):
     # outputs.homeManagerModules.example
 
@@ -18,14 +26,21 @@ in
     # You can also split up your configuration and import pieces of it here:
     #../nvim.nix
     #../neovim/lazyvim.nix
-    ../neovim
+    #../neovim
+    (fromCommon "neovim")
+
     #../roblox.nix
     #../wesnoth.nix
-    ../chess.nix
-    ../time-management.nix
+    #../chess.nix
+    (fromCommon "chess.nix")
 
-    ../common-configs.nix
-    ../common-packages.nix
+    #../time-management.nix
+    (fromCommon "time-management.nix")
+
+    #(./. + "/${commonDir}/common-configs.nix")
+    #(./. + "/${commonDir}/common-packages.nix")
+    (fromCommon "common-configs.nix")
+    (fromCommon "common-packages.nix")
   ];
 
   nixpkgs = {

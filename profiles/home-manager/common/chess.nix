@@ -19,7 +19,7 @@
     xboard                              # gui for chess-engine
     #eboard                              # chess interface for unix-like systems # removed due to lack of maintenance upstream
     kdePackages.knights                 # Chess board program
-    gnome.gnome-chess                   # gui chess game
+    gnome-chess                   # gui chess game
     cutechess                           # GUI, CLI, and library for playing chess
     uchess                              # play chess against UCI engines in your terminal
     gambit-chess                        # play chess in your terminal
