@@ -14,6 +14,7 @@ in
   #users.users.git = {
   users.users.${forgejo_user} = {
     isSystemUser = true;
+    uid = 984;
     #group = "git";
     #group = "forgejo";
     group = forgejo_group;
@@ -22,7 +23,14 @@ in
     createHome = true;
   };
   #users.groups.git = {};
-  users.groups.${forgejo_group} = {};
+  users.groups = {
+    ${forgejo_group} = {
+      gid = 981;
+      #members = [
+      #  ${forgejo_group}
+      #];
+    };
+  };
 
   services.forgejo = {
     enable = true;
