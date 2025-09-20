@@ -6,6 +6,11 @@ let
   forgejo_stateDir = "/MyTank/services/forgejo"; # "/mnt/data/forgejo";
 in
 {
+  fileSystems."/MyTank/services" = {
+    device = "MyTank/services";
+    fsType = "zfs";
+  };
+
   #users.users.git = {
   users.users.${forgejo_user} = {
     isSystemUser = true;
