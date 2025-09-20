@@ -36,7 +36,7 @@ in
     #(fromCommon "users-anak2.nix")
 
     (fromCommon "nfs-client-automount.nix")
-    #(fromCommon "zramSwap.nix") # try to disable zram, in seeking what cause sumayah hang while on high load
+    (fromCommon "zramSwap.nix")
 
     (fromCommon "window-managers.nix")
 
