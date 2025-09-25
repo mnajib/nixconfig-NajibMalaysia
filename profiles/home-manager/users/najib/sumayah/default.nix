@@ -35,6 +35,8 @@ in
 
     #(import ./. + "/${commonDir}/repo-bootstrap.nix" { basePath = "~/Projects"; }) # with params, without helper function
     #(fromCommonWithParams "repo-bootstrap.nix" { basePath = "~/Projects"; })  # with params, with helper function
+
+    (fromCommon "desktop-apps.nix")
   ];
 
   programs.repo-bootstrap.enable = true;
