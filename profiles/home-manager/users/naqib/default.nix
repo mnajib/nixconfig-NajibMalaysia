@@ -35,6 +35,7 @@ in
     (fromCommon "youtube.nix")
     (fromCommon "evince.nix")
     (fromCommon "time-management.nix")
+    (fromCommon "desktop-apps.nix")
 
     (fromCommon "repo-bootstrap.nix")
   ];
