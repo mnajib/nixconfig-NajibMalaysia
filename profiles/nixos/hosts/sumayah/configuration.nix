@@ -1,5 +1,6 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
+# profiles/nixos/hosts/sumayah/configuration.nix
+#
+# Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 {
@@ -22,6 +23,8 @@ in
     inputs.home-manager.nixosModules.home-manager
     ./turn-off-rgb.nix
 
+    #./grafito.nix
+
     (fromCommon "configuration.FULL.nix")
 
     (fromCommon "console-keyboard-dvorak.nix")
@@ -42,6 +45,14 @@ in
 
     (fromCommon "3D.nix")
   ];
+
+  # Test if the module is available
+  #assertions = [
+  #  {
+  #    assertion = self ? nixosModules.grafito;
+  #    message = "grafito module not found in flake outputs";
+  #  }
+  #];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -158,15 +169,15 @@ in
     experimental-features = nix-command flakes
   '';
 
-  nixpkgs.config.android_sdk.accept_license = true;
+  #nixpkgs.config.allowUnfree = lib.mkForce true;
+  #nixpkgs.config.android_sdk.accept_license = lib.mkForce true;
+  hardware.enableRedistributableFirmware = true;
 
   programs.adb.enable = true;
 
   # Install firefox.
   programs.firefox.enable = true;
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
   programs.steam.enable = true;
 
   # List packages installed in system profile. To search, run:

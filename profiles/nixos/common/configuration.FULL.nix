@@ -138,38 +138,38 @@
   #  servers = [ "mst.sirim.my" "my.pool.ntp.org" "0.asia.pool.ntp.org" "1.asia.pool.ntp.org" "2.asia.pool.ntp.org" "3.asia.ntp.org" ];
   #};
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    nvidia.acceptLicense = true;
-
-    pulseaudio = true;
-
-    xsane = {
-      libusb = true;
-    };
-
-    #firefox = {
-      #enableAdobeReader = true;
-      #enableAdobeFlash = true;
-      #enableGoogleTalkPlugin = true;
-      #enableVLC = true;
-    #};
-
-    #chromium = {
-      #enablePepperFlash = true;
-      #enablePepperPDF = true;
-    #};
-
-    #packageOverrides = pkgs: {
-    #  ##unstable = import unstableTarball {
-    #  #master = import masterTarball {
-    #    #config = config.nixpkgs.config;
-    #  #};
-    #  unstable = import <nixos-unstable> {
-    #    config = config.nixpkgs.config;
-    #  };
-    #};
-  };
+#  nixpkgs.config = {
+#    allowUnfree = true;
+#    nvidia.acceptLicense = true;
+#
+#    pulseaudio = true;
+#
+#    xsane = {
+#      libusb = true;
+#    };
+#
+#    #firefox = {
+#      #enableAdobeReader = true;
+#      #enableAdobeFlash = true;
+#      #enableGoogleTalkPlugin = true;
+#      #enableVLC = true;
+#    #};
+#
+#    #chromium = {
+#      #enablePepperFlash = true;
+#      #enablePepperPDF = true;
+#    #};
+#
+#    #packageOverrides = pkgs: {
+#    #  ##unstable = import unstableTarball {
+#    #  #master = import masterTarball {
+#    #    #config = config.nixpkgs.config;
+#    #  #};
+#    #  unstable = import <nixos-unstable> {
+#    #    config = config.nixpkgs.config;
+#    #  };
+#    #};
+#  };
 
   #nixpkgs.configs.packageOverrides = pkgs: {
   #  xsaneGimp = pkgs.xsane.override ( nimpSupport = true; );
