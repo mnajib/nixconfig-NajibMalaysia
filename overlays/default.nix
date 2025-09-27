@@ -3,6 +3,7 @@
 
   # This one brings our custom packages from the 'pkgs' directory
   additions = final: _prev: import ../pkgs {pkgs = final;};
+  # additions = import ./additions.nix { inherit inputs; };      # Probably needs inputs
 
   # This one contains whatever you want to overlay
   # You can change versions, add patches, set compilation flags, anything really.
@@ -29,6 +30,7 @@
     #nixvim = prev.callPackage nixvim.packages.${prev.system}.default { };
 
   };
+  # modifications = import ./modifications.nix;                  # Probably doesn't need inputs
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
   # be accessible through 'pkgs.unstable'
@@ -38,5 +40,10 @@
       config.allowUnfree = true;
     };
   };
+  # unstable-packages = import ./unstable-packages.nix { inherit inputs; };  # Definitely needs inputs
+
+  #grafito = import ./grafito.nix;                              # Doesn't need inputs
+
+  #nixvim = import ./nixvim.nix { inherit inputs; };            # Pass all inputs
 
 }

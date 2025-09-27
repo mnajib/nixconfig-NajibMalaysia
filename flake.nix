@@ -40,7 +40,8 @@
 
     #nixvim = {
     #  url = "github:nix-community/nixvim";
-    #  inputs.nixpkgs.follows = "nixpkgs-unstable";
+    #  #inputs.nixpkgs.follows = "nixpkgs-unstable";
+    #  inputs.nixpkgs.follows = "nixpkgs";
     #};
 
     #neovim-config-NajibMalaysia.url = "github:mnajib/neovim-config-NajibMalaysia";
@@ -266,6 +267,20 @@
           #inputs.nixpkgs-unstable.lib.nixosSystem { # <-- Use inputs.nixpkgs-unstable
             inherit system modules;
             specialArgs = { inherit inputs outputs; };
+
+            # Apply your overlays and config to the pkgs used by NixOS modules
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              overlays = builtins.attrValues self.overlays;
+              config = {
+                allowUnfree = true;
+                android_sdk.accept_license = true;
+                nvidia.acceptLicense = true;
+                pulseaudio = true;
+                xsane.libusb = true;
+              };
+            };
+
           };
 
         mkHome = system: modules:
@@ -425,6 +440,7 @@
           ];
 
           sumayah = mkNixos "x86_64-linux" [
+            #self.nixosModules.grafito
             ./profiles/nixos/hosts/sumayah/configuration.nix
           ];
 
