@@ -225,7 +225,7 @@ in
 
     openrgb-with-all-plugins
 
-    #inputs.home-manager.packages.${pkgs.system}.default # To install home-manager packages
+    inputs.home-manager.packages.${pkgs.system}.default # To install home-manager packages
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
