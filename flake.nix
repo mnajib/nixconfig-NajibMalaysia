@@ -107,6 +107,8 @@
   }; # End of 'inputs = { ... };'
 
   outputs = inputs@{ flake-parts, self, ... }:
+  #outputs = top@{ flake-parts, self, ... }:
+  #outputs = top@inputs@{ flake-parts, self, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
 
       systems = [ "x86_64-linux" "aarch64-linux" ];
@@ -123,6 +125,7 @@
           #pkgsStable = import nixpkgs-stable { inherit system; };
           #pkgsUnstable = import nixpkgs-unstable { inherit system; };
           #pkgsMaster = import nixpkgs-master { inherit system; };
+          #inherit (inputs.nixpkgs.lib) mapAttrs attrValues length unique concatStringsSep filterAttrs count;
         in
         {
           packages = {
@@ -132,6 +135,27 @@
           devShells.default = import ./shell.nix { inherit pkgs; };
 
           formatter = pkgs.alejandra;
+
+          #checks.hostIdUniqueness =
+          #  let
+          #    lib = inputs.nixpkgs.lib;
+          #    #hostIds = lib.mapAttrs (_: h: h.config.networking.hostId or null) top.nixosConfigurations;
+          #    hostIds = lib.mapAttrs (_: h: h.config.networking.hostId or null) self.nixosConfigurations;
+          #    missingHosts = lib.attrNames (lib.filterAttrs (_: v: v == null) hostIds);
+          #    dupes = lib.filterAttrs (_: hs: lib.length hs > 1)
+          #      (lib.mapAttrs (id: _: lib.attrValues (lib.filterAttrs (_: v: v == id) hostIds)) hostIds);
+          #  in
+          #  pkgs.runCommand "check-hostId-uniqueness" { } ''
+          #    if [ -n "${lib.concatStringsSep " " missingHosts}" ]; then
+          #      echo "Missing hostId in: ${lib.concatStringsSep " " missingHosts}"
+          #      exit 1
+          #    fi
+          #    if [ -n "${lib.concatStringsSep " " (lib.attrValues dupes)}" ]; then
+          #      echo "Duplicate hostIds: ${lib.concatStringsSep " " (lib.attrValues dupes)}"
+          #      exit 1
+          #    fi
+          #    touch $out
+          #  '';
 
 #         #
 #         # Usage:
@@ -323,9 +347,9 @@
             #inputs.disko.nixosModules.disko
           ];
 
-          mahirah = mkNixos "x86_64-linux" [
-            ./profiles/nixos/hosts/mahirah/configuration.nix
-          ];
+          #mahirah = mkNixos "x86_64-linux" [
+          #  ./profiles/nixos/hosts/mahirah/configuration.nix
+          #];
 
           nyxora = let
             # Toggle these to true/false before running nixos-rebuild or nix run
@@ -388,10 +412,10 @@
             inputs.sops-nix.nixosModules.sops
           ];
 
-          asmak = mkNixos "x86_64-linux" [
-            ./profiles/nixos/hosts/asmak/configuration.nix
-            inputs.stylix.nixosModules.stylix
-          ];
+          #asmak = mkNixos "x86_64-linux" [
+          #  ./profiles/nixos/hosts/asmak/configuration.nix
+          #  inputs.stylix.nixosModules.stylix
+          #];
 
           #
           ##nix run nixpkgs#nixos-anywhere -- --flake .#generic --generate-hardware-config nixos-generate-config ./hardware-configuration.nix root@nixos
@@ -418,22 +442,22 @@
             inputs.disko.nixosModules.disko
           ];
 
-          sakinah = mkNixos "x86_64-linux" [
-            ./profiles/nixos/hosts/sakinah/configuration.nix
-            inputs.hardware.nixosModules.lenovo-thinkpad-x220
-            inputs.stylix.nixosModules.stylix
-          ];
+          #sakinah = mkNixos "x86_64-linux" [
+          #  ./profiles/nixos/hosts/sakinah/configuration.nix
+          #  inputs.hardware.nixosModules.lenovo-thinkpad-x220
+          #  inputs.stylix.nixosModules.stylix
+          #];
 
           manggis = mkNixos "x86_64-linux" [
             ./profiles/nixos/hosts/manggis/configuration.nix
             inputs.hardware.nixosModules.lenovo-thinkpad-x220
           ];
 
-          hidayah = mkNixos "x86_64-linux" [
-            ./profiles/nixos/hosts/hidayah/configuration.nix
-            inputs.nix-ld.nixosModules.nix-ld
-            { programs.nix-ld.dev.enable = true; }
-          ];
+          #hidayah = mkNixos "x86_64-linux" [
+          #  ./profiles/nixos/hosts/hidayah/configuration.nix
+          #  inputs.nix-ld.nixosModules.nix-ld
+          #  { programs.nix-ld.dev.enable = true; }
+          #];
 
           taufiq = mkNixos "x86_64-linux" [
             ./profiles/nixos/hosts/taufiq/configuration.nix
@@ -511,37 +535,37 @@
         #   Fail with a clear error if any two hosts share the same hostId.
         #   or, Pass if all hostIds are unique.
         #
-        checks = {
-          hostIdUniqueness = let
-            lib = inputs.nixpkgs.lib;
-            inherit (lib) mapAttrs attrValues length unique concatStringsSep filterAttrs;
-
-            hostIds =
-              mapAttrs (_: cfg: cfg.config.networking.hostId or null)
-                self.nixosConfigurations;
-
-            # Hosts missing hostId
-            missingHosts = lib.attrNames (filterAttrs (_: v: v == null) hostIds);
-
-            # Collect non-null hostIds
-            nonNullHostIds = filterAttrs (_: v: v != null) hostIds;
-
-            # Detect duplicates
-            ids = attrValues nonNullHostIds;
-            dupIds = lib.filter (id: lib.count (x: x == id) ids > 1) (unique ids);
-            dupHosts = map (id: {
-              id = id;
-              hosts = lib.attrNames (filterAttrs (_: v: v == id) nonNullHostIds);
-            }) dupIds;
-
-            prettyDup = concatStringsSep "; " (map (d: "${d.id} → ${concatStringsSep "," d.hosts}") dupHosts);
-          in
-            assert (missingHosts == [])
-              "❌ Some hosts are missing networking.hostId: ${concatStringsSep ", " missingHosts}";
-            assert (dupIds == [])
-              "❌ Duplicate hostIds detected: ${prettyDup}";
-            "✅ All hostIds are present and unique";
-        }; # End check = { ... };
+        #checks.x86_64-linux = {
+        #  hostIdUniqueness = let
+        #    lib = inputs.nixpkgs.lib;
+        #    inherit (lib) mapAttrs attrValues length unique concatStringsSep filterAttrs;
+        #
+        #    hostIds =
+        #      mapAttrs (_: cfg: cfg.config.networking.hostId or null)
+        #        self.nixosConfigurations;
+        #
+        #    # Hosts missing hostId
+        #    missingHosts = lib.attrNames (filterAttrs (_: v: v == null) hostIds);
+        #
+        #    # Collect non-null hostIds
+        #    nonNullHostIds = filterAttrs (_: v: v != null) hostIds;
+        #
+        #    # Detect duplicates
+        #    ids = attrValues nonNullHostIds;
+        #    dupIds = lib.filter (id: lib.count (x: x == id) ids > 1) (unique ids);
+        #    dupHosts = map (id: {
+        #      id = id;
+        #      hosts = lib.attrNames (filterAttrs (_: v: v == id) nonNullHostIds);
+        #    }) dupIds;
+        #
+        #    prettyDup = concatStringsSep "; " (map (d: "${d.id} → ${concatStringsSep "," d.hosts}") dupHosts);
+        #  in
+        #    assert (missingHosts == [])
+        #      "❌ Some hosts are missing networking.hostId: ${concatStringsSep ", " missingHosts}";
+        #    assert (dupIds == [])
+        #      "❌ Duplicate hostIds detected: ${prettyDup}";
+        #    "✅ All hostIds are present and unique";
+        #}; # End check = { ... };
 
       }; # End of 'flake = let ... in { ... };'
     }; # End of 'flake-parts.lib.mkFlake { inherit inputs; } { ... };
