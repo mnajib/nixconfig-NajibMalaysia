@@ -30,11 +30,11 @@ in
     };
   };
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    #allowBroken = true;
-    #cudaSupport = true;
-  };
+  #nixpkgs.config = {
+  #  allowUnfree = true;
+  #  #allowBroken = true;
+  #  #cudaSupport = true;
+  #};
 
   imports = let
     fromCommon = name: ./. + "/${toString commonDir}/${name}";

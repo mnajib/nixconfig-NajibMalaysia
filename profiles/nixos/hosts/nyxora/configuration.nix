@@ -33,9 +33,9 @@ in
     '';
   }; # End nix = { ... };
 
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
+  #nixpkgs.config = {
+  #  allowUnfree = true;
+  #};
 
   imports = let
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
@@ -448,7 +448,7 @@ in
     usb-modeswitch-data
   ];
 
-  nixpkgs.config.android_sdk.accept_license = true;
+  #nixpkgs.config.android_sdk.accept_license = true;
 
   services.udev.packages = [
     pkgs.android-udev-rules
