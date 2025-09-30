@@ -12,9 +12,9 @@
     '';
   };
 
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
+  #nixpkgs.config = {
+  #  allowUnfree = true;
+  #};
 
   imports = [
     ./hardware-configuration-asmak.nix

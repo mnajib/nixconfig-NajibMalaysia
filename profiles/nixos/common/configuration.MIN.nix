@@ -114,26 +114,28 @@
   #  servers = [ "mst.sirim.my" "my.pool.ntp.org" "0.asia.pool.ntp.org" "1.asia.pool.ntp.org" "2.asia.pool.ntp.org" "3.asia.ntp.org" ];
   #};
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    nvidia.acceptLicense = true;
+# Move to flake.nix
+#  nixpkgs.config = {
+#    allowUnfree = true;
+#    nvidia.acceptLicense = true;
+#
+#    pulseaudio = true;
+#
+#    xsane = {
+#      libusb = true;
+#    };
+#
+#    #packageOverrides = pkgs: {
+#    #  ##unstable = import unstableTarball {
+#    #  #master = import masterTarball {
+#    #    #config = config.nixpkgs.config;
+#    #  #};
+#    #  unstable = import <nixos-unstable> {
+#    #    config = config.nixpkgs.config;
+#    #  };
+#    #};
+#  };
 
-    pulseaudio = true;
-
-    xsane = {
-      libusb = true;
-    };
-
-    #packageOverrides = pkgs: {
-    #  ##unstable = import unstableTarball {
-    #  #master = import masterTarball {
-    #    #config = config.nixpkgs.config;
-    #  #};
-    #  unstable = import <nixos-unstable> {
-    #    config = config.nixpkgs.config;
-    #  };
-    #};
-  };
   environment.sessionVariables = rec {
     #XDG_DATA_HOME = "$HOME/var/lib";
     #XDG_CACHE_HOME = "$HOME/var/cache";

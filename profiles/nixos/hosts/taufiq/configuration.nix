@@ -65,10 +65,10 @@ in with lib;
     #max-jobs = 0; # Disable (never build on local machine, even when connecting to remote builders fails) building on local machine; only build on remote builders.
   };
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    #cudaSupport = true;                 # May cause a mass rebuild
-  };
+  #nixpkgs.config = {
+  #  allowUnfree = true;
+  #  #cudaSupport = true;                 # May cause a mass rebuild
+  #};
 
   imports = let
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
