@@ -301,17 +301,17 @@
           # NOTE: to test / dry-build nixos for host 'taufiq'
           #   nixos-rebuild dry-build --flake .#taufiq
 
-          khawlah = mkNixos "x86_64-linux" [
-            ./profiles/nixos/hosts/khawlah/configuration.nix
-          ];
+          #khawlah = mkNixos "x86_64-linux" [
+          #  ./profiles/nixos/hosts/khawlah/configuration.nix
+          #];
 
-          khadijah = mkNixos "x86_64-linux" [
-            inputs.nix-ld.nixosModules.nix-ld
-            { programs.nix-ld.dev.enable = true; }
-            ./profiles/nixos/hosts/khadijah/host-khadijah-Wayland-nauveau.nix
-            #./profiles/nixos/hosts/khadijah/configuration.nix
-            inputs.stylix.nixosModules.stylix
-          ];
+          #khadijah = mkNixos "x86_64-linux" [
+          #  inputs.nix-ld.nixosModules.nix-ld
+          #  { programs.nix-ld.dev.enable = true; }
+          #  ./profiles/nixos/hosts/khadijah/host-khadijah-Wayland-nauveau.nix
+          #  #./profiles/nixos/hosts/khadijah/configuration.nix
+          #  inputs.stylix.nixosModules.stylix
+          #];
 
           raudah = mkNixos "x86_64-linux" [
             ./profiles/nixos/hosts/raudah/configuration.nix
@@ -500,6 +500,48 @@
           "naim@keira" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naim/keira ];
 
         }; # End of 'homeConfigurations = { ... };'
+
+        #
+        # Ensure all hostIds are unique across nixosConfigurations
+        #
+        # To run the check:
+        #   nix flake check
+        #
+        # It will:
+        #   Fail with a clear error if any two hosts share the same hostId.
+        #   or, Pass if all hostIds are unique.
+        #
+        checks = {
+          hostIdUniqueness = let
+            lib = inputs.nixpkgs.lib;
+            inherit (lib) mapAttrs attrValues length unique concatStringsSep filterAttrs;
+
+            hostIds =
+              mapAttrs (_: cfg: cfg.config.networking.hostId or null)
+                self.nixosConfigurations;
+
+            # Hosts missing hostId
+            missingHosts = lib.attrNames (filterAttrs (_: v: v == null) hostIds);
+
+            # Collect non-null hostIds
+            nonNullHostIds = filterAttrs (_: v: v != null) hostIds;
+
+            # Detect duplicates
+            ids = attrValues nonNullHostIds;
+            dupIds = lib.filter (id: lib.count (x: x == id) ids > 1) (unique ids);
+            dupHosts = map (id: {
+              id = id;
+              hosts = lib.attrNames (filterAttrs (_: v: v == id) nonNullHostIds);
+            }) dupIds;
+
+            prettyDup = concatStringsSep "; " (map (d: "${d.id} → ${concatStringsSep "," d.hosts}") dupHosts);
+          in
+            assert (missingHosts == [])
+              "❌ Some hosts are missing networking.hostId: ${concatStringsSep ", " missingHosts}";
+            assert (dupIds == [])
+              "❌ Duplicate hostIds detected: ${prettyDup}";
+            "✅ All hostIds are present and unique";
+        }; # End check = { ... };
 
       }; # End of 'flake = let ... in { ... };'
     }; # End of 'flake-parts.lib.mkFlake { inherit inputs; } { ... };
