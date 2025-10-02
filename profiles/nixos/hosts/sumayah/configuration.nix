@@ -237,6 +237,8 @@ in
     openrgb-with-all-plugins
 
     inputs.home-manager.packages.${pkgs.system}.default # To install home-manager packages
+
+    radeontop
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
