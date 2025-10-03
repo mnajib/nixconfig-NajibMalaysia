@@ -134,7 +134,7 @@ in with lib;
 
     #./nix-garbage-collector.nix
 
-    #./flatpak.nix
+    (fromCommon "flatpak.nix")
     #./appimage.nix
 
     #./walkie-talkie.nix
