@@ -325,9 +325,17 @@
           # NOTE: to test / dry-build nixos for host 'taufiq'
           #   nixos-rebuild dry-build --flake .#taufiq
 
-          #khawlah = mkNixos "x86_64-linux" [
-          #  ./profiles/nixos/hosts/khawlah/configuration.nix
-          #];
+          # rm ./profiles/nixos/hosts/khawlah/hardware-configuration.nix
+          # nix run nixpkgs#nixos-anywhere -- --flake .#khawlah  --generate-hardware-config nixos-generate-config ./profiles/nixos/hosts/khawlah/hardware-configuration.nix root@nixos
+          khawlah = mkNixos "x86_64-linux" [
+            ./profiles/nixos/hosts/khawlah/configuration.nix
+            inputs.home-manager.nixosModules.home-manager
+            inputs.hardware.nixosModules.lenovo-thinkpad
+            inputs.hardware.nixosModules.common-cpu-intel
+            inputs.hardware.nixosModules.common-pc-laptop-ssd
+            inputs.stylix.nixosModules.stylix
+            inputs.disko.nixosModules.disko
+          ];
 
           #khadijah = mkNixos "x86_64-linux" [
           #  inputs.nix-ld.nixosModules.nix-ld
