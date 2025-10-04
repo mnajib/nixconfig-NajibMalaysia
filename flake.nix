@@ -475,6 +475,9 @@
 
           taufiq = mkNixos "x86_64-linux" [
             ./profiles/nixos/hosts/taufiq/configuration.nix
+            inputs.stylix.nixosModules.stylix
+            inputs.hardware.nixosModules.common-cpu-intel
+            inputs.hardware.nixosModules.common-pc-laptop-ssd
           ];
 
           sumayah = mkNixos "x86_64-linux" [

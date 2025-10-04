@@ -132,10 +132,10 @@ in
     #theme = "Space Gray Eighties";
 
     font = {
-      package = pkgs.dejavu_fonts;
+      package = lib.mkDefault pkgs.dejavu_fonts;
       #package = pkgs.jetbrains-mono;
-      name = "DejaVu Sans";
-      size = 8; #"12"; #13; # 8;
+      name = lib.mkDefault "DejaVu Sans";
+      size = lib.mkDefault 8; #"12"; #13; # 8;
     };
 
     #font = {
@@ -209,11 +209,11 @@ in
     settings = {
       colors = {
         hints = {
-          bg = "#${config.colorScheme.palette.base00}";
-          fg = "#${config.colorScheme.palette.base0F}";
+          bg = lib.mkDefault "#${config.colorScheme.palette.base00}";
+          fg = lib.mkDefault "#${config.colorScheme.palette.base0F}";
         };
         tabs.bar = {
-          bg = "#${config.colorScheme.palette.base00}";
+          bg = lib.mkDefault "#${config.colorScheme.palette.base00}";
         };
       };
       #tabs.tabs_are_windows = true;
@@ -581,7 +581,7 @@ in
       #name = "Orchis";
 
       #package = pkgs.adwaita;
-      name = "Adwaita";
+      name = lib.mkDefault "Adwaita";
     };
     iconTheme = {
       #package = pkgs.paper-icon-theme;
@@ -590,16 +590,16 @@ in
       #package = pkgs.tela-icon-theme;
       #name = "Tela";
 
-      package = pkgs.adwaita-icon-theme;
-      name = "Adwaita";
+      package = lib.mkDefault pkgs.adwaita-icon-theme;
+      name = lib.mkDefault "Adwaita";
     };
     # Give Termite some internal spacing.
     #gtk3.extraCss = ".termite {padding: 20px;}";
   };
 
   qt = {
-    enable = false;
-    platformTheme = "gtk"; #"useGtkTheme = true;
+    enable = lib.mkDefault false;
+    platformTheme = lib.mkDefault "gtk"; #"useGtkTheme = true;
   };
 
 #------------------------------------------------------------------------------

@@ -141,9 +141,10 @@ in with lib;
 
     #./ai.nix
 
-    #./opengl.nix
+    (fromCommon "opengl.nix")
+    (fromCommon "xdg-gtk.nix")
 
-    #./stylix.nix
+    (fromCommon "stylix.nix")
 
     # Services
     #./invidious.nix # Need postgresql
@@ -151,7 +152,7 @@ in with lib;
     #(fromCommon "wayland.nix")
     #(fromCommon "xmonad.nix")
     (fromCommon "window-managers.nix")
-    ./gpu-config.nix
+    ./gpu-config-xorg.nix
   ];
 
   home-manager = {
@@ -408,6 +409,11 @@ in with lib;
 
   #----------------------------------------------------------------------------
 
+  #xdg.portal = {
+  #  enable = true;
+  #  extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # Or -gnome, -kde, depending on your DE
+  #};
+
 #  services.xserver.enable = true;
 #  #services.xserver.dpi = 96;
 #
@@ -456,7 +462,7 @@ in with lib;
   #   Good for flexibility, testing Wayland, lighter workloads.
   # Pick one, "nvidia" or "nouveau"
   #
-  myGpu.driver = "nouveau";
+  myGpu.driver = "nvidia";
 
   #----------------------------------------------------------------------------
 

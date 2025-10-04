@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   ...
 }: {
 
@@ -56,14 +57,14 @@
       # High-contrast color scheme (recommended)
       colors = {
         primary = {
-          background = "0x000000";  # Pure black
+          background = lib.mkDefault "0x000000";  # Pure black
           #foreground = "0xFFFFFF";  # Pure white
-          foreground = "0xAAAAAA";  # Light gray (softer than pure white)
+          foreground = lib.mkDefault "0xAAAAAA";  # Light gray (softer than pure white)
         };
         cursor = {
-          text = "0x000000";
+          text = lib.mkDefault "0x000000";
           #cursor = "0xFFFFFF";
-          cursor = "0xFEF100";
+          cursor = lib.mkDefault "0xFEF100";
         };
       };
 
