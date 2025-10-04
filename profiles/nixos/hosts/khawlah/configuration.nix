@@ -99,7 +99,7 @@ in
       #root = import (./. + "/${hmDir}/root/zahrah");
       #
       root = userImport "root";
-      #najib = userImport "najib";
+      najib = userImport "najib";
       naqib = userImport "naqib";
     };
   };
