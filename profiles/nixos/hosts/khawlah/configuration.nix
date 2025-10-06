@@ -142,13 +142,15 @@ in
     haskellPackages.xmobar
     haskellPackages.X11
     haskellPackages.X11-xft
+
+    inputs.home-manager.packages.${pkgs.system}.default
   ];
 
   #services.xserver.videoDrivers = [ "radeon" ];
 
   services.flatpak.enable = true;
 
-  ## To enable hardware accelerated graphics drivers, to allow most graphical applications and environments to use hardware rendering, video encode/decode acceleration, etc. 
+  ## To enable hardware accelerated graphics drivers, to allow most graphical applications and environments to use hardware rendering, video encode/decode acceleration, etc.
   ## This option should be enabled by default by the corresponding modules, so you do not usually have to set it yourself.
   #hardware.graphics.enable = true;
 
@@ -363,16 +365,16 @@ in
     #mlvwm.enable = true;
     #leftwm.enable = true;
     icewm.enable = true;
-    i3.enable = true;
+    #i3.enable = true;
     #fvwm3.enable = true;
-    bspwm.enable = true;
-    openbox.enable = true;
+    #bspwm.enable = true;
+    #openbox.enable = true;
     #mwm.enable = true;
     #lwm.enable = true;
     jwm.enable = true;
     fluxbox.enable = true;
     #windowmaker.enable = true;
-    twm.enable = true;
+    #twm.enable = true;
     #spectrwm.enable = true;
     wmderland.enable = true;
     #herbstluftwm.enable = true;
@@ -389,7 +391,7 @@ in
 
   programs = {
     sway.enable = true;
-    xwayland.enable = true;
+    xwayland.enable = lib.mkDefault true;
     river.enable = true;
 
     firefox.enable = false;
