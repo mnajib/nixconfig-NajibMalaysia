@@ -253,7 +253,7 @@ in
     #target = ".config/qutebrowser/stylesheet/mydarkmodefix.css"; # Path to target file relative to HOME
     #target = ~/.config/qutebrowser/stylesheet/mydarkmodefix.css; # Path to target file relative to HOME
     #target = "~.config/qutebrowser/stylesheet/mydarkmodefix.css"; # Path to target file relative to HOME
-    target = "~.config/qutebrowser"; # Path to target file relative to HOME
+    target = ".config/qutebrowser"; # Path to target file relative to HOME
     #target = ".config/qutebrowser/stylesheet/"; # Path to target file relative to HOME
   };
   #xresources.extraConfig = builtins.readFile ./src/.Xresources;
