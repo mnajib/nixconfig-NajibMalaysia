@@ -2,12 +2,12 @@
   description = "My NixOS Config";
 
   nixConfig = {
-    extra-substituters = [
-      "https://nix-community.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-    ];
+    #extra-substituters = [
+    #  "https://nix-community.cachix.org"
+    #];
+    #extra-trusted-public-keys = [
+    #  "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    #];
   };
 
   inputs = {
@@ -514,6 +514,7 @@
           "najib@sumayah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/sumayah ];
           "najib@maryam" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/maryam ];
           "najib@zahrah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/zahrah ];
+          "najib@khawlah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/khawlah ];
 
           "root@taufiq" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/root/taufiq ];
 
