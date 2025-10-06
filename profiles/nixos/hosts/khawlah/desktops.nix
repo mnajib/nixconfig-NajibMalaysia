@@ -17,22 +17,23 @@
 
   # gdm
   services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland = true;
+  services.xserver.displayManager.gdm.wayland = false;
   # OR
   # sddm
   services.displayManager.sddm.enable = false;
   services.displayManager.sddm.wayland.enable = false;
 
   services.xserver.desktopManager.gnome.enable = true;
-  services.desktopManager.plasma6.enable = true;
+  services.desktopManager.plasma6.enable = false;
 
-  services.xserver.windowManager.i3.enable = true;
-  services.xserver.windowManager.openbox.enable = true;
+  #services.xserver.windowManager.i3.enable = true;
+  #services.xserver.windowManager.openbox.enable = true;
 
   programs.sway.enable = true;
   programs.river.enable = true;
   programs.hyprland.enable = true;
-  programs.xwayland.enable = true;
+
+  programs.xwayland.enable = false; #true;
 
   # The Plasma vs GNOME overlap problem;
   #
