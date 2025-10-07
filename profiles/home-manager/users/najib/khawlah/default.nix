@@ -40,10 +40,10 @@ in
   ];
 
   programs.repo-bootstrap.enable = true;
-  programs.repo-bootstrap.basePath = "~/src"; #"~/Programs";
+  #programs.repo-bootstrap.basePath = "~/Programs";
 
-  #home.username = "$USER";
-  #home.homeDirectory = "/home/najib";
+  home.username = "najib";
+  home.homeDirectory = "/home/najib";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   #home.stateVersion = "22.05";
