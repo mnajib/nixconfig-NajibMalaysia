@@ -322,11 +322,17 @@
         homeManagerModules = import ./modules/home-manager;
 
         nixosConfigurations = {
-          # NOTE: to test / dry-build nixos for host 'taufiq'
-          #   nixos-rebuild dry-build --flake .#taufiq
-
-          # rm ./profiles/nixos/hosts/khawlah/hardware-configuration.nix
-          # nix run nixpkgs#nixos-anywhere -- --flake .#khawlah  --generate-hardware-config nixos-generate-config ./profiles/nixos/hosts/khawlah/hardware-configuration.nix root@nixos
+          # NOTE:
+          # To test / dry-build nixos for host 'khawlah':
+          #   nixos-rebuild dry-build --flake .#khawlah
+          #
+          # To regenerate hardware-configuration.nix and then install remote host:
+          #   rm ./profiles/nixos/hosts/khawlah/hardware-configuration.nix
+          #   nix run nixpkgs#nixos-anywhere -- --flake .#khawlah  --generate-hardware-config nixos-generate-config ./profiles/nixos/hosts/khawlah/hardware-configuration.nix root@nixos
+          # OR
+          # To install remote host (without regenerate hardware-configuration.nix):
+          #   nix run nixpkgs#nixos-anywhere -- --flake .#khawlah root@nixos
+          #
           khawlah = mkNixos "x86_64-linux" [
             ./profiles/nixos/hosts/khawlah/configuration.nix
             inputs.home-manager.nixosModules.home-manager

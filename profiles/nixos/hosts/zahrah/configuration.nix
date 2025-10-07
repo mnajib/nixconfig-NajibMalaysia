@@ -143,7 +143,7 @@ in
 
   services.flatpak.enable = true;
 
-  ## To enable hardware accelerated graphics drivers, to allow most graphical applications and environments to use hardware rendering, video encode/decode acceleration, etc. 
+  ## To enable hardware accelerated graphics drivers, to allow most graphical applications and environments to use hardware rendering, video encode/decode acceleration, etc.
   ## This option should be enabled by default by the corresponding modules, so you do not usually have to set it yourself.
   #hardware.graphics.enable = true;
 
