@@ -16,7 +16,9 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     #nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    #
     nixpkgs.follows = "nixpkgs-stable"; # Make 'nixpkgs' point to nixpkgs-stable
+    #nixpkgs.follows = "nixpkgs-unstable"; # Make 'nixpkgs' point to nixpkgs-unstable
 
     flake-parts.url = "github:hercules-ci/flake-parts";
 

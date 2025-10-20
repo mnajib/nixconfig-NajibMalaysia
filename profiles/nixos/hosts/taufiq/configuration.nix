@@ -141,8 +141,10 @@ in with lib;
 
     #./ai.nix
 
-    (fromCommon "opengl.nix")
-    (fromCommon "xdg-gtk.nix")
+    #(fromCommon "opengl.nix")
+    (fromCommon "opengl2.nix")
+    #(fromCommon "xdg-gtk.nix")
+    (fromCommon "xdg.nix")
 
     (fromCommon "stylix.nix")
 
@@ -152,11 +154,14 @@ in with lib;
     #(fromCommon "wayland.nix")
     #(fromCommon "xmonad.nix")
     (fromCommon "window-managers.nix")
+    #./gpu-config-wayland.nix
     ./gpu-config-xorg.nix
   ];
 
   home-manager = {
-    extraSpecialArgs = { inherit inputs outputs; };
+    backupFileExtension = "backup";
+    #overwriteBackup = true;
+    extraSpecialArgs = { inherit inputs outputs; }; # to pass arguments to home.nix
     users = {
       #root = import "${hmDir}/root/taufiq";
       #najib = import "${hmDir}/najib/taufiq";
@@ -463,6 +468,7 @@ in with lib;
   # Pick one, "nvidia" or "nouveau"
   #
   myGpu.driver = "nvidia";
+  #myGpu.driver = "nouveau";
 
   #----------------------------------------------------------------------------
 
