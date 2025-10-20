@@ -20,7 +20,7 @@ in
     #(fromCommon "neovim")
     (fromCommon "repo-bootstrap.nix")
 
-    (fromCommon "wayland-wm")
+    #(fromCommon "wayland-wm")
     #(fromCommon "wayland-desktop.nix")
   ];
 
