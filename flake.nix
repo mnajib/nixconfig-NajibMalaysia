@@ -11,13 +11,15 @@
   };
 
   inputs = {
-    #nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/release-25.05";
-    #nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-master.url = "github:nixos/nixpkgs/master";
-    #nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-    nixpkgs.follows = "nixpkgs-stable"; # Make 'nixpkgs' point to nixpkgs-stable
+    #nixpkgs-nixos.url       = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs-stable.url      = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs-release.url     = "github:nixos/nixpkgs/release-25.05";
+    #nixpkgs-unstable.url   = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url    = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-master.url      = "github:nixos/nixpkgs/master";
+
+    #nixpkgs.url            = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.follows         = "nixpkgs-stable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
 
     flake-parts.url = "github:hercules-ci/flake-parts";
 
@@ -287,14 +289,17 @@
 
         inherit (self) outputs;
 
-        mkNixos = system: modules:
-          inputs.nixpkgs.lib.nixosSystem { # <-- Use inputs.nixpkgs
+        #mkNixos = system: modules:
+        mkNixos = { system, modules, pkgsInput ? inputs.nixpkgs-stable }:
+          #inputs.nixpkgs.lib.nixosSystem { # <-- Use inputs.nixpkgs
+          pkgsInput.lib.nixosSystem { # <-- Use inputs.nixpkgs
           #inputs.nixpkgs-unstable.lib.nixosSystem { # <-- Use inputs.nixpkgs-unstable
             inherit system modules;
             specialArgs = { inherit inputs outputs; };
 
             # Apply your overlays and config to the pkgs used by NixOS modules
-            pkgs = import inputs.nixpkgs {
+            #pkgs = import inputs.nixpkgs {
+            pkgs = import pkgsInput {
               inherit system;
               overlays = builtins.attrValues self.overlays;
               config = {
@@ -308,9 +313,11 @@
 
           };
 
-        mkHome = system: modules:
+        #mkHome = system: modules:
+        mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-stable }:
           inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.${system}; # <-- Use inputs.nixpkgs
+            #pkgs = inputs.nixpkgs.legacyPackages.${system}; # <-- Use inputs.nixpkgs
+            pkgs = pkgsInput.legacyPackages.${system}; # <-- Use inputs.nixpkgs
             #pkgs = inputs.nixpkgs-unstable.legacyPackages.${system}; # <-- Use inputs.nixpkgs-unstable
             inherit modules;
             extraSpecialArgs = { inherit inputs outputs; };
@@ -321,6 +328,10 @@
         overlays = import ./overlays { inherit inputs; };
         nixosModules = import ./modules/nixos;
         homeManagerModules = import ./modules/home-manager;
+
+        #pkgsRelease = inputs.nixpkgs-release;
+        #pkgsStable   = inputs.nixpkgs-stable;
+        #pkgsUnstable   = inputs.nixpkgs-unstable;
 
         nixosConfigurations = {
           # NOTE:
@@ -334,15 +345,20 @@
           # To install remote host (without regenerate hardware-configuration.nix):
           #   nix run nixpkgs#nixos-anywhere -- --flake .#khawlah root@nixos
           #
-          khawlah = mkNixos "x86_64-linux" [
-            ./profiles/nixos/hosts/khawlah/configuration.nix
-            inputs.home-manager.nixosModules.home-manager
-            inputs.hardware.nixosModules.lenovo-thinkpad
-            inputs.hardware.nixosModules.common-cpu-intel
-            inputs.hardware.nixosModules.common-pc-laptop-ssd
-            inputs.stylix.nixosModules.stylix
-            inputs.disko.nixosModules.disko
-          ];
+
+          khawlah = mkNixos {
+            system = "x86_64-linux";
+            modules = [
+              ./profiles/nixos/hosts/khawlah/configuration.nix
+              inputs.home-manager.nixosModules.home-manager
+              inputs.hardware.nixosModules.lenovo-thinkpad
+              inputs.hardware.nixosModules.common-cpu-intel
+              inputs.hardware.nixosModules.common-pc-laptop-ssd
+              inputs.stylix.nixosModules.stylix
+              inputs.disko.nixosModules.disko
+            ];
+            #pkgsInput = inputs.nixpkgs-release; # override
+          };
 
           #khadijah = mkNixos "x86_64-linux" [
           #  inputs.nix-ld.nixosModules.nix-ld
@@ -352,80 +368,77 @@
           #  inputs.stylix.nixosModules.stylix
           #];
 
-          raudah = mkNixos "x86_64-linux" [
-            ./profiles/nixos/hosts/raudah/configuration.nix
-            inputs.home-manager.nixosModules.home-manager
-            inputs.hardware.nixosModules.lenovo-thinkpad
-            inputs.hardware.nixosModules.common-cpu-intel
-            inputs.hardware.nixosModules.common-pc-laptop-ssd
-            inputs.stylix.nixosModules.stylix
-            #inputs.disko.nixosModules.disko
-          ];
-
-          #mahirah = mkNixos "x86_64-linux" [
-          #  ./profiles/nixos/hosts/mahirah/configuration.nix
-          #];
+          raudah = mkNixos {
+            system = "x86_64-linux";
+            modules = [
+              ./profiles/nixos/hosts/raudah/configuration.nix
+              inputs.home-manager.nixosModules.home-manager
+              inputs.hardware.nixosModules.lenovo-thinkpad
+              inputs.hardware.nixosModules.common-cpu-intel
+              inputs.hardware.nixosModules.common-pc-laptop-ssd
+              inputs.stylix.nixosModules.stylix
+              #inputs.disko.nixosModules.disko
+            ];
+          };
 
           nyxora = let
             # Toggle these to true/false before running nixos-rebuild or nix run
             # Only enabled drive will be process
-            enableDrive1 = false;
-            enableDrive2 = false;
-            enableDrive3 = true;
-          in mkNixos "x86_64-linux" [
-            # To test build
-            #   nixos-rebuild dry-build --flake .#nyxora
-            # To build and apply
-            #   nixos-rebuild switch --flake .#nyxora
-            ./profiles/nixos/hosts/nyxora/configuration.nix
+            #enableDrive1 = false;
+            #enableDrive2 = false;
+            #enableDrive3 = true;
+          in mkNixos {
+            system = "x86_64-linux";
+            modules = [
+              # To test build
+              #   nixos-rebuild dry-build --flake .#nyxora
+              # To build and apply
+              #   nixos-rebuild switch --flake .#nyxora
+              ./profiles/nixos/hosts/nyxora/configuration.nix
+            ];
+          };
+  #
+  #           inputs.disko.nixosModules.disko
+  #
+  #           (import ./profiles/nixos/hosts/nyxora/disko/default.nix {
+  #             #lib = nixpkgs.lib;
+  #             lib = inputs.nixpkgs.lib;
+  #
+  #             # enable (enable = true) to let disko apply the config to the drive.
+  #             # disable (enable = false) to let disko ignore/do nothing to the drive.
+  #             #
+  #             # To dry-run:
+  #             #   nix run .#nixosConfigurations.nyxora.config.system.build.disko -- \
+  #             #     --arg devices "(import ./profiles/nixos/hosts/nyxora/disko/default.nix { lib = import <nixpkgs/lib>; enableDrive1 = true; enableDrive2 = false; enableDrive3 = true; })" \
+  #             #     --dry-run
+  #             # or use shortcut as defined in apps.x86_64-linux.disko-nyxora-dry.
+  #             enableDrive1 = false;
+  #             enableDrive2 = false;
+  #             enableDrive3 = true;
+  #           })
 
-#           inputs.disko.nixosModules.disko
-#
-#           (import ./profiles/nixos/hosts/nyxora/disko/default.nix {
-#             #lib = nixpkgs.lib;
-#             lib = inputs.nixpkgs.lib;
-#
-#             # enable (enable = true) to let disko apply the config to the drive.
-#             # disable (enable = false) to let disko ignore/do nothing to the drive.
-#             #
-#             # To dry-run:
-#             #   nix run .#nixosConfigurations.nyxora.config.system.build.disko -- \
-#             #     --arg devices "(import ./profiles/nixos/hosts/nyxora/disko/default.nix { lib = import <nixpkgs/lib>; enableDrive1 = true; enableDrive2 = false; enableDrive3 = true; })" \
-#             #     --dry-run
-#             # or use shortcut as defined in apps.x86_64-linux.disko-nyxora-dry.
-#             enableDrive1 = false;
-#             enableDrive2 = false;
-#             enableDrive3 = true;
-#           })
+              # To apply disko
+              #   nix run 3#nixosConfigurations.nyxora.config.system.build.disko
+              # 'nixos-rebuild' will ignore the partitioning (by 'disko') step by default.
+              #{ disko.devices = import ./profile/nixos/hosts/nyxora/disko-GCNL.nix {}; }
 
-            # To apply disko
-            #   nix run 3#nixosConfigurations.nyxora.config.system.build.disko
-            # 'nixos-rebuild' will ignore the partitioning (by 'disko') step by default.
-            #{ disko.devices = import ./profile/nixos/hosts/nyxora/disko-GCNL.nix {}; }
+              #{
+              #  disko.devices = inputs.nixpkgs.lib.mkMerge (
+              #    []
+              #    ++ inputs.nixpkgs.lib.optional enableDrive1 (import ./profiles/nixos/hosts/nyxora/disko-7G9F.nix { })
+              #    ++ inputs.nixpkgs.lib.optional enableDrive2 (import ./profiles/nixos/hosts/nyxora/disko-4S78.nix { })
+              #    ++ inputs.nixpkgs.lib.optional enableDrive3 (import ./profiles/nixos/hosts/nyxora/disko-GCNL.nix { })
+              #  );
+              #}
+  #        ];
 
-            #{
-            #  disko.devices = inputs.nixpkgs.lib.mkMerge (
-            #    []
-            #    ++ inputs.nixpkgs.lib.optional enableDrive1 (import ./profiles/nixos/hosts/nyxora/disko-7G9F.nix { })
-            #    ++ inputs.nixpkgs.lib.optional enableDrive2 (import ./profiles/nixos/hosts/nyxora/disko-4S78.nix { })
-            #    ++ inputs.nixpkgs.lib.optional enableDrive3 (import ./profiles/nixos/hosts/nyxora/disko-GCNL.nix { })
-            #  );
-            #}
-
-          ];
-
-          #customdesktop = inputs.nixpkgs-unstable.lib.nixosSystem {  # <-- Use inputs.nixpkgs-unstable
-          #  system = "x86_64-linux";
-          #  modules = [
-          #    ./profiles/nixos/hosts/customdesktop/configuration.nix
-          #    /* ... */
-          #  ];
-          #};
-          #
-          customdesktop = mkNixos "x86_64-linux" [
-            ./profiles/nixos/hosts/customdesktop/configuration.nix
-            inputs.sops-nix.nixosModules.sops
-          ];
+          customdesktop = mkNixos {
+            system = "x86_64-linux";
+            modules = [
+              ./profiles/nixos/hosts/customdesktop/configuration.nix
+              inputs.sops-nix.nixosModules.sops
+            ];
+          };
 
           #asmak = mkNixos "x86_64-linux" [
           #  ./profiles/nixos/hosts/asmak/configuration.nix
@@ -436,37 +449,40 @@
           ##nix run nixpkgs#nixos-anywhere -- --flake .#generic --generate-hardware-config nixos-generate-config ./hardware-configuration.nix root@nixos
           # nix run nixpkgs#nixos-anywhere -- --flake .#zahrah  --generate-hardware-config nixos-generate-config ./hardware-configuration.nix root@nixos
           #
-          zahrah = mkNixos "x86_64-linux" [
-            ./profiles/nixos/hosts/zahrah/configuration.nix
-            inputs.home-manager.nixosModules.home-manager
-            inputs.hardware.nixosModules.lenovo-thinkpad
-            inputs.hardware.nixosModules.common-cpu-intel
-            inputs.hardware.nixosModules.common-pc-laptop-ssd
-            inputs.stylix.nixosModules.stylix
-            inputs.disko.nixosModules.disko
-          ];
+          zahrah = mkNixos {
+            system = "x86_64-linux";
+            modules = [
+              ./profiles/nixos/hosts/zahrah/configuration.nix
+              inputs.home-manager.nixosModules.home-manager
+              inputs.hardware.nixosModules.lenovo-thinkpad
+              inputs.hardware.nixosModules.common-cpu-intel
+              inputs.hardware.nixosModules.common-pc-laptop-ssd
+              inputs.stylix.nixosModules.stylix
+              inputs.disko.nixosModules.disko
+            ];
+          };
 
           # nix run nixpkgs#nixos-anywhere -- --flake .#maryam  --generate-hardware-config nixos-generate-config ./hardware-configuration.nix root@nixos
-          maryam = mkNixos "x86_64-linux" [
-            ./profiles/nixos/hosts/maryam/configuration.nix
-            inputs.home-manager.nixosModules.home-manager
-            inputs.hardware.nixosModules.lenovo-thinkpad
-            inputs.hardware.nixosModules.common-cpu-intel
-            inputs.hardware.nixosModules.common-pc-laptop-ssd
-            inputs.stylix.nixosModules.stylix
-            inputs.disko.nixosModules.disko
-          ];
+          maryam = mkNixos {
+            system = "x86_64-linux";
+            modules = [
+              ./profiles/nixos/hosts/maryam/configuration.nix
+              inputs.home-manager.nixosModules.home-manager
+              inputs.hardware.nixosModules.lenovo-thinkpad
+              inputs.hardware.nixosModules.common-cpu-intel
+              inputs.hardware.nixosModules.common-pc-laptop-ssd
+              inputs.stylix.nixosModules.stylix
+              inputs.disko.nixosModules.disko
+            ];
+          };
 
-          #sakinah = mkNixos "x86_64-linux" [
-          #  ./profiles/nixos/hosts/sakinah/configuration.nix
-          #  inputs.hardware.nixosModules.lenovo-thinkpad-x220
-          #  inputs.stylix.nixosModules.stylix
-          #];
-
-          manggis = mkNixos "x86_64-linux" [
-            ./profiles/nixos/hosts/manggis/configuration.nix
-            inputs.hardware.nixosModules.lenovo-thinkpad-x220
-          ];
+          manggis = mkNixos {
+            system = "x86_64-linux";
+            modules = [
+              ./profiles/nixos/hosts/manggis/configuration.nix
+              inputs.hardware.nixosModules.lenovo-thinkpad-x220
+            ];
+          };
 
           #hidayah = mkNixos "x86_64-linux" [
           #  ./profiles/nixos/hosts/hidayah/configuration.nix
@@ -474,22 +490,32 @@
           #  { programs.nix-ld.dev.enable = true; }
           #];
 
-          taufiq = mkNixos "x86_64-linux" [
-            ./profiles/nixos/hosts/taufiq/configuration.nix
-            inputs.stylix.nixosModules.stylix
-            inputs.hardware.nixosModules.common-cpu-intel
-            inputs.hardware.nixosModules.common-pc-laptop-ssd
-          ];
+          taufiq = mkNixos {
+            system = "x86_64-linux";
+            modules = [
+              ./profiles/nixos/hosts/taufiq/configuration.nix
+              inputs.stylix.nixosModules.stylix
+              inputs.hardware.nixosModules.common-cpu-intel
+              inputs.hardware.nixosModules.common-pc-laptop-ssd
+            ];
+          };
 
-          sumayah = mkNixos "x86_64-linux" [
-            #self.nixosModules.grafito
-            ./profiles/nixos/hosts/sumayah/configuration.nix
-          ];
+          sumayah = mkNixos {
+            system = "x86_64-linux";
+            modules = [
+              #self.nixosModules.grafito
+              ./profiles/nixos/hosts/sumayah/configuration.nix
+            ];
+            pkgsInput = inputs.nixpkgs-release; # override
+          };
 
-          keira = mkNixos "x86_64-linux" [
-            ./profiles/nixos/hosts/keira/configuration.nix
-            inputs.hardware.nixosModules.lenovo-thinkpad-t410
-          ];
+          keira = mkNixos {
+            system = "x86_64-linux";
+            modules = [
+              ./profiles/nixos/hosts/keira/configuration.nix
+              inputs.hardware.nixosModules.lenovo-thinkpad-t410
+            ];
+          };
 
         }; # End of 'nixosConfigurations = { ... };'
 
@@ -513,6 +539,9 @@
           # This is more explicit than home-manager switch because it targets a
           # specific output in your flake
 
+          #-----------------------------------------------------------------------------
+          # najib
+          #-----------------------------------------------------------------------------
           #"najib@taufiq" = inputs.home-manager.lib.homeManagerConfiguration {
           #  pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
           #  extraSpecialArgs = { inherit inputs; };
@@ -520,28 +549,109 @@
           #    ./home-manager/user-najib/host-taufiq
           #  ];
           #};
-          "najib@taufiq" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/taufiq ];
-          "najib@sumayah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/sumayah ];
-          "najib@maryam" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/maryam ];
-          "najib@zahrah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/zahrah ];
-          "najib@khawlah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/khawlah ];
+          #"najib@taufiq" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/taufiq ];
+          "najib@taufiq" = mkHome {
+            system = "x86_64-linux";
+            modules = [
+              ./profiles/home-manager/users/najib/taufiq
+            ];
+          };
 
-          "root@taufiq" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/root/taufiq ];
+          "najib@sumayah" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/najib/sumayah ];
+            #pkgsInputs = inputs.nixpkgs-release; # override
+          };
 
-          "julia@manggis" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/julia/manggis ];
-          "julia@keira" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/julia/keira ];
+          "najib@maryam" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/najib/maryam ];
+          };
 
-          "nurnasuha@manggis" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/nurnasuha/manggis ];
-          "nurnasuha@asmak" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/nurnasuha/asmak ];
+          "najib@zahrah" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/najib/zahrah ];
+          };
 
-          "naqib@sumayah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/sumayah ];
-          "naqib@asmak" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/asmak ];
-          "naqib@zahrah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/zahrah ];
-          "naqib@raudah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/raudah ];
-          "naqib@taufiq" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/taufiq ];
+          "najib@khawlah" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/najib/khawlah ];
+          };
 
-          "naim@manggis" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naim/manggis ];
-          "naim@keira" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naim/keira ];
+          #-----------------------------------------------------------------------------
+          # root
+          #-----------------------------------------------------------------------------
+          "root@taufiq" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/root/taufiq ];
+          };
+
+          #-----------------------------------------------------------------------------
+          # julia
+          #-----------------------------------------------------------------------------
+          "julia@manggis" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/julia/manggis ];
+          };
+
+          "julia@keira" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/julia/keira ];
+          };
+
+          #-----------------------------------------------------------------------------
+          # nurnasuha
+          #-----------------------------------------------------------------------------
+          "nurnasuha@manggis" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/nurnasuha/manggis ];
+          };
+
+          "nurnasuha@asmak" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/nurnasuha/asmak ];
+          };
+
+          #-----------------------------------------------------------------------------
+          # naqib
+          #-----------------------------------------------------------------------------
+          "naqib@sumayah" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/naqib/sumayah ];
+          };
+
+          "naqib@asmak" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/naqib/asmak ];
+          };
+
+          "naqib@zahrah" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/naqib/zahrah ];
+          };
+
+          "naqib@raudah" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/naqib/raudah ];
+          };
+
+          "naqib@taufiq" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/naqib/taufiq ];
+          };
+
+          #-----------------------------------------------------------------------------
+          # naim
+          #-----------------------------------------------------------------------------
+          "naim@manggis" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/naim/manggis ];
+          };
+
+          "naim@keira" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/naim/keira ];
+          };
 
         }; # End of 'homeConfigurations = { ... };'
 

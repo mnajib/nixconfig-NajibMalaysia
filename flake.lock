@@ -1144,18 +1144,34 @@
         "type": "github"
       }
     },
-    "nixpkgs-stable": {
+    "nixpkgs-release": {
       "locked": {
-        "lastModified": 1761382295,
-        "narHash": "sha256-qlw8K4g93Op5k7XBsxlHaU1BHybYJGkuf2N8q++dqHA=",
+        "lastModified": 1761394231,
+        "narHash": "sha256-nVb3YHViWy8ZYcTnZ1WMVKJuPTXTkoAE+4Mo92R6j40=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "5a79545d3b917e23c1524763462fa6f9d084c5de",
+        "rev": "9ef39eccac5a248642cdf4e8c10b0c77ad4a7432",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
         "ref": "release-25.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-stable": {
+      "locked": {
+        "lastModified": 1761173472,
+        "narHash": "sha256-m9W0dYXflzeGgKNravKJvTMR4Qqa2MVD11AwlGMufeE=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "c8aa8cc00a5cb57fada0851a038d35c08a36a2bb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-25.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1390,6 +1406,7 @@
           "nixpkgs-stable"
         ],
         "nixpkgs-master": "nixpkgs-master",
+        "nixpkgs-release": "nixpkgs-release",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "seaweedfs": "seaweedfs",
