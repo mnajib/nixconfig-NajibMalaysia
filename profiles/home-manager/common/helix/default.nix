@@ -5,14 +5,14 @@
   #lib,
   #outputs,
   ... }:
-let
-  #color = pkgs.writeText "color.vim" (import ./theme.nix config.colorscheme);
-in
+#let
+#  #color = pkgs.writeText "color.vim" (import ./theme.nix config.colorscheme);
+#in
 {
 
-  home.packages = with pkgs; [
-    #gcc
-  ];
+  #home.packages = with pkgs; [
+  #  #gcc
+  #];
 
   programs.helix.enable = true;
   programs.helix.defaultEditor = false;
@@ -33,7 +33,7 @@ in
     "!.gitignore"
   ];
 
-  programs.helix.languages = {};
+  #programs.helix.languages = {};
 
   programs.helix.settings = {
     editor = {
@@ -61,7 +61,7 @@ in
         render = true;
       };
 
-      keyskeys.normal = {
+      #keyskeys.normal = {
         #space.space = "file_picker";
         #space.w = ":w";
         #space.q = ":q";
@@ -78,11 +78,11 @@ in
         #"a" = "append";
         #"x" = "delete_selection";
         #"y" = "yank_selection";
-      };
+      #};
 
     }; # End programs.helix.editor
   };
 
-  programs.helix.themes = {};
+  #programs.helix.themes = {};
 
 } # End let ... in { ... }
