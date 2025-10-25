@@ -110,5 +110,7 @@
     gxmessage
 
     #timeline # Display and navigate information on a timeline
+
+    lazygit
   ];
 }
