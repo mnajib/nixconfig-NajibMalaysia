@@ -313,12 +313,12 @@
 
           };
 
-        #mkHome = system: modules:
-        mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-stable }:
+        #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-stable }:
+        mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-unstable }: # nixpkgs-unstable as default
           inputs.home-manager.lib.homeManagerConfiguration {
-            #pkgs = inputs.nixpkgs.legacyPackages.${system}; # <-- Use inputs.nixpkgs
-            pkgs = pkgsInput.legacyPackages.${system}; # <-- Use inputs.nixpkgs
-            #pkgs = inputs.nixpkgs-unstable.legacyPackages.${system}; # <-- Use inputs.nixpkgs-unstable
+            #pkgs = inputs.nixpkgs.legacyPackages.${system};             # <-- Use inputs.nixpkgs
+            #pkgs = inputs.nixpkgs-unstable.legacyPackages.${system};    # <-- Use inputs.nixpkgs-unstable
+            pkgs = pkgsInput.legacyPackages.${system};
             inherit modules;
             extraSpecialArgs = { inherit inputs outputs; };
           };
