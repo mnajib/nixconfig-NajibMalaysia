@@ -21,7 +21,7 @@ in
   in [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     inputs.home-manager.nixosModules.home-manager
-    ./turn-off-rgb.nix
+    #./turn-off-rgb.nix
 
     #./grafito.nix
 
@@ -130,7 +130,7 @@ in
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  services.hardware.openrgb.enable = true;
+  #services.hardware.openrgb.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   #users.users.a = {
@@ -242,7 +242,7 @@ in
     #keet # (unfree) P2P chat
     mumble
 
-    openrgb-with-all-plugins
+    #openrgb-with-all-plugins
 
     inputs.home-manager.packages.${pkgs.system}.default # To install home-manager packages
 
