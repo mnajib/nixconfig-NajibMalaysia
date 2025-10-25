@@ -32,9 +32,9 @@
       #  if config.myGpu.driver == "nouveau" then true else false;
 
       #services.xserver.desktopManager.gnome.enable = true;
-      services.xserver.desktopManager.plasma6.enable = true;
+      #services.xserver.desktopManager.plasma6.enable = true;
 
-      services.xserver.windowManager.i3.enable = true;
+      #services.xserver.windowManager.i3.enable = true;
       services.xserver.windowManager.openbox.enable = true;
 
       programs.sway.enable = (config.myGpu.driver == "nouveau");

@@ -24,7 +24,7 @@
     #xdg-desktop-portal-gtk
     #xdg-desktop-portal-gnome
     #flatpak
-     gnome-software
+    gnome-software
   ];
 
   services.flatpak.enable = true;
