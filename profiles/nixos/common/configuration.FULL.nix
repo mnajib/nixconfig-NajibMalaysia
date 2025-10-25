@@ -1204,7 +1204,7 @@
 
   #services.hdapsd.enable = true;       # Hard Drive Active Protection System Daemon XXX: not belong here, should put this in per host file.
 
-  services.taskserver.enable = true;    # sync taskwarrior
+  #services.taskserver.enable = true;    # sync taskwarrior
 
   programs.mosh.enable = true;
 
