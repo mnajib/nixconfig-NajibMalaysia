@@ -1054,7 +1054,7 @@
     xorg.xdpyinfo
     xorg.xkill
     xorg.xwininfo
-    flatpak
+    #flatpak
     #ihp
 
     #jami-daemon

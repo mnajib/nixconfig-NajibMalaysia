@@ -35,6 +35,7 @@
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
+      #url = "github:nix-community/home-manager";
       #inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -55,7 +56,11 @@
 
     nix-colors.url = "github:misterio77/nix-colors";
 
-    stylix.url = "github:danth/stylix/release-25.05";
+    #stylix.url = "github:danth/stylix/release-25.05";
+    stylix = {
+      url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     hyprland = {
       url = "git+https://github.com/hyprwm/hyprland?submodules=1";
@@ -556,6 +561,8 @@
             modules = [
               ./profiles/home-manager/users/najib/taufiq
             ];
+            pkgsInputs = inputs.nixpkgs-release; # override
+
           };
 
           "najib@sumayah" = mkHome {
@@ -585,6 +592,7 @@
           "root@taufiq" = mkHome {
             system = "x86_64-linux";
             modules = [ ./profiles/home-manager/users/root/taufiq ];
+            pkgsInputs = inputs.nixpkgs-release; # override
           };
 
           #-----------------------------------------------------------------------------
@@ -639,6 +647,7 @@
           "naqib@taufiq" = mkHome {
             system = "x86_64-linux";
             modules = [ ./profiles/home-manager/users/naqib/taufiq ];
+            pkgsInputs = inputs.nixpkgs-release; # override
           };
 
           #-----------------------------------------------------------------------------
