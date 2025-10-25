@@ -146,7 +146,7 @@ in with lib;
     #(fromCommon "xdg-gtk.nix")
     (fromCommon "xdg.nix")
 
-    (fromCommon "stylix.nix")
+    #(fromCommon "stylix.nix")
 
     # Services
     #./invidious.nix # Need postgresql
