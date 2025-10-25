@@ -498,6 +498,7 @@
               inputs.hardware.nixosModules.common-cpu-intel
               inputs.hardware.nixosModules.common-pc-laptop-ssd
             ];
+            pkgsInput = inputs.nixpkgs-release; # override
           };
 
           sumayah = mkNixos {
