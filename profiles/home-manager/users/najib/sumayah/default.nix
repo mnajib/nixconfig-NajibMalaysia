@@ -21,6 +21,7 @@ in
 
     #(./. + "/${commonDir}/neovim")
     (fromCommon "neovim")
+    #(fromCommon "helix")
 
     #(./. + "/${commonDir}/stylix.nix")
 

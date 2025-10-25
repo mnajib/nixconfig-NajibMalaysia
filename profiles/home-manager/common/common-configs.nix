@@ -77,6 +77,7 @@ in
     #./nvim
     #./neovim # lets put this per-user, so disable neovim here
     ./neovide
+    ./helix
 
     ./zsh.nix
     ./bash.nix # bash shell
