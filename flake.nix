@@ -19,7 +19,37 @@
     nixpkgs-master.url      = "github:nixos/nixpkgs/master";
 
     #nixpkgs.url            = "github:nixos/nixpkgs/nixos-25.05";
-    nixpkgs.follows         = "nixpkgs-stable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
+    #nixpkgs.follows         = "nixpkgs-stable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
+    nixpkgs.follows         = "nixpkgs-release"; # Make 'nixpkgs' point to nixpkgs-stable as default.
+
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.05";
+      #url = "github:nix-community/home-manager";
+      #inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Automatically match home-manager release to nixpkgs-stable
+    #home-manager = {
+    #  url = "github:nix-community/home-manager/${builtins.replaceStrings ["nixos-"] ["release-"] "nixos-25.05"}";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
+
+    #home-manager-25_05 = {
+    #  url = "github:nix-community/home-manager/release-25.05";
+    #  inputs.nixpkgs.follows = "nixpkgs-stable";
+    #};
+
+    home-manager-unstable = {
+      #url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
+    home-manager-release = {
+      url = "github:nix-community/home-manager/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs-release";
+    };
 
     flake-parts.url = "github:hercules-ci/flake-parts";
 
@@ -30,13 +60,6 @@
 
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-1.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
-      #url = "github:nix-community/home-manager";
-      #inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -294,28 +317,29 @@
 
         inherit (self) outputs;
 
-	# Shared helper to create consistent pkgs set and stays DRY (Don't Repeat Yourself)
-	mkPkgsCommon = { system, pkgsInput, self, extraConfig ? {} }:
-	  let
-	    baseConfig = {
-	      allowUnfree = true;
-	      android_sdk.accept_license = true;
-	      nvidia.acceptLicense = true;
-	      pulseaudio = true;
-	      xsane.libusb = true;
-	    };
+        # Shared helper to create consistent pkgs set and stays DRY (Don't Repeat Yourself)
+        mkPkgsCommon = { system, pkgsInput, self, extraConfig ? {} }:
+          let
+            baseConfig = {
+              allowUnfree = true;
+              android_sdk.accept_license = true;
+              nvidia.acceptLicense = true;
+              pulseaudio = true;
+              xsane.libusb = true;
+            };
 
             # merge user overrides with default config
             finalConfig = pkgsInput.lib.recursiveUpdate baseConfig extraConfig;
-	  in
-	  import pkgsInput {
-	    inherit system;
-	    overlays = builtins.attrValues self.overlays;
-	    config = finalConfig;
-	  };
+          in
+            import pkgsInput {
+              inherit system;
+              overlays = builtins.attrValues self.overlays;
+              config = finalConfig;
+            };
 
         #mkNixos = system: modules:
-        mkNixos = { system, modules, pkgsInput ? inputs.nixpkgs-stable, extraConfig ? {} }:
+        #mkNixos = { system, modules, pkgsInput ? inputs.nixpkgs-stable, extraConfig ? {} }:
+        mkNixos = { system, modules, pkgsInput ? inputs.nixpkgs-release, extraConfig ? {} }:
           #inputs.nixpkgs.lib.nixosSystem { # <-- Use inputs.nixpkgs
           pkgsInput.lib.nixosSystem { # <-- Use inputs.nixpkgs
           #inputs.nixpkgs-unstable.lib.nixosSystem { # <-- Use inputs.nixpkgs-unstable
@@ -335,21 +359,23 @@
             #    xsane.libusb = true;
             #  };
             #};
-	    pkgs = mkPkgsCommon {
+            pkgs = mkPkgsCommon {
               inherit system pkgsInput self; # system, pkgsInput, and self come from the current mkNixos scope via inherit
-	      extraConfig = extraConfig;     # explicitly rebinds the outer mkNixos.extraConfig to the inner mkPkgsCommon.extraConfig
+              extraConfig = extraConfig;     # explicitly rebinds the outer mkNixos.extraConfig to the inner mkPkgsCommon.extraConfig
             };
 
           };
 
         #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-stable }:
         #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-unstable }: # nixpkgs-unstable as default
-        mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-unstable, extraConfig ? {} }: # nixpkgs-unstable as default
-        #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-unstable, extraConfig ? {} }: # nixpkgs-stable as default
-          inputs.home-manager.lib.homeManagerConfiguration {
-	    pkgs = mkPkgsCommon {
+        #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-unstable, extraConfig ? {} }: # nixpkgs-unstable as default
+        #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-stable, extraConfig ? {} }: # nixpkgs-stable as default
+        mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-release, hmInput ? inputs.home-manager-release, extraConfig ? {} }: # nixpkgs-stable as default
+          #inputs.home-manager.lib.homeManagerConfiguration {
+          hmInput.lib.homeManagerConfiguration {
+            pkgs = mkPkgsCommon {
               inherit system pkgsInput self;
-	      extraConfig = extraConfig;
+              extraConfig = extraConfig;
             };
             inherit modules;
             extraSpecialArgs = { inherit inputs outputs; };
@@ -390,6 +416,7 @@
               inputs.disko.nixosModules.disko
             ];
             #pkgsInput = inputs.nixpkgs-release; # override
+            #pkgsInput = inputs.nixpkgs-unstable; # override
           };
 
           #khadijah = mkNixos "x86_64-linux" [
@@ -411,6 +438,7 @@
               inputs.stylix.nixosModules.stylix
               #inputs.disko.nixosModules.disko
             ];
+            #pkgsInput = inputs.nixpkgs-unstable; # override
           };
 
           nyxora = let
@@ -428,6 +456,7 @@
               #   nixos-rebuild switch --flake .#nyxora
               ./profiles/nixos/hosts/nyxora/configuration.nix
             ];
+            #pkgsInput = inputs.nixpkgs-unstable; # override
           };
   #
   #           inputs.disko.nixosModules.disko
@@ -470,6 +499,7 @@
               ./profiles/nixos/hosts/customdesktop/configuration.nix
               inputs.sops-nix.nixosModules.sops
             ];
+            #pkgsInput = inputs.nixpkgs-unstable; # override
           };
 
           #asmak = mkNixos "x86_64-linux" [
@@ -492,7 +522,8 @@
               inputs.stylix.nixosModules.stylix
               inputs.disko.nixosModules.disko
             ];
-	    #extraConfig = {
+            #pkgsInput = inputs.nixpkgs-unstable; # override
+            #extraConfig = {
             #  allowBroken = true;
             #  permittedInsecurePackages = [ "openssl-1.1.1w" ];
             #};
@@ -511,6 +542,7 @@
               inputs.disko.nixosModules.disko
             ];
             #pkgsInput = inputs.nixpkgs-release; # override
+            #pkgsInput = inputs.nixpkgs-unstable; # override
           };
 
           manggis = mkNixos {
@@ -519,6 +551,7 @@
               ./profiles/nixos/hosts/manggis/configuration.nix
               inputs.hardware.nixosModules.lenovo-thinkpad-x220
             ];
+            #pkgsInput = inputs.nixpkgs-unstable; # override
           };
 
           #hidayah = mkNixos "x86_64-linux" [
@@ -537,7 +570,7 @@
             ];
             pkgsInput = inputs.nixpkgs-release; # override
             #pkgsInput = inputs.nixpkgs-unstable; # override
-	    #extraConfig = {
+            #extraConfig = {
             #  allowBroken = true;
             #  permittedInsecurePackages = [ "openssl-1.1.1w" ];
             #};
@@ -549,7 +582,8 @@
               #self.nixosModules.grafito
               ./profiles/nixos/hosts/sumayah/configuration.nix
             ];
-            pkgsInput = inputs.nixpkgs-release; # override
+            #pkgsInput = inputs.nixpkgs-release; # override
+            #pkgsInput = inputs.nixpkgs-unstable; # override
           };
 
           keira = mkNixos {
@@ -558,6 +592,7 @@
               ./profiles/nixos/hosts/keira/configuration.nix
               inputs.hardware.nixosModules.lenovo-thinkpad-t410
             ];
+            #pkgsInput = inputs.nixpkgs-unstable; # override
           };
 
         }; # End of 'nixosConfigurations = { ... };'
@@ -599,13 +634,14 @@
               ./profiles/home-manager/users/najib/taufiq
             ];
             #pkgsInputs = inputs.nixpkgs-release; # override
-
+            #pkgsInputs = inputs.nixpkgs-unstable; # override
           };
 
           "najib@sumayah" = mkHome {
             system = "x86_64-linux";
             modules = [ ./profiles/home-manager/users/najib/sumayah ];
             #pkgsInputs = inputs.nixpkgs-release; # override
+            #pkgsInputs = inputs.nixpkgs-unstable; # override
           };
 
           "najib@maryam" = mkHome {
@@ -629,7 +665,7 @@
           "root@taufiq" = mkHome {
             system = "x86_64-linux";
             modules = [ ./profiles/home-manager/users/root/taufiq ];
-            #pkgsInputs = inputs.nixpkgs-release; # override
+            pkgsInputs = inputs.nixpkgs-release; # override
           };
 
           #-----------------------------------------------------------------------------
@@ -684,7 +720,7 @@
           "naqib@taufiq" = mkHome {
             system = "x86_64-linux";
             modules = [ ./profiles/home-manager/users/naqib/taufiq ];
-            pkgsInputs = inputs.nixpkgs-release; # override
+            #pkgsInputs = inputs.nixpkgs-release; # override
             #pkgsInputs = inputs.nixpkgs-unstable; # override
             #pkgsInputs = inputs.nixpkgs-stable; # override
           };
