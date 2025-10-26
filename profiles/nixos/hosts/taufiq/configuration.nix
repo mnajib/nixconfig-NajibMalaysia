@@ -5,6 +5,7 @@
   ...
 }:
 let
+
 #  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
 #    export __NV_PRIME_RENDER_OFFLOAD=1
 #    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
@@ -15,6 +16,21 @@ let
   commonDir = "../../common";
   hmDir = "../../../home-manager/users";
   stateVersion = "23.11";
+
+  # Extract version info from nixpkgs
+  #   'pkgs.lib.version' gives the nixpkgs version string, e.g. "25.05pre1234".
+  #   'lib.versions.majorMinor' extracts "25.05" from "25.05pre1234".
+  #nixpkgsVersion = lib.versions.majorMinor pkgs.lib.version; # old syntax
+  #nixpkgsVersion = lib.versions.majorMinor lib.version; # new syntax
+  #hasNewLogind = lib.hasAttr "settings" (lib.optionsOf config.services.logind or {});
+  #hasNewLogind = lib.hasAttr "settings" (options.services.logind or {});
+  hasNewLogind =
+    let
+      #opts = options.services.logind or {};
+      opts = lib.options.services.logind or {};
+    in
+      lib.hasAttr "settings" opts; # New syntax have 'services.logind.settings'
+
 in with lib;
 #with host;
 {
@@ -410,7 +426,16 @@ in with lib;
 #  };
   #----------------------------------------------------------------------------
 
-  services.logind.extraConfig = "RuntimeDirectorySize=4G";    # before this it is 100% full with 1.6G tmpfs /run/user/1001
+  #services.logind.extraConfig = "RuntimeDirectorySize=4G";    # before this it is 100% full with 1.6G tmpfs /run/user/1001
+  #
+  services.logind =
+    if hasNewLogind then {
+      # NixOS 25.05 and newer
+      settings.Login.RuntimeDirectorySize = "4G";
+    } else {
+      # Older NixOS versions
+      extraConfig = "RuntimeDirectorySize=4G";
+    };
 
   #----------------------------------------------------------------------------
 
