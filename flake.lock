@@ -561,6 +561,48 @@
         "type": "github"
       }
     },
+    "home-manager-release": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-release"
+        ]
+      },
+      "locked": {
+        "lastModified": 1758463745,
+        "narHash": "sha256-uhzsV0Q0I9j2y/rfweWeGif5AWe0MGrgZ/3TjpDYdGA=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "3b955f5f0a942f9f60cdc9cacb7844335d0f21c3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "release-25.05",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "home-manager-unstable": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1761468550,
+        "narHash": "sha256-nY4vyN1QdHhC5Gj3545fI2Y7FSr/gs8ID4gPmF8HPww=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "1830716059bfee7cbcfbfcc38d7be98e482a5762",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "master",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
     "hyprcursor": {
       "inputs": {
         "hyprlang": [
@@ -1377,6 +1419,8 @@
         "flake-parts": "flake-parts",
         "hardware": "hardware",
         "home-manager": "home-manager",
+        "home-manager-release": "home-manager-release",
+        "home-manager-unstable": "home-manager-unstable",
         "hyprkeys": "hyprkeys",
         "hyprland": "hyprland",
         "hyprwn-contrib": "hyprwn-contrib",
@@ -1388,7 +1432,7 @@
         "nix-ld": "nix-ld",
         "nixos-generators": "nixos-generators",
         "nixpkgs": [
-          "nixpkgs-stable"
+          "nixpkgs-release"
         ],
         "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-release": "nixpkgs-release",

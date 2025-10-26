@@ -218,7 +218,7 @@
     binutils-unwrapped
     pciutils
     usbutils
-    xbrightness
+    #xbrightness                        # 'xbrightness' has been removed as it is unmaintained
     pstree broot
     psmisc
     xorg.xdpyinfo
@@ -420,7 +420,6 @@
     binutils-unwrapped
     pciutils
     usbutils
-    xbrightness
     pstree broot
     psmisc
 

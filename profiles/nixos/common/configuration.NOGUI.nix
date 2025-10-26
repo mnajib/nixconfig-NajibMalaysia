@@ -225,7 +225,7 @@
 		binutils-unwrapped
         	pciutils
 		usbutils
-		xbrightness
+		#xbrightness            # 'xbrightness' has been removed as it is unmaintained
 		pstree broot
 		psmisc
 
@@ -371,7 +371,7 @@
 		clipgrab
 		dfilemanager # File manager written in Qt/C++
 		pcmanfm # File manager with GTK interface
-		index-fm # Multi-platform file manager
+		#index-fm # Multi-platform file manager
 		worker # A two-pane file manager with advanced file manipulation features
 		#keepnote
 		#planner <-- removed from nixpkgs
@@ -495,7 +495,6 @@
 		binutils-unwrapped
                 pciutils
 		usbutils
-                xbrightness
                 pstree broot
                 psmisc
 
@@ -515,7 +514,7 @@
 		virtscreen
 
 		#synergy synergyWithoutGUI
-		barrier # share keyboard & mouse; remote
+		#barrier # share keyboard & mouse; remote   # 'barrier' has been removed as it is unmaintained. Consider 'deskflow' or 'input-leap' instead.
 
 		diskonaut # a terminal disk space navigator
 
