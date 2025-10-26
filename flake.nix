@@ -294,8 +294,28 @@
 
         inherit (self) outputs;
 
+	# Shared helper to create consistent pkgs set and stays DRY (Don't Repeat Yourself)
+	mkPkgsCommon = { system, pkgsInput, self, extraConfig ? {} }:
+	  let
+	    baseConfig = {
+	      allowUnfree = true;
+	      android_sdk.accept_license = true;
+	      nvidia.acceptLicense = true;
+	      pulseaudio = true;
+	      xsane.libusb = true;
+	    };
+
+            # merge user overrides with default config
+            finalConfig = pkgsInput.lib.recursiveUpdate baseConfig extraConfig;
+	  in
+	  import pkgsInput {
+	    inherit system;
+	    overlays = builtins.attrValues self.overlays;
+	    config = finalConfig;
+	  };
+
         #mkNixos = system: modules:
-        mkNixos = { system, modules, pkgsInput ? inputs.nixpkgs-stable }:
+        mkNixos = { system, modules, pkgsInput ? inputs.nixpkgs-stable, extraConfig ? {} }:
           #inputs.nixpkgs.lib.nixosSystem { # <-- Use inputs.nixpkgs
           pkgsInput.lib.nixosSystem { # <-- Use inputs.nixpkgs
           #inputs.nixpkgs-unstable.lib.nixosSystem { # <-- Use inputs.nixpkgs-unstable
@@ -304,26 +324,33 @@
 
             # Apply your overlays and config to the pkgs used by NixOS modules
             #pkgs = import inputs.nixpkgs {
-            pkgs = import pkgsInput {
-              inherit system;
-              overlays = builtins.attrValues self.overlays;
-              config = {
-                allowUnfree = true;
-                android_sdk.accept_license = true;
-                nvidia.acceptLicense = true;
-                pulseaudio = true;
-                xsane.libusb = true;
-              };
+            #pkgs = import pkgsInput {
+            #  inherit system;
+            #  overlays = builtins.attrValues self.overlays;
+            #  config = {
+            #    allowUnfree = true;
+            #    android_sdk.accept_license = true;
+            #    nvidia.acceptLicense = true;
+            #    pulseaudio = true;
+            #    xsane.libusb = true;
+            #  };
+            #};
+	    pkgs = mkPkgsCommon {
+              inherit system pkgsInput self; # system, pkgsInput, and self come from the current mkNixos scope via inherit
+	      extraConfig = extraConfig;     # explicitly rebinds the outer mkNixos.extraConfig to the inner mkPkgsCommon.extraConfig
             };
 
           };
 
         #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-stable }:
-        mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-unstable }: # nixpkgs-unstable as default
+        #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-unstable }: # nixpkgs-unstable as default
+        mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-unstable, extraConfig ? {} }: # nixpkgs-unstable as default
+        #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-unstable, extraConfig ? {} }: # nixpkgs-stable as default
           inputs.home-manager.lib.homeManagerConfiguration {
-            #pkgs = inputs.nixpkgs.legacyPackages.${system};             # <-- Use inputs.nixpkgs
-            #pkgs = inputs.nixpkgs-unstable.legacyPackages.${system};    # <-- Use inputs.nixpkgs-unstable
-            pkgs = pkgsInput.legacyPackages.${system};
+	    pkgs = mkPkgsCommon {
+              inherit system pkgsInput self;
+	      extraConfig = extraConfig;
+            };
             inherit modules;
             extraSpecialArgs = { inherit inputs outputs; };
           };
@@ -465,6 +492,10 @@
               inputs.stylix.nixosModules.stylix
               inputs.disko.nixosModules.disko
             ];
+	    #extraConfig = {
+            #  allowBroken = true;
+            #  permittedInsecurePackages = [ "openssl-1.1.1w" ];
+            #};
           };
 
           # nix run nixpkgs#nixos-anywhere -- --flake .#maryam  --generate-hardware-config nixos-generate-config ./hardware-configuration.nix root@nixos
@@ -479,6 +510,7 @@
               inputs.stylix.nixosModules.stylix
               inputs.disko.nixosModules.disko
             ];
+            #pkgsInput = inputs.nixpkgs-release; # override
           };
 
           manggis = mkNixos {
@@ -504,6 +536,11 @@
               inputs.hardware.nixosModules.common-pc-laptop-ssd
             ];
             pkgsInput = inputs.nixpkgs-release; # override
+            #pkgsInput = inputs.nixpkgs-unstable; # override
+	    #extraConfig = {
+            #  allowBroken = true;
+            #  permittedInsecurePackages = [ "openssl-1.1.1w" ];
+            #};
           };
 
           sumayah = mkNixos {
@@ -561,7 +598,7 @@
             modules = [
               ./profiles/home-manager/users/najib/taufiq
             ];
-            pkgsInputs = inputs.nixpkgs-release; # override
+            #pkgsInputs = inputs.nixpkgs-release; # override
 
           };
 
@@ -592,7 +629,7 @@
           "root@taufiq" = mkHome {
             system = "x86_64-linux";
             modules = [ ./profiles/home-manager/users/root/taufiq ];
-            pkgsInputs = inputs.nixpkgs-release; # override
+            #pkgsInputs = inputs.nixpkgs-release; # override
           };
 
           #-----------------------------------------------------------------------------
@@ -648,6 +685,8 @@
             system = "x86_64-linux";
             modules = [ ./profiles/home-manager/users/naqib/taufiq ];
             pkgsInputs = inputs.nixpkgs-release; # override
+            #pkgsInputs = inputs.nixpkgs-unstable; # override
+            #pkgsInputs = inputs.nixpkgs-stable; # override
           };
 
           #-----------------------------------------------------------------------------

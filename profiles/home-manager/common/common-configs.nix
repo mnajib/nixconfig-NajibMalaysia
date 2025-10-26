@@ -88,6 +88,7 @@ in
   # XXX: TODO: Should be in seperate file packages.nix
 
   nixpkgs.overlays = builtins.attrValues outputs.overlays;
+
   #nixpkgs.config = {
   #  allowUnfree = true;
   #  allowUnfreePredicate = _: true;
@@ -258,9 +259,10 @@ in
   };
   #xresources.extraConfig = builtins.readFile ./src/.Xresources;
 
-  programs.urxvt = {
-    enable = true;
-  };
+  # XXX: error: Package ‘urxvt-theme-switch-unstable-2014-12-21’ in /nix/store/yfzmnk75f009yb7b542kf4r7qaqq9kid-source/pkgs/applications/terminal-emulators/rxvt-unicode-plugins/urxvt-theme-switch/default.nix:27 has an unfree license (‘cc-by-nc-30’), refusing to evaluate.
+  #programs.urxvt = {
+  #  enable = true;
+  #};
 
   #programs.wezterm = {
   #  enable = true;
