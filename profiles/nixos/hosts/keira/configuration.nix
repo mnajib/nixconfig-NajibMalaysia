@@ -50,7 +50,7 @@ in
     #./hosts2.nix
     #./network-dns.nix
 
-    #(fromCommon "users-najib.nix")
+    (fromCommon "users-najib.nix")
     (fromCommon "users-julia.nix")
     (fromCommon "users-anak2.nix")
 
@@ -77,7 +77,8 @@ in
 
     (fromCommon "zramSwap.nix")
 
-    (fromCommon "xmonad.nix")
+    #(fromCommon "xmonad.nix")
+    (fromCommon "window-managers.nix")
 
     (fromCommon "btrbk-keira.nix")
     (fromCommon "nix-garbage-collector.nix")
@@ -117,6 +118,7 @@ in
   #
 
   hardware.enableAllFirmware = true;
+  hardware.enableRedistributableFirmware = true;
 
   #boot.kernelPackages = pkgs.linuxKernel.packages.latest;
   #boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;

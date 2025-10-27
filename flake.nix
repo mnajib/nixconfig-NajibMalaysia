@@ -659,6 +659,11 @@
             modules = [ ./profiles/home-manager/users/najib/khawlah ];
           };
 
+          "najib@keira" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/najib/keira ];
+          };
+
           #-----------------------------------------------------------------------------
           # root
           #-----------------------------------------------------------------------------
