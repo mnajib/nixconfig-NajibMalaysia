@@ -2,16 +2,26 @@
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 
 { inputs, outputs, lib, config, pkgs, ... }:
-#let
-#  hostname = "khadijah";
-#in
+let
+  hostname = "raudah";
+  username = "naqib";
+  commonDir = "../../../common";
+  stateVersion = "22.05";
+in
 {
   # You can import other home-manager modules here
-  imports = [
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+  in [
     ../default.nix
 
-    #../../neovim
+    #(fromCommon "neovim")
+    (fromCommon "repo-bootstrap.nix")
+    (fromCommon "desktop-apps.nix")
   ];
+
+  programs.repo-bootstrap.enable = true;
+  programs.repo-bootstrap.basePath = "~/src";
 
   #xdg.portal.enable = true;
 
@@ -30,5 +40,6 @@
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "22.05";
+  #home.stateVersion = "22.05";
+  home.stateVersion = "${stateVersion}";
 }

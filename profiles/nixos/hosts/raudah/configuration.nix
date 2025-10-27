@@ -85,7 +85,8 @@ in
     (fromCommon "window-managers.nix")
     (fromCommon "xmonad.nix")
     #(fromCommon "desktops.nix")
-    ./desktops.nix
+    #./desktops-wayland.nix
+    ./desktops-xorg.nix
   ];
 
   home-manager = {
@@ -114,6 +115,7 @@ in
   networking.hostName = "raudah"; # T400
 
   hardware.enableAllFirmware = true;
+  hardware.enableRedistributableFirmware = true;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.supportedFilesystems =        [ "ext4" "btrfs" "xfs" "vfat" "ntfs" ];
@@ -290,5 +292,5 @@ in
 
   #system.stateVersion = "22.05";
   #system.stateVersion = "23.05";
-  system.stateVersion = stateVersion;
+  system.stateVersion = "${stateVersion}";
 }

@@ -35,10 +35,12 @@ in
 
     #(import ./. + "/${commonDir}/repo-bootstrap.nix" { basePath = "~/Projects"; }) # with params, without helper function
     #(fromCommonWithParams "repo-bootstrap.nix" { basePath = "~/Projects"; })  # with params, with helper function
+
+    (fromCommon "desktop-apps.nix")
   ];
 
   programs.repo-bootstrap.enable = true;
-  programs.repo-bootstrap.basePath = "~/Programs";
+  programs.repo-bootstrap.basePath = "~/src";
 
   #home.username = "$USER";
   #home.homeDirectory = "/home/najib";
