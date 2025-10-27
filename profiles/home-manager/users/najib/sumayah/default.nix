@@ -41,7 +41,7 @@ in
   ];
 
   programs.repo-bootstrap.enable = true;
-  programs.repo-bootstrap.basePath = "~/Programs";
+  programs.repo-bootstrap.basePath = "~/Projects";
 
   #home.username = "$USER";
   #home.homeDirectory = "/home/najib";
