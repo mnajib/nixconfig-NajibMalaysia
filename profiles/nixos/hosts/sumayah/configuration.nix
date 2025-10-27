@@ -59,7 +59,7 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
 
   #networking.hostName = "sumayah"; #"nixos"; # Define your hostname.
-  networking.hostName = hostName; #"nixos"; # Define your hostname.
+  networking.hostName = "${hostName}"; #"nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -275,6 +275,6 @@ in
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   #system.stateVersion = "24.11"; # Did you read the comment?
-  system.stateVersion = stateVersion;
+  system.stateVersion = "${stateVersion}";
 
 }
