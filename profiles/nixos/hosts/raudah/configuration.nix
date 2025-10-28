@@ -89,12 +89,18 @@ in
     ./desktops-xorg.nix
   ];
 
-  home-manager = {
+  home-manager = let
+    userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}" );
+  in
+  {
     extraSpecialArgs = { inherit inputs outputs; };
     users = {
-      root = import (./. + "/${hmDir}/root/raudah");
-      najib = import (./. + "/${hmDir}/najib/raudah");
-      naqib = import (./. + "/${hmDir}/naqib/raudah");
+      #root = import (./. + "/${hmDir}/root/raudah");
+      #najib = import (./. + "/${hmDir}/najib/raudah");
+      #naqib = import (./. + "/${hmDir}/naqib/raudah");
+      root = userImport "root";
+      najib = userImport "najib";
+      naqib = userImport "naqib";
     };
   };
 
