@@ -169,7 +169,7 @@ in
       #najib = import (./. + "/${hmDir}/najib/${hostName}");
       root = userImport "root";
       najib = userImport "najib";
-      #naqib = userImport "naqib";
+      naqib = userImport "naqib";
     };
   };
 
