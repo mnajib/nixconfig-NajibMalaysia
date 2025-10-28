@@ -48,7 +48,7 @@ in
     (fromCommon "xdg.nix")
     (fromCommon "window-managers.nix")
     (fromCommon "desktops-xorg.nix")
-    (fromCommon "3D.nix")
+    #(fromCommon "3D.nix")
   ];
 
   # Test if the module is available
