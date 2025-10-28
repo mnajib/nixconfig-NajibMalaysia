@@ -33,6 +33,11 @@ in
     neovim # then need to manually install(configure) lazyvim plugin from github
     #lazyvim
     gtk-pipe-viewer # CLI youtube client
+
+    freecad
+    openscad
+    f3d
+    qcad
   ];
 
   #services.home-manager.extraConfig = ''

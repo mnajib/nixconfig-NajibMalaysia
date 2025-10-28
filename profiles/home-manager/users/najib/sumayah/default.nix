@@ -70,6 +70,11 @@ in
     chisel # TCP/UDP tunnel over HTTP
 
     #gcc
+
+    freecad
+    openscad
+    f3d
+    qcad
   ];
 
   fonts.fontconfig = {
