@@ -84,9 +84,8 @@ in
 
     (fromCommon "window-managers.nix")
     (fromCommon "xmonad.nix")
-    #(fromCommon "desktops.nix")
-    #./desktops-wayland.nix
-    ./desktops-xorg.nix
+    #(fromCommon "desktops-wayland.nix")
+    (fromCommon "desktops-xorg.nix")
   ];
 
   home-manager = let
