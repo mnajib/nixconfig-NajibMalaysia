@@ -22,14 +22,15 @@ in
     ./hardware-configuration.nix
     inputs.home-manager.nixosModules.home-manager
     #./turn-off-rgb.nix
-
     #./grafito.nix
 
     (fromCommon "configuration.FULL.nix")
+    #(fromCommon "configuration.MIN.nix")
+    #(fromCommon "locale.nix")
+    #(fromCommon "session.nix")
 
     (fromCommon "console-keyboard-dvorak.nix")
     (fromCommon "keyboard-with-msa.nix")
-
     (fromCommon "users-a-wheel.nix")
     (fromCommon "users-naqib-wheel.nix")
     (fromCommon "users-najib.nix")
@@ -39,10 +40,14 @@ in
     #(fromCommon "users-anak2.nix")
 
     (fromCommon "nfs-client-automount.nix")
+    (fromCommon "samba-client.nix")
     (fromCommon "zramSwap.nix")
-
+    (fromCommon "nix-garbage-collector.nix")
+    (fromCommon "flatpak.nix")
+    (fromCommon "opengl.nix")
+    (fromCommon "xdg.nix")
     (fromCommon "window-managers.nix")
-
+    (fromCommon "desktops-xorg.nix")
     (fromCommon "3D.nix")
   ];
 
@@ -57,6 +62,8 @@ in
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.supportedFilesystems =        [ "ext4" "btrfs" "xfs" "vfat" "ntfs" ];
 
   #networking.hostName = "sumayah"; #"nixos"; # Define your hostname.
   networking.hostName = "${hostName}"; #"nixos"; # Define your hostname.
@@ -69,6 +76,7 @@ in
   # Enable networking
   networking.networkmanager.enable = true;
   systemd.services.NetworkManager-wait-online.enable = false;
+  programs.nm-applet.enable = true;
 
   # Set your time zone.
   time.timeZone = "Asia/Kuala_Lumpur";
@@ -94,10 +102,10 @@ in
   # Enable the GNOME Desktop Environment.
   #services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  #services.xserver.desktopManager.gnome.enable = true;
   services.displayManager.defaultSession = "none+xmonad";
 
-  services.flatpak.enable = true;
+  #services.flatpak.enable = true;
 
   # Configure keymap in X11
   #services.xserver.xkb = {
@@ -161,6 +169,7 @@ in
       #najib = import (./. + "/${hmDir}/najib/${hostName}");
       root = userImport "root";
       najib = userImport "najib";
+      #naqib = userImport "naqib";
     };
   };
 
@@ -171,7 +180,11 @@ in
 
   #nixpkgs.config.allowUnfree = lib.mkForce true;
   #nixpkgs.config.android_sdk.accept_license = lib.mkForce true;
+  hardware.enableAllFirmware = true;
   hardware.enableRedistributableFirmware = true;
+
+  services.fstrim.enable = true;
+  services.smartd.enable = true;
 
   programs.adb.enable = true;
 
@@ -211,7 +224,7 @@ in
     kmonad
     discord
     htop
-    flatpak
+    #flatpak
     gimp
     freecad
     steam
