@@ -74,8 +74,8 @@ in
     #./radeon-legacy.nix
     ./desktops.nix
 
-    (fromCommon "nfs-client.nix")
-    #./nfs-client-automount.nix
+    #(fromCommon "nfs-client.nix")
+    (fromCommon "nfs-client-automount.nix")
 
     #(fromCommon "mame.nix")
     #./ai.nix
@@ -144,6 +144,8 @@ in
     haskellPackages.X11-xft
 
     inputs.home-manager.packages.${pkgs.system}.default
+
+    wofi
   ];
 
   #services.xserver.videoDrivers = [ "radeon" ];
