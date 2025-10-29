@@ -37,6 +37,8 @@ in
     #(fromCommonWithParams "repo-bootstrap.nix" { basePath = "~/Projects"; })  # with params, with helper function
 
     (fromCommon "desktop-apps.nix")
+
+    ./hyprland.nix
   ];
 
   programs.repo-bootstrap.enable = true;
