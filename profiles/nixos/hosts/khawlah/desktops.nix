@@ -23,6 +23,13 @@
   services.displayManager.sddm.enable = false;
   services.displayManager.sddm.wayland.enable = false;
 
+  services.xserver.displayManager.startx = {
+    enable = true;
+    generateScript = true;
+    #extraCommands = ""
+    #"";
+  };
+
   services.xserver.desktopManager.gnome.enable = true;
   services.desktopManager.plasma6.enable = false;
 
