@@ -88,6 +88,8 @@ in
     (fromCommon "flatpak.nix")
     (fromCommon "xdg.nix")
     (fromCommon "opengl.nix")
+
+    (fromCommon "btrfs.nix")
   ];
 
   #
@@ -197,6 +199,10 @@ in
   services.smartd.enable = true;
   services.fstrim.enable = true;
 
+
+  #----------------------------------------------------------------------------
+  # btrfs
+  #----------------------------------------------------------------------------
   # To list all timer:
   #   systemctl list-timers
   services.btrfs.autoScrub = {
@@ -209,6 +215,8 @@ in
     interval = "02:00";
     #interval = "*-*-*/2 03:00:00"; # ... every two days, at 03:00:00 ?
   };
+  #----------------------------------------------------------------------------
+
 
   #----------------------------------------------------------
   # Thinkpad T410 Shah Alam RM100 (price include T60)
@@ -358,5 +366,5 @@ in
     inputs.home-manager.packages.${pkgs.system}.default
   ];
 
-  system.stateVersion = stateVersion;
+  system.stateVersion = "${stateVersion}";
 }
