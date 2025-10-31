@@ -1,5 +1,7 @@
 {
   pkgs,
+  config,
+  lib,
   ...
 }:
 {
@@ -8,7 +10,7 @@
   #   ...
 
   #imports = [
-  #  #./git.nix
+  #  #./git-aliases.nix
   #];
 
   #home.packages = with pkgs; [
@@ -51,22 +53,47 @@
           dump = "cat-file -p";
           branchall = "branch -a -vv";
           tracked = "ls-tree --full-tree -r --name-only HEAD";
+
+          # 🔍 Preview what `git merge <branch>` would do (while on current branch)
+          # Shows commits in <branch> that are not in HEAD
+          # Example: git merge-preview main
+          merge-preview = "!git log HEAD..$1 --oneline --graph --decorate";
+
+          # 🧾 Show file-level changes from current branch → <branch>
+          # Useful to inspect what would change if you merged <branch> into current
+          # Example: git merge-diff main
+          merge-diff = "!git diff HEAD $1";
+
+          # 🔍 Preview what `git rebase <branch>` would do (while on current branch)
+          # Shows commits in HEAD that are not in <branch>
+          # Example: git rebase-preview main
+          rebase-preview = "!git log $1..HEAD --oneline --graph --decorate";
+
+          # 🧾 Show file-level changes from <branch> → current branch
+          # Useful to inspect what would be replayed during rebase
+          # Example: git rebase-diff main
+          rebase-diff = "!git diff $1 HEAD";
       };
       #diff-so-fancy.enable = true;
       extraConfig = {
           pull = {
             rebase = true;
           };
-          #push = {
-          #  default = "current";
-          #};
+          push = {
+            #default = "current";
+            default = "simple";         # Avoid accidental pushes to upstream
+          };
           core = {
               editor = "vim";
               excludesfile = "~/.gitignore";
               whitespace = "trailing-space,space-before-tab";
+              commitGraph = true;       # Show nicer diffs for word-level changes
           };
           merge = {
               tool = "vimdiff";
+          };
+          diff = {
+            colorMoved = "zebra";       # Show nicer diffs for word-level changes
           };
           color = {
               ui = "auto";
