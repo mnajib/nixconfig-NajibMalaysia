@@ -40,7 +40,7 @@
   programs.river.enable = true;
   programs.hyprland.enable = true;
 
-  programs.xwayland.enable = false; #true;
+  programs.xwayland.enable = true;
 
   # The Plasma vs GNOME overlap problem;
   #
