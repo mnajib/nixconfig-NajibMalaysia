@@ -22,6 +22,7 @@ in
   home.packages = with pkgs; [
     kitty # terminal emulator
     wofi
+    waybar
   ];
 
 }
