@@ -43,8 +43,7 @@
           #hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=relative --all";        #
           histp   = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all -p";        #
           hist2   = "log --graph --oneline --simplify-by-decoration --all";                   #
-          #hist22  = "log --graph --pretty=format:'%C(auto)%h %C(blue)%d %C(reset)%s' --simplify-by-decoration --all --color=always | grep --color=always -v 'tag:'";
-          hist22 = "!sh -c 'git log --graph --pretty=format:\"%C(auto)%h %C(blue)%d %C(reset)%s\" --simplify-by-decoration --all --color=always | grep --color=always -v \"tag:\"'";
+          hist22 = "!sh -c 'git log --graph --pretty=format:\"%C(auto)%h %d %s\" --simplify-by-decoration --all --color=always | sed -E \"s/\\(.*origin[^)]*\\)/\\x1b[36m\\0\\x1b[0m/g; s/\\(.*HEAD[^)]*\\)/\\x1b[33m\\0\\x1b[0m/g; s/\\(.*master[^)]*\\)/\\x1b[32m\\0\\x1b[0m/g\"'";
           hist3   = "log --graph --oneline --decorate --all";                                 #
           hist4   = "log --stat --graph --pretty=format:'%h - %an: %s (%cd)' --all";          # '--pretty=format:' show custom commit info.
           hist5   = "log --graph --pretty=format:'%h - %an: %s (%cd)' --numstat --all";       # '--numstat' show files changed with numerac stats, easier to compute percentages.
