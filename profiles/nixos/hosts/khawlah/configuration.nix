@@ -156,9 +156,12 @@ in
   ## This option should be enabled by default by the corresponding modules, so you do not usually have to set it yourself.
   #hardware.graphics.enable = true;
 
-  #boot.kernelParams = [
-  #  "radeon.modeset=1" # enable radeon
-  #];
+  boot.kernelParams = [
+    #"radeon.modeset=1" # enable radeon
+
+    "video=LVDS-1:d" # disable
+    "video=VGA-1:e"  # enable
+  ];
 
   boot.loader.grub = {
     efiSupport = true;
