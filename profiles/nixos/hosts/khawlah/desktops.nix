@@ -15,8 +15,9 @@
   ###################################
   services.xserver.enable = true;
 
+  services.xserver.displayManager.lightdm.enable = true;
   # gdm
-  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.gdm.enable = false; #true;
   services.xserver.displayManager.gdm.wayland = false;
   # OR
   # sddm
