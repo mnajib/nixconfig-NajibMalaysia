@@ -11,15 +11,28 @@ let
 in
 {
   # You can import other home-manager modules here
-  imports = [
+  imports = let
+    # For simple modules (no params)
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+
+    # For modules that take params
+    fromCommonWithParams = name: params: import (./. + "/${toString commonDir}/${name}") params;
+  in [
     ../default.nix
 
-    (./. + "/${commonDir}/neovim")
+    #(./. + "/${commonDir}/neovim")
+    (fromCommon "neovim")
+
     #(./. + "/${commonDir}/stylix.nix")
+
+    (fromCommon "repo-bootstrap.nix")
   ];
 
   #home.username = "$USER";
   #home.homeDirectory = "/home/najib";
+
+  programs.repo-bootstrap.enable = true;
+  programs.repo-bootstrap.basePath = "~/src";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   #home.stateVersion = "22.05";
