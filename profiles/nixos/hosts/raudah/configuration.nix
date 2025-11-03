@@ -123,6 +123,20 @@ in
   hardware.enableRedistributableFirmware = true;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  #
+  # NOTES:
+  #
+  #   sudo detect-display --rank --color
+  #   export DISPLAY=0
+  #   xrandr --listmonitors
+  #   xrandr --query | grep connected | sort
+  #
+  boot.kernelParams = [
+    "video=LVDS-1:d" # disable broken laptop monitor
+    "video=VGA-1:e" # Enable external VGA monitor
+  ];
+
   boot.supportedFilesystems =        [ "ext4" "btrfs" "xfs" "vfat" "ntfs" ];
 
   #services.btrfs.autoScrub =
