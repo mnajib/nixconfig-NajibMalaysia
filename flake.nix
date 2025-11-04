@@ -664,6 +664,15 @@
             modules = [ ./profiles/home-manager/users/najib/keira ];
           };
 
+          "najib@nyxora" = mkHome {
+            system = "x86_64-linux";
+            modules = [
+              ./profiles/home-manager/users/najib/nyxora
+            ];
+            #pkgsInputs = inputs.nixpkgs-release; # override
+            #pkgsInputs = inputs.nixpkgs-unstable; # override
+          };
+
           #-----------------------------------------------------------------------------
           # root
           #-----------------------------------------------------------------------------
