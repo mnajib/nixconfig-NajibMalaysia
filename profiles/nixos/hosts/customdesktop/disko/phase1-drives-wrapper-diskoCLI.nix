@@ -6,7 +6,10 @@
 #   This will ...
 #
 
-{ lib }: {
-  disko.devices = import ./phase1-sdd-definition.nix { inherit lib; };
+{
+  lib,
+  ...
+}: {
+  disko.devices = import ./phase1-drives-definition.nix { inherit lib; };
 }
 

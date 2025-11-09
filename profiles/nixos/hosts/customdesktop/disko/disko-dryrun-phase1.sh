@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-FILE="./profiles/nixos/hosts/customdesktop/disko/phase1-sdd-standalone.nix"
+FILE="./profiles/nixos/hosts/customdesktop/disko/phase1-drives-diskoCLI.nix"
 
 echo "⚠️  About to run Disko on: $FILE"
 echo "This will format and repartition the disk. Continue?"

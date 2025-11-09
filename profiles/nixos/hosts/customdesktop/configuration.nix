@@ -128,6 +128,7 @@ in
 
     #./hardware-configuration.nix
     ./hardware-configuration-with-Riyadh2.nix
+    ./disko/phase1-drives-wrapper.nix
     #./disko/fstab-legacy.nix
 
     inputs.home-manager.nixosModules.home-manager
