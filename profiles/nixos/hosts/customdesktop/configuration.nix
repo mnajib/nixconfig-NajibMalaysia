@@ -313,10 +313,13 @@ in
     #};
     grub = {
       enable = true;
-      efiSupport = false;
+      efiSupport = true; #false;
+      efiInstallAsRemoveable = true;
       enableCryptodisk = true;
       copyKernels = true;
       useOSProber = false; #true;
+      zfsSupport = true;
+      timeoutStyle = "menu";
 
       # The devices on which the boot loader, GRUB, will be installed.
       devices = [
@@ -334,6 +337,24 @@ in
         #(drivePath driveRiyadh2)
         (drivePath driveRiyadh3)
       ];
+
+      #mirroredBoots = [
+      #  {
+      #    path = "/boot1";
+      #    devices = [ drivePath bootRiyadh1 ];
+      #  }
+      #  {
+      #    path = "/boot2";
+      #    devices = [ drivePath bootRiyadh2 ];
+      #  }
+      #  {
+      #    path = "/boot3";
+      #    devices = [ drivePath bootRiyadh3 ];
+      #  }
+      #];
+      #
+      # NOTE: Do not need this as wy mirror it using btrfs
+
       memtest86.enable = true;
       timeoutStyle = "menu";
     };
