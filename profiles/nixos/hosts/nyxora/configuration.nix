@@ -242,6 +242,13 @@ in
         }
       ];
 
+      # This tells NixOS where to install GRUB — specifically, which disks' MBR or EFI partitions should receive the bootloader.
+      #
+      # - install GRUB to MBR of each disk
+      # OR
+      # - install GRUB's EFI files to the EFI System Partition (ESP) on each disk.
+      #
+      # This installs GRUB to both drives — so either can boot independently.
       devices = [
         "/dev/disk/by-id/wwn-0x5000c500a837f420"
         "/dev/disk/by-id/wwn-0x50014ee65ba9826e"

@@ -1,4 +1,5 @@
 # vim:set ts=2 sw=2 nowrap number
+# profiles/nixos/hosts/customdesktop/configuration.nix
 
 {
   pkgs, config, lib,
@@ -12,6 +13,30 @@ let
   hmDir = "../../../home-manager/users";
   stateVersion = "23.11"; #"24.11";
   hostName = "customdesktop";
+
+  #driveRiyadh1 = "ata-HUA722010CLA330_43W7625_42C0400IBM_JPW9L0HZ0JD0ZC";
+  #driveRiyadh2 = "ata-WDC_WD10SPCX-75KHST0_WXU1AA60XS04";
+  #driveRiyadh3 = "ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T";
+  #
+  #driveGarden1 = "ata-HUA722010CLA330_43W7625_42C0400IBM_JPW9L0HZ0WN54C";
+  #driveGarden2 = "ata-WDC_WD10SPCX-75KHST0_WXA1AA61VDLL";
+  #driveGarden3 = "ata-WDC_WD10SPZX-00Z10T0_WD-WXK2A80LH7PC";
+  #driveGarden4 = "ata-TOSHIBA_DT01ACA1000_626YTCBQCT";
+  #driveGarden5 = "ata-WDC_WD1002FB9YZ-09H1JL1_WD-WC81Y7821691";
+  #
+  drivePath = name: "/dev/disk/by-id/${name}";
+  #
+  drives = import ./drives.nix;
+  inherit (drives)
+    driveRiyadh1
+    driveRiyadh2
+    driveRiyadh3
+    driveGarden1
+    driveGarden2
+    driveGarden3
+    driveGarden4
+    driveGarden5;
+
 in
 {
 
@@ -88,7 +113,8 @@ in
     #./hardware-specific-config/ # box
     #./hardware-specific-config/ # harddisk
 
-    ./hardware-configuration.nix
+    #./hardware-configuration.nix
+    ./hardware-configuration-with-Riyadh2.nix
 
     inputs.home-manager.nixosModules.home-manager
 
@@ -276,14 +302,32 @@ in
       enableCryptodisk = true;
       copyKernels = true;
       useOSProber = false; #true;
+
+      # The devices on which the boot loader, GRUB, will be installed.
       devices = [
-        "/dev/disk/by-id/ata-HUA722010CLA330_43W7625_42C0400IBM_JPW9L0HZ0JD0ZC"
-        "/dev/disk/by-id/ata-WDC_WD10SPCX-75KHST0_WXU1AA60XS04"
+        #"/dev/disk/by-id/ata-HUA722010CLA330_43W7625_42C0400IBM_JPW9L0HZ0JD0ZC"
+        #"/dev/disk/by-id/ata-WDC_WD10SPCX-75KHST0_WXU1AA60XS04"
+
+        # Both this drives intended to be two-drives-mirror Riyadh, but become two-drives-strip Riyadh by mistake
+        #"/dev/disk/by-id/ata-HUA722010CLA330_43W7625_42C0400IBM_JPW9L0HZ0JD0ZC"
+        #"/dev/disk/by-id/ata-WDC_WD10SPCX-75KHST0_WXU1AA60XS04"
+        #
+        # The new drive, for temporary Riyadh2, for migrate the original two-drives-strip Riyadh to two-drives-mirror Riyadh.
+        #"/dev/disk/by-id/ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T"
+        #
+        (drivePath driveRiyadh1)
+        (drivePath driveRiyadh2)
+        (drivePath driveRiyadh3)
       ];
       memtest86.enable = true;
       timeoutStyle = "menu";
     };
   };
+
+  #fileSystems."/boot1" = {
+  #  device = "/dev/disk/by-uuid/b4d2a502-05ea-4b3b-adf5-25e08dc3062a";
+  #  fsType = "btrfs";
+  #};
 
   #
   # NOTE:
