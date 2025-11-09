@@ -1,0 +1,91 @@
+Disk /dev/sdb: 931.51 GiB, 1000204886016 bytes, 1953525168 sectors
+Disk model: WDC WD10SPCX-75K
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 16773120 bytes
+Disklabel type: dos
+Disk identifier: 0x0a4c2297
+
+Device     Boot    Start        End    Sectors   Size Id Type
+/dev/sdb1        4196352   37750783   33554432    16G 82 Linux swap / Solaris
+/dev/sdb2       37750784 1953520064 1915769281 913.5G 83 Linux
+/dev/sdb3  *        2048    4196351    4194304     2G 83 Linux
+
+Partition table entries are not in disk order.
+
+Disk /dev/sdf: 931.51 GiB, 1000204886016 bytes, 1953525168 sectors
+Disk model: HUA722010CLA330 
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 16776704 bytes
+Disklabel type: dos
+Disk identifier: 0x8ed20c1f
+
+Device     Boot    Start        End    Sectors   Size Id Type
+/dev/sdf1        4196352   37750783   33554432    16G 82 Linux swap / Solaris
+/dev/sdf2       37750784 1953520064 1915769281 913.5G 83 Linux
+/dev/sdf3  *        2048    4196351    4194304     2G 83 Linux
+
+Partition table entries are not in disk order.
+
+Disk /dev/sdd: 931.51 GiB, 1000204886016 bytes, 1953525168 sectors
+Disk model: WDC WD10EZEX-60W
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 16773120 bytes
+Disklabel type: gpt
+Disk identifier: 07F7504D-F93A-4D83-90A7-3E704A31952D
+
+Device     Start        End    Sectors   Size Type
+/dev/sdd1     34      32767      32734    16M Microsoft reserved
+/dev/sdd2  32768 1953521663 1953488896 931.5G Microsoft basic data
+
+303 lrwxrwxrwx 1 root root   9 Aug  3 22:16 4 -> ../../sdd
+300 lrwxrwxrwx 1 root root    9 Aug  3 22:16 ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T -> ../../sdd
+302 lrwxrwxrwx 1 root root    9 Aug  3 22:16 wwn-0x50014ee21408d6fd -> ../../sdd
+301 lrwxrwxrwx  1 root root   9 Aug  3 22:16 pci-0000:01:00.0-sas-phy3-lun-0 -> ../../sdd
+383 lrwxrwxrwx 1 root root   9 Aug  3 22:16 2 -> ../../sdb
+380 lrwxrwxrwx 1 root root    9 Aug  3 22:16 ata-WDC_WD10SPCX-75KHST0_WXU1AA60XS04 -> ../../sdb
+381 lrwxrwxrwx 1 root root    9 Aug  3 22:16 wwn-0x50014ee65c80ddd7 -> ../../sdb
+382 lrwxrwxrwx  1 root root   9 Aug  3 22:16 pci-0000:01:00.0-sas-phy0-lun-0 -> ../../sdb
+314 lrwxrwxrwx 1 root root   9 Aug  3 22:16 6 -> ../../sdf
+315 lrwxrwxrwx 1 root root    9 Aug  3 22:16 ata-HUA722010CLA330_43W7625_42C0400IBM_JPW9L0HZ0JD0ZC -> ../../sdf
+317 lrwxrwxrwx 1 root root    9 Aug  3 22:16 wwn-0x5000cca375c7731a -> ../../sdf
+319 lrwxrwxrwx  1 root root   9 Aug  3 22:16 pci-0000:01:00.0-sas-phy5-lun-0 -> ../../sdf
+  pool: Garden
+ state: ONLINE
+status: Some supported and requested features are not enabled on the pool.
+	The pool can still be used, but some features are unavailable.
+action: Enable all features using 'zpool upgrade'. Once this is done,
+	the pool may no longer be accessible by software that does not support
+	the features. See zpool-features(7) for details.
+  scan: scrub repaired 0B in 03:33:36 with 0 errors on Mon Aug 18 08:10:24 2025
+config:
+
+	NAME                                                       STATE     READ WRITE CKSUM
+	Garden                                                     ONLINE       0     0     0
+	  raidz3-0                                                 ONLINE       0     0     0
+	    ata-HUA722010CLA330_43W7625_42C0400IBM_JPW9L0HZ0WN54C  ONLINE       0     0     0
+	    ata-WDC_WD10SPCX-75KHST0_WXA1AA61VDLL                  ONLINE       0     0     0
+	    ata-WDC_WD10SPZX-00Z10T0_WD-WXK2A80LH7PC               ONLINE       0     0     0
+	    ata-TOSHIBA_DT01ACA1000_626YTCBQCT                     ONLINE       0     0     0
+	    ata-WDC_WD1002FB9YZ-09H1JL1_WD-WC81Y7821691            ONLINE       0     0     0
+
+errors: No known data errors
+
+  pool: Riyadh
+ state: ONLINE
+status: Some supported and requested features are not enabled on the pool.
+	The pool can still be used, but some features are unavailable.
+action: Enable all features using 'zpool upgrade'. Once this is done,
+	the pool may no longer be accessible by software that does not support
+	the features. See zpool-features(7) for details.
+  scan: scrub repaired 0B in 00:07:12 with 0 errors on Mon Aug 18 04:44:22 2025
+config:
+
+	NAME                                                           STATE     READ WRITE CKSUM
+	Riyadh                                                         ONLINE       0     0     0
+	  ata-HUA722010CLA330_43W7625_42C0400IBM_JPW9L0HZ0JD0ZC-part2  ONLINE       0     0     0
+	  ata-WDC_WD10SPCX-75KHST0_WXU1AA60XS04-part2                  ONLINE       0     0     0
+
+errors: No known data errors

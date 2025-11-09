@@ -1,0 +1,3 @@
+test line with spaces     
+another line with tabs	
+clean line
