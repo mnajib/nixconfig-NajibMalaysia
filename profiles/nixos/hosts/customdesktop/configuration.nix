@@ -128,6 +128,7 @@ in
 
     #./hardware-configuration.nix
     ./hardware-configuration-with-Riyadh2.nix
+    #./disko/fstab-legacy.nix
 
     inputs.home-manager.nixosModules.home-manager
 
@@ -328,8 +329,8 @@ in
         # The new drive, for temporary Riyadh2, for migrate the original two-drives-strip Riyadh to two-drives-mirror Riyadh.
         #"/dev/disk/by-id/ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T"
         #
-        (drivePath driveRiyadh1)
-        (drivePath driveRiyadh2)
+        #(drivePath driveRiyadh1)
+        #(drivePath driveRiyadh2)
         (drivePath driveRiyadh3)
       ];
       memtest86.enable = true;
