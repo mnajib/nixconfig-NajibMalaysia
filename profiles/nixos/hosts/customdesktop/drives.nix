@@ -27,7 +27,16 @@ rec {
   #driveTitan1 = { type = "by-uuid"; value = "..." };
   #driveTitan2 = { type = "by-uuid"; value = "..." };
 
-   # Grouped lists (referencing variables)
+  # Grouped lists (referencing variables)
+  # Usage example:
+  #   map drivePath riyadhDrives
+  # will returns a list of strings like:
+  #   [
+  #     "/dev/disk/by-id/ata-HUA722010CLA330_..."
+  #     "/dev/disk/by-id/ata-WDC_WD10SPCX-..."
+  #     "/dev/disk/by-id/ata-WDC_WD10EZEX-..."
+  #   ]
+
   riyadhDrives = [
     driveRiyadh1
     driveRiyadh2
@@ -46,5 +55,16 @@ rec {
   #drivePath = name: "/dev/disk/by-id/${name}";
   drivePath = drv:
     "/dev/disk/${drv.type}/${drv.value}";
+
+  #
+  # REPL-friendly helper: resolve a list of drives to full paths
+  #
+  # Usage example:
+  #   nix repl
+  #   > lf ./profiles/nixos/hosts/customdesktop/drives.nix
+  #   > resolveDrives riyadhDrives
+  #   > drivePath driveRiyadh2
+  #
+  resolveDrives = driveList: map drivePath driveList;
 }
 
