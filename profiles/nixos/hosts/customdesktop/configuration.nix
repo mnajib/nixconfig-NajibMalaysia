@@ -314,12 +314,13 @@ in
     grub = {
       enable = true;
       efiSupport = true; #false;
-      efiInstallAsRemoveable = true;
+      efiInstallAsRemovable = true;
       enableCryptodisk = true;
       copyKernels = true;
       useOSProber = false; #true;
       zfsSupport = true;
       timeoutStyle = "menu";
+      memtest86.enable = true;
 
       # The devices on which the boot loader, GRUB, will be installed.
       devices = [
@@ -355,8 +356,6 @@ in
       #
       # NOTE: Do not need this as wy mirror it using btrfs
 
-      memtest86.enable = true;
-      timeoutStyle = "menu";
     };
   };
 
