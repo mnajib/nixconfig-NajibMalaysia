@@ -24,18 +24,31 @@ let
   #driveGarden4 = "ata-TOSHIBA_DT01ACA1000_626YTCBQCT";
   #driveGarden5 = "ata-WDC_WD1002FB9YZ-09H1JL1_WD-WC81Y7821691";
   #
-  drivePath = name: "/dev/disk/by-id/${name}";
+  #drivePath = name: "/dev/disk/by-id/${name}";
   #
-  drives = import ./drives.nix;
-  inherit (drives)
-    driveRiyadh1
-    driveRiyadh2
-    driveRiyadh3
-    driveGarden1
-    driveGarden2
-    driveGarden3
-    driveGarden4
-    driveGarden5;
+  #drives = import ./drives.nix;
+
+  # With this, we can refer without prefix 'drives.'
+  # for example 'driveRiyadh1' instead of 'drives.driveRiyadh1'.
+  #inherit (drives)
+  #  driveRiyadh1
+  #  driveRiyadh2
+  #  driveRiyadh3
+  #  driveGarden1
+  #  driveGarden2
+  #  driveGarden3
+  #  driveGarden4
+  #  driveGarden5
+  #  riyadhDrives gardenDrives
+  #  drivePath;
+
+  # import and destructure at once
+  #inherit (import ./drives.nix);
+  inherit (import ./drives.nix)
+    drivePath
+    driveRiyadh1 driveRiyadh2 driveRiyadh3
+    driveGarden1 driveGarden2 driveGarden3 driveGarden4 driveGarden5
+    riyadhDrives gardenDrives;
 
 in
 {
