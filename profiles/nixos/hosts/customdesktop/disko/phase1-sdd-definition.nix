@@ -1,6 +1,8 @@
 #
 # This file can be call by
 #   - directly disko CLI ( !!! and it will do ... !!!).
+#     sudo nix run github:nix-community/disko -- --mode disko ./profiles/nixos/hosts/customdesktop/disko/phase1-sdd-standalone.nix
+#     sudo nix run github:nix-community/disko -- --mode disko ./phase1-sdd-standalone.nix
 #   or
 #   - by host profile, and will activate when do 'nixos-rebuild', ... (that wil not ..., but only ...)
 #
@@ -20,7 +22,7 @@
           content = {
             type = "filesystem";
             format = "vfat";
-            mountpoint = "/boot";
+            #mountpoint = "/boot";
           };
         };
         swap = {
@@ -33,14 +35,14 @@
           size = "100%";
           content = {
             type = "zfs";
-            pool = "Riyadh3";
+            pool = "Riyadh2";
           };
         };
       };
     };
   };
 
-  zpool."Riyadh3" = {
+  zpool."Riyadh2" = {
     type = "zpool";
     mode = "single";
     options = { ashift = "12"; };
@@ -54,15 +56,28 @@
     datasets = {
       root = {
         type = "zfs_fs";
-        options.mountpoint = "/";
+        #options.mountpoint = "/";
+        options.mountpoint = "legacy";
       };
       nix = {
         type = "zfs_fs";
-        options.mountpoint = "/nix";
+        #options.mountpoint = "/nix";
+        options.mountpoint = "legacy";
       };
       home = {
         type = "zfs_fs";
-        options.mountpoint = "/home";
+        #options.mountpoint = "/home";
+        options.mountpoint = "legacy";
+      };
+      rootuser = {
+        type = "zfs_fs";
+        #options.mountpoint = "/root";
+        options.mountpoint = "legacy";
+      };
+      persist = {
+        type = "zfs_fs";
+        #options.mountpoint = "/persist";
+        options.mountpoint = "legacy";
       };
     };
   };
