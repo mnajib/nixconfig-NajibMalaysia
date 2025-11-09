@@ -32,6 +32,17 @@
 # To run disko (.../partition/format/...)
 #   sudo nix run github:nix-community/disko -- --mode format ./profiles/nixos/hosts/customdesktop/disko/drive-sdd.nix
 #
+# -------------------------------------
+# Create temporary bootable pool on /dev/sdd5 (Riyadh2)
+# -------------------------------------
+# sudo zpool create -f Riyadh2 /dev/disk/by-id/ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T-part5
+# sudo zfs create -o mountpoint=legacy Riyadh2/nixos-root
+# sudo zfs create -o mountpoint=legacy Riyadh2/nixos-nix
+# sudo zfs create -o mountpoint=legacy Riyadh2/nixos-home
+# sudo zfs create -o mountpoint=legacy Riyadh2/nixos-rootuser
+#
+#
+#
 {
   disko.devices = {
 
@@ -46,24 +57,67 @@
         type = "gpt";
         partitions = {
 
-          boot_bios = {
+          #--------------------------------------------------------------------
+          "biosboot" = {
             size = "1M";
             #size = "1MiB";
             #type = "bios_grub";
             type = "EF02";
           };
 
-          boot_efi = {
-            size = "2G"; #"2GiB"; #"1G";
+          #----------------------------------------------------------------------
+          # For kernel, initrd, bootloader config
+          #   vmlinuz-<version> (kernels)
+          #   initrd.img-<version>
+          #   grub.cfg
+          #   System.map
+          #   Boot assets & themes
+          # I give it generously 2GiB for multiple kernels
+          # Will be accessed by Linux bootloader & OS
+          "bootpart" = {
+            #start = espSize; end = "${espSize} + ${bootSize}";
+            size = "2G";
+            content = {
+              type = "filesystem";
+              format = "btrfs";
+              #mountpoint = "/boot-${lib.strings.sanitizeDerivationName device}";
+              mountpoint = "/boot-ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T";
+              #mountpoint = "/boot";
+              #mountpoint = "/boot1";
+              #mountpoint = "/boot2";
+              mountOptions = [
+                "noatime"
+                #"compress=zstd"
+                "compress=zstd" # Level 1 - falset compression
+                "autodefrag" # Automatic defragmentation
+                "space_cache=v2" # Better space traking
+              ];
+            };
+          };
+
+          #--------------------------------------------------------------------
+          # For EFI firrmware boot files
+          #   bootx64.efi
+          #   grubx64.efi
+          #   EFI boot manager entries
+          #   Hardwaree-specific EFI apps
+          # Will be accessed by: EFI firmware
+          "esp" = {
+            size = "1G"; #"2G"; #"2GiB"; #"1G";
             type = "EF00";
             content = {
               type = "filesystem";
               format = "vfat";
-              mountpoint = "/boot1001"; # temp mountpoint. named to avoid conflict with existing /boot and /boot2, for now
+              #mountpoint = "/boot1001"; # temp mountpoint. named to avoid conflict with existing /boot and /boot2, for now
+              mountpoint = "/efi-ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T";
+              #mountpoint = "/boot/efi";
+              #mountpoint = "/efi1";
+              #mountpoint = "/efi2";
             };
           };
 
-          swap = {
+          #--------------------------------------------------------------------
+          "swap" = {
             size = "16G";
             #size = "16GiB";
             #type = "8200";
@@ -73,7 +127,8 @@
             };
           };
 
-          zfs = {
+          #--------------------------------------------------------------------
+          "zfs" = {
             size = "100%";
             type = "bf01"; # Solaris /usr & Apple ZFS
 
@@ -81,11 +136,13 @@
             content = {
               type = "zfs";
               pool = "Riyadh2"; # Name of the ZFS pool
+              #mountpoint = "none"; # XXX: ???
             };
             # OR
             # Do not format here, ZFS will handle this
           };
 
+          #--------------------------------------------------------------------
         };
       };
     };
