@@ -20,7 +20,7 @@
 set -euo pipefail
 
 # Path to your disko standalone file
-DISKO_FILE="./profiles/nixos/hosts/customdesktop/disko/phase1-sdd-standalone.nix"
+DISKO_FILE="./profiles/nixos/hosts/customdesktop/disko/phase1-drives-diskoCLI.nix"
 
 echo "🔍 Parsing Disko layout from: $DISKO_FILE"
 echo "This is a dry-run preview. No changes will be made."

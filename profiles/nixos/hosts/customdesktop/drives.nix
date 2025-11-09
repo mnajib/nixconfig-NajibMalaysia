@@ -27,6 +27,14 @@ rec {
   #driveTitan1 = { type = "by-uuid"; value = "..." };
   #driveTitan2 = { type = "by-uuid"; value = "..." };
 
+  #swapRiyadh1 = { type = "by-uuid";   value = ""; };
+  #swapRiyadh2 = { type = "by-uuid";   value = ""; };
+  #swapRiyadh3 = { type = "by-uuid";   value = ""; };
+
+  swapRiyadh1 = { type = "by-id"; value = "ata-HUA722010CLA330_43W7625_42C0400IBM_JPW9L0HZ0JD0ZC-part1"; };
+  swapRiyadh2 = { type = "by-id"; value = "ata-WDC_WD10SPCX-75KHST0_WXU1AA60XS04-part1"; };
+  swapRiyadh3 = { type = "by-id"; value = "ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T-part4"; };
+
   # Grouped lists (referencing variables)
   # Usage example:
   #   map drivePath riyadhDrives
@@ -51,7 +59,12 @@ rec {
     driveGarden5
   ];
 
+  #
   # Helper to resolve full path
+  #
+  # Example usage:
+  #   drivePath driveRiyadh3
+  #
   #drivePath = name: "/dev/disk/by-id/${name}";
   drivePath = drv:
     "/dev/disk/${drv.type}/${drv.value}";
@@ -65,6 +78,7 @@ rec {
   #   > resolveDrives riyadhDrives
   #   > drivePath driveRiyadh2
   #
+  # drives group
   resolveDrives = driveList: map drivePath driveList;
 }
 
