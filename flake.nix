@@ -498,6 +498,7 @@
             modules = [
               ./profiles/nixos/hosts/customdesktop/configuration.nix
               inputs.sops-nix.nixosModules.sops
+              inputs.disko.nixosModules.disko
             ];
             #pkgsInput = inputs.nixpkgs-unstable; # override
           };

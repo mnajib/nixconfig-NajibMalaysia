@@ -3,40 +3,60 @@
 # to /etc/nixos/configuration.nix instead.
 { config, lib, pkgs, modulesPath, ... }:
 
+let
+  inherit (import ./drives.nix)
+    #driveRiyadh1 driveRiyadh2 driveRiyadh3
+    #driveGarden1 driveGarden2 driveGarden3 driveGarden4 driveGarden5
+    #riyadhDrives gardenDrives
+    swapRiyadh1 swapRiyadh2 swapRiyadh3
+    bootRiyadh1 bootRiyadh2 bootRiyadh3
+    drivePath;
+in
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+  ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "mpt3sas" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "Riyadh2/nixos-root";
-      fsType = "zfs";
-    };
+  fileSystems."/" = {
+    device = "Riyadh2/nixos";
+    fsType = "zfs";
+  };
 
-  fileSystems."/home" =
-    { device = "Riyadh2/nixos-home";
-      fsType = "zfs";
-    };
+  fileSystems."/nix" = {
+    device = "Riyadh2/nix";
+    fsType = "zfs";
+  };
 
-  fileSystems."/root" =
-    { device = "Riyadh2/nixos-root-user";
-      fsType = "zfs";
-    };
+  fileSystems."/persist" = {
+    device = "Riyadh2/persist";
+    fsType = "zfs";
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/b4d2a502-05ea-4b3b-adf5-25e08dc3062a";
-      fsType = "btrfs";
-    };
+  fileSystems."/home" = {
+    device = "Riyadh2/home";
+    fsType = "zfs";
+  };
 
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/308f9910-8fe6-426c-a11c-fd4a4db5a8ea"; }
-      { device = "/dev/disk/by-uuid/f85dd076-4b8d-4d0f-b763-182eb4610d90"; }
-    ];
+  fileSystems."/root" = {
+    device = "Riyadh2/rootuser";
+    fsType = "zfs";
+  };
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/b4d2a502-05ea-4b3b-adf5-25e08dc3062a";
+    fsType = "btrfs";
+  };
+
+  swapDevices = [
+    { device = "/dev/disk/by-uuid/308f9910-8fe6-426c-a11c-fd4a4db5a8ea"; }
+    { device = "/dev/disk/by-uuid/f85dd076-4b8d-4d0f-b763-182eb4610d90"; }
+    { device = drivePath swapRiyadh3; };
+  ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
