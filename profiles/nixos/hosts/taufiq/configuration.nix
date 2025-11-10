@@ -89,6 +89,7 @@ in with lib;
         hostName = "nyxora";  # e.g., builder
         system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
         protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
+        sshUser = "najib";
         maxJobs = 4;  # Parallel jobs on remote (match its CPU cores)
         speedFactor = 2;  # Prioritize this builder (higher = faster perceived)
         supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
@@ -98,6 +99,7 @@ in with lib;
         hostName = "sumayah";  # e.g., builder
         system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
         protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
+        sshUser = "najib";
         maxJobs = 4;  # Parallel jobs on remote (match its CPU cores)
         speedFactor = 2;  # Prioritize this builder (higher = faster perceived)
         supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
