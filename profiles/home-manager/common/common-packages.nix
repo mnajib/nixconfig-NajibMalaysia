@@ -28,7 +28,7 @@
     translate-shell                # CLI translator using Google Translate, Bing Translator, ...
     whois
     #youtube-dl # insecure package
-    coreutils
+    #coreutils
     dzen2                          # A general purpose messaging, notification and menuing program for X11
     vis
     handlr
