@@ -39,7 +39,7 @@ in
     # Previously, my attemp to use nix-doom-emacs
     #./emacs.nix
     # My config with manually download/git clone doomemacs into ~/.config/emacs
-    (./. + "/${commonDir}/doom-emacs.nix")
+    #(./. + "/${commonDir}/doom-emacs.nix")
     #
     #inputs.nix-doom-emacs.hmModule
     #
