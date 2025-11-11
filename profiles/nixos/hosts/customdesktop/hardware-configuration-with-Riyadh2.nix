@@ -5,9 +5,9 @@
 
 let
   inherit (import ./drives.nix)
-    #driveRiyadh1 driveRiyadh2 driveRiyadh3
-    #driveGarden1 driveGarden2 driveGarden3 driveGarden4 driveGarden5
-    #riyadhDrives gardenDrives
+    driveRiyadh1 driveRiyadh2 driveRiyadh3
+    driveGarden1 driveGarden2 driveGarden3 driveGarden4 driveGarden5
+    riyadhDrives gardenDrives
     swapRiyadh1 swapRiyadh2 swapRiyadh3
     bootRiyadh1 bootRiyadh2 bootRiyadh3
     drivePath;
@@ -47,16 +47,62 @@ in
     fsType = "zfs";
   };
 
+  #
+  # To label the partitions:
+  #   sudo btrfs filesystem label /dev/disk/by-id/drive1-part2 NIXBOOT
+  #   sudo btrfs filesystem label /dev/disk/by-id/drive2-part2 NIXBOOT
+  #   sudo btrfs filesystem label /dev/disk/by-id/ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T-part2 NIXBOOT
+  #
+  # To check result:
+  #   sudo btrfs filesystem show
+  #   sudo mount /dev/disk/by-label/NIXBOOT /mnt/boot
+  #
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/b4d2a502-05ea-4b3b-adf5-25e08dc3062a";
+    #device = "/dev/disk/by-uuid/b4d2a502-05ea-4b3b-adf5-25e08dc3062a";
+    #device = "${drivePath driveRiyadh1}-part3";
+    #device = "/dev/disk/by-id/ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T-part2";
+    #device = "${drivePath driveRiyadh3}-part2";
+    device = "/dev/disk/by-label/NIXBOOT";
     fsType = "btrfs";
+    options = [ "nofail" ];   # safe if some disks missing
+  };
+
+  #
+  # To label the partitions:
+  #   sudo fatlabel /dev/disk/by-id/ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T-part3 NIXEFI
+  #
+  # To check result:
+  #   sudo blkid | grep NIXEFI
+  #   sudo file -s /dev/disk/by-id/ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T-part3
+  #   sudo file -s /dev/sde3
+  #   sudo mount /dev/disk/by-label/NIXEFI /mnt/boot/efi
+  #
+  fileSystems."/boot/efi" = {
+    #device = "/dev/disk/by-id/ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T-part3";
+    #device = "${drivePath driveRiyadh3}-part3";
+    device = "/dev/disk/by-label/NIXEFI";
+    fsType = "vfat";
+    options = [ "nofail" ];   # safe if some disks missing
   };
 
   swapDevices = [
-    { device = "/dev/disk/by-uuid/308f9910-8fe6-426c-a11c-fd4a4db5a8ea"; }
-    { device = "/dev/disk/by-uuid/f85dd076-4b8d-4d0f-b763-182eb4610d90"; }
-    { device = drivePath swapRiyadh3; }
+    #{ device = "/dev/disk/by-uuid/308f9910-8fe6-426c-a11c-fd4a4db5a8ea"; }
+    #{ device = "/dev/disk/by-uuid/f85dd076-4b8d-4d0f-b763-182eb4610d90"; }
+    { device = "${drivePath driveRiyadh1}-part1"; }
+    { device = "${drivePath driveRiyadh2}-part1"; }
+
+    #{ device = drivePath swapRiyadh3; }
+    { device = "${drivePath driveRiyadh3}-part4"; }
   ];
+  #
+  # Swap
+  #swapDevices = map (uuid: { device = "/dev/disk/by-uuid/" + uuid; }) swapUUIDs;
+  # Optional: systemd ConditionPathExists for swap
+  #systemd.units = lib.mkMerge (map (uuid: {
+  #  ("dev-disk-by\\x2duuid-" + uuid + ".swap") = {
+  #    unitConfig.ConditionPathExists = "/dev/disk/by-uuid/" + uuid;
+  #  };
+  #}) swapUUIDs);
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
