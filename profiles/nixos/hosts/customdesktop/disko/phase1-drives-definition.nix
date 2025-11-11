@@ -91,11 +91,11 @@
           content = {
             type = "filesystem";
             format = "btrfs";
-            #mountpoint = "/boot-${lib.strings.sanitizeDerivationName device}";
-            #mountpoint = "/boot-ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T";
+            ##mountpoint = "/boot-${lib.strings.sanitizeDerivationName device}";
+            ##mountpoint = "/boot-ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T";
             #mountpoint = "/boot";
-            #mountpoint = "/boot1";
-            #mountpoint = "/boot2";
+            ##mountpoint = "/boot1";
+            ##mountpoint = "/boot2";
             mountOptions = [
               "noatime"
               #"compress=zstd"
@@ -119,11 +119,11 @@
           content = {
             type = "filesystem";
             format = "vfat";
-            #mountpoint = "/boot1001"; # temp mountpoint. named to avoid conflict with existing /boot and /boot2, for now
-            #mountpoint = "/efi-ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T";
+            ##mountpoint = "/boot1001"; # temp mountpoint. named to avoid conflict with existing /boot and /boot2, for now
+            ##mountpoint = "/efi-ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T";
             #mountpoint = "/boot/efi";
-            #mountpoint = "/efi1";
-            #mountpoint = "/efi2";
+            ##mountpoint = "/efi1";
+            ##mountpoint = "/efi2";
           };
         };
 
