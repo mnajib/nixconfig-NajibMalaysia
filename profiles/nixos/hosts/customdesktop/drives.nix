@@ -35,6 +35,10 @@ rec {
   swapRiyadh2 = { type = "by-id"; value = "ata-WDC_WD10SPCX-75KHST0_WXU1AA60XS04-part1"; };
   swapRiyadh3 = { type = "by-id"; value = "ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T-part4"; };
 
+  #bootRiyadh1 = { type = "by-id"; value = "ata-HUA722010CLA330_43W7625_42C0400IBM_JPW9L0HZ0JD0ZC-part1"; };
+  #bootRiyadh2 = { type = "by-id"; value = "ata-WDC_WD10SPCX-75KHST0_WXU1AA60XS04-part1"; };
+  #bootRiyadh3 = { type = "by-id"; value = "ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T-part2"; };
+
   # Grouped lists (referencing variables)
   # Usage example:
   #   map drivePath riyadhDrives

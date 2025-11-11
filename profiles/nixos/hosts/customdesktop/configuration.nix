@@ -50,6 +50,18 @@ let
     driveGarden1 driveGarden2 driveGarden3 driveGarden4 driveGarden5
     riyadhDrives gardenDrives;
 
+  #bootDisks = [
+  #  "/dev/disk/by-id/ata-Drive1"
+  #  "/dev/disk/by-id/ata-Drive2"
+  #  "/dev/disk/by-id/ata-Drive3"
+  #];
+
+  #swapUUIDs = [
+  #  "UUID-swap1"
+  #  "UUID-swap2"
+  #  "UUID-swap3"
+  #];
+
 in
 {
 
@@ -311,6 +323,10 @@ in
     #  #canTouchEfiVariables = true;
     #  efiSysMountPoint = "/boot/efi";
     #};
+    efi = {
+      #canTouchEfiVariables = true;
+      efiSysMountPoint = "/boot/efi";
+    };
     grub = {
       enable = true;
       efiSupport = true; #false;
