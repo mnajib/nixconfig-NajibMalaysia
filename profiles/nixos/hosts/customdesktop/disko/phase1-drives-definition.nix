@@ -31,8 +31,8 @@
 # -------------------------------------
 # To run disko
 #   sudo nix run github:nix-community/disko -- --help
-#   sudo nix run github:nix-community/disko -- --mode destroy --dry-run ./profiles/nixos/hosts/customdesktop/disko/phase1-drives-wrapper-discoCLI.nix
-#   sudo nix run github:nix-community/disko -- --mode destroy ./profiles/nixos/hosts/customdesktop/disko/phase1-drives-wrapper-discoCLI.nix
+#   sudo nix run github:nix-community/disko -- --mode destroy --dry-run ./profiles/nixos/hosts/customdesktop/disko/phase1-drives-wrapper-diskoCLI.nix
+#   sudo nix run github:nix-community/disko -- --mode destroy ./profiles/nixos/hosts/customdesktop/disko/phase1-drives-wrapper-diskoCLI.nix
 #   sudo nix run github:nix-community/disko -- --mode format --dry-run ./profiles/nixos/hosts/customdesktop/disko/phase1-drives-wrapper-diskoCLI.nix
 #   sudo nix run github:nix-community/disko -- --mode format ./profiles/nixos/hosts/customdesktop/disko/phase1-drives-wrapper-diskoCLI.nix
 #
@@ -49,8 +49,7 @@
 # 2025-11-09
 # This file can be call by
 #   - directly disko CLI ( !!! and it will do ... !!!).
-#     sudo nix run github:nix-community/disko -- --mode disko ./profiles/nixos/hosts/customdesktop/disko/phase1-drives-wrapper-discoCLI.nix
-#     sudo nix run github:nix-community/disko -- --mode disko ./phase1-sdd-standalone.nix
+#     sudo nix run github:nix-community/disko -- --mode disko ./profiles/nixos/hosts/customdesktop/disko/phase1-drives-wrapper-diskoCLI.nix
 #   or
 #   - by host profile, and will activate when do 'nixos-rebuild', ... (that wil not ..., but only ...)
 #
@@ -58,9 +57,19 @@
 { lib }:
 {
   #--------------------------------------------------------------------------
+  # NOTE:
+  #--------------------------------------------------------------------------
+  # [2025-11-11 10:44:08] [najib@customdesktop:~/src/nixconfig-NajibMalaysia]$ sudo gdisk -l /dev/sde
+  # Number  Start (sector)    End (sector)  Size       Code  Name
+  #    1            2048            4095   1024.0 KiB  EF02  disk-A16T-biosboot
+  #    2            4096         4198399   2.0 GiB     8300  disk-A16T-bootpart
+  #    3         4198400         6295551   1024.0 MiB  EF00  disk-A16T-esp
+  #    4         6295552        39849983   16.0 GiB    8200  disk-A16T-swap
+  #    5        39849984      1953523711   912.5 GiB   BF01  disk-A16T-zfs
+  #-------------------------------------------------------------------------
   #disk.sdh = {
-  disk."A16T" = { # the name here will also be use in partitions name
-    #device = "/dev/sdh";
+  disk."A16T" = { # the name here will also be use in partitions name ("disk-A16T-biosboot", "disk-A16T-bootpart", "disk-A16T-esp", ...)
+  #disk."ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T" = {
     device = "/dev/disk/by-id/ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T";
     type = "disk";
     #wipe = true; # To ensure it clears the disk before formatting
@@ -69,7 +78,8 @@
       partitions = {
 
         #--------------------------------------------------------------------
-        "biosboot" = {
+        #"biosboot" = {
+        "bios" = {
           size = "1M";
           #size = "1MiB";
           #type = "bios_grub";
@@ -85,7 +95,8 @@
         #   Boot assets & themes
         # I give it generously 2GiB for multiple kernels
         # Will be accessed by Linux bootloader & OS
-        "bootpart" = {
+        #"bootpart" = { # The name here will also be use in partitions name
+        "boot" = { # The name here will also be use in partitions name
           #start = espSize; end = "${espSize} + ${bootSize}";
           size = "2G";
           content = {
@@ -113,7 +124,8 @@
         #   EFI boot manager entries
         #   Hardwaree-specific EFI apps
         # Will be accessed by: EFI firmware
-        "esp" = {
+        #"esp" = { # the name here will also be use in partitions name
+        "efi" = { # the name here will also be use in partitions name
           size = "1G"; #"2G"; #"2GiB"; #"1G";
           type = "EF00";
           content = {
@@ -128,7 +140,7 @@
         };
 
         #--------------------------------------------------------------------
-        "swap" = {
+        "swap" = { # the name here will also be use in partitions name
           size = "16G";
           #size = "16GiB";
           #type = "8200";
@@ -139,17 +151,22 @@
         };
 
         #--------------------------------------------------------------------
-        "zfs" = {
+        "zfs" = { # the name here will also be use in partitions name
           size = "100%";
           type = "bf01"; # Solaris /usr & Apple ZFS
 
+          # Lets only create the partition here — no 'pool' property
+          #
+          # OR
           #
           content = {
             type = "zfs";
             pool = "Riyadh2"; # Name of the ZFS pool
             #mountpoint = "none"; # XXX: ???
           };
+          #
           # OR
+          #
           # Do not format here, ZFS will handle this
         };
 
@@ -172,6 +189,13 @@
       atime = "off";
       mountpoint = "legacy";
     };
+
+    # Explicitly use the /dev/disk/by-id path for your partition
+    # NOTE: Disko will number partitions in the order you define them (above).
+    #devices = [
+    #  "/dev/disk/by-id/ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T-part5"
+    #];
+
     datasets = {
       #root = {
       nixos = {
