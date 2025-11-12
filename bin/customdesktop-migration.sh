@@ -243,3 +243,13 @@ main () {
 }
 
 main "$@"
+
+# Dispatch logic
+#if declare -f "$1" > /dev/null; then
+#  func="$1"
+#  shift
+#  "$func" "$@"
+#else
+#  echo "Function '$1' not found."
+#  exit 1
+#fi
