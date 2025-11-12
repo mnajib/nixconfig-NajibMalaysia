@@ -78,8 +78,7 @@
       partitions = {
 
         #--------------------------------------------------------------------
-        #"biosboot" = {
-        "bios" = {
+        "biosboot" = {
           size = "1M";
           #size = "1MiB";
           #type = "bios_grub";
@@ -95,7 +94,6 @@
         #   Boot assets & themes
         # I give it generously 2GiB for multiple kernels
         # Will be accessed by Linux bootloader & OS
-        #"bootpart" = { # The name here will also be use in partitions name
         "boot" = { # The name here will also be use in partitions name
           #start = espSize; end = "${espSize} + ${bootSize}";
           size = "2G";
@@ -125,7 +123,7 @@
         #   Hardwaree-specific EFI apps
         # Will be accessed by: EFI firmware
         #"esp" = { # the name here will also be use in partitions name
-        "efi" = { # the name here will also be use in partitions name
+        "efiboot" = { # the name here will also be use in partitions name
           size = "1G"; #"2G"; #"2GiB"; #"1G";
           type = "EF00";
           content = {
