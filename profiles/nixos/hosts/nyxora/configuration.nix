@@ -432,8 +432,8 @@ in
 
   environment.systemPackages = with pkgs; [
   #environment.systemPackages = [
-    #pkgs.blender
-    #pkgs.virtualboxWithExtpack
+    #blender
+    #virtualboxWithExtpack
 
     # use in wayland
     gnome-randr
@@ -446,6 +446,10 @@ in
 
     usb-modeswitch
     usb-modeswitch-data
+
+    nvtopPackages.full
+    cudatoolkit
+    pciutils
   ];
 
   #nixpkgs.config.android_sdk.accept_license = true;
