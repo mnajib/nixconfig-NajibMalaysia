@@ -51,7 +51,7 @@ in# with lib;
         "naqib"
       ];
       #max-jobs = 2;
-      #max-jobs = 0;
+      max-jobs = 0;
       #max-jobs = "auto";
       fallback = true;
     };
@@ -85,32 +85,32 @@ in# with lib;
     #  }
     #];
 
-    #buildMachines = [
-    #  {
-    #    hostName = "nyxora";  # e.g., builder
-    #    system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
-    #    protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
-    #    sshUser = "najib";
-    #    maxJobs = 14; #4;  # Parallel jobs on remote (match its CPU cores)
-    #    speedFactor = 1; #2;  # Prioritize this builder (higher = faster perceived)
-    #    supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
-    #    mandatoryFeatures = [];  # Enforce none unless required
-    #    #notes.memoryPerJob  "=3 GB";
-    #    #notes.totalRAM = "64 GB";
-    #  }
-    #  {
-    #    hostName = "sumayah";  # e.g., builder
-    #    system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
-    #    protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
-    #    sshUser = "najib";
-    #    maxJobs = 6; #4;  # Parallel jobs on remote (match its CPU cores)
-    #    speedFactor = 2;  # Prioritize this builder (higher = faster perceived)
-    #    supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
-    #    mandatoryFeatures = [];  # Enforce none unless required
-    #    #notes.memoryPerJob = "=2 GB";
-    #    #notes.totalRAM = "16 GB";
-    #  }
-    #];
+    buildMachines = [
+      {
+        hostName = "nyxora";  # e.g., builder
+        system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
+        protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
+        sshUser = "najib";
+        maxJobs = 14; #4;  # Parallel jobs on remote (match its CPU cores)
+        speedFactor = 1; #2;  # Prioritize this builder (higher = faster perceived)
+        supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
+        mandatoryFeatures = [];  # Enforce none unless required
+        #notes.memoryPerJob  "=3 GB";
+        #notes.totalRAM = "64 GB";
+      }
+      {
+        hostName = "sumayah";  # e.g., builder
+        system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
+        protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
+        sshUser = "najib";
+        maxJobs = 6; #4;  # Parallel jobs on remote (match its CPU cores)
+        speedFactor = 2;  # Prioritize this builder (higher = faster perceived)
+        supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
+        mandatoryFeatures = [];  # Enforce none unless required
+        #notes.memoryPerJob = "=2 GB";
+        #notes.totalRAM = "16 GB";
+      }
+    ];
 
     #max-jobs = 0; # Disable (never build on local machine, even when connecting to remote builders fails) building on local machine; only build on remote builders.
   };
