@@ -52,6 +52,7 @@ in with lib;
       ];
       #max-jobs = 2;
       max-jobs = 0;
+      #max-jobs = "auto";
       fallback = true;
     };
 
@@ -90,20 +91,24 @@ in with lib;
         system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
         protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
         sshUser = "najib";
-        maxJobs = 4;  # Parallel jobs on remote (match its CPU cores)
-        speedFactor = 2;  # Prioritize this builder (higher = faster perceived)
+        maxJobs = 14; #4;  # Parallel jobs on remote (match its CPU cores)
+        speedFactor = 1; #2;  # Prioritize this builder (higher = faster perceived)
         supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
         mandatoryFeatures = [];  # Enforce none unless required
+        #notes.memoryPerJob  "=3 GB";
+        #notes.totalRAM = "64 GB";
       }
       {
         hostName = "sumayah";  # e.g., builder
         system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
         protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
         sshUser = "najib";
-        maxJobs = 4;  # Parallel jobs on remote (match its CPU cores)
+        maxJobs = 6; #4;  # Parallel jobs on remote (match its CPU cores)
         speedFactor = 2;  # Prioritize this builder (higher = faster perceived)
         supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
         mandatoryFeatures = [];  # Enforce none unless required
+        #notes.memoryPerJob = "=2 GB";
+        #notes.totalRAM = "16 GB";
       }
     ];
 
@@ -310,7 +315,7 @@ in with lib;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.useOSProber = true;
   boot.loader.grub.efiSupport = true;
-  boot.loader.timeout = 300; # in seconds
+  boot.loader.timeout = 10; # in seconds
   #boot.loader.timeout = null;        # XXX: Not sure how to set null value here.
 
   #boot.loader.grub = {
