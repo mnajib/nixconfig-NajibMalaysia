@@ -157,6 +157,7 @@ in
     #./tenda-usb-wifi-dongle.nix
 
     (fromCommon "window-managers.nix")
+    (fromCommon "qemu.nix")
   ];
 
   home-manager = {
