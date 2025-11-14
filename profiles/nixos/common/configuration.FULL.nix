@@ -917,6 +917,8 @@
     pass        # CLI password manager
     qtpass
 
+    soteria
+
     picom       # compositor manager; try to use picom for gromit-mpx (screen annotation) in xmonad (window manager).
 
     fluxbox     # Need this because I need to use command 'fbsetroot' to set plain black background when using xmonad.
