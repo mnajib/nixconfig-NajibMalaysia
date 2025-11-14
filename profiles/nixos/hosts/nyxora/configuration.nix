@@ -192,6 +192,10 @@ in
 
   systemd.services.NetworkManager-wait-online.enable = false;
 
+  networking.bridges.br0.interfaces = [ "enp8s0f0" ]; # for qemu vm
+  networking.interfaces.br0.useDHCP = true;
+  networking.interfaces.enp8s0f0.useDHCP = false;
+
   #--------------------------------------------------------
   boot.loader = {
     systemd-boot.enable = true;
