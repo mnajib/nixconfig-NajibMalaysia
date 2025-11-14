@@ -14,6 +14,10 @@ in {
         package = pkgs.qemu_kvm;  # Use pkgs.qemu_full if you need more device support
         runAsRoot = false;        # Safer default; set true if needed for nested setups
       };
+      allowedBridges = [
+        "virbr0"
+        "br0"
+      ];
     };
 
     # 👤 Add user to libvirtd group for socket access
