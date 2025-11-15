@@ -270,7 +270,8 @@ in
       #"ntfs"
     ];
 
-    postDeviceCommands = lib.mkAfter ''
+    #postDeviceCommands = lib.mkAfter ''
+    postMountCommands =  ''
       zfs rollback -r MyStation/local/root@blank
     '';
   };
