@@ -20,6 +20,7 @@ in
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
   in [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./zfs.nix
     inputs.home-manager.nixosModules.home-manager
     #./turn-off-rgb.nix
     #./grafito.nix
@@ -62,9 +63,10 @@ in
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages_latest; # disable this because marked broken with zfs
   boot.supportedFilesystems =        [ "ext4" "btrfs" "xfs" "vfat" "ntfs" ];
 
+  networking.hostId = "f6c93a24"; # required by zfs
   #networking.hostName = "sumayah"; #"nixos"; # Define your hostname.
   networking.hostName = "${hostName}"; #"nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
