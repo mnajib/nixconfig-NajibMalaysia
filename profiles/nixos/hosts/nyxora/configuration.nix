@@ -195,6 +195,7 @@ in
   networking.bridges.br0.interfaces = [ "enp8s0f0" ]; # for qemu vm
   networking.interfaces.br0.useDHCP = true;
   networking.interfaces.enp8s0f0.useDHCP = false;
+  networking.bridges.br1.interfaces = [ ]; # for qemu vm
 
   #--------------------------------------------------------
   boot.loader = {
@@ -208,7 +209,7 @@ in
       efiSupport = true;
       enableCryptodisk = true;
       copyKernels = true;
-      useOSProber = false; #true;
+      useOSProber = true;
       timeoutStyle = "menu";
       memtest86.enable = true;
 

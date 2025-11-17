@@ -15,8 +15,9 @@ in {
         runAsRoot = false;        # Safer default; set true if needed for nested setups
       };
       allowedBridges = [
-        #"virbr0"
+        "virbr0"
         "br0"
+        "br1"
       ];
     };
 
