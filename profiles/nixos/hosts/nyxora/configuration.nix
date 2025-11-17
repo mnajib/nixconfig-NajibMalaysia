@@ -313,6 +313,12 @@ in
     #"8821cu" # usb wifi dongle. now in separate file tenda-usb-wifi-dongle.nix
   ];
 
+  # Only if you are an advanced user and are seeing scheduling issues:
+  # The default Linux kernel is usually optimal for desktop use.
+  #boot.kernel.sysctl = {
+  #  "kernel.sched_latency_ns" = 4000000;
+  #};
+
   boot.supportedFilesystems = [
     "ext4" "btrfs" "xfs" "vfat"
     "zfs"
@@ -424,8 +430,14 @@ in
   #xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # OR enable gnome desktopManager
 
   # Disable all power/screen saver; leave it to tv hardware
-  #powerManagement.enable = true;
-  #powerManagement.powertop.enable = true;
+  powerManagement = {
+    enable = true;
+    #powertop.enable = true;
+    cpuFreqGovernor = "performance";
+  };
+
+  services.thermald.enable = true;
+
   #services.upower.enable = true;
   #services.tlp.enable = true;
   #services.power-profiles-daemon.enable = false;
