@@ -79,7 +79,7 @@ in
 
     #(fromCommon "mame.nix")
     #./ai.nix
-    #./hardware-tablet-wacom.nix
+    (fromCommon "hardware-tablet-wacom.nix")
     #./inspircd.nix # IRC server
     #./opengl_with_vaapiIntel.nix
     #./stylix.nix
@@ -347,10 +347,10 @@ in
   #  lightdm.enable = true;
   #};
 
-  services.xserver.desktopManager = {
-    gnome.enable = true;
-    #lxqt.enable = true;
-  };
+  #services.xserver.desktopManager = {
+  #  #gnome.enable = true;
+  #  #lxqt.enable = true;
+  #};
 
   #
   # XXX: if using gdm; do not enable too many desktop/wm, gdm cannot scroll a long list for user to choose
