@@ -198,6 +198,13 @@ in
     #helix # Post-modern modal text editor
     #evil-helix # Post-modern modal text editor, with vim keybindings
     #helix-gpt # Code completion LSP for Helix with support for Copilot + OpenAI
+
+    # Alternative: to use ventoy (because the package is marked as unsecure):
+    #   NIXPKGS_ALLOW_INSECURE=1 NIXPKGS_ALLOW_UNFREE=1 nix shell nixpkgs#ventoy-full-qt --impure
+    #
+    #ventoy-full
+    #ventoy-full-qt
+    #ventoy-full-gtk
   ];
 
   # Environment variable t...
