@@ -272,9 +272,10 @@ in
     ];
 
     #postDeviceCommands = lib.mkAfter ''
-    postMountCommands =  ''
-      zfs rollback -r MyStation/local/root@blank
-    '';
+    #
+    #postMountCommands =  ''
+    #  zfs rollback -r MyStation/local/root@blank
+    #'';
   };
 
   #
