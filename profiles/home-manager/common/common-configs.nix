@@ -84,6 +84,7 @@ in
     ./garbage-collect.nix
 
     ./git.nix
+    ./nh.nix # nix CLI helper
   ]
   ++ (builtins.attrValues outputs.homeManagerModules);
   # XXX: TODO: Should be in seperate file packages.nix
