@@ -26,6 +26,7 @@ in
     #(./. + "/${commonDir}/stylix.nix")
 
     (fromCommon "repo-bootstrap.nix")
+    #(fromCommon "nh.nix") # nix helper
   ];
 
   #home.username = "$USER";
@@ -33,6 +34,11 @@ in
 
   programs.repo-bootstrap.enable = true;
   programs.repo-bootstrap.basePath = "~/src";
+
+  programs.nh = {
+    enable = true;
+    flake = "${config.home.homeDirectory}/src/nixconfig-NajibMalaysia";
+  };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   #home.stateVersion = "22.05";
