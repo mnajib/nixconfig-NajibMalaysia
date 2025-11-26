@@ -911,7 +911,7 @@
     direnv      # nix-direnv # nix-shell
     elvish      # A friendly and expressive command shell
     lua         # love
-    nh          # nix helper: Yet another nix cli helper
+    #nh          # nix helper: Yet another nix cli helper. Install & config via Home Manager
 
     acpid       # A daemon for delivering ACPI events to userspace programs. 'services.acpid.enable'
     acpitool acpidump-all #XXX: should be in hardware specific file
