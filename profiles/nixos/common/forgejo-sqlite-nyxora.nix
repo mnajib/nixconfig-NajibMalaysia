@@ -82,6 +82,12 @@ in
       "zfs-mount.service"
       #"mnt-data.automount"
     ];
+
+    # Explicit requires → PostgreSQL won’t even try to start if the mount isn’t there.
+    requires = [
+      "MyTank-services.mount"
+      #"MyTank-services-postgresql.mount"
+    ];
   };
 
   networking.firewall = {
