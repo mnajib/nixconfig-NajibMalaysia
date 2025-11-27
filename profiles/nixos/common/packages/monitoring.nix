@@ -4,6 +4,7 @@
     # Process/system monitors
     htop glances nload zenith bmon btop
     atop gotop wavemon iotop nethogs
+    sysstat # performance monitoring tools (sar, iostat, pidstat)
 
     # Disk/SMART monitoring
     gsmartcontrol smartmontools lm_sensors
