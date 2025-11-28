@@ -109,8 +109,8 @@ in
   #
   #networking.hostId = "33df86ff";
   #networking.hostName = "khawlah"; # x230
-  networking.hostId = hostId;
-  networking.hostName = hostName;
+  networking.hostId = "${hostId}";
+  networking.hostName = "${hostName}";
 
   users.users.root = {
     initialPassword = "root123";
