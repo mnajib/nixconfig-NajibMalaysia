@@ -135,6 +135,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    zfs-snapshot-manager.url = "github:/keithm999/zfs-tools";
+
   }; # End of 'inputs = { ... };'
 
   outputs = inputs@{ flake-parts, self, ... }:
@@ -499,6 +501,7 @@
               ./profiles/nixos/hosts/customdesktop/configuration.nix
               inputs.sops-nix.nixosModules.sops
               inputs.disko.nixosModules.disko
+              inputs.zfs-snapshot-manager.nixosModules.default
             ];
             #pkgsInput = inputs.nixpkgs-unstable; # override
           };
