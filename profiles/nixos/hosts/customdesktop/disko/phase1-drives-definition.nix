@@ -39,11 +39,32 @@
 # -------------------------------------
 # Create temporary bootable pool on /dev/sdd5 (Riyadh2)
 # -------------------------------------
-# sudo zpool create -f Riyadh2 /dev/disk/by-id/ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T-part5
-# sudo zfs create -o mountpoint=legacy Riyadh2/nixos-root
-# sudo zfs create -o mountpoint=legacy Riyadh2/nixos-nix
-# sudo zfs create -o mountpoint=legacy Riyadh2/nixos-home
-# sudo zfs create -o mountpoint=legacy Riyadh2/nixos-rootuser
+#   sudo zpool create -f Riyadh2 /dev/disk/by-id/ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T-part5
+#   sudo zfs create -o mountpoint=legacy Riyadh2/nixos-root
+#   sudo zfs create -o mountpoint=legacy Riyadh2/nixos-nix
+#   sudo zfs create -o mountpoint=legacy Riyadh2/nixos-home
+#   sudo zfs create -o mountpoint=legacy Riyadh2/nixos-rootuser
+#
+# ---------------------------------------------------------
+# Mount filesystems
+# ---------------------------------------------------------
+#   sudo mkdir /Riyadh2
+#   sudo mkdir /Riyadh2/boot
+#   sudo mkdir /Riyadh2/root
+#   sudo mkdir /Riyadh2/home
+#   sudo mkdir /Riyadh2/nix
+#   sudo mkdir /Riyadh2/persist
+#   sudo mount -t zfs Riyadh2/nixos         /Riyadh2
+#   sudo mount        /dev/sde2             /Riyadh2/boot
+#   sudo mount -t zfs Riyadh2/nix           /Riyadh2/nix
+#   sudo mount -t zfs Riyadh2/rootuser      /Riyadh2/root
+#   sudo mount -t zfs Riyadh2/home          /Riyadh2/home
+#   sudo mount -t zfs Riyadh2/persist       /Riyadh2/persist
+#
+# ---------------------------------------------------------
+# Install system
+# ---------------------------------------------------------
+#   sudo nixos-install ...
 #
 #
 # 2025-11-09
