@@ -45,10 +45,10 @@ let
   # import and destructure at once
   #inherit (import ./drives.nix);
   inherit (import ./drives.nix)
-    drivePath
     driveRiyadh1 driveRiyadh2 driveRiyadh3
     driveGarden1 driveGarden2 driveGarden3 driveGarden4 driveGarden5
-    riyadhDrives gardenDrives;
+    riyadhDrives gardenDrives
+    drivePath;
 
   #bootDisks = [
   #  "/dev/disk/by-id/ata-Drive1"
@@ -410,6 +410,11 @@ in
     availableKernelModules = [ "ehci_pci" "ahci" "xhci_pci" "ata_piix" "usbhid" "usb_storage" "sd_mod" "mpt3sas" "sdhci_pci" ];
     kernelModules =          [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ];
     supportedFilesystems =   [ "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs" ];
+
+    # Erasing the root dataset on each boot by roll back to the blank snapshot (after devices are made available)
+    #postDeviceCommands = lib.mkAfter ''
+    #  zfs rollback -r Riyadh2/nixos@blank
+    #'';
   };
 
   boot.kernelParams = [
@@ -559,6 +564,8 @@ in
 
     inputs.home-manager.packages.${pkgs.system}.default # To install (globally, instead of per user) home-manager packages
   ];
+
+  programs.zfs-snapshot-manager.enable = true;
 
   #virtualisation.virtualbox.host.enable = true;
 
