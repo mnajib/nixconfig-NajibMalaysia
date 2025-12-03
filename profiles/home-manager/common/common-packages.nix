@@ -3,6 +3,7 @@
   imports = [
     ./evince.nix
     ./tox.nix
+    ./desktop-apps.nix
     ./password-manager.nix
   ];
 
