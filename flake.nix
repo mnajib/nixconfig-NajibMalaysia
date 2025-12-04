@@ -161,6 +161,11 @@
         {
           packages = {
             default = pkgs.hello;
+
+            # To use:
+            #   nix shell .#mangayomi
+            #   nix run .#mangayomi
+            mangayomi = pkgs.mangayomi;
           };
 
           devShells.default = import ./shell.nix { inherit pkgs; };

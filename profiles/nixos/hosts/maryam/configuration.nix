@@ -120,8 +120,23 @@ in
     mesa
   ];
 
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 4096;
+    }
+  ];
+
+  services.swapspace = {
+    enable = true;
+    settings = {
+      min_swapsize = "4096m"; # 4GB
+      max_swapsize = "8192m"; # 8GB
+    };
+  };
+
   environment.systemPackages = with pkgs; [
-    radeontop # T400 zahrah have GPU: AMD ATI Mobility Radeon HD 3450/3470 (RV620/M83). May need to choose 'discrete graphic' in BIOS.
+    radeontop # T400 zahrh have GPU: AMD ATI Mobility Radeon HD 3450/3470 (RV620/M83). May need to choose 'discrete graphic' in BIOS.
     clinfo
     gpu-viewer
     vulkan-tools

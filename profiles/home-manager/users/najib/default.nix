@@ -205,6 +205,8 @@ in
     #ventoy-full
     #ventoy-full-qt
     #ventoy-full-gtk
+
+    mangayomi # manga, anime, etc. - downloader and reader
   ];
 
   # Environment variable t...
