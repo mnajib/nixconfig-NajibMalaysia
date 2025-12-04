@@ -120,6 +120,14 @@ in
     mesa
   ];
 
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+  services.blueman = {
+    enable = true; # blueman-manager
+  };
+
   swapDevices = [
     {
       device = "/swapfile";
