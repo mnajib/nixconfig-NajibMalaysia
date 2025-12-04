@@ -165,6 +165,7 @@ in
   boot.kernelParams = [
     #"radeon.modeset=1" # enable radeon
     #"vga=787" # set to use display resolution ... !!! hang !!!
+    "video=LVDS-1:1280x720@60" # As R61 screen problem at bottom area, we need to force smaller display so it will not display on the problem part of the screen.
   ];
 
   #boot.loader.grub = {
