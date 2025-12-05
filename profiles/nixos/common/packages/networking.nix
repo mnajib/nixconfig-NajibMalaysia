@@ -10,6 +10,9 @@
     # Torrent clients
     transmission_4-gtk rtorrent qbittorrent deluge-gtk
 
+    # Download
+    axel
+
     # Streaming
     popcorntime
 
