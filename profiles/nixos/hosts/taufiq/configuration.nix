@@ -207,6 +207,8 @@ in with lib;
     (fromCommon "window-managers.nix")
     #./gpu-config-wayland.nix
     ./gpu-config-xorg.nix
+
+    (fromCommon "bluetooth.nix")
   ];
 
   home-manager = {
