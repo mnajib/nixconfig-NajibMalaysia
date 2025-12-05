@@ -36,9 +36,9 @@
     pdfpc # presentation from PDF file
 
     # Messenger
-    nheko # a desktop client for the Matrix protocol
-    element-desktop # A feature-rich client for Matrix.org
-    fluffychat # Chat with your friends (matrix client)
+    #nheko # a desktop client for the Matrix protocol
+    #element-desktop # A feature-rich client for Matrix.org
+    #fluffychat # Chat with your friends (matrix client)
   ];
 
 }
