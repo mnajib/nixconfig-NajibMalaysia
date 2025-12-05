@@ -124,7 +124,9 @@ in with lib;
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
   in [
     ./hardware-configuration.nix
-    ./remote-builders.nix
+
+    #./remote-builders.nix
+    (fromCommon "remote-builders.nix")
 
     #../../common/configuration.FULL.nix
     #"${commonDir}/configuration.FULL.nix" # do not work
