@@ -84,6 +84,8 @@ in
     #./opengl_with_vaapiIntel.nix
     #./stylix.nix
     #./barrier.nix
+
+    (fromCommon "bluetooth.nix")
   ];
 
   home-manager = let
