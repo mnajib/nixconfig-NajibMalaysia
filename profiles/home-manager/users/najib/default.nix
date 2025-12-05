@@ -200,7 +200,7 @@ in
     #helix-gpt # Code completion LSP for Helix with support for Copilot + OpenAI
 
     # Alternative: to use ventoy (because the package is marked as unsecure):
-    #   NIXPKGS_ALLOW_INSECURE=1 NIXPKGS_ALLOW_UNFREE=1 nix shell nixpkgs#ventoy-full-qt --impure
+    #   NIXPKGS_ALLOW_INSECURE=1 NIXPKGS_ALLOW_UNFREE=1 nix shell nixpkgs#ventoy-full-qt --impure --run ventoy-gui
     #
     #ventoy-full
     #ventoy-full-qt
