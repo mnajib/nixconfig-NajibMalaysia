@@ -75,26 +75,26 @@
     #./doom-emacs.nix
 
     ./packages/base.nix
-    #./packages/android.nix
+    ./packages/android.nix
     ./packages/browsers.nix
-    #./packages/communication.nix
-    #./packages/desktop.nix
+    ./packages/communication.nix
+    ./packages/desktop.nix
     ./packages/devtools.nix
-    #./packages/drivers.nix
+    ./packages/drivers.nix
     ./packages/editors.nix
     ./packages/filesystems.nix
-    #./packages/fonts.nix
-    #./packages/games.nix
-    #./packages/media.nix
-    #./packages/monitoring.nix
-    #./packages/networking.nix
-    #./packages/office.nix
-    #./packages/virtualization.nix
-    #./packages/calculators.nix
-    #./packages/csv-tools.nix
-    #./packages/archivers.nix
+    ./packages/fonts.nix
+    ./packages/games.nix
+    ./packages/media.nix
+    ./packages/monitoring.nix
+    ./packages/networking.nix
+    ./packages/office.nix
+    ./packages/virtualization.nix
+    ./packages/calculators.nix
+    ./packages/csv-tools.nix
+    ./packages/archivers.nix
     #./packages/filemanagers.nix
-    #./packages/extras.nix
+    ./packages/extras.nix
   ];
 
   # Ref.:
