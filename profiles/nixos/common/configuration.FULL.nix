@@ -79,9 +79,9 @@
     ./packages/browsers.nix
     #./packages/communication.nix
     #./packages/desktop.nix
-    #./packages/devtools.nix
+    ./packages/devtools.nix
     #./packages/drivers.nix
-    #./packages/editors.nix
+    ./packages/editors.nix
     ./packages/filesystems.nix
     #./packages/fonts.nix
     #./packages/games.nix
