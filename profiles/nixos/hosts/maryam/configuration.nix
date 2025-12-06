@@ -435,7 +435,7 @@ in
 
     #firefox.enable = false;
 
-    tmux.shortcut = lib.MkForce "a"; # t61 and r61 have left-ctrl button problem
+    tmux.shortcut = lib.mkForce "a"; # t61 and r61 have left-ctrl button problem
 
     starship = {
       enable = false;
