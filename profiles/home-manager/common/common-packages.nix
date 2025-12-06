@@ -85,7 +85,8 @@
     #lumail
     aerc
     himalaya
-    deltachat-cursed
+    #deltachat-cursed
+    arcanechat-tui
 
     # GUI E-mail Client
     sylpheed

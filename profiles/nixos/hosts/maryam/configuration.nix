@@ -27,8 +27,11 @@ in
         "naqib"
         #"a" "abdullah"
       ];
-    };
-  };
+    }; # End nix.settings = { ... };
+    daemonIOSchedClass = "idle";
+    daemonCPUSchedPolicy = "idle";
+    daemonIOSchedPriority = 7;  # 0 (high priority) .... 7 (low priority)
+  }; # End nix = { ... };
 
   #nixpkgs.config = {
   #  allowUnfree = true;
@@ -39,8 +42,8 @@ in
   imports = let
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
   in [
-    (modulesPath + "/installer/scan/not-detected.nix")
-    (modulesPath + "/profiles/qemu-guest.nix")
+    #(modulesPath + "/installer/scan/not-detected.nix")     # already do this in hardware-configuration.nix
+    #(modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
     ./hardware-configuration.nix
     inputs.home-manager.nixosModules.home-manager
@@ -63,7 +66,11 @@ in
     (fromCommon "audio-pipewire.nix")
     (fromCommon "hardware-printer.nix")
     (fromCommon "zramSwap.nix")
+
     (fromCommon "configuration.FULL.nix")
+    (fromCommon "sqlite.nix")
+    (fromCommon "package/base.nix")
+
     (fromCommon "nix-garbage-collector.nix")
     (fromCommon "flatpak.nix")
     #(fromCommon "opengl.nix")
@@ -71,6 +78,8 @@ in
 
     (fromCommon "window-managers.nix")
     #(fromCommon "xmonad.nix")
+    (fromCommon "desktops-xorg.nix")
+    #(fromCommon "desktops-wayland.nix")
 
     (fromCommon "nfs-client.nix")
     #./nfs-client-automount.nix
@@ -82,6 +91,8 @@ in
     #./opengl_with_vaapiIntel.nix
     #./stylix.nix
     #./barrier.nix
+
+    (fromCommon "bluetooth.nix")
   ];
 
   home-manager = let
@@ -94,7 +105,7 @@ in
       #root = import ../home-manager/user-root;
       #najib = import (./. + "/${hmDir}/najib/zahrah");
       #root = import (./. + "/${hmDir}/root/zahrah");
-      root = userImport "root";
+      #root = userImport "root";
       najib = userImport "najib";
     };
   };
@@ -120,17 +131,21 @@ in
     mesa
   ];
 
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = true;
-  };
-  services.blueman = {
-    enable = true; # blueman-manager
-  };
+  #hardware.bluetooth = {
+  #  enable = true;
+  #  powerOnBoot = true;
+  #};
+  #services.blueman = {
+  #  enable = true; # blueman-manager
+  #};
 
   swapDevices = [
     {
       device = "/swapfile";
+      size = 4096;
+    }
+    {
+      device = "/swapfile2";
       size = 4096;
     }
   ];
@@ -188,7 +203,7 @@ in
   #  efiInstallAsRemovable = true;
   #};
 
-  universalBoot.enable = true;
+  #universalBoot.enable = true;
 
   boot.initrd = {
     availableKernelModules = [
@@ -226,9 +241,9 @@ in
 
   services.openssh = {
     enable = true;
-    settings = {
-      PermitRootLogin = "yes";
-    };
+    #settings = {
+    #  PermitRootLogin = "yes";
+    #};
   };
 
   services.fstrim.enable = true;
@@ -243,7 +258,7 @@ in
   #networking.interfaces.wlp3s0.useDHCP = true;
 
   networking.nftables.enable = true;
-  networking.firewall.enable = true;
+  networking.firewall.enable = false; #true;
   networking.firewall.allowPing = true;
   networking.firewall.allowedTCPPorts = [
     # Gluster
@@ -273,9 +288,9 @@ in
   powerManagement.enable = true;
   services.auto-cpufreq.enable = true;
   systemd.services."auto-cpufreq" = {
-    after = [
-      "display-manager.service"
-    ];
+    #after = [
+    #  "display-manager.service"
+    #];
   };
   powerManagement.cpuFreqGovernor = "powersave";
   #powerManagement.cpufreq.min =  800000;
@@ -291,7 +306,8 @@ in
 
       WIFI_PWR_ON_AC = "off";
       WIFI_PWR_ON_BAT = "off";
-      DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth wwan";
+      #DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth wwan";
+      DEVICES_TO_DISABLE_ON_STARTUP = "wwan";
       DEVICES_TO_ENABLE_ON_STARTUP = "wifi";
     };
   };
@@ -365,12 +381,12 @@ in
 
   services.xserver.enable = true;
 
-  services.xserver.displayManager = {
-    lightdm.enable = true;
-  };
+  #services.xserver.displayManager = {
+  #  lightdm.enable = true;
+  #};
 
   services.xserver.desktopManager = {
-    gnome.enable = true;
+    #gnome.enable = lib.mkForce true;
     lxqt.enable = true;
   };
 
@@ -414,10 +430,12 @@ in
   };
 
   programs = {
-    sway.enable = true;
-    xwayland.enable = true;
+    #sway.enable = true;
+    #xwayland.enable = true;
 
-    firefox.enable = false;
+    #firefox.enable = false;
+
+    tmux.shortcut = lib.MkForce "a"; # t61 and r61 have left-ctrl button problem
 
     starship = {
       enable = false;
@@ -518,7 +536,5 @@ in
 
   };
 
-
-  #system.stateVersion = "${stateVersion}";
-  system.stateVersion = stateVersion;
+  system.stateVersion = "${stateVersion}";
 }

@@ -48,7 +48,7 @@
     wofi                 # App launcher
     pavucontrol helvum   # Audio control
     blueman              # Bluetooth GUI
-    lxappearance qt5ct   # GTK/Qt theming
+    lxappearance #qt5ct   # GTK/Qt theming
     firefox              # Browser
     nnn                  # File manager
   ];

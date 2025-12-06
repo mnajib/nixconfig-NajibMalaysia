@@ -7,7 +7,7 @@
     wireshark
     exiftool
     gxmessage
-    parcellite
+    #parcellite
     clipboard-jh
     clipcat
     dzen2
