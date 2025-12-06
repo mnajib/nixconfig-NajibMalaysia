@@ -144,7 +144,11 @@ in
   };
 
   environment.systemPackages = with pkgs; [
-    radeontop # T400 zahrh have GPU: AMD ATI Mobility Radeon HD 3450/3470 (RV620/M83). May need to choose 'discrete graphic' in BIOS.
+
+    # T400 zahrah have GPU: AMD ATI Mobility Radeon HD 3450/3470 (RV620/M83). May need to choose 'discrete graphic' in BIOS.
+    # ??? Now maryam is on R61 (with display screen from T61), so it have no radeon.
+    #radeontop
+
     clinfo
     gpu-viewer
     vulkan-tools
@@ -173,7 +177,10 @@ in
   boot.kernelParams = [
     #"radeon.modeset=1" # enable radeon
     #"vga=787" # set to use display resolution ... !!! hang !!!
-    "video=LVDS-1:1280x720@60" # As R61 screen problem at bottom area, we need to force smaller display so it will not display on the problem part of the screen.
+
+    # As R61 screen problem at bottom area, we need to force smaller display so it will not display on the problem part of the screen.
+    # Update 2025-12-06: maryam running on R61 now use screen display from T61, so no screen problem anymore.
+    #"video=LVDS-1:1280x720@60"
   ];
 
   #boot.loader.grub = {
