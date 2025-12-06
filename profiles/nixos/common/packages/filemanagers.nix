@@ -25,13 +25,13 @@
 
     #clipgrab # use/require qtwebengine
 
-    #koreader
-    #alexandria
+    koreader
+    #alexandria # marked as broken
 
-    #foliate
-    #bookworm
-    #koodo-reader
-    #hakuneko
+    foliate
+    #bookworm # marked as broken
+    koodo-reader
+    hakuneko
   ];
 }
 
