@@ -93,7 +93,7 @@
     ./packages/calculators.nix
     ./packages/csv-tools.nix
     ./packages/archivers.nix
-    #./packages/filemanagers.nix
+    ./packages/filemanagers.nix
     ./packages/extras.nix
   ];
 
