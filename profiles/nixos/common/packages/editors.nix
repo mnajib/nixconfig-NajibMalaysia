@@ -3,7 +3,8 @@
   environment.systemPackages = with pkgs; [
     # CLI editors
     nano
-    neovim vimHugeX
+    neovim
+    vim-full
     kakoune
     micro
     ed vis jedit

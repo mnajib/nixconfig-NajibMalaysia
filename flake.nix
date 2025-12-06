@@ -12,8 +12,10 @@
 
   inputs = {
     #nixpkgs-nixos.url       = "github:nixos/nixpkgs/nixos-25.05";
-    nixpkgs-stable.url      = "github:nixos/nixpkgs/nixos-25.05";
-    nixpkgs-release.url     = "github:nixos/nixpkgs/release-25.05";
+    #nixpkgs-stable.url      = "github:nixos/nixpkgs/nixos-25.05";
+    #nixpkgs-release.url     = "github:nixos/nixpkgs/release-25.05";
+    nixpkgs-stable.url      = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-release.url     = "github:nixos/nixpkgs/release-25.11";
     #nixpkgs-unstable.url   = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-unstable.url    = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-master.url      = "github:nixos/nixpkgs/master";
@@ -23,7 +25,8 @@
     nixpkgs.follows         = "nixpkgs-release"; # Make 'nixpkgs' point to nixpkgs-stable as default.
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      #url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       #url = "github:nix-community/home-manager";
       #inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -47,7 +50,8 @@
     };
 
     home-manager-release = {
-      url = "github:nix-community/home-manager/release-25.05";
+      #url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs-release";
     };
 

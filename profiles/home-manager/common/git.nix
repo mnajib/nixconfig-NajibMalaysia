@@ -19,7 +19,8 @@
 
   programs.git = {
       enable = true;
-      package = pkgs.gitAndTools.gitFull;
+      #package = pkgs.gitAndTools.gitFull;
+      package = pkgs.gitFull;
 
       #userName =  "${name}"; #"Najib Ibrahim";
       #userEmail = "${email}"; # "mnajib@gmail.com";
