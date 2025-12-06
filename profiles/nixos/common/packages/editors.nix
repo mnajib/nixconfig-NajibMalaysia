@@ -10,8 +10,11 @@
     ed vis jedit
 
     # GUI editors
-    geany notepadqq xfce.mousepad
-    enlightenment.ecrire gnome-text-editor
+    geany
+    #notepadqq
+    #xfce.mousepad
+    #enlightenment.ecrire
+    #gnome-text-editor
   ];
 }
 
