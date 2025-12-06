@@ -76,7 +76,7 @@
 
     ./packages/base.nix
     #./packages/android.nix
-    #./packages/browsers.nix
+    ./packages/browsers.nix
     #./packages/communication.nix
     #./packages/desktop.nix
     #./packages/devtools.nix
