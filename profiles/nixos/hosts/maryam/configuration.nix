@@ -69,7 +69,7 @@ in
 
     (fromCommon "configuration.FULL.nix")
     (fromCommon "sqlite.nix")
-    (fromCommon "package/base.nix")
+    (fromCommon "packages/base.nix")
 
     (fromCommon "nix-garbage-collector.nix")
     (fromCommon "flatpak.nix")
