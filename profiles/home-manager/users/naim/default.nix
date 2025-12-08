@@ -148,7 +148,7 @@ in
     emacs
 
     #zeroad
-    minetest
+    luanti #minetest
     hedgewars
     openttd
 
