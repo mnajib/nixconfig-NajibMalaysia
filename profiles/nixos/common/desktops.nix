@@ -30,7 +30,7 @@
   services.xserver.windowManager.openbox.enable = true;
 
   programs.sway.enable = true;
-  programs.river.enable = true;
+  programs.river-classic.enable = true;
   programs.hyprland.enable = true;
   programs.xwayland.enable = true;
 

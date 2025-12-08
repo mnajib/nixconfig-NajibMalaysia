@@ -158,7 +158,7 @@ in
     #haskellPackages.yi # marked as broken
 
     #zeroad
-    minetest
+    luanti #minetest
     _4d-minesweeper
 
     fluxbox                             # need fbsetroot to set desktop background color
