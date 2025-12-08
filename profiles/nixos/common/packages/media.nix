@@ -9,6 +9,7 @@
 
     # Graphics
     gimp inkscape
+    krita
 
     # E-books & docs
     calibre sioyek evince
