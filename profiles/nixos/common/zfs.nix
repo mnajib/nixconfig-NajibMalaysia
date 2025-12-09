@@ -22,6 +22,9 @@ in
   #  environment.systemPackages = [ pkgs.zfs-prune-snapshots];
   #};
 
+  boot.initrd.supportedFileSystems = [ "zfs" ];
+  #boot.initrd.kernelModules = [ "zfs" ];
+
   boot.kernelParams = [
     "nohibernate"
     #"zfs.zfs_arc_max=17179869184"
@@ -109,37 +112,37 @@ in
   # Sanoid is used to create and destroy ZFS snapshots. It is pretty simple to configure.
   # You can adjust retention durations for the snapshots easily, and pick which datasets you want to snapshot.
 
-  services.sanoid = {
-    #enable = true; # Default is "false"
-
-    templates = {
-      default = {
-        autosnap = true;
-        autoprune = true;
-        hourly = 8;
-        daily = 1;
-        monthly = 1;
-        yearly = 1;
-      };
-    };
-
-    datasets = {
-      "zroot/persist".useTemplate = [ "default" ];
-      "zroot/persistSave".useTemplate = [ "default" ];
-    } // lib.optionalAttrs (config.yomaq.disks.zfs.storage.enable && !config.yomaq.disks.amReinstalling) {
-    # This is for the additional zstorage pool I configure in my flake
-    # we'll come back to the "amReinstalling" option later on
-      "zstorage/storage".useTemplate = [ "default" ];
-      "zstorage/persistSave".useTemplate = [ "default" ];
-    };
-
-  }; # End services.sanoid
+  #services.sanoid = {
+  #  #enable = true; # Default is "false"
+  #
+  #  templates = {
+  #    default = {
+  #      autosnap = true;
+  #      autoprune = true;
+  #      hourly = 8;
+  #      daily = 1;
+  #      monthly = 1;
+  #      yearly = 1;
+  #    };
+  #  };
+  #
+  #  datasets = {
+  #    "zroot/persist".useTemplate = [ "default" ];
+  #    "zroot/persistSave".useTemplate = [ "default" ];
+  #  } // lib.optionalAttrs (config.yomaq.disks.zfs.storage.enable && !config.yomaq.disks.amReinstalling) {
+  #  # This is for the additional zstorage pool I configure in my flake
+  #  # we'll come back to the "amReinstalling" option later on
+  #    "zstorage/storage".useTemplate = [ "default" ];
+  #    "zstorage/persistSave".useTemplate = [ "default" ];
+  #  };
+  #
+  #}; # End services.sanoid
 
   # ---------------------------------------------------------------------------------------
   # Syncoid simply transfers datasets from one location to another.
 
-  services.syncoid = {
-    #enable = true; # Default is 'false'
-  };
+  #services.syncoid = {
+  #  #enable = true; # Default is 'false'
+  #};
 
 }
