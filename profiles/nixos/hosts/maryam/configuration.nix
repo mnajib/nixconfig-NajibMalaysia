@@ -312,6 +312,11 @@ in
     };
   };
 
+  services.journald.extraConfig = ''
+    SystemMaxUse=50M
+    RuntimeMaxUse=20M
+  '';
+
   systemd.services.NetworkManager-wait-online.enable = false;
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.powersave = false;

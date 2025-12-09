@@ -46,6 +46,8 @@
               mountpoint = "/";
               mountOptions = [
                 "defaults"
+                "noatime"
+                "commit=60"
               ];
             };
           };
