@@ -21,7 +21,7 @@ in
       experimental-features = nix-command flakes
     '';
     settings = {
-      max-jobs = 2;
+      max-jobs = 0; # 2;
       trusted-users = [
         "root" "najib"
         "naqib"
@@ -63,6 +63,7 @@ in
 
     (fromCommon "console-keyboard-dvorak.nix")
     (fromCommon "keyboard-kmonad.nix")
+
     (fromCommon "audio-pipewire.nix")
     (fromCommon "hardware-printer.nix")
     (fromCommon "zramSwap.nix")
@@ -93,6 +94,8 @@ in
     #./barrier.nix
 
     (fromCommon "bluetooth.nix")
+    (fromCommon "remote-builders.nix")
+    #(fromCommon "zfs.nix")
   ];
 
   home-manager = let
@@ -189,6 +192,14 @@ in
   ## This option should be enabled by default by the corresponding modules, so you do not usually have to set it yourself.
   #hardware.graphics.enable = true;
 
+  # the Intel i915 driver for the GM965/GL960 still has a few known hang issues that were only fully addressed in later 6.13/6.14 kernels.
+  #boot.kernelPackages = pkgs.linuxPackages_6_17; # zfs 2.3 is marked broken in this kernel
+  #boot.kernelPackages = lib.mkForce pkgs.linuxPackages_6_18; # zfs 2.3 fixed in this kernel
+  #
+  # To check:
+  #   nix eval nixpkgs#linuxPackages_latest.kernel.version
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   boot.kernelParams = [
     #"radeon.modeset=1" # enable radeon
     #"vga=787" # set to use display resolution ... !!! hang !!!
@@ -196,6 +207,11 @@ in
     # As R61 screen problem at bottom area, we need to force smaller display so it will not display on the problem part of the screen.
     # Update 2025-12-06: maryam running on R61 now use screen display from T61, so no screen problem anymore.
     #"video=LVDS-1:1280x720@60"
+
+    # to disable a problematic power‑saving feature that often triggers hangs on older Intel GPUs
+    "i915.enable_psr=0"
+    "i915.enable_fbc=0"
+
   ];
 
   #boot.loader.grub = {
@@ -215,13 +231,14 @@ in
       "ata_generic" #"iscsi"
     ];
     kernelModules = [
-      "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs"
+      "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid"
+      #"zfs"
       #"ntfs"
       "kvm-intel"
     ];
     supportedFilesystems = [
       "ext4" "btrfs" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid"
-      "zfs"
+      #"zfs"
       #"bcachefs"
       #"ntfs"
     ];
@@ -233,7 +250,7 @@ in
 
   boot.supportedFilesystems = [
     "ext4" "btrfs" "xfs" "vfat"
-    "zfs"
+    #"zfs"
     #"bcachefs"
     #"ntfs"
     "dm-crypt" "dm-snapshot" "dm-raid"
@@ -320,10 +337,12 @@ in
   systemd.services.NetworkManager-wait-online.enable = false;
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.powersave = false;
-  systemd.watchdog.rebootTime = "10m";
 
-  services.acpid.enable = false; #true;
-  hardware.acpilight.enable = false; #true;
+  systemd.watchdog.rebootTime = "10m";
+  #systemd.settings.Manager.RebootWatchdogSec = "";
+
+  services.acpid.enable = true; # XXX: not tested yet
+  hardware.acpilight.enable = true; # XXX: not tested yet
 
   services.thinkfan.enable = true;
   services.thinkfan.levels = [
