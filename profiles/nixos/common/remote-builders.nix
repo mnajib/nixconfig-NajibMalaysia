@@ -69,7 +69,7 @@
         protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
         sshUser = "najib";
         maxJobs = 14; #4;  # Parallel jobs on remote (match its CPU cores)
-        speedFactor = 1; #2;  # Prioritize this builder (higher = faster perceived)
+        speedFactor = 5;  # Prioritize this builder (higher = faster perceived)
         supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
         mandatoryFeatures = [];  # Enforce none unless required
         #notes.memoryPerJob  "=3 GB";
@@ -85,7 +85,7 @@
         protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
         sshUser = "najib";
         maxJobs = 6; #4;  # Parallel jobs on remote (match its CPU cores)
-        speedFactor = 2;  # Prioritize this builder (higher = faster perceived)
+        speedFactor = 1;  # Prioritize this builder (higher = faster perceived)
         supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
         mandatoryFeatures = [];  # Enforce none unless required
         #notes.memoryPerJob = "=2 GB";
