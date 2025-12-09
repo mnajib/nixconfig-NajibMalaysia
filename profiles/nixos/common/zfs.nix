@@ -17,20 +17,33 @@ let
 in
 {
   #boot.kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
+  #boot.kernelPackages = pkgs.linuxPackages_6_18;
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
 
   #config = mkIf cfg.zfs.enable {
   #  environment.systemPackages = [ pkgs.zfs-prune-snapshots];
   #};
 
-  boot.initrd.supportedFileSystems = [ "zfs" ];
-  #boot.initrd.kernelModules = [ "zfs" ];
+  boot.initrd.availableKernelModules = [
+    "zfs"
+  ];
+
+  boot.initrd.kernelModules = {
+    zfs = true;
+  };
+
+  #boot.initrd.supportedFileSystems = {
+  #  zfs = true;
+  #};
+
+  boot.supportedFilesystems = {
+    zfs = true;
+  };
 
   boot.kernelParams = [
     "nohibernate"
     #"zfs.zfs_arc_max=17179869184"
   ];
-
-  boot.supportedFilesystems = [ "vfat" "zfs" ];
 
   environment.systemPackages = with pkgs; [
     #zfs-prune-snapshots
