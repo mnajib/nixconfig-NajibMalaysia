@@ -211,7 +211,6 @@ in
     # to disable a problematic power‑saving feature that often triggers hangs on older Intel GPUs
     "i915.enable_psr=0"
     "i915.enable_fbc=0"
-
   ];
 
   #boot.loader.grub = {

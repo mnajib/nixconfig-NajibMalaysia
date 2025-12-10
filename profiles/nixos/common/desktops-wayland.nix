@@ -35,7 +35,7 @@
     #'';
   };
 
-  #services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
   services.desktopManager.plasma6.enable = true;
   services.desktopManager.cosmic.enable = true;
 
@@ -62,6 +62,7 @@
   #programs.ssh.askPassword = lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
   # OR, If you use Plasma more often, use ksshaskpass.
   #programs.ssh.askPassword = lib.mkForce "${pkgs.ksshaskpass}/bin/ksshaskpass";
+  programs.ssh.askPassword = lib.mkForce "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass";
   # OR, If you want a neutral option that works in either environment, you can use x11-ssh-askpass instead of GNOME/KDE’s:
   #programs.ssh.askPassword = lib.mkForce "${pkgs.x11_ssh_askpass}/bin/x11-ssh-askpass";
 
