@@ -1,5 +1,15 @@
-{ config, pkgs, ... }:
-
+{
+  config, pkgs,
+  lib,
+  inputs, outputs,
+  ...
+}:
+let
+  commonDir = "../../common";
+  hmDir = "../../../home-manager/users";
+  hostName = "asmak";
+  stateVersion = "";
+in
 {
   nix = {
     #package = pkgs.nixFlakes;
@@ -17,7 +27,8 @@
   };
 
   imports = [
-    ./hardware-configuration-asmak.nix
+    ./hardware-configuration.nix
+
     #./bootEFI.nix
     #./bootBIOS.nix
     ./thinkpad.nix
