@@ -25,6 +25,8 @@
   # sddm
   #services.displayManager.sddm.enable = false;
   #services.displayManager.sddm.wayland.enable = false;
+  #
+  #services.displayManager.cosmic-greeter.enable = true;
 
   services.xserver.displayManager.startx = {
     enable = true;
@@ -35,6 +37,7 @@
 
   #services.xserver.desktopManager.gnome.enable = true;
   services.desktopManager.plasma6.enable = true;
+  services.desktopManager.cosmic.enable = true;
 
   services.xserver.windowManager.i3.enable = true;
   services.xserver.windowManager.openbox.enable = true;
