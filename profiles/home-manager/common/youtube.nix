@@ -27,7 +27,7 @@
     # GUI Downloader (without ability to launch player)
     #--------------------------------------------------------------------------
     ytarchive
-    clipgrab
+    # clipgrab # use unsecure outdated qtwebengine
     #media-downloader
     #youtube-music   # depend on old electron?
 

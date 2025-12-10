@@ -10,7 +10,9 @@ let
 in
 {
   # You can import other home-manager modules here
-  imports = [
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+  in [
     # If you want to use modules your own flake exports (from modules/home-manager):
     # outputs.homeManagerModules.example
 
@@ -37,7 +39,7 @@ in
     # Previously, my attemp to use nix-doom-emacs
     #./emacs.nix
     # My config with manually download/git clone doomemacs into ~/.config/emacs
-    (./. + "/${commonDir}/doom-emacs.nix")
+    #(./. + "/${commonDir}/doom-emacs.nix")
     #
     #inputs.nix-doom-emacs.hmModule
     #
@@ -196,6 +198,15 @@ in
     #helix # Post-modern modal text editor
     #evil-helix # Post-modern modal text editor, with vim keybindings
     #helix-gpt # Code completion LSP for Helix with support for Copilot + OpenAI
+
+    # Alternative: to use ventoy (because the package is marked as unsecure):
+    #   NIXPKGS_ALLOW_INSECURE=1 NIXPKGS_ALLOW_UNFREE=1 nix shell nixpkgs#ventoy-full-qt --impure --run ventoy-gui
+    #
+    #ventoy-full
+    #ventoy-full-qt
+    #ventoy-full-gtk
+
+    mangayomi # manga, anime, etc. - downloader and reader
   ];
 
   # Environment variable t...

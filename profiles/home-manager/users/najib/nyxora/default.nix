@@ -14,12 +14,23 @@ let
 in
 {
   # You can import other home-manager modules here
-  imports = [
+  imports = let
+    # For simple modules (no params)
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+
+    # For modules that take params
+    fromCommonWithParams = name: params: import (./. + "/${toString commonDir}/${name}") params;
+  in [
     ../default.nix
 
     (./. + "/${commonDir}/neovim")
     #(./. + "/${commonDir}/ai.nix")
+
+    (fromCommon "repo-bootstrap.nix")
   ];
+
+  programs.repo-bootstrap.enable = true;
+  programs.repo-bootstrap.basePath = "~/src";
 
   nixpkgs.config = {
     allowUnfree = true;

@@ -15,7 +15,19 @@ in {
     ../default.nix
 
     (fromCommon "neovim")
+    (fromCommon "repo-bootstrap.nix")
   ];
+
+  programs.repo-bootstrap.enable = true;
+  programs.repo-bootstrap.basePath = "~/Projects";
+
+  #home.packages = with pkgs; [
+  #  #helix
+  #];
+
+  #fonts.fontconfig = {
+  #  enable = true;
+  #};
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = stateVersion; #"22.05";

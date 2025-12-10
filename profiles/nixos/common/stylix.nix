@@ -8,7 +8,7 @@
   # cd result
   # nix run nixpkgs#eza -- --tree
   #---------------------------------------------------------------------------
-  #stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
+  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
   #
   # OR
   #
@@ -23,10 +23,10 @@
   # Auto-generate from wallpaper
   #stylix.image = ./my-cool-wallpaper.png;
   #stylix.image = ../pictures/wallpaper-beautiful-and-minimalist.jpg;
-  stylix.image = pkgs.fetchurl {
-    url = "https://www.pixelstalk.net/wp-content/uploads/2016/05/Epic-Anime-Awesome-Wallpapers.jpg";
-    sha256 = "enQo3wqhgf0FEPHj2coOCvo7DuZv+x5rL/WIo4qPI50=";
-  };
+  #stylix.image = pkgs.fetchurl {
+  #  url = "https://www.pixelstalk.net/wp-content/uploads/2016/05/Epic-Anime-Awesome-Wallpapers.jpg";
+  #  sha256 = "enQo3wqhgf0FEPHj2coOCvo7DuZv+x5rL/WIo4qPI50=";
+  #};
   #stylix.polarity = "dark"; # "light", "dark', or "either"
 
   #---------------------------------------------------------------------------
@@ -84,7 +84,8 @@
     sansSerif = config.stylix.fonts.monospace;
     #emoji = config.stylix.fonts.monospace;
     emoji = {
-      package = pkgs.noto-fonts-emoji;
+      #package = pkgs.noto-fonts-emoji;
+      package = pkgs.noto-fonts-color-emoji;
       #package = pkgs.noto-fonts-color-emoji;
       #package = pkgs.noto-fonts-monochrome-emoji;
       name = "Noto Color Emoji";

@@ -1,6 +1,6 @@
 { pkgs, config, ... }: {
   environment.systemPackages = with pkgs; [
-    barrier
+    #barrier
     input-leap
   ];
 

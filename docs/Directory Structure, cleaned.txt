@@ -1,0 +1,500 @@
+
+├── bak
+│   ├── flake.nix_with_flake-parts.nix
+│   ├── flake.nix_with_flake-utils.nix
+│   └── flake.nix_with_flake-utils_without_comments_and_blanklines.nix
+├── bin
+│   ├── customdesktop-preinstall.sh
+│   ├── git-merge-stages
+│   ├── nixos-rebuild_for_multiple_remote_build-host.sh
+│   ├── nixos-rebuild_for_remote-host.sh
+│   └── zfs-zpool-syncoid.sh
+├── docs
+│   ├── DIR-STRUCTURE.txt
+│   ├── NOTES.md
+│   ├── README-git.txt
+│   ├── README-git-workflow.txt
+│   ├── README-zfs.txt
+│   └── Understanding how inputs and outputs are defined and exposed.md
+├── DO_NOT_DELETE__REAL_GIT_DIR
+├── flake.lock
+├── flake.nix
+├── generators
+│   ├── default.nix
+│   └── formats
+│       ├── gnome-iso.nix
+│       ├── hyprland-iso.nix
+│       └── plasma-iso.nix
+├── modules
+│   ├── disko
+│   │   └── lib-disk.nix
+│   ├── iso
+│   │   ├── autoinstall.nix
+│   │   ├── autoinstall.sh
+│   │   ├── configuration.nix
+│   │   ├── hardware-configuration.nix
+│   │   └── lib.sh
+│   └── nixos
+│       ├── default.nix
+│       └── seaweedfs
+│           ├── default.nix
+│           ├── filer.nix
+│           ├── iam.nix
+│           ├── master.nix
+│           ├── s3.nix
+│           ├── volume.nix
+│           └── webdav.nix
+├── nixpkgs.nix
+├── overlays
+│   ├── default.nix
+│   ├── my-hello-overlay.nix
+│   └── nixvim.nix
+├── packages
+│   ├── default.nix
+│   └── my-hello.nix
+├── profiles
+│   ├── home-manager
+│   │   ├── common
+│   │   │   ├── 3d.nix
+│   │   │   ├── ai.nix
+│   │   │   ├── alacritty.nix
+│   │   │   ├── barrier.nix
+│   │   │   ├── bash.nix
+│   │   │   ├── chemistry.nix
+│   │   │   ├── chess.nix
+│   │   │   ├── cli-webbrowser.nix
+│   │   │   ├── cmus.nix
+│   │   │   ├── common-configs.nix
+│   │   │   ├── common-packages.nix
+│   │   │   ├── default.nix
+│   │   │   ├── doom-emacs.nix
+│   │   │   ├── emacs.nix
+│   │   │   ├── emacs-with-doom.nix
+│   │   │   ├── evince.nix
+│   │   │   ├── garbage-collect.nix
+│   │   │   ├── git.nix
+│   │   │   ├── helix
+│   │   │   │   └── default.nix
+│   │   │   ├── home-naim.nix
+│   │   │   ├── home-root.nix
+│   │   │   ├── home-SAMPLE.nix
+│   │   │   ├── hyprland.nix
+│   │   │   ├── input-leap.nix
+│   │   │   ├── minecraft.nix
+│   │   │   ├── neovide
+│   │   │   │   └── default.nix
+│   │   │   ├── neovim
+│   │   │   │   ├── astronvim.nix
+│   │   │   │   ├── default.nix
+│   │   │   │   └── lazyvim.nix
+│   │   │   ├── nvim
+│   │   │   │   ├── copilot.nix
+│   │   │   │   ├── default.nix
+│   │   │   │   ├── lsp.nix
+│   │   │   │   ├── syntaxes.nix
+│   │   │   │   ├── theme.nix
+│   │   │   │   └── ui.nix
+│   │   │   ├── p2p.nix
+│   │   │   ├── password-manager.nix
+│   │   │   ├── proton-GE.nix
+│   │   │   ├── ranger.nix
+│   │   │   ├── roblox.nix
+│   │   │   ├── rofi.nix
+│   │   │   ├── screen.nix
+│   │   │   ├── shell.nix
+│   │   │   ├── src -> ../src
+│   │   │   ├── stylix.nix
+│   │   │   ├── system-benchmark.nix
+│   │   │   ├── time-management.nix
+│   │   │   ├── tmux.nix
+│   │   │   ├── tox.nix
+│   │   │   ├── wayland-wm
+│   │   │   │   ├── default.nix
+│   │   │   │   ├── gammastep.nix
+│   │   │   │   ├── kitty.nix
+│   │   │   │   ├── mako.nix
+│   │   │   │   ├── swayidle.nix
+│   │   │   │   ├── swaylock.nix
+│   │   │   │   ├── waybar.nix
+│   │   │   │   ├── wezterm.nix
+│   │   │   │   ├── wofi.nix
+│   │   │   │   ├── wofi-run-shell.patch
+│   │   │   │   └── zathura.nix
+│   │   │   ├── wesnoth.nix
+│   │   │   ├── yi
+│   │   │   │   └── default.nix
+│   │   │   ├── youtube.nix
+│   │   │   └── zsh.nix
+│   │   ├── src
+│   │   │   ├── bin
+│   │   │   │   ├── before-run-java-software-on-xmonad.sh
+│   │   │   │   ├── bluetooth-disable.sh
+│   │   │   │   ├── change-display-resolution-to-1440x-default.sh
+│   │   │   │   ├── change-display-resolution-to-1536x960-readable.sh
+│   │   │   │   ├── change-display-resolution-to-1600x1000.sh
+│   │   │   │   ├── change-display-resolution-to-1680x1050.sh
+│   │   │   │   ├── chmod-dirs-and-files.sh
+│   │   │   │   ├── chmod-dirs.sh
+│   │   │   │   ├── chmod-files.sh
+│   │   │   │   ├── chmod-sekolahdocdir.sh
+│   │   │   │   ├── currentKeyboardLayout.sh
+│   │   │   │   ├── download_Al-Quran_mp3.sh
+│   │   │   │   ├── e-solat.sh
+│   │   │   │   ├── inputProfile-J.sh
+│   │   │   │   ├── inputProfile-N.sh
+│   │   │   │   ├── iptables-reset.sh
+│   │   │   │   ├── najibpuchongbot.hs
+│   │   │   │   ├── nix-listAvailablePackages
+│   │   │   │   ├── nix-list-installed
+│   │   │   │   ├── nix-store-list.sh
+│   │   │   │   ├── pulseaudio.sh
+│   │   │   │   ├── qemu-android
+│   │   │   │   ├── qemu-reactos.sh
+│   │   │   │   ├── qemu.sh
+│   │   │   │   ├── qemu-windows10.sh
+│   │   │   │   ├── radio-all-down
+│   │   │   │   ├── radiofrequency-down
+│   │   │   │   ├── radiofrequency-up
+│   │   │   │   ├── radio-wifi-up
+│   │   │   │   ├── readaloud
+│   │   │   │   ├── reset-enligthment.sh
+│   │   │   │   ├── scrap-waktuSolat.py
+│   │   │   │   ├── scrap-waktuSolat.sh
+│   │   │   │   ├── screenlock-now.sh
+│   │   │   │   ├── screenlock-xautolock.sh
+│   │   │   │   ├── setKeyboardDvorak
+│   │   │   │   ├── setKeyboardQwerty
+│   │   │   │   ├── setTrackpoint.sh
+│   │   │   │   ├── text2speech
+│   │   │   │   ├── toggleTouchpadEnableDisable
+│   │   │   │   ├── twofingerscroll-disable.sh
+│   │   │   │   ├── waktu-solat
+│   │   │   │   ├── waktusolat-putrajaya
+│   │   │   │   ├── waktusolat-putrajaya-hbar
+│   │   │   │   └── wallpaper-black
+│   │   │   ├── doom.d
+│   │   │   │   ├── config.el
+│   │   │   │   ├── init.el
+│   │   │   │   └── packages.el
+│   │   │   └── vim
+│   │   │       └── vimrc
+│   │   └── users
+│   │       ├── julia
+│   │       │   ├── default.nix
+│   │       │   ├── host-keira
+│   │       │   │   └── default.nix
+│   │       │   ├── host-manggis
+│   │       │   │   └── default.nix
+│   │       │   └── host-taufiq
+│   │       │       └── default.nix
+│   │       ├── naim
+│   │       │   ├── default.nix
+│   │       │   ├── host-sakinah
+│   │       │   │   └── default.nix
+│   │       │   └── host-zahrah
+│   │       │       └── default.nix
+│   │       ├── najib
+│   │       │   ├── customdesktop
+│   │       │   │   └── default.nix
+│   │       │   ├── default.nix
+│   │       │   ├── keira
+│   │       │   │   └── default.nix
+│   │       │   ├── khadijah
+│   │       │   │   └── default.nix
+│   │       │   ├── khawlah
+│   │       │   │   └── default.nix
+│   │       │   ├── manggis
+│   │       │   │   └── default.nix
+│   │       │   ├── nyxora
+│   │       │   │   └── default.nix
+│   │       │   ├── sumayah
+│   │       │   │   └── default.nix
+│   │       │   ├── taufiq
+│   │       │   │   └── default.nix
+│   │       │   └── zahrah
+│   │       │       └── default.nix
+│   │       ├── naqib
+│   │       │   ├── default.nix
+│   │       │   ├── host-asmak
+│   │       │   │   └── default.nix
+│   │       │   ├── host-hidayah
+│   │       │   │   └── default.nix
+│   │       │   ├── host-raudah
+│   │       │   │   └── default.nix
+│   │       │   ├── host-sakinah
+│   │       │   │   └── default.nix
+│   │       │   └── host-zahrah
+│   │       │       └── default.nix
+│   │       ├── nurnasuha
+│   │       │   ├── default.nix
+│   │       │   └── host-customdesktop
+│   │       │       └── default.nix
+│   │       └── root
+│   │           ├── customdesktop
+│   │           │   └── default.nix
+│   │           ├── default.nix
+│   │           ├── keira
+│   │           │   └── default.nix
+│   │           ├── khadijah
+│   │           │   └── default.nix
+│   │           ├── khawlah
+│   │           │   └── default.nix
+│   │           ├── manggis
+│   │           │   └── default.nix
+│   │           ├── nyxora
+│   │           │   └── default.nix
+│   │           ├── sumayah
+│   │           │   └── default.nix
+│   │           └── taufiq
+│   │               └── default.nix
+│   └── nixos
+│       ├── common
+│       │   ├── 3D.nix
+│       │   ├── aic8800.nix
+│       │   ├── ai.nix
+│       │   ├── anbox2.nix
+│       │   ├── anbox.nix
+│       │   ├── appimage.nix
+│       │   ├── audio-pipewire.nix
+│       │   ├── audio-pulseaudio.nix
+│       │   ├── barrier.nix
+│       │   ├── bash.nix
+│       │   ├── bootBIOS.nix
+│       │   ├── bootEFI.nix
+│       │   ├── btrbk-keira.nix
+│       │   ├── btrbk-khadijah.nix
+│       │   ├── btrbk-khawlah.nix
+│       │   ├── btrbk-mahirah.nix
+│       │   ├── btrbk.nix
+│       │   ├── btrbk-pull.nix
+│       │   ├── btrbk-tv.nix
+│       │   ├── btrfs.nix
+│       │   ├── chemistry.nix
+│       │   ├── configuration.FULL.nix
+│       │   ├── configuration.MED.nix
+│       │   ├── configuration.MIN.nix
+│       │   ├── configuration.NOGUI.nix
+│       │   ├── configuration.SAMPLE.nix
+│       │   ├── configuration.SERVER.nix
+│       │   ├── console-keyboard-dvorak.nix
+│       │   ├── console-keyboard-us.nix
+│       │   ├── dnscrypt-proxy2.nix
+│       │   ├── dnsmasq.nix
+│       │   ├── dnsovertls-stubby.nix
+│       │   ├── doom-emacs.nix
+│       │   ├── emulationstation.nix
+│       │   ├── flatpak.nix
+│       │   ├── forgejo-postgresql.nix
+│       │   ├── forgejo-sqlite-customdesktop.nix
+│       │   ├── forgejo-sqlite-nyxora.nix
+│       │   ├── games.nix
+│       │   ├── garbage-collect.nix -> nix-garbage-collector.nix
+│       │   ├── git-client.nix
+│       │   ├── gitea.nix
+│       │   ├── gitolite.nix
+│       │   ├── git-server.nix
+│       │   ├── gnome.nix
+│       │   ├── gogs.nix
+│       │   ├── hardware-printer-client.nix
+│       │   ├── hardware-printer.nix
+│       │   ├── hardware-printer-server.nix
+│       │   ├── hardware-printer-standalone.nix
+│       │   ├── hardware-tablet-digimend.nix
+│       │   ├── hardware-tablet-opentabletdriver.nix
+│       │   ├── hardware-tablet-wacom.nix
+│       │   ├── hosts.nix
+│       │   ├── hyprland.nix
+│       │   ├── inspircd.nix
+│       │   ├── invidious.nix
+│       │   ├── jupyter.nix
+│       │   ├── keyboard-kmonad.nix
+│       │   ├── keyboard-us_and_dv.nix
+│       │   ├── keyboard-with-msa-keira.nix
+│       │   ├── keyboard-with-msa.nix
+│       │   ├── keyboard-without-msa.nix
+│       │   ├── kodi.nix
+│       │   ├── libvirt.nix
+│       │   ├── logitech-unifying.nix
+│       │   ├── lutris.nix
+│       │   ├── mame.nix
+│       │   ├── monitoring-tools.nix
+│       │   ├── neovim
+│       │   │   └── default.nix
+│       │   ├── netdata.nix
+│       │   ├── network-dns.nix
+│       │   ├── nextcloud.nix
+│       │   ├── nfs-client-automount-games.nix
+│       │   ├── nfs-client-automount.nix
+│       │   ├── nfs-client.nix
+│       │   ├── nfs-server-customdesktop.nix
+│       │   ├── nfs-server.nix
+│       │   ├── nitter.nix
+│       │   ├── nix-garbage-collector.nix
+│       │   ├── opengl2.nix
+│       │   ├── opengl.nix
+│       │   ├── opengl_with_vaapiIntel.nix
+│       │   ├── openra.nix
+│       │   ├── proton-GE.nix
+│       │   ├── roblox.nix
+│       │   ├── samba-client.nix
+│       │   ├── samba-server-customdesktop.nix
+│       │   ├── samba-server-nyxora.nix
+│       │   ├── seaweed-customdesktop.nix
+│       │   ├── seaweed-delldesktop.nix
+│       │   ├── seaweed-raudah.nix
+│       │   ├── sqlite.nix
+│       │   ├── steam.nix
+│       │   ├── stylix.nix
+│       │   ├── sway.nix
+│       │   ├── syncthing.nix
+│       │   ├── system-basics.nix
+│       │   ├── tabby.nix
+│       │   ├── teamviewer.nix
+│       │   ├── tenda-usb-wifi-dongle.nix
+│       │   ├── thinkpad.nix
+│       │   ├── timetracker.nix
+│       │   ├── tmux.nix
+│       │   ├── touchpad-scrollEdge-TapFalse.nix
+│       │   ├── touchpad-scrollEdge-TapTrue.nix
+│       │   ├── touchpad-scrollTwofinger-TapTrue.nix
+│       │   ├── typesetting.nix
+│       │   ├── unbound.nix
+│       │   ├── users-abdullah-wheel.nix
+│       │   ├── users-anak2.nix
+│       │   ├── users-a-wheel.nix
+│       │   ├── users-julia.nix
+│       │   ├── users-julia-wheel.nix
+│       │   ├── users-naim.nix
+│       │   ├── users-naim-wheel.nix
+│       │   ├── users-najib.nix
+│       │   ├── users-naqib.nix
+│       │   ├── users-naqib-wheel.nix
+│       │   ├── users-nurnasuha.nix
+│       │   ├── users-nurnasuha-wheel.nix
+│       │   ├── veikk_driver.nix
+│       │   ├── veikk.nix
+│       │   ├── virtualbox.nix
+│       │   ├── walkie-talkie.nix
+│       │   ├── waydroid.nix
+│       │   ├── whatsapp.nix
+│       │   ├── window-managers.nix
+│       │   ├── xdg-gnome.nix
+│       │   ├── xdg-gtk.nix
+│       │   ├── xdg-kde.nix
+│       │   ├── xdg.nix
+│       │   ├── xfce.nix
+│       │   ├── xkb
+│       │   │   ├── compat
+│       │   │   │   └── msa
+│       │   │   ├── geometry
+│       │   │   │   └── msa
+│       │   │   ├── keycodes
+│       │   │   │   └── msa
+│       │   │   ├── symbols
+│       │   │   │   ├── arabquran-najib
+│       │   │   │   ├── melayujawimalaysia-najib
+│       │   │   │   └── msa
+│       │   │   └── types
+│       │   │       └── msa
+│       │   ├── xmonad.nix
+│       │   ├── zfs-for-asmak.nix
+│       │   ├── zfs.nix
+│       │   ├── zfs-nyxora.nix
+│       │   └── zramSwap.nix
+│       └── hosts
+│           ├── aisyah
+│           │   ├── configuration.nix
+│           │   └── hardware-configuration.nix
+│           ├── asmak
+│           │   ├── configuration.nix
+│           │   └── hardware-configuration.nix
+│           ├── customdesktop
+│           │   ├── configuration.nix
+│           │   ├── disko
+│           │   │   ├── phase1-sdd.nix
+│           │   │   └── phase2-sdb-sdf.nix
+│           │   ├── drives-partitions-filesystems-mountpoints.txt
+│           │   ├── hardware-configuration.nix
+│           │   ├── hardware-configuration.nix.bak_2025-08-03_T0734
+│           │   ├── hm-users.nix
+│           │   ├── host-users.nix
+│           │   └── mirrored-boot.nix
+│           ├── delldesktop
+│           │   ├── configuration.nix
+│           │   └── hardware-configuration.nix
+│           ├── hidayah
+│           │   ├── configuration.nix
+│           │   └── hardware-configuration.nix
+│           ├── husna
+│           │   ├── configuration.nix
+│           │   └── hardware-configuration.nix
+│           ├── keira
+│           │   ├── configuration.nix
+│           │   └── hardware-configuration.nix
+│           ├── khadijah
+│           │   ├── hardware-configuration.nix
+│           │   ├── host-khadijah-Wayland-nauveau.nix
+│           │   ├── host-khadijah-Xorg-intel.nix
+│           │   ├── host-khadijah-Xorg-intel-nouveau.nix
+│           │   ├── host-khadijah-Xorg-intel-nvidia-prime-offload.nix
+│           │   ├── host-khadijah-Xorg-intel-nvidia-prime-sync.nix
+│           │   ├── host-khadijah-Xorg-nouveau.nix
+│           │   └── host-khadijah-Xorg-nvidia.nix
+│           ├── khawlah
+│           │   ├── configuration.nix
+│           │   └── hardware-configuration.nix
+│           ├── leila
+│           │   └── configuration.nix
+│           ├── mahirah
+│           │   ├── configuration.nix
+│           │   └── hardware-configuration.nix
+│           ├── manggis
+│           │   ├── configuration.nix
+│           │   └── hardware-configuration.nix
+│           ├── maryam
+│           │   ├── configuration.nix
+│           │   └── hardware-configuration.nix
+│           ├── nyxora
+│           │   ├── configuration.nix
+│           │   ├── disko
+│           │   │   ├── default.nix
+│           │   │   ├── drive1.nix
+│           │   │   ├── drive2.nix
+│           │   │   └── drive3.nix
+│           │   └── hardware-configuration.nix
+│           ├── raudah
+│           │   ├── configuration.nix
+│           │   └── hardware-configuration.nix
+│           ├── sakinah
+│           │   ├── configuration.nix
+│           │   └── hardware-configuration.nix
+│           ├── sumayah
+│           │   ├── configuration.nix
+│           │   ├── hardware-configuration.nix
+│           │   └── turn-off-rgb.nix
+│           ├── taufiq
+│           │   ├── configuration.nix
+│           │   └── hardware-configuration.nix
+│           ├── tv
+│           │   ├── configuration.nix
+│           │   └── hardware-configuration.nix
+│           └── zahrah
+│               ├── configuration.nix
+│               └── hardware-configuration.nix
+├── README.md
+├── shell.nix
+├── templates
+│   ├── default.nix
+│   └── rust
+│       ├── Cargo.lock
+│       ├── Cargo.toml
+│       ├── default.nix
+│       ├── flake.nix
+│       ├── shell.nix
+│       └── src
+│           └── main.rs
+└── tmp
+    ├── cookcd.rb
+    ├── cookcd.rb.html
+    ├── vimrc
+    └── vimrc-najib

@@ -1,4 +1,9 @@
 {
+  config,
+  pkgs,
+  ...
+}:
+{
   #fileSystems."/mnt/sekolahgluster" = {
   #  device = "mahirah:/sekolahgluster";
   #  fsType = "nfs";
@@ -55,13 +60,21 @@
       #"nfsvers=4.2"
 
       # Lazy-mounting: By default, all shares will be mounted right when your machine starts - apart from being simply unwanted sometimes, this may also cause issues when your computer doesn't have a stable network connection or uses WiFi; you can fix this by telling systemd to mount your shares the first time they are accessed (instead of keeping them mounted at all times): 
-      "x-systemd.automount" "noauto"
+      "x-systemd.automount"
+      "noauto"
 
       # Disconnects after 10 minutes (i.e. 600 seconds)
       "x-systemd.idle-timeout=600"
 
       # XXX:
       "noatime"
+
+      "_netdev"
+      "soft"
+      "timeo=30"
+      "retrans=3"
+      "intr"
+      "vers=4.2"
     ];
   };
 
@@ -129,5 +142,70 @@
       "noatime"
     ];
   };
+
+  # Ensure mountpoint directory exists ---
+  systemd.tmpfiles.rules = [
+    "d /mnt/nfsshare2 0755 root root -"
+  ];
+
+#  # XXX: This is a workaround to prevent systemd from failing during nixos-rebuild switch. It creates a dummy unit file to satisfy the reference.
+#  environment.etc."systemd/system/mnt-nfsshare2.mount".source = "/dev/null";
+
+#  # Optional: health-check + remount timer
+#  systemd.services.nfs-remount = {
+#    description = "Check and remount NFS share if unreachable";
+#
+#    # XXX: to ensure it waits for the network and targets the correct mount.
+#    wantedBy = [ "multi-user.target" ]; # Optional: ensures it's part of boot sequence
+#    after = [ "network-online.target" ]; # Waits for network to be ready. Ensures this service runs only after the network is fully initialized (especially important for WiFi or delayed DHCP).
+#    wants = [ "network-online.target" ];
+#
+#    serviceConfig = {
+#      Type = "oneshot";
+#      ExecStart = pkgs.writeShellScript "check-nfs" ''
+#        #!/usr/bin/env bash
+#        set -eu
+#
+#        MOUNTPOINT="/mnt/nfsshare2"
+#
+#        # Ensure mountpoint exists
+#        if [ ! -d "$MOUNTPOINT" ]; then
+#          echo "[$(date)] Creating mountpoint: $MOUNTPOINT"
+#          mkdir -p "$MOUNTPOINT"
+#        fi
+#
+#        # Check if NFS is mounted
+#        if ! mountpoint -q "$MOUNTPOINT"; then
+#          echo "[$(date)] Not mounted. Trying to mount..."
+#          mount "$MOUNTPOINT"
+#          exit 0
+#        fi
+#
+#        # Check if accessible
+#        if ! timeout 5 ls "$MOUNTPOINT" &>/dev/null; then
+#          echo "[$(date)] Mount unreachable. Remounting..."
+#          umount -f "$MOUNTPOINT" || umount -l "$MOUNTPOINT"
+#          mount "$MOUNTPOINT"
+#        else
+#          echo "[$(date)] NFS OK"
+#        fi
+#      '';
+#
+#      # Tells systemd this service depends on that mount path being available, and will fail gracefully if it’s not.
+#      RequiresMountsFor = "/mnt/nfsshare2"; # Ensures mount is targeted.
+#
+#    }; # End of systemd.services.nfs-remount.serviceConfig = { ... };
+#  };
+#
+#  # Timer to run the above check periodically
+#  systemd.timers.nfs-remount = {
+#    description = "Periodic NFS remount check";
+#    wantedBy = [ "timers.target" ];
+#    timerConfig = {
+#      OnBootSec = "2m";
+#      OnUnitActiveSec = "5m";
+#      AccuracySec = "30s";
+#    };
+#  };
 
 }

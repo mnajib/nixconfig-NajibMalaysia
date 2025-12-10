@@ -1,44 +1,74 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
+# profiles/nixos/hosts/sumayah/configuration.nix
+#
+# Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 {
   config, pkgs,
+  lib,
   inputs, outputs, # Need for home-manager ?
   ...
 }:
 let
   commonDir = "../../common";
   hmDir = "../../../home-manager/users";
+  hostName = "sumayah";
+  stateVersion = "24.11";
 in
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+  in [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./zfs.nix
+    inputs.home-manager.nixosModules.home-manager
+    #./turn-off-rgb.nix
+    #./grafito.nix
 
-      inputs.home-manager.nixosModules.home-manager
+    (fromCommon "configuration.FULL.nix")
+    #(fromCommon "configuration.MIN.nix")
+    #(fromCommon "locale.nix")
+    #(fromCommon "session.nix")
 
-      ./turn-off-rgb.nix
+    (fromCommon "console-keyboard-dvorak.nix")
+    (fromCommon "keyboard-with-msa.nix")
+    (fromCommon "users-a-wheel.nix")
+    (fromCommon "users-naqib-wheel.nix")
+    (fromCommon "users-najib.nix")
+    (fromCommon "users-julia.nix")
+    (fromCommon "users-naim.nix")
+    (fromCommon "users-nurnasuha.nix")
+    #(fromCommon "users-anak2.nix")
 
-      (./. + "/${commonDir}/users-a-wheel.nix")
-      (./. + "/${commonDir}/users-najib.nix")
-      (./. + "/${commonDir}/users-naqib-wheel.nix")
-      (./. + "/${commonDir}/users-naim.nix")
-      (./. + "/${commonDir}/users-nurnasuha.nix")
-      (./. + "/${commonDir}/users-julia.nix")
+    (fromCommon "nfs-client-automount.nix")
+    (fromCommon "samba-client.nix")
+    (fromCommon "zramSwap.nix")
+    (fromCommon "nix-garbage-collector.nix")
+    (fromCommon "flatpak.nix")
+    (fromCommon "opengl.nix")
+    (fromCommon "xdg.nix")
+    (fromCommon "window-managers.nix")
+    (fromCommon "desktops-xorg.nix")
+    #(fromCommon "3D.nix")
+  ];
 
-      (./. + "/${commonDir}/nfs-client-automount.nix")
-      (./. + "/${commonDir}/zramSwap.nix")
-
-      #(./. + "/${commonDir}/xmonad.nix")
-      (./. + "/${commonDir}/window-managers.nix")
-    ];
+  # Test if the module is available
+  #assertions = [
+  #  {
+  #    assertion = self ? nixosModules.grafito;
+  #    message = "grafito module not found in flake outputs";
+  #  }
+  #];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  #boot.kernelPackages = pkgs.linuxPackages_latest; # disable this because marked broken with zfs
+  boot.supportedFilesystems =        [ "ext4" "btrfs" "xfs" "vfat" "ntfs" ];
 
-  networking.hostName = "sumayah"; #"nixos"; # Define your hostname.
+  networking.hostId = "f6c93a24"; # required by zfs
+  #networking.hostName = "sumayah"; #"nixos"; # Define your hostname.
+  networking.hostName = "${hostName}"; #"nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -47,6 +77,8 @@ in
 
   # Enable networking
   networking.networkmanager.enable = true;
+  systemd.services.NetworkManager-wait-online.enable = false;
+  programs.nm-applet.enable = true;
 
   # Set your time zone.
   time.timeZone = "Asia/Kuala_Lumpur";
@@ -54,32 +86,34 @@ in
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "ms_MY.UTF-8";
-    LC_IDENTIFICATION = "ms_MY.UTF-8";
-    LC_MEASUREMENT = "ms_MY.UTF-8";
-    LC_MONETARY = "ms_MY.UTF-8";
-    LC_NAME = "ms_MY.UTF-8";
-    LC_NUMERIC = "ms_MY.UTF-8";
-    LC_PAPER = "ms_MY.UTF-8";
-    LC_TELEPHONE = "ms_MY.UTF-8";
-    LC_TIME = "ms_MY.UTF-8";
+  i18n.extraLocaleSettings =  {
+    LC_ADDRESS = lib.mkForce "ms_MY.UTF-8";
+    LC_IDENTIFICATION = lib.mkForce "ms_MY.UTF-8";
+    LC_MEASUREMENT = lib.mkForce "ms_MY.UTF-8";
+    LC_MONETARY = lib.mkForce "ms_MY.UTF-8";
+    LC_NAME = lib.mkForce "ms_MY.UTF-8";
+    LC_NUMERIC = lib.mkForce "ms_MY.UTF-8";
+    LC_PAPER = lib.mkForce "ms_MY.UTF-8";
+    LC_TELEPHONE = lib.mkForce "ms_MY.UTF-8";
+    LC_TIME = lib.mkForce "ms_MY.UTF-8";
   };
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  #services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.lightdm.enable = true;
+  #services.xserver.desktopManager.gnome.enable = true;
+  services.displayManager.defaultSession = "none+xmonad";
 
-  services.flatpak.enable = true;
+  #services.flatpak.enable = true;
 
   # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "dvorak";
-  };
+  #services.xserver.xkb = {
+  #  layout = "us";
+  #  variant = "dvorak";
+  #};
 
   # Configure console keymap
   console.keyMap = "dvorak";
@@ -106,7 +140,7 @@ in
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  services.hardware.openrgb.enable = true;
+  #services.hardware.openrgb.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   #users.users.a = {
@@ -127,24 +161,47 @@ in
   #  ];
   #};
 
-  home-manager = {
+  home-manager = let
+    userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}" );
+  in
+  {
     extraSpecialArgs = { inherit inputs outputs; };
     users = {
-      root = import (./. + "/${hmDir}/root/sumayah");
-      najib = import (./. + "/${hmDir}/najib/sumayah");
+      #root = import (./. + "/${hmDir}/root/${hostName}");
+      #najib = import (./. + "/${hmDir}/najib/${hostName}");
+      root = userImport "root";
+      najib = userImport "najib";
+      naqib = userImport "naqib";
     };
   };
 
-  nixpkgs.config.android_sdk.accept_license = true;
+  nix.settings.trusted-users = [ "root" "najib" "naqib" ];
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
+
+  #nixpkgs.config.allowUnfree = lib.mkForce true;
+  #nixpkgs.config.android_sdk.accept_license = lib.mkForce true;
+  hardware.enableAllFirmware = true;
+  hardware.enableRedistributableFirmware = true;
+
+  services.fstrim.enable = true;
+  services.smartd.enable = true;
 
   programs.adb.enable = true;
 
   # Install firefox.
   programs.firefox.enable = true;
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
   programs.steam.enable = true;
+
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs.xfce; [
+      thunar-archive-plugin
+      thunar-volman
+    ];
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -169,7 +226,7 @@ in
     kmonad
     discord
     htop
-    flatpak
+    #flatpak
     gimp
     freecad
     steam
@@ -177,7 +234,7 @@ in
     qbittorrent
     bottles
     zeroad-unwrapped
-    minetest
+    luanti #minetest
     firefox
     brave
     varia
@@ -187,6 +244,7 @@ in
     #barrier
 
     libreoffice
+    popcorntime
 
     telegram-desktop
     whatsie # whatsapp client
@@ -199,9 +257,11 @@ in
     #keet # (unfree) P2P chat
     mumble
 
-    openrgb-with-all-plugins
+    #openrgb-with-all-plugins
 
-    #inputs.home-manager.packages.${pkgs.system}.default # To install home-manager packages
+    inputs.home-manager.packages.${pkgs.system}.default # To install home-manager packages
+
+    radeontop
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -229,6 +289,7 @@ in
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  #system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "${stateVersion}";
 
 }
