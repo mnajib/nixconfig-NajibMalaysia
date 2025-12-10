@@ -79,8 +79,8 @@ in
 
     (fromCommon "window-managers.nix")
     #(fromCommon "xmonad.nix")
-    (fromCommon "desktops-xorg.nix")
-    #(fromCommon "desktops-wayland.nix")
+    #(fromCommon "desktops-xorg.nix")
+    (fromCommon "desktops-wayland.nix")
 
     (fromCommon "nfs-client.nix")
     #./nfs-client-automount.nix
@@ -339,7 +339,7 @@ in
   networking.networkmanager.wifi.powersave = false;
 
   systemd.watchdog.rebootTime = "10m";
-  #systemd.settings.Manager.RebootWatchdogSec = "";
+  #systemd.settings.Manager.RebootWatchdogSec = 60*10;
 
   services.acpid.enable = true; # XXX: not tested yet
   hardware.acpilight.enable = true; # XXX: not tested yet
