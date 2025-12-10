@@ -1,0 +1,177 @@
+" ~/.config/nvim/init.vim
+" Required poppler-utils
+set nocompatible
+set ruler
+set nowrap
+set bs=2
+set nobackup
+set nowritebackup
+set noswapfile
+set tabstop=8
+set shiftwidth=2
+set sidescroll=1
+set showmode
+set autoindent
+set ttyfast
+set visualbell
+set laststatus=2
+set statusline=%F\ %m%r%h%w\ (%{&ff})\ [Line:%l\ (%p%%)\ /\ Column:%v]
+set modeline
+set ignorecase
+set background=dark
+
+" Custom color scheme based on cookcd.rb.html
+highlight clear
+syntax reset
+let g:colors_name = "mycookcd"
+
+" Base colors
+highlight Normal       guifg=#f5deb3 guibg=#000000 ctermfg=15 ctermbg=0
+highlight Comment      guifg=#80a0ff ctermfg=12
+highlight Constant     guifg=#ffa0a0 ctermfg=9
+highlight String       guifg=#ffa0a0 ctermfg=9
+highlight Number       guifg=#ffa0a0 ctermfg=9
+highlight Identifier   guifg=#40ffff ctermfg=14
+highlight Function     guifg=#40ffff ctermfg=14
+highlight Statement    guifg=#ff80ff ctermfg=13
+highlight PreProc      guifg=#ffff60 ctermfg=11
+highlight Type         guifg=#60ff60 ctermfg=10
+highlight Special      guifg=#ffa500 ctermfg=208
+highlight Todo         guifg=#0000ff guibg=#ffff00 ctermfg=4 ctermbg=11
+highlight StatusLine   gui=none guibg=#0000cd guifg=#00ffff cterm=none ctermbg=blue ctermfg=cyan
+
+" Key mappings
+map! <C-A> <C-O><S-^>
+map <C-A> <S-^>
+map! <C-E> <C-O><S-$>
+map <C-E> <S-$>
+
+map! <F1> <Esc>:q<CR>
+map <F1> :q<CR>
+map! <S-F1> <Esc>:q!<CR>
+map <S-F1> :q!<CR>
+
+map! <F2> <Esc>:w<CR>
+map <F2> :w<CR>
+map! <S-F2> <Esc>:w!<CR>
+map <S-F2> :w!<CR>
+
+map! <F3> <Esc>:wq<CR>
+map <F3> :wq<CR>
+map! <S-F3> <Esc>:wq!<CR>
+map <S-F3> :wq!<CR>
+
+" Syntax toggle
+if has("syntax")
+  fun! ToggleSyntaxHi()
+    if exists("g:synon") && g:synon
+      echo "Syntax: OFF"
+      syntax off
+      let g:synon = 0
+    else
+      echo "Syntax: ON"
+      syntax on
+      let g:synon = 1
+    endif
+  endfun
+  map! <F4> <C-O>:call ToggleSyntaxHi()<CR>
+  map <F4> :call ToggleSyntaxHi()<CR>
+  syntax on
+  let g:synon = 1
+endif
+
+" Buffer navigation
+map! <F5> <C-O>:hide bn<CR><C-O>:echo "Next Buffer"<CR>
+map <F5> :hide bn<CR>:echo "Next Buffer"<CR>
+map! <S-F5> <C-O>:hide bp<CR><C-O>:echo "Previous Buffer"<CR>
+map <S-F5> :hide bp<CR>:echo "Previous Buffer"<CR>
+
+" Buffer management
+map! <F6> <C-O>:ls!<CR>
+map <F6> :ls!<CR>
+map! <S-F6> <C-O>:bw<CR><C-O>:echo "Buffer deleted..."<CR>
+map <S-F6> :bw<CR>:echo "Buffer deleted..."<CR>
+
+" Search
+map! <F8> <C-O>n
+map <F8> n
+map! <S-F8> <C-O>N
+map <S-F8> N
+
+" Utility functions
+fun! ToggleWrapMargin()
+  if &wm
+    echo "Wrap Margin: OFF"
+    set wm=0
+    set textwidth=0
+  else
+    echo "Wrap Margin: ON"
+    set wm=1
+    set textwidth=75
+  endif
+endfun
+map ,w :call ToggleWrapMargin()<CR>
+
+fun! ToggleWrapLine()
+  if &wrap
+    echo "Line Wrap: OFF"
+    set nowrap
+  else
+    echo "Line Wrap: ON"
+    set wrap
+  endif
+endfun
+map ,l :call ToggleWrapLine()<CR>
+
+fun! ToggleCase()
+  if &ignorecase
+    echo "Case: Sensitive"
+    set noignorecase
+  else
+    echo "Case: Insensitive"
+    set ignorecase
+  endif
+endfun
+map ,i :call ToggleCase()<CR>
+
+fun! ReloadCurrent()
+  edit %
+endfun
+map ,r :call ReloadCurrent()<CR>
+
+" Man page viewer
+let mancall = 0
+fun! ReadManPages(...)
+  if a:0 == 1 || a:0 == 2
+    echo ""
+    let section = 0
+    let man = a:1
+    if a:0 == 2
+      let section = a:1
+      let man = a:2
+    endif
+    let nnn = g:mancall + 1
+    let g:mancall = nnn
+    let nnn = '\ (' . nnn . ')'
+    exe 'silent hide e /dev/null/Manual\ Pages\ for\ \"' . man . '\"' . nnn
+    if section == 0
+      exe "silent r!man " . man . " | col -b"
+    else
+      exe "silent r!man " . section . " " . man . " | col -b"
+    endif
+    1
+    set buftype=nofile
+    set bufhidden=hide
+    setlocal noswapfile
+    setlocal filetype=man
+    let &modified=0
+    setlocal nomodifiable
+  else
+    echo "Usage: Man section.. entry.."
+  endif
+endfun
+com! -nargs=* Man call ReadManPages(<f-args>)
+
+" PDF handling
+autocmd BufReadPre *.pdf set ro
+autocmd BufReadPost *.pdf silent %!pdftotext -layout -nopgbrk "%" - |fmt -csw78

@@ -139,7 +139,7 @@
   };
 
   #------------------------------------
-  fileSystems."/" = {
+  #fileSystems."/" = {
     #device = "/dev/mapper/crypt-d47246ca-80af-4cef-b098-29785152ce44";
     #fsType = "btrfs";
     #options = [
@@ -165,6 +165,8 @@
     #fsType = "ext4";
     #
     # nyxora (physical hardware, HP Z420)
+  #};
+  fileSystems."/" = {
     device = "MyStation/local/root";
     fsType = "zfs";
   };
@@ -184,6 +186,9 @@
       fsType = "zfs";
     };
 
+   #---------------------------------------------------------------------------
+   # Boot
+   #---------------------------------------------------------------------------
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/4237-2B9B";
       fsType = "vfat";
@@ -196,6 +201,73 @@
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
+  fileSystems."/boot3" =
+    { device = "/dev/disk/by-uuid/2CA8-8859";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
+    };
+
+
+  #---------------------------------------------------------------------------
+  # Shared Storage
+  #---------------------------------------------------------------------------
+
+  # Moved into forgejo-sqlite-nyxora.nix
+  #fileSystems."/MyTank/services" = {
+  #  device = "MyTank/services";
+  #  fsType = "zfs";
+  #};
+
+  #fileSystems."/MyTank/shared" =
+  #  { device = "MyTank/shared";
+  #    fsType = "zfs";
+  #  };
+
+  #fileSystems."/MyTank/backups" =
+  #  { device = "MyTank/backups";
+  #    fsType = "zfs";
+  #  };
+
+  #fileSystems."/MyTank/backups/snapshots" =
+  #  { device = "MyTank/backups/snapshots";
+  #    fsType = "zfs";
+  #  };
+
+  # Set self-mounted by zfs
+  #fileSystems."/MyTank/backups/offsite" =
+  #  { device = "MyTank/backups/offsite";
+  #    fsType = "zfs";
+  #  };
+
+  #fileSystems."/MyTank/shared/projects" =
+  #  { device = "MyTank/shared/projects";
+  #    fsType = "zfs";
+  #  };
+
+  #fileSystems."/MyTank/backups/archives" =
+  #  { device = "MyTank/backups/archives";
+  #    fsType = "zfs";
+  #  };
+
+  #fileSystems."/MyTank/shared/media" =
+  #  { device = "MyTank/shared/media";
+  #    fsType = "zfs";
+  #  };
+
+  #fileSystems."/MyTank/shared/users" =
+  #  { device = "MyTank/shared/users";
+  #    fsType = "zfs";
+  #  };
+
+  #fileSystems."/MyTank/backups/offsite/Garden-home" =
+  #  { device = "MyTank/backups/offsite/Garden-home";
+  #    fsType = "zfs";
+  #  };
+
+
+  #----------------------------------------------------------------------------
+  # Swaps
+  #----------------------------------------------------------------------------
   swapDevices =  [
     #{ device = "/dev/disk/by-uuid/54a11355-d334-46c5-8cbb-43369d08fd8a"; } # swap on 500GB HD. This HDD is failing
     #{ device = "/dev/disk/by-uuid/600ebd52-edd2-4c42-b3b1-b8d8a6cb5acf"; } # swap partition on 254GB SSD
@@ -215,8 +287,12 @@
     #}
 
     # nyxora (physically on Z420)
-    { device = "/dev/disk/by-uuid/cd472af8-a300-4c06-8c53-b26710f16397"; }
-    { device = "/dev/disk/by-uuid/12e7efc0-480c-4960-be2a-8a7ce64db443"; }
+    #{ device = "/dev/disk/by-uuid/cd472af8-a300-4c06-8c53-b26710f16397"; }
+    #{ device = "/dev/disk/by-uuid/12e7efc0-480c-4960-be2a-8a7ce64db443"; }
+    #{ device = "/dev/disk/by-uuid/f8df46f9-f349-4dfe-9880-87f67dbf52e2"; }
+
+    { device = "/dev/disk/by-id/ata-WDC_WD10JPVX-08JC3T6_WD-WX71AB6RKVV1-part6"; }
+    #{ device = "/dev/disk/by-uuid/271a21a1-fd81-4a15-9a5f-937174204363"; }
 
   ];
 

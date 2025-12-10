@@ -5,10 +5,14 @@
 let
   name = "Muhammad Naqib Bin Muhammad Najib";
   email = "m.naqib.bin.m.najib@gmail.com";
+  #githubUsername = "";
+  commonDir = "../../common";
 in
 {
   # You can import other home-manager modules here
-  imports = [
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+  in [
     # If you want to use modules your own flake exports (from modules/home-manager):
     # outputs.homeManagerModules.example
 
@@ -20,16 +24,20 @@ in
     #../neovim/lazyvim.nix
     #../neovim # NOTE: Commented because I decided to set neovim per user per host configuration
 
-    ../common-configs.nix
-    ../common-packages.nix
+    (fromCommon "common-configs.nix")
+    (fromCommon "common-packages.nix")
 
-    ../roblox.nix
+    #../roblox.nix
     #../wesnoth.nix
     #./system-benchmark.nix
     #./minecraft.nix
-    ../youtube.nix
-    ../evince.nix
-    ../time-management.nix
+
+    (fromCommon "youtube.nix")
+    (fromCommon "evince.nix")
+    (fromCommon "time-management.nix")
+    (fromCommon "desktop-apps.nix")
+
+    (fromCommon "repo-bootstrap.nix")
   ];
 
   nixpkgs = {
@@ -66,6 +74,9 @@ in
     username = "naqib";
     homeDirectory = "/home/naqib";
   };
+
+  programs.repo-bootstrap.enable = true;
+  programs.repo-bootstrap.basePath = "~/src";
 
   # Add stuff for your user as you see fit:
   home.packages = with pkgs; [
@@ -132,7 +143,7 @@ in
 
     godot_4
     gdtoolkit_4
-    godot_4-export-templates
+    godot_4-export-templates-bin
 
     #firefox
     #brave
@@ -147,7 +158,7 @@ in
     #haskellPackages.yi # marked as broken
 
     #zeroad
-    minetest
+    luanti #minetest
     _4d-minesweeper
 
     fluxbox                             # need fbsetroot to set desktop background color

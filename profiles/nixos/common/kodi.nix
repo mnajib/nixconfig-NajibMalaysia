@@ -39,7 +39,7 @@
       kodi-six
       kodi-platform
       joystick
-      jellyfin
+      #jellyfin
       dateutil
       websocket
       pdfreader

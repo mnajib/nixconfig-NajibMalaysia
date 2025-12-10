@@ -33,9 +33,9 @@ in
     '';
   }; # End nix = { ... };
 
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
+  #nixpkgs.config = {
+  #  allowUnfree = true;
+  #};
 
   imports = let
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
@@ -126,6 +126,7 @@ in
     #(./. + "/${commonDir}/forgejo-sqlite.nix")
     #(fromCommon "forgejo-sqlite.nix")
     (fromCommon "forgejo-sqlite-nyxora.nix")
+    (fromCommon "/services/postgresql-nyxora.nix")
 
     #./hosts2.nix
 
@@ -155,6 +156,9 @@ in
     #./ai.nix
 
     #./tenda-usb-wifi-dongle.nix
+
+    (fromCommon "window-managers.nix")
+    (fromCommon "qemu.nix")
   ];
 
   home-manager = {
@@ -189,6 +193,11 @@ in
 
   systemd.services.NetworkManager-wait-online.enable = false;
 
+  networking.bridges.br0.interfaces = [ "enp8s0f0" ]; # for qemu vm
+  networking.interfaces.br0.useDHCP = true;
+  networking.interfaces.enp8s0f0.useDHCP = false;
+  networking.bridges.br1.interfaces = [ ]; # for qemu vm
+
   #--------------------------------------------------------
   boot.loader = {
     systemd-boot.enable = true;
@@ -201,7 +210,7 @@ in
       efiSupport = true;
       enableCryptodisk = true;
       copyKernels = true;
-      useOSProber = false; #true;
+      useOSProber = true;
       timeoutStyle = "menu";
       memtest86.enable = true;
 
@@ -224,40 +233,51 @@ in
           ];
           path = "/boot2";
         }
+        {
+          devices = [
+            #"/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
+            "/dev/disk/by-id/wwn-0x5000c5003fe08743-part2"  # "/dev/disk/by-id/ata-ST3500413AS_Z2ALGCNL-part2"
+          ];
+          path = "/boot3";
+        }
       ];
 
       devices = [
-        #"/dev/disk/by-id/wwn-0x5000c500a837f420" # 500GB HDD from sakinah
-        #"/dev/disk/by-id/wwn-0x5000039fe7c9db77" # HDD from HP ProDesk Naqib
-        #"/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi0"
         "/dev/disk/by-id/wwn-0x5000c500a837f420"
         "/dev/disk/by-id/wwn-0x50014ee65ba9826e"
+        "/dev/disk/by-id/wwn-0x5000c5003fe08743"
       ];
 
     }; # End boot.loader.grub
   }; # End boot.loader
 
-  boot.initrd.availableKernelModules = [
-    "ehci_pci" "ahci" "xhci_pci" "ata_piix" "usbhid" "usb_storage" "sd_mod" "mpt3sas"
-    "uhci_hcd" "firewire_ohci" "sr_mod" "sdhci_pci"
-    "ums_realtek"
-    "mpt3sas"
-  ];
-  boot.initrd.kernelModules = [
-    "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs"
-    #"ntfs"
-    "kvm-intel"
-  ];
-  boot.initrd.supportedFilesystems = [
-    "ext4" "btrfs" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid"
-    "zfs"
-    #"bcachefs"
-    #"ntfs"
-  ];
+  boot.initrd = {
+    availableKernelModules = [
+      "sym53c8xx"
+      "ehci_pci" "ahci" "xhci_pci" "ata_piix" "usbhid" "usb_storage" "sd_mod" "mpt3sas"
+      "uhci_hcd" "firewire_ohci" "sr_mod" "sdhci_pci"
+      "ums_realtek"
+      "mpt3sas"
+      "ata_generic" #"iscsi"
+    ];
+    kernelModules = [
+      "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs"
+      #"ntfs"
+      "kvm-intel"
+    ];
+    supportedFilesystems = [
+      "ext4" "btrfs" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid"
+      "zfs"
+      #"bcachefs"
+      #"ntfs"
+    ];
 
-  boot.initrd.postDeviceCommands = lib.mkAfter ''
-    zfs rollback -r MyStation/local/root@blank
-  '';
+    #postDeviceCommands = lib.mkAfter ''
+    #
+    #postMountCommands =  ''
+    #  zfs rollback -r MyStation/local/root@blank
+    #'';
+  };
 
   #
   # NOTE:
@@ -294,6 +314,12 @@ in
     #"snd-ca0106"
     #"8821cu" # usb wifi dongle. now in separate file tenda-usb-wifi-dongle.nix
   ];
+
+  # Only if you are an advanced user and are seeing scheduling issues:
+  # The default Linux kernel is usually optimal for desktop use.
+  #boot.kernel.sysctl = {
+  #  "kernel.sched_latency_ns" = 4000000;
+  #};
 
   boot.supportedFilesystems = [
     "ext4" "btrfs" "xfs" "vfat"
@@ -406,8 +432,14 @@ in
   #xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # OR enable gnome desktopManager
 
   # Disable all power/screen saver; leave it to tv hardware
-  #powerManagement.enable = true;
-  #powerManagement.powertop.enable = true;
+  powerManagement = {
+    enable = true;
+    #powertop.enable = true;
+    cpuFreqGovernor = "performance";
+  };
+
+  services.thermald.enable = true;
+
   #services.upower.enable = true;
   #services.tlp.enable = true;
   #services.power-profiles-daemon.enable = false;
@@ -421,8 +453,8 @@ in
 
   environment.systemPackages = with pkgs; [
   #environment.systemPackages = [
-    #pkgs.blender
-    #pkgs.virtualboxWithExtpack
+    #blender
+    #virtualboxWithExtpack
 
     # use in wayland
     gnome-randr
@@ -435,9 +467,13 @@ in
 
     usb-modeswitch
     usb-modeswitch-data
+
+    nvtopPackages.full
+    cudatoolkit
+    pciutils
   ];
 
-  nixpkgs.config.android_sdk.accept_license = true;
+  #nixpkgs.config.android_sdk.accept_license = true;
 
   services.udev.packages = [
     pkgs.android-udev-rules

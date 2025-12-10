@@ -1,103 +1,95 @@
+-- ~/.config/nvim/init.lua
 
+-- Enable italics for terminal (place at top of file)
+--vim.cmd([[
+--  let &t_ZH = "\e[3m"
+--  let &t_ZR = "\e[23m"
+--]])
+--
+--vim.o.t_ZH = "\27[3m"
+--vim.o.t_ZR = "\27[23m"
 
+vim.opt.termguicolors = true
+vim.opt.background = "dark"
+vim.cmd("syntax enable")
 
--- -----------------------------------------------------------------------
-local function reload_nvim_config()
-  -- Clear all loaded Lua modules to force reloading them
-  for name, _ in pairs(package.loaded) do
-    if name:match("^user") or name:match("^plugins") then  -- Adjust to match your config structure
-      package.loaded[name] = nil
-    end
-  end
+vim.cmd("colorscheme desert") -- you can try 'default', 'elflord', etc.
 
-  -- Reload the init.lua (or init.vim)
-  dofile(vim.env.MYVIMRC)
+vim.opt.compatible = false
+vim.opt.ruler = true
+vim.opt.wrap = false
+vim.opt.backspace = { 'indent', 'eol', 'start' }
+vim.opt.backup = false
+vim.opt.writebackup = false
+vim.opt.swapfile = false
 
-  print("Neovim configuration reloaded!")
+--vim.opt.tabstop = 8
+--vim.opt.shiftwidth = 2
+--vim.opt.autoindent = true
+--
+vim.opt.tabstop = 2           -- number of columns occupied by a tab
+vim.opt.softtabstop = 2           -- see multiple spaces as tabstops so <BS> does the right thing
+vim.opt.shiftwidth = 2            -- width for autoindents
+vim.opt.expandtab = true               -- converts tabs to white space
+vim.opt.autoindent = true              --indent a new line the same amount as the line just typed
+
+vim.opt.sidescroll = 1
+vim.opt.showmode = true
+vim.opt.ttyfast = true
+vim.opt.visualbell = true
+vim.opt.laststatus = 2
+vim.opt.statusline = "%F %m%r%h%w (%{&ff}) [Line:%l (%p%%) / Column:%v]"
+vim.opt.modeline = true
+vim.opt.background = "dark"
+--vim.opt.number = true
+
+-- GUI specific (optional)
+if vim.fn.has("gui_running") == 1 then
+  vim.opt.lines = 30
+  vim.opt.columns = 80
+  vim.opt.mousehide = true
+  vim.opt.guifont = "LucidaTypeWriter:h10"
+  vim.opt.guioptions = vim.opt.guioptions - 'T'
 end
 
--- Create a user command to trigger the reload
-vim.api.nvim_create_user_command("ReloadConfig", reload_nvim_config, {})
--- Now, when you need to reload the config, simply run:
--- :ReloadConfig
+-- ----------------------------------------------------------------------------
+-- Show invisible characters
+vim.opt.list = true
+vim.opt.listchars = {
+  trail = "█",
+  tab = ">-",
+  extends = "»",
+  precedes = "«",
+  nbsp = "•"
+}
 
--- Optionally, can configure keybinding to reload config quickly
-vim.keymap.set("n", "<leader>r", ":ReloadConfig<CR>", { noremap = true, silent = true })
--- Now, pressing <leader>r will reload your Neovim configuration instantly.
--- -----------------------------------------------------------------------
+-- ----------------------------------------------------------------------------
+-- Load SkyWizard colorscheme
+--require("theme.skywizard")
+require("theme.skywizardb")
+-- require("theme.NajibMalaysia")
 
-
-
--- -----------------------------------------------------------------------
--- Enable absolute line numbers for the current line
-vim.wo.number = true
-
--- Enable relative line numbers for other lines
--- vim.wo.relativenumber = true
-
--- Set the width of the number column (optional)
--- vim.wo.numberwidth = 4  -- Adjust as needed for your line numbers
--- -----------------------------------------------------------------------
-
-
-
--- -----------------------------------------------------------------------
--- To Switch Between 256 Colors and ANSI Colors
-local function set_color_mode()
-  -- Detect the TERM environment variable
-  -- local term = vim.env.TERM
-  local term = os.getenv("TERM")
-
-  -- if term:match("*256color") then
-  --if term:match("256color") then
-  --  vim.opt.termguicolors = true  -- Enable 24-bit colors
-  --  vim.cmd("colorscheme gruvbox8")  -- Example: 256-color theme
-  --  -- vim.cmd("colorscheme default")
-  --elseif term == "xterm" then
-  --  vim.opt.termguicolors = true  -- Fallback to basic 16 colors
-  --  -- vim.cmd("colorscheme default") -- Example: ANSI theme
-  --  vim.cmd("colorscheme gruvbox8") -- Example: ANSI theme
-  --elseif term == "linux" then
-  if term == "linux" then
-    vim.opt.termguicolors = false  -- Fallback to basic 16 colors
-    vim.cmd("colorscheme default") -- Example: ANSI theme
-    --vim.cmd("colorscheme gruvbox8") -- Example: ANSI theme
-    vim.opt.t_Co = 8
+-- ----------------------------------------------------------------------------
+-- Optional keymaps (can be moved to separate Lua module)
+vim.keymap.set('i', '<F1>', '<Esc>:q<CR>')
+vim.keymap.set('n', '<F1>', ':q<CR>')
+vim.keymap.set('i', '<S-F1>', '<Esc>:q!<CR>')
+vim.keymap.set('n', '<S-F1>', ':q!<CR>')
+vim.keymap.set('i', '<F2>', '<Esc>:w<CR>')
+vim.keymap.set('n', '<F2>', ':w<CR>')
+vim.keymap.set('i', '<F3>', '<Esc>:wq<CR>')
+vim.keymap.set('n', '<F3>', ':wq<CR>')
+vim.keymap.set('n', '<F4>', function()
+  if vim.g.synon == 1 then
+    vim.cmd("syntax off")
+    vim.g.synon = 0
+    print("Syntax: OFF")
   else
-    vim.opt.termguicolors = true  -- Enable 24-bit colors
-    -- vim.cmd("colorscheme gruvbox8")  -- Example: 256-color theme
-    vim.cmd("colorscheme default")
---  else
---    print("Unknown TERM: " .. term .. ", defaulting to ANSI colors.")
---    vim.opt.termguicolors = false
---    vim.cmd("colorscheme default")
---    -- vim.cmd("colorscheme gruvbox8")
+    vim.cmd("syntax on")
+    vim.g.synon = 1
+    print("Syntax: ON")
   end
---
-end
--- vim.opt.termguicolors = true  -- Fallback to basic 16 colors
---vim.cmd("colorscheme gruvbox8") -- Example: ANSI theme
---
--- Run the function on startup
-set_color_mode()
---
--- Optional: Create a command to manually switch color modes
-vim.api.nvim_create_user_command("ReloadColors", set_color_mode, {})
--- Now, when you nedd to switch color modes, simply run:
--- :ReloadColors
--- -----------------------------------------------------------------------
+end)
+vim.g.synon = 1
+vim.cmd("syntax on")
 
-
-
--- -----------------------------------------------------------------------
--- Highlight settings for line numbers
--- vim.cmd([[highlight LineNr ctermfg=11 ctermbg=237]])
--- vim.cmd([[highlight LineNr guifg=#525252 guibg=#333333]])
-
-
-
--- -----------------------------------------------------------------------
--- require('orgmode').setup({
---   org_agenda_files = {'~/orgfiles/**/*'}, -- for multiple, separate it with ','
---   org_default_notes_file = '~/orgfiles/refile.org',
--- })

@@ -6,9 +6,15 @@ let
   forgejo_stateDir = "/MyTank/services/forgejo"; # "/mnt/data/forgejo";
 in
 {
+  fileSystems."/MyTank/services" = {
+    device = "MyTank/services";
+    fsType = "zfs";
+  };
+
   #users.users.git = {
   users.users.${forgejo_user} = {
     isSystemUser = true;
+    uid = 984;
     #group = "git";
     #group = "forgejo";
     group = forgejo_group;
@@ -17,7 +23,14 @@ in
     createHome = true;
   };
   #users.groups.git = {};
-  users.groups.${forgejo_group} = {};
+  users.groups = {
+    ${forgejo_group} = {
+      gid = 981;
+      #members = [
+      #  ${forgejo_group}
+      #];
+    };
+  };
 
   services.forgejo = {
     enable = true;
@@ -65,7 +78,15 @@ in
   # Need to mount the my zfs storage first
   systemd.services.forgejo = {
     after = [
-      "mnt-data.automount"
+      "MyTank-services.mount"
+      "zfs-mount.service"
+      #"mnt-data.automount"
+    ];
+
+    # Explicit requires → PostgreSQL won’t even try to start if the mount isn’t there.
+    requires = [
+      "MyTank-services.mount"
+      #"MyTank-services-postgresql.mount"
     ];
   };
 
