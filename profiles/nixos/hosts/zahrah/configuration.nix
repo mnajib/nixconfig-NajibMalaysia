@@ -1,6 +1,19 @@
 # vim: set ts=2 sw=2 expandtab nowrap number:
 
-{ pkgs, config, lib, ... }:
+{
+  pkgs, config,
+  lib,
+  inputs, outputs,
+  modulesPath,
+  # host, home, vars,
+  ...
+}:
+let
+  hostName = "zahrah";
+  commonDir = "../../common";
+  hmDir = "../../../home-manager/users";
+  stateVersion = "25.05";
+in
 {
   nix = {
     #package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
@@ -9,80 +22,97 @@
     '';
     settings = {
       max-jobs = 2;
-      trusted-users = [ "root" "najib" "naim" ];
+      trusted-users = [
+        "root" "najib"
+        "naqib"
+        #"a" "abdullah"
+      ];
     };
   };
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    #allowBroken = true;
-    #cudaSupport = true;
-  };
+  #nixpkgs.config = {
+  #  allowUnfree = true;
+  #  #allowBroken = true;
+  #  #cudaSupport = true;
+  #};
 
-  imports = [
-    ./hardware-configuration-zahrah.nix
-    #./hardware-laptopLenovoThinkpadT410eWasteCyberjaya.nix
-    #./hardware-storageSSD001.nix
-    ./thinkpad.nix
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+  in [
+    (modulesPath + "/installer/scan/not-detected.nix")
+    (modulesPath + "/profiles/qemu-guest.nix")
+    ./disk-config.nix
+    ./hardware-configuration.nix
+    inputs.home-manager.nixosModules.home-manager
 
-    #./hosts2.nix
-    #./network-dns.nix
+    (fromCommon "thinkpad.nix")
 
     #./users-anak2.nix
-    #./users-najib.nix
-    ./users-julia.nix
-    ./users-naqib.nix
-    ./users-nurnasuha.nix
-    ./users-naim-wheel.nix
+    (fromCommon "users-a-wheel.nix")
+    #(fromCommon "users-abdullah-wheel.nix")
+    (fromCommon "users-najib.nix")
+    (fromCommon "users-julia.nix")
+    (fromCommon "users-naqib-wheel.nix")
+    (fromCommon "users-nurnasuha.nix")
+    (fromCommon "users-naim.nix")
 
-    #./nfs-client.nix
-    ./nfs-client-automount.nix
+    (fromCommon "console-keyboard-dvorak.nix")
+    (fromCommon "keyboard-kmonad.nix")
+    (fromCommon "audio-pipewire.nix")
+    (fromCommon "hardware-printer.nix")
+    (fromCommon "zramSwap.nix")
+    (fromCommon "configuration.FULL.nix")
+    (fromCommon "nix-garbage-collector.nix")
+    (fromCommon "flatpak.nix")
+    #(fromCommon "opengl.nix")
+    #(fromCommon "xdg.nix")
 
-    ./console-keyboard-dvorak.nix
-    #./keyboard-with-msa.nix
-    ./keyboard-kmonad.nix
-    ##./keyboard-without-msa.nix
+    (fromCommon "window-managers.nix")
+    #(fromCommon "xmonad.nix")
+    #./gpu-config.nix
+    ./radeon-legacy.nix
+    ./desktops.nix
 
-    #./audio-pulseaudio.nix
-    ./audio-pipewire.nix
+    (fromCommon "nfs-client.nix")
+    #./nfs-client-automount.nix
 
-    ./hardware-printer.nix
-    ./hardware-tablet-wacom.nix
-
-    ./zramSwap.nix
-
-    #./configuration.MIN.nix
-    ./configuration.FULL.nix
-
-    #./btrbk.nix
-
-    ./typesetting.nix
-
-    ./nix-garbage-collector.nix
-
-    ./flatpak.nix
-    #./emulationstation.nix # freeimage no safe?
-    ./mame.nix
-
+    #(fromCommon "mame.nix")
     #./ai.nix
-
-    ./inspircd.nix # IRC server
-    ./xdg.nix
-    ./xmonad.nix
-
-    ./opengl.nix
+    #./hardware-tablet-wacom.nix
+    #./inspircd.nix # IRC server
     #./opengl_with_vaapiIntel.nix
-
-    ./stylix.nix
-
-    ./barrier.nix
+    #./stylix.nix
+    #./barrier.nix
   ];
+
+  home-manager = let
+    userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}" );
+  in {
+    extraSpecialArgs = { inherit inputs outputs; };
+    users = {
+      # Import your home-manager configuration
+      #najib = import ../home-manager/user-najib;
+      #root = import ../home-manager/user-root;
+      #najib = import (./. + "/${hmDir}/najib/zahrah");
+      #root = import (./. + "/${hmDir}/root/zahrah");
+      root = userImport "root";
+      najib = userImport "najib";
+      naqib = userImport "naqib";
+    };
+  };
 
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   #
   networking.hostId = "4dcfcacd";
   networking.hostName = "zahrah"; # also called "tifoten"
+
+  users.users.root = {
+    initialPassword = "root123";
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINiCR5IGdvop8gCL/wdEIoZsKzLJU1jiPPhjA1UbDVrt najib@sumayah"
+    ];
+  };
 
   hardware.enableAllFirmware = true;
 
@@ -96,6 +126,9 @@
     gpu-viewer
     vulkan-tools
 
+    gnome-randr
+    foot
+
     libnotify
 
     # Haskell Tools
@@ -108,57 +141,70 @@
 
   #services.xserver.videoDrivers = [ "radeon" ];
 
-  ## To enable hardware accelerated graphics drivers, to allow most graphical applications and environments to use hardware rendering, video encode/decode acceleration, etc. 
+  services.flatpak.enable = true;
+
+  ## To enable hardware accelerated graphics drivers, to allow most graphical applications and environments to use hardware rendering, video encode/decode acceleration, etc.
   ## This option should be enabled by default by the corresponding modules, so you do not usually have to set it yourself.
   #hardware.graphics.enable = true;
 
-  #boot.loader.systemd-boot.enable = true; # gummi-boot for EFI
-  #boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.timeout = 10; # in second(s)
+  #boot.kernelParams = [
+  #  "radeon.modeset=1" # enable radeon
+  #];
+
   boot.loader.grub = {
-    enable = true;
-    #version = 2;
-    enableCryptodisk = true;
-    copyKernels = true;
-    #useOSProber = true;
-    #backgroundColor = "#7EBAE4"; # lightblue
-
-    #------------------------------------------
-    # BIOS
-    #------------------------------------------
-    devices = [
-      #"/dev/disk/by-id/wwn-0x5000c5002ea341bc"
-      #"/dev/disk/by-id/wwn-0x5000c5002ec8a164"
-      #"/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK0803806"
-      #"/dev/disk/by-id/ata-PH6-CE120-G_511190117056007159"                                # /dev/sda (120GB SSD)
-      #"/dev/disk/by-id/ata-LITEONIT_LCS-256M6S_2.5_7mm_256GB_TW0XFJWX550854255987"       # /dev/sdb (256GB SSD)
-      "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1011006"
-    ];
-    #device = "/dev/disk/by-id/ata-PH6-CE120-G_511190117056007159";
-    #device = "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1011006";
-    #efiSupport = true;
-
-    #------------------------------------------
-    # EFI
-    #------------------------------------------
-    #device = "nodev";
-    #efiSupport = true;
-    #mirroredBoots = [
-    #    {
-    #        devices = [ "/dev/disk/by-id/wwn-0x5000c5002ec8a164" ]; # /dev/sdb1
-    #        path = "/boot2";
-    #    }
-    #];
+    efiSupport = true;
+    efiInstallAsRemovable = true;
   };
 
+  boot.initrd = {
+    availableKernelModules = [
+      "sym53c8xx"
+      "ehci_pci" "ahci" "xhci_pci" "ata_piix" "usbhid" "usb_storage" "sd_mod" "mpt3sas"
+      "uhci_hcd" "firewire_ohci" "sr_mod" "sdhci_pci"
+      "ums_realtek"
+      "mpt3sas"
+      "ata_generic" #"iscsi"
+    ];
+    kernelModules = [
+      "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs"
+      #"ntfs"
+      "kvm-intel"
+    ];
+    supportedFilesystems = [
+      "ext4" "btrfs" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid"
+      "zfs"
+      #"bcachefs"
+      #"ntfs"
+    ];
 
-  boot.kernelParams = [
-    "radeon.modeset=1" # enable radeon
+    #postDeviceCommands = lib.mkAfter ''
+    #  zfs rollback -r MyStation/local/root@blank
+    #'';
+  };
+
+  boot.supportedFilesystems = [
+    "ext4" "btrfs" "xfs" "vfat"
+    "zfs"
+    #"bcachefs"
+    "ntfs"
+    "dm-crypt" "dm-snapshot" "dm-raid"
   ];
 
-  services.fstrim.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "yes";
+    };
+  };
 
-  #networking.useDHCP = false;
+  services.fstrim.enable = true;
+  services.smartd.enable = true;
+
+  #services.udev.packages = [
+  #  pkgs.android-udev-rules
+  #];
+
+  networking.useDHCP = false;
   #networking.interfaces.enp0s25.useDHCP = true;
   #networking.interfaces.wlp3s0.useDHCP = true;
 
@@ -216,10 +262,13 @@
     };
   };
 
+  systemd.services.NetworkManager-wait-online.enable = false;
+  networking.networkmanager.enable = true;
   networking.networkmanager.wifi.powersave = false;
   systemd.watchdog.rebootTime = "10m";
-  services.acpid.enable = true;
-  hardware.acpilight.enable = true;
+
+  services.acpid.enable = false; #true;
+  hardware.acpilight.enable = false; #true;
 
   services.thinkfan.enable = true;
   services.thinkfan.levels = [
@@ -282,88 +331,61 @@
 
   services.xserver.enable = true;
 
-  services.xserver.displayManager = {
-    lightdm.enable = true;
-    #sddm = {
-    #  enable = true;
-    #  wayland.enable = false;
-    #};
-    #gdm = {
-    #  enable = true;
-    #  wayland = false;
-    #};
-    #startx.enable = true;
-  };
+  #services.xserver.displayManager = {
+  #  lightdm.enable = true;
+  #};
 
   services.xserver.desktopManager = {
-    #plasma5.enable = true;
-    #plasma6.enable = true;
     gnome.enable = true;
-    #xfce.enable = true;
-    #pantheon.enable = true;
-    #enlightenment.enable = true;
-    #lumina.enable = true;
-    #mate.enable = true;
-    #cinnamon.enable = true;
     #lxqt.enable = true;
-    #lomiri.enable = true;
   };
 
+  #
+  # XXX: if using gdm; do not enable too many desktop/wm, gdm cannot scroll a long list for user to choose
+  #
   services.xserver.windowManager = {
-    #xmonad = {
-    #  enable = true;
-    #  enableContribAndExtras = true;
-    #  extraPackages = haskellPackages: [
-    #    haskellPackages.xmonad
-    #    haskellPackages.xmonad-extras
-    #    haskellPackages.xmonad-contrib
-    #    haskellPackages.dbus
-    #    haskellPackages.List
-    #    haskellPackages.monad-logger
-    #    haskellPackages.xmobar
-    #  ];
-    #};
     awesome = {
       enable = true;
     };
     berry.enable = true;
     notion.enable = true;
-    pekwm.enable = true;
+    #pekwm.enable = true;
     #qtile.enable = true;
-    ratpoison.enable = true;
-    tinywm.enable = true;
-    smallwm.enable = true;
-    yeahwm.enable = true;
-    mlvwm.enable = true;
-    leftwm.enable = true;
+    #ratpoison.enable = true;
+    #tinywm.enable = true;
+    #smallwm.enable = true;
+    #yeahwm.enable = true;
+    #mlvwm.enable = true;
+    #leftwm.enable = true;
     icewm.enable = true;
     i3.enable = true;
-    fvwm3.enable = true;
+    #fvwm3.enable = true;
     bspwm.enable = true;
     openbox.enable = true;
     #mwm.enable = true;
     #lwm.enable = true;
     jwm.enable = true;
     fluxbox.enable = true;
-    windowmaker.enable = true;
+    #windowmaker.enable = true;
     twm.enable = true;
-    spectrwm.enable = true;
+    #spectrwm.enable = true;
     wmderland.enable = true;
-    herbstluftwm.enable = true;
+    #herbstluftwm.enable = true;
 
     #hypr.enable = true;
 
-    clfswm.enable = true;
+    #clfswm.enable = true;
     #stumpwm.enable = true;
-    sawfish.enable = true;
+    #sawfish.enable = true;
     #exwm.enable = true;
 
-    "2bwm".enable = true;
+    #"2bwm".enable = true;
   };
 
   programs = {
     sway.enable = true;
     xwayland.enable = true;
+    river.enable = true;
 
     firefox.enable = false;
 
@@ -467,5 +489,6 @@
   };
 
 
-  system.stateVersion = "22.05";
+  #system.stateVersion = "${stateVersion}";
+  system.stateVersion = stateVersion;
 }

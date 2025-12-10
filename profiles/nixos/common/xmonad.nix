@@ -16,10 +16,32 @@
   ...
 }:
 {
+  imports = [
+    #./rofi.nix
+  ];
+
   environment.systemPackages = with pkgs; [
     xorg.libXinerama
     xorg.libX11
     xorg.libXrandr
+
+    #xmobar
+    haskellPackages.xmobar
+
+    trayer
+    volumeicon
+    pasystray # pulseaudio system tray
+
+    rofi
+    dmenu
+    killall
+    networkmanagerapplet
+    alacritty alacritty-theme
+    xlockmore
+
+    picom       # compositor manager; try to use picom for gromit-mpx (screen annotation) in xmonad (window manager).
+    fluxbox     # Need this because I need to use command 'fbsetroot' to set plain black background when using xmonad
+    gxmessage   # use it for display keybinding
   ];
 
   services.xserver.windowManager = {

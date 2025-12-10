@@ -2,7 +2,8 @@
 {
 
   environment.systemPackages = with pkgs; [
-    protonup
+    #protonup
+    protonup-ng
   ];
 
   environment.sessionVariables = {

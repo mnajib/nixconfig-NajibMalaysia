@@ -4,7 +4,7 @@
     description = "Muhammad Najib Bin Ibrahim";
     uid = 1001;
     isNormalUser = true;
-    #initialPassword = "password";
+    initialPassword = "password";       # XXX: !!!
     createHome = true;
     home = "/home/najib";
     #homeMode = "700"; # chmod, umask

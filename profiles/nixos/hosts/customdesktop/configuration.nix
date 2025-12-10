@@ -17,9 +17,12 @@ in
 
   nix = {
     #package = pkgs.nixFlakes;
+    distributedBuilds = true;
 
     settings = {
       #max-jobs = 2;
+      max-jobs = 0;
+      fallback = true;
       trusted-users = [
         "root" "najib"
         #"naqib"
@@ -31,13 +34,45 @@ in
 
     extraOptions = ''
       experimental-features = nix-command flakes
+      builders-use-substitutes = true
     '';
 
-  };
+    buildMachines = [
+      {
+        hostName = "nyxora";  # e.g., builder
+        system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
+        protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
+        sshUser = "najib";
+        #maxJobs = 4;  # Parallel jobs on remote (match its CPU cores)
+        #maxJobs = 6;  # Parallel jobs on remote (match its CPU cores)
+        #speedFactor = 2;  # Prioritize this builder (higher = faster perceived)
+        maxJobs = 14; #8;  # Parallel jobs on remote (match its CPU cores)
+        speedFactor = 1;#1.0; # 2;  # Prioritize this builder (higher = faster perceived)
+        supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
+        mandatoryFeatures = [];  # Enforce none unless required
+        #notes.memoryPerJob = "≈3 GB";
+        #notes.totalRAM = "64 GB";
+      }
+      {
+        hostName = "sumayah";  # e.g., builder
+        system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
+        protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
+        sshUser = "najib";
+        #maxJobs = 8;  # Parallel jobs on remote (match its CPU cores)
+        maxJobs = 6; #10;  # Parallel jobs on remote (match its CPU cores)
+        speedFactor = 2;#1.5; #2;  # Prioritize this builder (higher = faster perceived)
+        supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
+        mandatoryFeatures = [];  # Enforce none unless required
+        #notes.memoryPerJob = "≈2 GB";
+        #notes.totalRAM = "16 GB";
+      }
+    ];
 
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
+  }; # Eng nix = { ... };
+
+  #nixpkgs.config = {
+  #  allowUnfree = true;
+  #};
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
@@ -230,6 +265,11 @@ in
   #
   boot.loader = {
     timeout = 10;
+    #systemd-boot.enable = true;
+    #efi = {
+    #  #canTouchEfiVariables = true;
+    #  efiSysMountPoint = "/boot/efi";
+    #};
     grub = {
       enable = true;
       efiSupport = false;
@@ -237,8 +277,8 @@ in
       copyKernels = true;
       useOSProber = false; #true;
       devices = [
-	"/dev/disk/by-id/ata-HUA722010CLA330_43W7625_42C0400IBM_JPW9L0HZ0JD0ZC"
-	"/dev/disk/by-id/ata-WDC_WD10SPCX-75KHST0_WXU1AA60XS04"
+        "/dev/disk/by-id/ata-HUA722010CLA330_43W7625_42C0400IBM_JPW9L0HZ0JD0ZC"
+        "/dev/disk/by-id/ata-WDC_WD10SPCX-75KHST0_WXU1AA60XS04"
       ];
       memtest86.enable = true;
       timeoutStyle = "menu";
@@ -425,6 +465,8 @@ in
     # use in wayland
     gnome-randr
     foot
+
+    inputs.home-manager.packages.${pkgs.system}.default # To install (globally, instead of per user) home-manager packages
   ];
 
   #virtualisation.virtualbox.host.enable = true;
@@ -437,6 +479,7 @@ in
   home-manager = let
     userImport = user: import (./. + "/${hmDir}/${user}/${hostName}");
   in {
+    backupFileExtension = "backup";
     extraSpecialArgs = {
       inherit inputs outputs;
     };
@@ -450,5 +493,5 @@ in
   #system.stateVersion = "22.11";
   #system.stateVersion = "23.05";
   #system.stateVersion = "23.11";
-  system.stateVersion = stateVersion;
+  system.stateVersion = "${stateVersion}";
 }

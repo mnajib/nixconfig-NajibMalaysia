@@ -1,0 +1,25 @@
+-- ~/.config/nvim/lua/theme/skywizard.lua
+
+local hl = vim.api.nvim_set_hl
+
+-- Base UI
+hl(0, "Normal",        { fg = "#aaaaaa", bg = "#000000" })
+hl(0, "LineNr",        { fg = "#444444", bg = "#000000" })
+hl(0, "CursorLine",    { bg = "#1a1a1a" })
+hl(0, "CursorLineNr",  { fg = "#ffcc66", bg = "#1a1a1a", bold = true })
+hl(0, "ColorColumn",   { bg = "#111111" })
+
+-- Syntax groups (exact color codes from Ariff's HTML Vim)
+hl(0, "Comment",       { fg = "#666666", italic = true })   -- // comment
+hl(0, "String",        { fg = "#99cc99" })                  -- "hello"
+hl(0, "Number",        { fg = "#f99157" })                  -- 123
+hl(0, "Keyword",       { fg = "#cc6666", bold = true })     -- def, end, return
+hl(0, "Function",      { fg = "#81a2be" })                  -- do_something()
+hl(0, "Constant",      { fg = "#ffcc66" })                  -- TRUE, FALSE
+hl(0, "Identifier",    { fg = "#f99157" })                  -- $foo
+hl(0, "Special",       { fg = "#f99157" })                  -- special chars
+hl(0, "Type",          { fg = "#b294bb" })                  -- class, module, etc.
+
+-- Cursor
+hl(0, "Cursor",        { fg = "#000000", bg = "#cccccc" })
+

@@ -54,7 +54,8 @@
     escapeTime = 10;  # 0 # use '0' to zero-out escape time delay
     historyLimit = 10000; # 1000000
     keyMode = "vi";
-    #terminal = "screen-256color";
+    terminal = "screen-256color";
+    #terminal = "tmux-256color";
 
     prefix = "C-b";
     #shortcut = "b";                                        # Default is "b".
@@ -99,6 +100,11 @@
         set-option -ga terminal-overrides ",xterm*:Tc"
         set-option -sa terminal-features ",screen*:RGB"
         set-option -sa terminal-features ",xterm*:RGB"
+
+        # Enable italics in tmux
+        #set -g default-terminal "tmux-256color"
+        #set -ag terminal-overrides ",xterm-256color:RGB"
+        #set -ag terminal-overrides ",*:sitm=\E[3m"
       }
 
       set -g detach-on-destroy off  # Do not exit from tmux when closing a session
@@ -197,8 +203,10 @@
       #
       set -g pane-border-style 'bg=black,fg=white'
       set -g pane-active-border-style 'bg=black,fg=magenta'
-      set -g window-style  'bg=black,fg=default'
-      set -g window-active-style 'bg=black,fg=default'
+      #set -g window-style  'bg=black,fg=default'
+      #set -g window-active-style 'bg=black,fg=default'
+      set -g window-style  'bg=#000000,fg=default'
+      set -g window-active-style 'bg=#000000,fg=default'
 
       # Change colors to easier to see how many windows have open and which one is active
       set -g status-bg cyan                                 # Change the status bar background color

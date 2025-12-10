@@ -77,7 +77,7 @@ in
     #shotwell
 
     teeworlds
-    minetest
+    luanti #minetest
     #minecraft-launcher
     #minecraft-server
     openttd

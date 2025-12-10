@@ -3,6 +3,7 @@
   imports = [
     ./evince.nix
     ./tox.nix
+    ./desktop-apps.nix
     ./password-manager.nix
   ];
 
@@ -28,7 +29,7 @@
     translate-shell                # CLI translator using Google Translate, Bing Translator, ...
     whois
     #youtube-dl # insecure package
-    coreutils
+    #coreutils
     dzen2                          # A general purpose messaging, notification and menuing program for X11
     vis
     handlr
@@ -84,7 +85,8 @@
     #lumail
     aerc
     himalaya
-    deltachat-cursed
+    #deltachat-cursed
+    arcanechat-tui
 
     # GUI E-mail Client
     sylpheed
@@ -93,6 +95,7 @@
     geary
     balsa
     #deltachat-desktop             # used electron version that marked as unsecured?
+    ayugram-desktop                     # a telegram client
 
     fzy                            # CLI fuzzy finder
 
@@ -109,5 +112,7 @@
     gxmessage
 
     #timeline # Display and navigate information on a timeline
+
+    lazygit
   ];
 }
