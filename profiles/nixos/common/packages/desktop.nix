@@ -7,6 +7,7 @@
     # X11 utilities
     xorg.xmodmap xorg.xev xclip xdotool xbindkeys
     xorg.libxcvt
+    xorg.xhost
 
     # Panels & tray
     volumeicon pasystray trayer
