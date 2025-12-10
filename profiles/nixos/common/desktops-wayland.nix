@@ -15,22 +15,32 @@
   ###################################
   services.xserver.enable = true;
 
+  # lightdm
+  services.xserver.displayManager.lightdm.enable = true;
+  #
   # gdm
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland = true;
+  #services.xserver.displayManager.gdm.enable = true;
+  #services.xserver.displayManager.gdm.wayland = true;
   # OR
   # sddm
-  services.displayManager.sddm.enable = false;
-  services.displayManager.sddm.wayland.enable = false;
+  #services.displayManager.sddm.enable = false;
+  #services.displayManager.sddm.wayland.enable = false;
 
-  services.xserver.desktopManager.gnome.enable = true;
-  services.desktopManager.plasma6.enable = false;
+  services.xserver.displayManager.startx = {
+    enable = true;
+    generateScript = true;
+    #extraCommands = ''
+    #'';
+  };
+
+  #services.xserver.desktopManager.gnome.enable = true;
+  services.desktopManager.plasma6.enable = true;
 
   services.xserver.windowManager.i3.enable = true;
   services.xserver.windowManager.openbox.enable = true;
 
   programs.sway.enable = true;
-  programs.river.enable = true;
+  programs.river-classic.enable = true;
   programs.hyprland.enable = true;
   programs.xwayland.enable = true;
 
@@ -46,7 +56,7 @@
   #
   # To tell NixOS which one should win.
   # If you use GNOME more often, use seahorse/ssh-askpass (better GNOME integration, works with gnome-keyring).
-  programs.ssh.askPassword = lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
+  #programs.ssh.askPassword = lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
   # OR, If you use Plasma more often, use ksshaskpass.
   #programs.ssh.askPassword = lib.mkForce "${pkgs.ksshaskpass}/bin/ksshaskpass";
   # OR, If you want a neutral option that works in either environment, you can use x11-ssh-askpass instead of GNOME/KDE’s:
@@ -70,6 +80,16 @@
     xdg-desktop-portal-gtk
     xdg-desktop-portal-hyprland
   ];
+
+  # For problem:
+  #   error: The option programs.gnupg.agent.pinentryPackage' is defined multiple times while it's expected to be unique.
+  # cause:
+  #   the error arises because two modules (for LXQt and Plasma 6) are each defining programs.gnupg.agent.pinentryPackage, leading to a collision.
+  # To solve:
+  programs.gnupg.agent = {
+    enable = true;
+    pinentryPackage = lib.mkForce pkgs.pinentry-qt;
+  };
 
 }
 
