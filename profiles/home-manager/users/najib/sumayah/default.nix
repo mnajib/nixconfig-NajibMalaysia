@@ -1,5 +1,4 @@
-# This is your home-manager configuration file
-# Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
+# profiles/home-manager/users/najib/sumayah/default.nix
 
 { inputs, outputs, lib, config, pkgs, ... }:
 #{ lib, config, pkgs, ... }:
@@ -11,12 +10,38 @@ let
 in
 {
   # You can import other home-manager modules here
-  imports = [
+  imports = let
+    # For simple modules (no params)
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+
+    # For modules that take params
+    fromCommonWithParams = name: params: import (./. + "/${toString commonDir}/${name}") params;
+  in [
     ../default.nix
 
-    (./. + "/${commonDir}/neovim")
+    #(./. + "/${commonDir}/neovim")
+    (fromCommon "neovim")
+    #(fromCommon "helix")
+
     #(./. + "/${commonDir}/stylix.nix")
+
+    #
+    # Plain, no params, with helper function
+    #
+    # NOTE: To use different path:
+    #   programs.repo-bootstrap.enable = true;
+    #   programs.repo-bootstrap.basePath = "~/src";
+    #
+    (fromCommon "repo-bootstrap.nix")
+
+    #(import ./. + "/${commonDir}/repo-bootstrap.nix" { basePath = "~/Projects"; }) # with params, without helper function
+    #(fromCommonWithParams "repo-bootstrap.nix" { basePath = "~/Projects"; })  # with params, with helper function
+
+    (fromCommon "desktop-apps.nix")
   ];
+
+  programs.repo-bootstrap.enable = true;
+  programs.repo-bootstrap.basePath = "~/Projects";
 
   #home.username = "$USER";
   #home.homeDirectory = "/home/najib";
@@ -43,6 +68,13 @@ in
     kitty # terminal emulator
     dillo-plus # web browser but without javascript
     chisel # TCP/UDP tunnel over HTTP
+
+    #gcc
+
+    freecad
+    openscad
+    f3d
+    qcad
   ];
 
   fonts.fontconfig = {

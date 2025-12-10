@@ -31,6 +31,20 @@ in
     #xorg.libXinerama
     #xorg.libX11
     #xorg.libXrandr
+
+    polybar
+    trayer
+
+    feh
+    nitrogen
+
+    dmenu
+    rofi
+
+    ranger nnn
+
+    #xorg.xbacklight                    # use xrandr?
+    acpilight                           # use acpi? "acpilight" is a backward-compatibile replacement for xbacklight
   ];
 
   services.xserver.windowManager = {
@@ -42,6 +56,7 @@ in
     fluxbox.enable = true;
     notion.enable = true;
     herbstluftwm.enable = true;
+    bspwm.enable = true;                # A tiling window manager based on binary space partitioning
   };
 
 }

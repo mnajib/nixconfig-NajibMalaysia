@@ -19,12 +19,26 @@
   #  ##xdg-desktop-portal-kde
   #  #pkgs.xdg-desktop-portal-gnome
   #];
-  #environment.systemPackages = [
-  #  pkgs.xdg-desktop-portal-gtk
-  #  #pkgs.xdg-desktop-portal-gnome
-  #  #pkgs.flatpak
-  #  #pkgs.gnome.gnome-software
-  #];
+
+  environment.systemPackages = with pkgs; [
+    #xdg-desktop-portal-gtk
+    #xdg-desktop-portal-gnome
+    #flatpak
+    gnome-software
+
+    #flatpak-builder
+    #flatpak-xdg-utils
+    #warehouse
+    #cargo-gra
+  ];
 
   services.flatpak.enable = true;
+
+  systemd.services.flatpak-repo = {
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.flatpak ];
+    script = ''
+      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    '';
+  };
 }

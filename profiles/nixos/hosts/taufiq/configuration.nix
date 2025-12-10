@@ -5,6 +5,7 @@
   ...
 }:
 let
+
 #  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
 #    export __NV_PRIME_RENDER_OFFLOAD=1
 #    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
@@ -15,15 +16,33 @@ let
   commonDir = "../../common";
   hmDir = "../../../home-manager/users";
   stateVersion = "23.11";
-in with lib;
+
+  # Extract version info from nixpkgs
+  #   'pkgs.lib.version' gives the nixpkgs version string, e.g. "25.05pre1234".
+  #   'lib.versions.majorMinor' extracts "25.05" from "25.05pre1234".
+  #nixpkgsVersion = lib.versions.majorMinor pkgs.lib.version; # old syntax
+  #nixpkgsVersion = lib.versions.majorMinor lib.version; # new syntax
+  #hasNewLogind = lib.hasAttr "settings" (lib.optionsOf config.services.logind or {});
+  #hasNewLogind = lib.hasAttr "settings" (options.services.logind or {});
+  #hasNewLogind =
+  #  let
+  #    #opts = options.services.logind or {};
+  #    opts = lib.options.services.logind or {};
+  #  in
+  #    lib.hasAttr "settings" opts; # New syntax have 'services.logind.settings'
+
+in# with lib;
 #with host;
 {
 
   nix = {
+    #distributedBuilds = true;
     #package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
+
     extraOptions = ''
         experimental-features = nix-command flakes
     '';
+        #builders-use-substitutes = true
 
     settings = {
       trusted-users = [
@@ -32,6 +51,9 @@ in with lib;
         "naqib"
       ];
       #max-jobs = 2;
+      #max-jobs = 0;
+      #max-jobs = "auto";
+      fallback = true;
     };
 
     #bash-prompt-prefix = "";
@@ -62,16 +84,49 @@ in with lib;
     #    #];
     #  }
     #];
+
+    #buildMachines = [
+    #  {
+    #    hostName = "nyxora";  # e.g., builder
+    #    system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
+    #    protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
+    #    sshUser = "najib";
+    #    maxJobs = 14; #4;  # Parallel jobs on remote (match its CPU cores)
+    #    speedFactor = 1; #2;  # Prioritize this builder (higher = faster perceived)
+    #    supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
+    #    mandatoryFeatures = [];  # Enforce none unless required
+    #    #notes.memoryPerJob  "=3 GB";
+    #    #notes.totalRAM = "64 GB";
+    #  }
+    #  {
+    #    hostName = "sumayah";  # e.g., builder
+    #    system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
+    #    protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
+    #    sshUser = "najib";
+    #    maxJobs = 6; #4;  # Parallel jobs on remote (match its CPU cores)
+    #    speedFactor = 2;  # Prioritize this builder (higher = faster perceived)
+    #    supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
+    #    mandatoryFeatures = [];  # Enforce none unless required
+    #    #notes.memoryPerJob = "=2 GB";
+    #    #notes.totalRAM = "16 GB";
+    #  }
+    #];
+
     #max-jobs = 0; # Disable (never build on local machine, even when connecting to remote builders fails) building on local machine; only build on remote builders.
   };
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    #cudaSupport = true;                 # May cause a mass rebuild
-  };
+  #nixpkgs.config = {
+  #  allowUnfree = true;
+  #  #cudaSupport = true;                 # May cause a mass rebuild
+  #};
 
-  imports = [
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+  in [
     ./hardware-configuration.nix
+
+    #./remote-builders.nix
+    (fromCommon "remote-builders.nix")
 
     #../../common/configuration.FULL.nix
     #"${commonDir}/configuration.FULL.nix" # do not work
@@ -107,7 +162,7 @@ in with lib;
     #./anbox2.nix
     #./waydroid.nix
 
-    (./. + "/${commonDir}/3D.nix")                            # freecad, qcad, ...
+    #(./. + "/${commonDir}/3D.nix")                            # freecad, qcad, ...
     #./steam.nix                         # steam for game, blender-LTS, ...
     #./roblox.nix
     #./mame.nix
@@ -132,28 +187,42 @@ in with lib;
 
     #./nix-garbage-collector.nix
 
-    #./flatpak.nix
+    (fromCommon "flatpak.nix")
     #./appimage.nix
 
     #./walkie-talkie.nix
 
     #./ai.nix
 
-    #./opengl.nix
+    #(fromCommon "opengl.nix")
+    (fromCommon "opengl2.nix")
+    #(fromCommon "xdg-gtk.nix")
+    (fromCommon "xdg.nix")
 
-    #./stylix.nix
+    #(fromCommon "stylix.nix")
 
     # Services
     #./invidious.nix # Need postgresql
+
+    #(fromCommon "wayland.nix")
+    #(fromCommon "xmonad.nix")
+    (fromCommon "window-managers.nix")
+    #./gpu-config-wayland.nix
+    ./gpu-config-xorg.nix
+
+    (fromCommon "bluetooth.nix")
   ];
 
   home-manager = {
-    extraSpecialArgs = { inherit inputs outputs; };
+    backupFileExtension = "backup";
+    #overwriteBackup = true;
+    extraSpecialArgs = { inherit inputs outputs; }; # to pass arguments to home.nix
     users = {
       #root = import "${hmDir}/root/taufiq";
       #najib = import "${hmDir}/najib/taufiq";
-      root = import (./. + "/${hmDir}/root/taufiq");
+      #root = import (./. + "/${hmDir}/root/taufiq");
       najib = import (./. + "/${hmDir}/najib/taufiq");
+      naqib = import (./. + "/${hmDir}/naqib/taufiq");
     }; # End home-manager.users = { ... };
   }; # End home-manager = { ... };
 
@@ -251,7 +320,7 @@ in with lib;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.useOSProber = true;
   boot.loader.grub.efiSupport = true;
-  boot.loader.timeout = 300; # in seconds
+  boot.loader.timeout = 10; # in seconds
   #boot.loader.timeout = null;        # XXX: Not sure how to set null value here.
 
   #boot.loader.grub = {
@@ -338,103 +407,141 @@ in with lib;
     };
   };
 
-  hardware.nvidia = {
-    #hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
-    #hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
-
-    #hardware.nvidia.prime.sync.enable = true;
-    #hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
-
-    #hardware.nvidia.powerManagement.enable = false;
-    #hardware.nvidia.powerManagement.finegrained = false;
-    #hardware.nvidia.open = false;
-    #hardware.nvidia.nvidiaSettings = true;
-    ##hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
-    #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
-
-    # Modesetting is required.
-    modesetting.enable = true;
-
-    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-    # Enable this if you have graphical corruption issues or application crashes after waking
-    # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
-    # of just the bare essentials.
-    powerManagement.enable = false;
-
-    # Fine-grained power management. Turns off GPU when not in use.
-    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-    powerManagement.finegrained = false;
-
-    # Use the NVidia open source kernel module (not to be confused with the
-    # independent third-party "nouveau" open source driver).
-    # Support is limited to the Turing and later architectures. Full list of
-    # supported GPUs is at:
-    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
-    # Only available from driver 515.43.04+
-    # Currently alpha-quality/buggy, so false is currently the recommended setting.
-    open = false;
-
-    # Enable the Nvidia settings menu,
-    # accessible via `nvidia-settings`.
-    nvidiaSettings = true;
-
-    # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    #
-    # Refer:
-    #   https://www.nvidia.com/en-us/drivers/unix/
-    #
-    # 01:00.0 VGA compatible controller: NVIDIA Corporation GK106GLM [Quadro K2100M] (rev a1)
-    # For GK106GLM [Quadro K2100M] in Dell Precision M4800
-    # Card: Quadro K2100M --> Driver: nvidia legacy, version 390
-    #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
-    #
-    # card: nvidia gt 720 --> driver: nvidia legacy, version 470
-    #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
-    #
-    # Card:
-    package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
-  };
+#  hardware.nvidia = {
+#    #hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
+#    #hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
+#
+#    #hardware.nvidia.prime.sync.enable = true;
+#    #hardware.nvidia.modesetting.enable = true;    # enable in order to prevent tearing on nvidia.prime.sync
+#
+#    #hardware.nvidia.powerManagement.enable = false;
+#    #hardware.nvidia.powerManagement.finegrained = false;
+#    #hardware.nvidia.open = false;
+#    #hardware.nvidia.nvidiaSettings = true;
+#    ##hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
+#    #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+#
+#    # Modesetting is required.
+#    modesetting.enable = true;
+#
+#    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+#    # Enable this if you have graphical corruption issues or application crashes after waking
+#    # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
+#    # of just the bare essentials.
+#    powerManagement.enable = false;
+#
+#    # Fine-grained power management. Turns off GPU when not in use.
+#    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+#    powerManagement.finegrained = false;
+#
+#    # Use the NVidia open source kernel module (not to be confused with the
+#    # independent third-party "nouveau" open source driver).
+#    # Support is limited to the Turing and later architectures. Full list of
+#    # supported GPUs is at:
+#    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
+#    # Only available from driver 515.43.04+
+#    # Currently alpha-quality/buggy, so false is currently the recommended setting.
+#    open = false;
+#
+#    # Enable the Nvidia settings menu,
+#    # accessible via `nvidia-settings`.
+#    nvidiaSettings = true;
+#
+#    # Optionally, you may need to select the appropriate driver version for your specific GPU.
+#    #
+#    # Refer:
+#    #   https://www.nvidia.com/en-us/drivers/unix/
+#    #
+#    # 01:00.0 VGA compatible controller: NVIDIA Corporation GK106GLM [Quadro K2100M] (rev a1)
+#    # For GK106GLM [Quadro K2100M] in Dell Precision M4800
+#    # Card: Quadro K2100M --> Driver: nvidia legacy, version 390
+#    #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
+#    #
+#    # card: nvidia gt 720 --> driver: nvidia legacy, version 470
+#    #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+#    #
+#    # Card:
+#    package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+#  };
   #----------------------------------------------------------------------------
 
-  services.logind.extraConfig = "RuntimeDirectorySize=4G";    # before this it is 100% full with 1.6G tmpfs /run/user/1001
-
-  #----------------------------------------------------------------------------
-
-  services.xserver.enable = true;
-  #services.xserver.dpi = 96;
-
-  #services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
-  #services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
-  services.xserver.videoDrivers = [ "nvidia" ];
   #
-  # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`, not here.
-  ##services.xserver.videoDrivers = [ "nvidiaLegacy390" ]; #
-
-  services.xserver.displayManager.lightdm.enable = true;
-  #services.xserver.displayManager.gdm = {
-  #  enable = true;
-  #  wayland = true;
-  #};
-  services.xserver.desktopManager.gnome.enable = true;
-  services.xserver.windowManager.xmonad = {
-    enable = true;
-    enableContribAndExtras = true;
-    extraPackages = haskellPackages: [
-      haskellPackages.xmonad
-      haskellPackages.xmonad-extras
-      haskellPackages.xmonad-contrib
-      haskellPackages.dbus
-      haskellPackages.List
-      haskellPackages.monad-logger
-      haskellPackages.xmobar
-    ];
+  # Settings option for systemd-logind. See logind.conf(5) for available options.
+  #
+  #services.logind.extraConfig = "RuntimeDirectorySize=4G";    # before this it is 100% full with 1.6G tmpfs /run/user/1001
+  #
+  #services.logind =
+  #  if hasNewLogind then {
+  #    # NixOS 25.05 and newer
+  #    settings.Login = {
+  #      RuntimeDirectorySize = "4G";
+  #    };
+  #  } else {
+  #    # Older NixOS versions
+  #    extraConfig = "RuntimeDirectorySize=4G";
+  #  };
+  #
+  services.logind.settings.Login = {
+    RuntimeDirectorySize = "4G";
   };
-  services.xserver.windowManager.awesome = { enable = true; };
-  services.xserver.windowManager.fluxbox = { enable = true; };
-  services.xserver.windowManager.jwm = { enable = true; };
-  services.xserver.windowManager.herbstluftwm = { enable = true; };
-  services.xserver.windowManager.notion = { enable = true; };
-  services.displayManager.defaultSession = "none+xmonad";
+
+  #----------------------------------------------------------------------------
+
+  #xdg.portal = {
+  #  enable = true;
+  #  extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # Or -gnome, -kde, depending on your DE
+  #};
+
+#  services.xserver.enable = true;
+#  #services.xserver.dpi = 96;
+#
+#  #services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
+#  #services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
+#  #services.xserver.videoDrivers = [ "nvidia" ];
+#  services.xserver.videoDrivers = [ "nouveau" ];
+#  #
+#  # Selecting an nvidia driver has been modified for NixOS 19.03. The version is now set using `hardware.nvidia.package`, not here.
+#  ##services.xserver.videoDrivers = [ "nvidiaLegacy390" ]; #
+#
+#  #services.xserver.displayManager.lightdm.enable = true;
+#  services.xserver.displayManager.gdm = {
+#    enable = true;
+#    wayland = true;
+#  };
+#  services.xserver.desktopManager.gnome.enable = true;
+#  services.xserver.windowManager.xmonad = {
+#    enable = true;
+#    enableContribAndExtras = true;
+#    extraPackages = haskellPackages: [
+#      haskellPackages.xmonad
+#      haskellPackages.xmonad-extras
+#      haskellPackages.xmonad-contrib
+#      haskellPackages.dbus
+#      haskellPackages.List
+#      haskellPackages.monad-logger
+#      haskellPackages.xmobar
+#    ];
+#  };
+#  services.xserver.windowManager.awesome = { enable = true; };
+#  services.xserver.windowManager.fluxbox = { enable = true; };
+#  services.xserver.windowManager.jwm = { enable = true; };
+#  services.xserver.windowManager.herbstluftwm = { enable = true; };
+#  services.xserver.windowManager.notion = { enable = true; };
+#  services.displayManager.defaultSession = "none+xmonad";
+
+  #
+  # This is from imports ./gpu-config.nix
+  # Choose "nvidia";
+  #   GDM runs on Xorg (no Wayland).
+  #   Better 3D performance.
+  #   Limited to Xorg sessions (Wayland sessions will either not appear or not work).
+  # Choose "nouveau";
+  #   Works with Wayland and Xorg (but slower, no reclocking, weaker 3D performance).
+  #   Good for flexibility, testing Wayland, lighter workloads.
+  # Pick one, "nvidia" or "nouveau"
+  #
+  myGpu.driver = "nvidia";
+  #myGpu.driver = "nouveau";
 
   #----------------------------------------------------------------------------
 

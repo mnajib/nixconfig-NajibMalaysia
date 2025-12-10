@@ -1,4 +1,8 @@
 {
+  lib,
+  ...
+}:
+{
   #services.xserver.layout = "us,us,msa,msa";
   #services.xserver.xkbVariant = "dvorak,,najib,macnajib";
 
@@ -6,8 +10,8 @@
     #layout = "us";
     #variant = "dvorak";
 
-    layout = "us,us,msa";
-    variant = "dvorak,,najib";
+    layout = lib.mkForce "us,us,msa";
+    variant = lib.mkForce "dvorak,,najib";
     options = "grp:shift_caps_toggle";
     extraLayouts = {
       msa = {

@@ -50,7 +50,7 @@ in
     #./hosts2.nix
     #./network-dns.nix
 
-    #(fromCommon "users-najib.nix")
+    (fromCommon "users-najib.nix")
     (fromCommon "users-julia.nix")
     (fromCommon "users-anak2.nix")
 
@@ -77,7 +77,8 @@ in
 
     (fromCommon "zramSwap.nix")
 
-    (fromCommon "xmonad.nix")
+    #(fromCommon "xmonad.nix")
+    (fromCommon "window-managers.nix")
 
     (fromCommon "btrbk-keira.nix")
     (fromCommon "nix-garbage-collector.nix")
@@ -87,6 +88,8 @@ in
     (fromCommon "flatpak.nix")
     (fromCommon "xdg.nix")
     (fromCommon "opengl.nix")
+
+    (fromCommon "btrfs.nix")
   ];
 
   #
@@ -117,6 +120,7 @@ in
   #
 
   hardware.enableAllFirmware = true;
+  hardware.enableRedistributableFirmware = true;
 
   #boot.kernelPackages = pkgs.linuxKernel.packages.latest;
   #boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
@@ -195,6 +199,10 @@ in
   services.smartd.enable = true;
   services.fstrim.enable = true;
 
+
+  #----------------------------------------------------------------------------
+  # btrfs
+  #----------------------------------------------------------------------------
   # To list all timer:
   #   systemctl list-timers
   services.btrfs.autoScrub = {
@@ -207,6 +215,8 @@ in
     interval = "02:00";
     #interval = "*-*-*/2 03:00:00"; # ... every two days, at 03:00:00 ?
   };
+  #----------------------------------------------------------------------------
+
 
   #----------------------------------------------------------
   # Thinkpad T410 Shah Alam RM100 (price include T60)
@@ -356,5 +366,5 @@ in
     inputs.home-manager.packages.${pkgs.system}.default
   ];
 
-  system.stateVersion = stateVersion;
+  system.stateVersion = "${stateVersion}";
 }

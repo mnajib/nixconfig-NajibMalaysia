@@ -4,104 +4,15 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
-  ];
-
-  #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;	# Need to use this if want to enable zfs support.
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  boot.supportedFilesystems = [
-    "ext4" "btrfs" "xfs" "vfat" "ntfs"
-    #"zfs"
-    #"bcachefs"
-  ];
-  boot.kernelModules = [
-    "kvm-intel"
-    #"wl"
-    #"88x2bu"
-    #"8812au"
-  ];
-  boot.extraModulePackages = [
-    #config.boot.kernelPacakages.broadcom_sta
-  ];
-  boot.blacklistedKernelModules = [
-    #"intel_ips"       # Some Intel Ibex Peak based platforms support so-called
-                      # 'intelligent power sharing', which allows the CPU and
-                      # GPU to cooperate to maximize performance within a given
-                      # TDP (thermal design point).
-  ];
-  boot.kernelParams = [
-    #"module_blacklist=i915"           # intel
-    #"module_blacklist=amdgpu"         # AMD
-  ];
-
-  boot.initrd.supportedFilesystems = [
-    "ext4" "btrfs" "xfs" "vfat" "ntfs"
-    #"zfs"
-    "dm-crypt" "dm-snapshot" "dm-raid"
-  ];
-  boot.initrd.kernelModules = [
-    "dm-snapshot" "dm-crypt" "dm-raid"
-    "btrfs" "ext4" "xfs" "vfat"
-    #"zfs"
-    #"bcachefs"
-  ];
-  boot.initrd.availableKernelModules = [
-    "ehci_pci" "ahci" "firewire_ohci" "sd_mod" "sdhci_pci"
-    "xhci_pci" "usb_storage"
-    "radeon"
-  ];
-
-  #---------------------------------------------------------------------------
-  boot.initrd.luks = {
-    devices."luks-dd365d20-576c-4e9b-8685-09ed3991ad2d" = {
-      device = "/dev/disk/by-uuid/dd365d20-576c-4e9b-8685-09ed3991ad2d";
-      preLVM = true;
-    };
-  };
-
-  #---------------------------------------------------------------------------
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/9cd6f6d1-5505-480b-bda5-730816aade1b";
-    fsType = "btrfs";
-    options = [
-      "subvol=@"
-      "compress=zstd" "autodefrag"
-      #"noatime"
+  imports =
+    [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
-  };
 
-  fileSystems."/root" = {
-    device = "/dev/disk/by-uuid/9cd6f6d1-5505-480b-bda5-730816aade1b";
-    fsType = "btrfs";
-    options = [
-      "subvol=@root"
-      "compress=zstd" "autodefrag"
-    ];
-  };
+  boot.initrd.availableKernelModules = [ "uhci_hcd" "ehci_pci" "ahci" "firewire_ohci" "usb_storage" "sd_mod" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" ];
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModulePackages = [ ];
 
-  fileSystems."/home" =  {
-    device = "/dev/disk/by-uuid/9cd6f6d1-5505-480b-bda5-730816aade1b";
-    fsType = "btrfs";
-    options = [
-      "subvol=@home"
-      "compress=zstd" "autodefrag"
-    ];
-  };
-
-  #---------------------------------------------------------------------------
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/f0517fd4-eabc-420f-b14a-32383be7b866";
-    fsType = "ext4";
-  };
-
-  #---------------------------------------------------------------------------
-  swapDevices = [
-    { device = "/dev/disk/by-uuid/01f2d76f-3fd7-4c5b-a2ce-113c01c02709"; }
-  ];
-
-  #---------------------------------------------------------------------------
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
@@ -110,6 +21,6 @@
   # networking.interfaces.enp0s25.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlp3s0.useDHCP = lib.mkDefault true;
 
-  nixpkgs.hostPlatform.system = "x86_64-linux";
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

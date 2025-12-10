@@ -176,7 +176,7 @@ with lib;
     ranger
     firefox
     qutebrowser
-    floorp
+    #floorp
     libreoffice
     gimp
     unzip

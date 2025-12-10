@@ -77,17 +77,20 @@ in
     #./nvim
     #./neovim # lets put this per-user, so disable neovim here
     ./neovide
+    ./helix
 
     ./zsh.nix
     ./bash.nix # bash shell
     ./garbage-collect.nix
 
     ./git.nix
+    ./nh.nix # nix CLI helper
   ]
   ++ (builtins.attrValues outputs.homeManagerModules);
   # XXX: TODO: Should be in seperate file packages.nix
 
   nixpkgs.overlays = builtins.attrValues outputs.overlays;
+
   #nixpkgs.config = {
   #  allowUnfree = true;
   #  allowUnfreePredicate = _: true;
@@ -99,10 +102,10 @@ in
   #  pulseaudio = true;
   #};
 
-  #colorscheme = lib.mkDefault colorSchemes.dracula;
+  colorscheme = lib.mkDefault colorSchemes.dracula;
   #colorscheme = lib.mkDefault colorSchemes.nord;
   #colorscheme = lib.mkDefault colorSchemes.najib;
-  colorscheme = lib.mkDefault colorScheme;
+  #colorscheme = lib.mkDefault colorScheme;
 
   #home.sessionVariables = {
     #EDITOR = "nvim";       # yi vis nvim kak vim nano rasa jak
@@ -132,10 +135,10 @@ in
     #theme = "Space Gray Eighties";
 
     font = {
-      package = pkgs.dejavu_fonts;
+      package = lib.mkDefault pkgs.dejavu_fonts;
       #package = pkgs.jetbrains-mono;
-      name = "DejaVu Sans";
-      size = 8; #"12"; #13; # 8;
+      name = lib.mkDefault "DejaVu Sans";
+      size = lib.mkDefault 8; #"12"; #13; # 8;
     };
 
     #font = {
@@ -209,11 +212,11 @@ in
     settings = {
       colors = {
         hints = {
-          bg = "#${config.colorScheme.palette.base00}";
-          fg = "#${config.colorScheme.palette.base0F}";
+          bg = lib.mkDefault "#${config.colorScheme.palette.base00}";
+          fg = lib.mkDefault "#${config.colorScheme.palette.base0F}";
         };
         tabs.bar = {
-          bg = "#${config.colorScheme.palette.base00}";
+          bg = lib.mkDefault "#${config.colorScheme.palette.base00}";
         };
       };
       #tabs.tabs_are_windows = true;
@@ -253,14 +256,15 @@ in
     #target = ".config/qutebrowser/stylesheet/mydarkmodefix.css"; # Path to target file relative to HOME
     #target = ~/.config/qutebrowser/stylesheet/mydarkmodefix.css; # Path to target file relative to HOME
     #target = "~.config/qutebrowser/stylesheet/mydarkmodefix.css"; # Path to target file relative to HOME
-    target = "~.config/qutebrowser"; # Path to target file relative to HOME
+    target = ".config/qutebrowser"; # Path to target file relative to HOME
     #target = ".config/qutebrowser/stylesheet/"; # Path to target file relative to HOME
   };
   #xresources.extraConfig = builtins.readFile ./src/.Xresources;
 
-  programs.urxvt = {
-    enable = true;
-  };
+  # XXX: error: Package ‘urxvt-theme-switch-unstable-2014-12-21’ in /nix/store/yfzmnk75f009yb7b542kf4r7qaqq9kid-source/pkgs/applications/terminal-emulators/rxvt-unicode-plugins/urxvt-theme-switch/default.nix:27 has an unfree license (‘cc-by-nc-30’), refusing to evaluate.
+  #programs.urxvt = {
+  #  enable = true;
+  #};
 
   #programs.wezterm = {
   #  enable = true;
@@ -581,7 +585,7 @@ in
       #name = "Orchis";
 
       #package = pkgs.adwaita;
-      name = "Adwaita";
+      name = lib.mkDefault "Adwaita";
     };
     iconTheme = {
       #package = pkgs.paper-icon-theme;
@@ -590,16 +594,16 @@ in
       #package = pkgs.tela-icon-theme;
       #name = "Tela";
 
-      package = pkgs.adwaita-icon-theme;
-      name = "Adwaita";
+      package = lib.mkDefault pkgs.adwaita-icon-theme;
+      name = lib.mkDefault "Adwaita";
     };
     # Give Termite some internal spacing.
     #gtk3.extraCss = ".termite {padding: 20px;}";
   };
 
   qt = {
-    enable = false;
-    platformTheme = "gtk"; #"useGtkTheme = true;
+    enable = lib.mkDefault false;
+    platformTheme = lib.mkDefault "gtk"; #"useGtkTheme = true;
   };
 
 #------------------------------------------------------------------------------
