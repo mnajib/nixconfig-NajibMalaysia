@@ -21,6 +21,10 @@
   };
 
   inputs = {
+
+    #------------------------------------------------------
+    # nixpkgs
+    #------------------------------------------------------
     #nixpkgs-nixos.url       = "github:nixos/nixpkgs/nixos-25.05";
     #nixpkgs-stable.url      = "github:nixos/nixpkgs/nixos-25.05";
     #nixpkgs-release.url     = "github:nixos/nixpkgs/release-25.05";
@@ -32,21 +36,41 @@
 
     #nixpkgs.url            = "github:nixos/nixpkgs/nixos-25.05";
     #nixpkgs.url      = "github:nixos/nixpkgs/nixos-25.11";
-    nixpkgs.follows         = "nixpkgs-stable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
-    #nixpkgs.follows         = "nixpkgs-release"; # Make 'nixpkgs' point to nixpkgs-stable as default.
+    #nixpkgs.follows         = "nixpkgs-stable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
+    nixpkgs.follows         = "nixpkgs-release"; # Make 'nixpkgs' point to nixpkgs-stable as default.
     #nixpkgs.follows         = "nixpkgs-unstable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
     #nixpkgs.url    = "github:NixOS/nixpkgs/nixpkgs-unstable";
     #nixpkgs.url     = "github:nixos/nixpkgs/release-25.11";
+    #------------------------------------------------------
 
-    home-manager = {
+
+    #------------------------------------------------------
+    # home-manager
+    #------------------------------------------------------
+    home-manager.follows = "home-manager-stable";
+    #home-manager.follows = home-manager-version;
+
+    home-manager-unstable = {
+      url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    home-manager-stable = {
       #url = "github:nix-community/home-manager/release-25.05";
       url = "github:nix-community/home-manager/release-25.11";
-      #url = "github:nix-community/home-manager";
-      #inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs";
-      #inputs.nixpkgs.follows = "nixpkgs-stable";
-      #inputs.nixpkgs.follows = "nixpkgs-release";
     };
+
+    #
+    #home-manager = {
+    #  #url = "github:nix-community/home-manager/release-25.05";
+    #  url = "github:nix-community/home-manager/release-25.11";
+    #  #url = "github:nix-community/home-manager";
+    #  #inputs.nixpkgs.follows = "nixpkgs-unstable";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #  #inputs.nixpkgs.follows = "nixpkgs-stable";
+    #  #inputs.nixpkgs.follows = "nixpkgs-release";
+    #};
 
     # Automatically match home-manager release to nixpkgs-stable
     #home-manager = {
@@ -58,18 +82,8 @@
     #  url = "github:nix-community/home-manager/release-25.05";
     #  inputs.nixpkgs.follows = "nixpkgs-stable";
     #};
+    #------------------------------------------------------
 
-    #home-manager-unstable = {
-    #  #url = "github:nix-community/home-manager";
-    #  url = "github:nix-community/home-manager/master";
-    #  inputs.nixpkgs.follows = "nixpkgs-unstable";
-    #};
-
-    #home-manager-release = {
-    #  #url = "github:nix-community/home-manager/release-25.05";
-    #  url = "github:nix-community/home-manager/release-25.11";
-    #  inputs.nixpkgs.follows = "nixpkgs-release";
-    #};
 
     flake-parts.url = "github:hercules-ci/flake-parts";
 
@@ -115,7 +129,14 @@
       #inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
-    hyprland = {
+    hyprland.follows = "hyprland-git";
+
+    hyprland-stable = {
+      url = "github:hyprwm/Hyprland/v0.44.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    hyprland-git = {
       url = "git+https://github.com/hyprwm/hyprland?submodules=1";
       #inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs";
