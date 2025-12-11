@@ -738,6 +738,11 @@
             modules = [ ./profiles/home-manager/users/najib/maryam ];
           };
 
+          "najib@asmak" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/najib/asmak ];
+          };
+
           "najib@zahrah" = mkHome {
             system = "x86_64-linux";
             modules = [ ./profiles/home-manager/users/najib/zahrah ];
