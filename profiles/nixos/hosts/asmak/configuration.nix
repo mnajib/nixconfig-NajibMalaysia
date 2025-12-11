@@ -71,7 +71,7 @@ in
     (fromCommon "window-managers.nix")
     (fromCommon "desktops-wayland.nix")
     (fromCommon "bluetooth.nix")
-    (fromCommon "remote-builders.nix")
+    #(fromCommon "remote-builders.nix")
   ];
 
   home-manager = let
@@ -126,20 +126,39 @@ in
     #allowedUDPPorts = [ 3450 ]; # 3450 for minetest server
   };
 
+  # Create the file and allocate (storage) size for the file
+  #   sudo fallocate -l 4096M /swapfile
+  # OR
+  #   sudo dd if=/dev/zero of=/swapfile bs=1M count=4096
+  # then
+  # Set correct permissions
+  #   sudo chmod 600 /swapfile
+  # Format it as swap
+  #   sudo mkswap /swapfile
+  # Enable the swap
+  #   sudo swapon /swapfile
+  #
+  # If under zfs:
+  #   sudo zfs create -V 4G -b 4K -o compression=off rpool/swap
+  #   sudo mkswap /dev/zvol/rpool/swap
+  #   sudo swapon /dev/zvol/rpool/swap
+  #
   swapDevices = [
     {
-      device = "/swapfile";
+      #device = "/swapfile";
+      device = "/dev/zvol/tank/swap"; # for zfs
       size = 4096;
     }
   ];
 
-  services.swapspace = {
-    enable = true;
-    settings = {
-      min_swapsize = "4096m";
-      max_swapsize = "8192m";
-    };
-  };
+  # not suitable for zfs?
+  #services.swapspace = {
+  #  enable = true;
+  #  settings = {
+  #    min_swapsize = "4096m";
+  #    max_swapsize = "8192m";
+  #  };
+  #};
 
   boot.loader.timeout = 10;
   boot.loader.grub = {
