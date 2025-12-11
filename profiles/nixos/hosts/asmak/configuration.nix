@@ -72,11 +72,14 @@ in
     (fromCommon "desktops-wayland.nix")
     (fromCommon "bluetooth.nix")
     #(fromCommon "remote-builders.nix")
+
+    #inputs.home-manager.nixosModules.home-manager # tak perlu load di sini, dah load di flake.nix
   ];
 
   home-manager = let
     userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}"  );
   in {
+    backupFileExtension = "backup";
     extraSpecialArgs = { inherit inputs outputs; };
     users = {
       najib = userImport "najib";
@@ -103,6 +106,7 @@ in
     foot
     libnotify
 
+    inputs.home-manager.packages.${pkgs.system}.default
   ];
 
   # For the value of 'networking.hostID', use the following command:
