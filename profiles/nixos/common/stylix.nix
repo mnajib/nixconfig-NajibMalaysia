@@ -84,7 +84,8 @@
     sansSerif = config.stylix.fonts.monospace;
     #emoji = config.stylix.fonts.monospace;
     emoji = {
-      package = pkgs.noto-fonts-emoji;
+      #package = pkgs.noto-fonts-emoji;
+      package = pkgs.noto-fonts-color-emoji;
       #package = pkgs.noto-fonts-color-emoji;
       #package = pkgs.noto-fonts-monochrome-emoji;
       name = "Noto Color Emoji";

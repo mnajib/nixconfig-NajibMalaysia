@@ -49,7 +49,7 @@
     #------------------
 
     # ADATA SSD 256GB
-    luks.devices."luks-7a043422-67e9-4f63-8fed-fda6fdd3c107" = { device = "/dev/disk/by-uuid/7a043422-67e9-4f63-8fed-fda6fdd3c107"; preLVM = true; };   # xfs (nixos)
+    luks.devices."luks-7a043422-67e9-4f63-8fed-fda6fdd3c107" = { device = "/dev/disk/by-uuid/7a043422-67e9-4f63-8fed-fda6fdd3c107"; preLVM = true; };   # zfs (nixos)
     luks.devices."luks-202a6ed2-a6e2-4192-8592-d5b6507e8123" = { device = "/dev/disk/by-uuid/202a6ed2-a6e2-4192-8592-d5b6507e8123"; preLVM = true; };   # swap
 
     # AGI SSD 256GB
@@ -254,6 +254,7 @@
     #{ device = "/dev/disk/by-uuid/79d45678-d31b-4b39-851b-f00559ea8cc6"; }
     { device = "/dev/mapper/luks-202a6ed2-a6e2-4192-8592-d5b6507e8123"; }
     #{ device = "/dev/mapper/luks-781bbff1-508d-4287-a748-63d45d74b5e5"; }
+    { device = "/dev/mapper/luks-368181e9-e540-446e-99ba-762ecb5b1146"; }
 
     #{
     #  device = "/swap/swapfile";

@@ -1,3 +1,13 @@
+# flake.nix
+
+#
+# NOTE:
+#
+#   nix flake metadata
+# Kira semua versi nixpkgs yang dimuat turun
+#   nix flake metadata 2>&1 | grep -E "nixpkgs.*github:NixOS" | sort -u | wc -l
+#
+
 {
   description = "My NixOS Config";
 
@@ -16,13 +26,17 @@
     #nixpkgs-release.url     = "github:nixos/nixpkgs/release-25.05";
     nixpkgs-stable.url      = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-release.url     = "github:nixos/nixpkgs/release-25.11";
-    #nixpkgs-unstable.url   = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-unstable.url    = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-master.url      = "github:nixos/nixpkgs/master";
+    nixpkgs-unstable.url   = "github:NixOS/nixpkgs/nixos-unstable";
+    #nixpkgs-unstable.url    = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    #nixpkgs-master.url      = "github:nixos/nixpkgs/master";
 
     #nixpkgs.url            = "github:nixos/nixpkgs/nixos-25.05";
-    #nixpkgs.follows         = "nixpkgs-stable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
-    nixpkgs.follows         = "nixpkgs-release"; # Make 'nixpkgs' point to nixpkgs-stable as default.
+    #nixpkgs.url      = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.follows         = "nixpkgs-stable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
+    #nixpkgs.follows         = "nixpkgs-release"; # Make 'nixpkgs' point to nixpkgs-stable as default.
+    #nixpkgs.follows         = "nixpkgs-unstable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
+    #nixpkgs.url    = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    #nixpkgs.url     = "github:nixos/nixpkgs/release-25.11";
 
     home-manager = {
       #url = "github:nix-community/home-manager/release-25.05";
@@ -30,6 +44,8 @@
       #url = "github:nix-community/home-manager";
       #inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs";
+      #inputs.nixpkgs.follows = "nixpkgs-stable";
+      #inputs.nixpkgs.follows = "nixpkgs-release";
     };
 
     # Automatically match home-manager release to nixpkgs-stable
@@ -43,28 +59,34 @@
     #  inputs.nixpkgs.follows = "nixpkgs-stable";
     #};
 
-    home-manager-unstable = {
-      #url = "github:nix-community/home-manager";
-      url = "github:nix-community/home-manager/master";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+    #home-manager-unstable = {
+    #  #url = "github:nix-community/home-manager";
+    #  url = "github:nix-community/home-manager/master";
+    #  inputs.nixpkgs.follows = "nixpkgs-unstable";
+    #};
 
-    home-manager-release = {
-      #url = "github:nix-community/home-manager/release-25.05";
-      url = "github:nix-community/home-manager/release-25.11";
-      inputs.nixpkgs.follows = "nixpkgs-release";
-    };
+    #home-manager-release = {
+    #  #url = "github:nix-community/home-manager/release-25.05";
+    #  url = "github:nix-community/home-manager/release-25.11";
+    #  inputs.nixpkgs.follows = "nixpkgs-release";
+    #};
 
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
+      #inputs.nixpkgs.follows = "nixpkgs-stable";
+      #inputs.nixpkgs.follows = "nixpkgs-release";
+      #inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-1.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
+      #inputs.nixpkgs.follows = "nixpkgs-stable";
+      #inputs.nixpkgs.follows = "nixpkgs-release";
+      #inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     hardware.url = "github:NixOS/nixos-hardware/master";
@@ -85,44 +107,60 @@
 
     #stylix.url = "github:danth/stylix/release-25.05";
     stylix = {
-      url = "github:danth/stylix";
+      #url = "github:danth/stylix";
+      url = "github:danth/stylix/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
+      #inputs.nixpkgs.follows = "nixpkgs-stable";
+      #inputs.nixpkgs.follows = "nixpkgs-release";
+      #inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     hyprland = {
       url = "git+https://github.com/hyprwm/hyprland?submodules=1";
       #inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs";
+      #inputs.nixpkgs.follows = "nixpkgs-stable";
+      #inputs.nixpkgs.follows = "nixpkgs-release";
     };
 
     hyprwn-contrib = {
       url = "github:hyprwm/contrib";
       #inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs";
+      #inputs.nixpkgs.follows = "nixpkgs-stable";
+      #inputs.nixpkgs.follows = "nixpkgs-release";
     };
 
     hyprkeys = {
       url = "github:hyprland-community/hyprkeys";
       #inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs";
+      #inputs.nixpkgs.follows = "nixpkgs-stable";
+      #inputs.nixpkgs.follows = "nixpkgs-release";
     };
 
     nh = {
       url = "github:viperML/nh?ref=fe4a96a0b0b0662dba7c186b4a1746c70bbcad03";
       #inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs";
+      #inputs.nixpkgs.follows = "nixpkgs-stable";
+      #inputs.nixpkgs.follows = "nixpkgs-release";
     };
 
     sops-nix = {
       url = "github:mic92/sops-nix";
       #inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs";
+      #inputs.nixpkgs.follows = "nixpkgs-stable";
+      #inputs.nixpkgs.follows = "nixpkgs-release";
     };
 
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
       #inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs";
+      #inputs.nixpkgs.follows = "nixpkgs-stable";
+      #inputs.nixpkgs.follows = "nixpkgs-release";
     };
 
     dnsblacklist = {
@@ -130,13 +168,16 @@
       flake = false;
     };
 
-    seaweedfs.url = "github:/mitchty/nixos-seaweedfs/wip";
+    #seaweedfs.url = "github:/mitchty/nixos-seaweedfs/wip";
 
     nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
 
     nix-ld = {
       url = "github:Mic92/nix-ld";
       inputs.nixpkgs.follows = "nixpkgs";
+      #inputs.nixpkgs.follows = "nixpkgs-stable";
+      #inputs.nixpkgs.follows = "nixpkgs-release";
+      #inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
   }; # End of 'inputs = { ... };'
@@ -348,7 +389,9 @@
 
         #mkNixos = system: modules:
         #mkNixos = { system, modules, pkgsInput ? inputs.nixpkgs-stable, extraConfig ? {} }:
-        mkNixos = { system, modules, pkgsInput ? inputs.nixpkgs-release, extraConfig ? {} }:
+        #mkNixos = { system, modules, pkgsInput ? inputs.nixpkgs-release, extraConfig ? {} }:
+        #mkNixos = { system, modules, pkgsInput ? inputs.nixpkgs-unstable, extraConfig ? {} }:
+        mkNixos = { system, modules, pkgsInput ? inputs.nixpkgs, extraConfig ? {} }:
           #inputs.nixpkgs.lib.nixosSystem { # <-- Use inputs.nixpkgs
           pkgsInput.lib.nixosSystem { # <-- Use inputs.nixpkgs
           #inputs.nixpkgs-unstable.lib.nixosSystem { # <-- Use inputs.nixpkgs-unstable
@@ -379,7 +422,9 @@
         #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-unstable }: # nixpkgs-unstable as default
         #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-unstable, extraConfig ? {} }: # nixpkgs-unstable as default
         #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-stable, extraConfig ? {} }: # nixpkgs-stable as default
-        mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-release, hmInput ? inputs.home-manager-release, extraConfig ? {} }: # nixpkgs-stable as default
+        #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-release, hmInput ? inputs.home-manager-release, extraConfig ? {} }: # nixpkgs-stable as default
+        #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-release, hmInput ? inputs.home-manager, extraConfig ? {} }: # nixpkgs-stable as default
+        mkHome = { system, modules, pkgsInput ? inputs.nixpkgs, hmInput ? inputs.home-manager, extraConfig ? {} }: # nixpkgs-stable as default
           #inputs.home-manager.lib.homeManagerConfiguration {
           hmInput.lib.homeManagerConfiguration {
             pkgs = mkPkgsCommon {
@@ -515,6 +560,20 @@
           #  ./profiles/nixos/hosts/asmak/configuration.nix
           #  inputs.stylix.nixosModules.stylix
           #];
+          asmak = mkNixos {
+            system = "x86_64-linux";
+            modules = [
+              ./profiles/nixos/hosts/asmak/configuration.nix
+              inputs.home-manager.nixosModules.home-manager
+              inputs.hardware.nixosModules.lenovo-thinkpad
+              inputs.hardware.nixosModules.common-cpu-intel
+              inputs.hardware.nixosModules.common-pc-laptop-ssd
+              inputs.stylix.nixosModules.stylix
+              inputs.disko.nixosModules.disko
+            ];
+            #pkgsInput = inputs.nixpkgs-release; # override
+            #pkgsInput = inputs.nixpkgs-unstable; # override
+          };
 
           #
           ##nix run nixpkgs#nixos-anywhere -- --flake .#generic --generate-hardware-config nixos-generate-config ./hardware-configuration.nix root@nixos
