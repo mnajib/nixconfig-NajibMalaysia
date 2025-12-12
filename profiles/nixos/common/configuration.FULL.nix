@@ -389,6 +389,10 @@
     enable = true;
   };
 
+  networking.nftables.enable = true;
+  networking.firewall.enable = true;
+  networking.firewall.allowPing = true;
+
   #services.locate.enable = true; # default false
   #services.picom.enable = true; #services.compton.enable = true;
   programs.adb.enable = true;
