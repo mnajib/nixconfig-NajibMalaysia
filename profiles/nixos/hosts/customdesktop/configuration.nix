@@ -459,14 +459,14 @@ in
     enable = true;
     allowPing = true;
     allowedTCPPorts = [
-      1110  # NFS cluster
-      4045  # NFS lock manager
+      #1110  # NFS cluster
+      #4045  # NFS lock manager
 
       22 # SSH
     ];
     allowedUDPPorts = [
-      1110  # NFS client
-      4045  # NFS lock manager
+      #1110  # NFS client
+      #4045  # NFS lock manager
     ];
   };
 
