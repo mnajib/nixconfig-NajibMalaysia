@@ -2,14 +2,12 @@
 {
   environment.systemPackages = with pkgs; [
     xfe
-    clipgrab
     pcmanfm
     worker
     enlightenment.ephoto
     gtkimageview
     gthumb
     eog
-    hakuneko
     mc
     fff
     nnn
@@ -24,11 +22,16 @@
     trash-cli
     sxiv
     feh
-    koodo-reader
-    bookworm
-    foliate
-    alexandria
+
+    #clipgrab # use/require qtwebengine
+
     koreader
+    #alexandria # marked as broken
+
+    foliate
+    #bookworm # marked as broken
+    koodo-reader
+    hakuneko
   ];
 }
 

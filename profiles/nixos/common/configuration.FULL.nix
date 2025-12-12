@@ -51,12 +51,12 @@
   #nix.package = lib.mkDefault pkgs.nixVersions.latest;
 
   # Binary Cache for Haskell.nix
-  nix.settings.trusted-public-keys = [
-    "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
-  ];
-  nix.settings.substituters = [
-    "https://cache.iog.io"
-  ];
+  #nix.settings.trusted-public-keys = [
+  #  "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+  #];
+  #nix.settings.substituters = [
+  #  "https://cache.iog.io"
+  #];
 
   nix.daemonIOSchedClass = "idle";
   nix.daemonCPUSchedPolicy = "idle";
@@ -65,7 +65,7 @@
   imports = [
     ./users-najib.nix
     #./garbage-collect.nix
-    ./sqlite.nix
+    #./sqlite.nix
 
     # Check: load in per-host config
     #./xdg.nix
@@ -389,6 +389,10 @@
     enable = true;
   };
 
+  networking.nftables.enable = true;
+  networking.firewall.enable = true;
+  networking.firewall.allowPing = true;
+
   #services.locate.enable = true; # default false
   #services.picom.enable = true; #services.compton.enable = true;
   programs.adb.enable = true;
@@ -411,28 +415,28 @@
   # You can find valid values for these options in
   #   $(nix-build --no-out-link '<nixpkgs>' -A xkeyboard_config)/etc/X11/xkb/rules/base.lst
 
-  services.xserver.desktopManager.xterm.enable = false;
-  services.xserver.windowManager.xmonad = {
-    enable = true;
-    enableContribAndExtras = true;
-    extraPackages = haskellPackages: [
-      haskellPackages.xmonad
-      haskellPackages.xmonad-extras
-      haskellPackages.xmonad-contrib
-
-      haskellPackages.dbus
-      haskellPackages.List
-      haskellPackages.monad-logger
-      haskellPackages.xmobar
-    ];
-  };
-  #
-  services.xserver.windowManager.awesome = {
-    enable = true;
-    #luaModules = [
-      #pkgs.luaPackages.vicious
-    #];
-  };
+#  services.xserver.desktopManager.xterm.enable = false;
+#  services.xserver.windowManager.xmonad = {
+#    enable = true;
+#    enableContribAndExtras = true;
+#    extraPackages = haskellPackages: [
+#      haskellPackages.xmonad
+#      haskellPackages.xmonad-extras
+#      haskellPackages.xmonad-contrib
+#
+#      haskellPackages.dbus
+#      haskellPackages.List
+#      haskellPackages.monad-logger
+#      haskellPackages.xmobar
+#    ];
+#  };
+#  #
+#  services.xserver.windowManager.awesome = {
+#    enable = true;
+#    #luaModules = [
+#      #pkgs.luaPackages.vicious
+#    #];
+#  };
 
   # --------------------------------------------------------------
 

@@ -46,6 +46,8 @@ in
     ./hardware-configuration.nix
     inputs.home-manager.nixosModules.home-manager
 
+    (fromCommon "remote-builders.nix")
+
     (fromCommon "thinkpad.nix")
 
     #./users-anak2.nix
@@ -84,6 +86,8 @@ in
     #./opengl_with_vaapiIntel.nix
     #./stylix.nix
     #./barrier.nix
+
+    (fromCommon "bluetooth.nix")
   ];
 
   home-manager = let

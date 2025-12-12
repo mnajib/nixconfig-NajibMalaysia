@@ -3,6 +3,7 @@
   imports = [
     ./evince.nix
     ./tox.nix
+    ./desktop-apps.nix
     ./password-manager.nix
   ];
 
@@ -84,7 +85,8 @@
     #lumail
     aerc
     himalaya
-    deltachat-cursed
+    #deltachat-cursed
+    arcanechat-tui
 
     # GUI E-mail Client
     sylpheed

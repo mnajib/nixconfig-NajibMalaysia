@@ -71,7 +71,8 @@ in
     libreoffice
     clamav                              # scan anti-virus ?
     mindustry                           # game
-    minetest                            # game
+    luanti #minetest                            # game
+
     #audacity
     #shotcut
     #calligra                           # calligra marked unsecure because using qtwebkit

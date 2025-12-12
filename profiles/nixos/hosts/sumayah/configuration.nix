@@ -234,7 +234,7 @@ in
     qbittorrent
     bottles
     zeroad-unwrapped
-    minetest
+    luanti #minetest
     firefox
     brave
     varia

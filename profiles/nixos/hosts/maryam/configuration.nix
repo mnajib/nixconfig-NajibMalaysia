@@ -21,14 +21,17 @@ in
       experimental-features = nix-command flakes
     '';
     settings = {
-      max-jobs = 2;
+      max-jobs = 0; # 2;
       trusted-users = [
         "root" "najib"
         "naqib"
         #"a" "abdullah"
       ];
-    };
-  };
+    }; # End nix.settings = { ... };
+    daemonIOSchedClass = "idle";
+    daemonCPUSchedPolicy = "idle";
+    daemonIOSchedPriority = 7;  # 0 (high priority) .... 7 (low priority)
+  }; # End nix = { ... };
 
   #nixpkgs.config = {
   #  allowUnfree = true;
@@ -39,8 +42,8 @@ in
   imports = let
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
   in [
-    (modulesPath + "/installer/scan/not-detected.nix")
-    (modulesPath + "/profiles/qemu-guest.nix")
+    #(modulesPath + "/installer/scan/not-detected.nix")     # already do this in hardware-configuration.nix
+    #(modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
     ./hardware-configuration.nix
     inputs.home-manager.nixosModules.home-manager
@@ -60,10 +63,15 @@ in
 
     (fromCommon "console-keyboard-dvorak.nix")
     (fromCommon "keyboard-kmonad.nix")
+
     (fromCommon "audio-pipewire.nix")
     (fromCommon "hardware-printer.nix")
     (fromCommon "zramSwap.nix")
+
     (fromCommon "configuration.FULL.nix")
+    (fromCommon "sqlite.nix")
+    (fromCommon "packages/base.nix")
+
     (fromCommon "nix-garbage-collector.nix")
     (fromCommon "flatpak.nix")
     #(fromCommon "opengl.nix")
@@ -71,6 +79,8 @@ in
 
     (fromCommon "window-managers.nix")
     #(fromCommon "xmonad.nix")
+    #(fromCommon "desktops-xorg.nix")
+    (fromCommon "desktops-wayland.nix")
 
     (fromCommon "nfs-client.nix")
     #./nfs-client-automount.nix
@@ -82,6 +92,10 @@ in
     #./opengl_with_vaapiIntel.nix
     #./stylix.nix
     #./barrier.nix
+
+    (fromCommon "bluetooth.nix")
+    (fromCommon "remote-builders.nix")
+    #(fromCommon "zfs.nix")
   ];
 
   home-manager = let
@@ -94,7 +108,7 @@ in
       #root = import ../home-manager/user-root;
       #najib = import (./. + "/${hmDir}/najib/zahrah");
       #root = import (./. + "/${hmDir}/root/zahrah");
-      root = userImport "root";
+      #root = userImport "root";
       najib = userImport "najib";
     };
   };
@@ -120,8 +134,39 @@ in
     mesa
   ];
 
+  #hardware.bluetooth = {
+  #  enable = true;
+  #  powerOnBoot = true;
+  #};
+  #services.blueman = {
+  #  enable = true; # blueman-manager
+  #};
+
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 4096;
+    }
+    {
+      device = "/swapfile2";
+      size = 4096;
+    }
+  ];
+
+  services.swapspace = {
+    enable = true;
+    settings = {
+      min_swapsize = "4096m"; # 4GB
+      max_swapsize = "8192m"; # 8GB
+    };
+  };
+
   environment.systemPackages = with pkgs; [
-    radeontop # T400 zahrah have GPU: AMD ATI Mobility Radeon HD 3450/3470 (RV620/M83). May need to choose 'discrete graphic' in BIOS.
+
+    # T400 zahrah have GPU: AMD ATI Mobility Radeon HD 3450/3470 (RV620/M83). May need to choose 'discrete graphic' in BIOS.
+    # ??? Now maryam is on R61 (with display screen from T61), so it have no radeon.
+    #radeontop
+
     clinfo
     gpu-viewer
     vulkan-tools
@@ -147,9 +192,25 @@ in
   ## This option should be enabled by default by the corresponding modules, so you do not usually have to set it yourself.
   #hardware.graphics.enable = true;
 
+  # the Intel i915 driver for the GM965/GL960 still has a few known hang issues that were only fully addressed in later 6.13/6.14 kernels.
+  #boot.kernelPackages = pkgs.linuxPackages_6_17; # zfs 2.3 is marked broken in this kernel
+  #boot.kernelPackages = lib.mkForce pkgs.linuxPackages_6_18; # zfs 2.3 fixed in this kernel
+  #
+  # To check:
+  #   nix eval nixpkgs#linuxPackages_latest.kernel.version
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   boot.kernelParams = [
     #"radeon.modeset=1" # enable radeon
     #"vga=787" # set to use display resolution ... !!! hang !!!
+
+    # As R61 screen problem at bottom area, we need to force smaller display so it will not display on the problem part of the screen.
+    # Update 2025-12-06: maryam running on R61 now use screen display from T61, so no screen problem anymore.
+    #"video=LVDS-1:1280x720@60"
+
+    # to disable a problematic power‑saving feature that often triggers hangs on older Intel GPUs
+    "i915.enable_psr=0"
+    "i915.enable_fbc=0"
   ];
 
   #boot.loader.grub = {
@@ -157,7 +218,7 @@ in
   #  efiInstallAsRemovable = true;
   #};
 
-  universalBoot.enable = true;
+  #universalBoot.enable = true;
 
   boot.initrd = {
     availableKernelModules = [
@@ -169,13 +230,14 @@ in
       "ata_generic" #"iscsi"
     ];
     kernelModules = [
-      "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs"
+      "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid"
+      #"zfs"
       #"ntfs"
       "kvm-intel"
     ];
     supportedFilesystems = [
       "ext4" "btrfs" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid"
-      "zfs"
+      #"zfs"
       #"bcachefs"
       #"ntfs"
     ];
@@ -187,7 +249,7 @@ in
 
   boot.supportedFilesystems = [
     "ext4" "btrfs" "xfs" "vfat"
-    "zfs"
+    #"zfs"
     #"bcachefs"
     #"ntfs"
     "dm-crypt" "dm-snapshot" "dm-raid"
@@ -195,9 +257,9 @@ in
 
   services.openssh = {
     enable = true;
-    settings = {
-      PermitRootLogin = "yes";
-    };
+    #settings = {
+    #  PermitRootLogin = "yes";
+    #};
   };
 
   services.fstrim.enable = true;
@@ -215,22 +277,26 @@ in
   networking.firewall.enable = true;
   networking.firewall.allowPing = true;
   networking.firewall.allowedTCPPorts = [
+
     # Gluster
-    24007         # gluster daemon
-    24008         # management
-    #49152        # brick1
-    49153         # brick2
-    #38465-38467  # Gluster NFS
-    111           # portmapper
-    1110          # NFS cluster
-    4045          # NFS lock manager
+    # 24007         # gluster daemon
+    # 24008         # management
+    # 49152        # brick1
+    # 49153         # brick2
+    # 38465-38467  # Gluster NFS
+    # 111           # portmapper
+    # 1110          # NFS cluster
+    # 4045          # NFS lock manager
+
   ];
   networking.firewall.allowedUDPPorts = [
+
     # Gluster
-    111           # portmapper
-    3450          # for minetest server
-    1110          # NFS client
-    4045          # NFS lock manager
+    # 111           # portmapper
+    # 3450          # for minetest server
+    # 1110          # NFS client
+    # 4045          # NFS lock manager
+
   ];
 
   # LACT
@@ -242,9 +308,9 @@ in
   powerManagement.enable = true;
   services.auto-cpufreq.enable = true;
   systemd.services."auto-cpufreq" = {
-    after = [
-      "display-manager.service"
-    ];
+    #after = [
+    #  "display-manager.service"
+    #];
   };
   powerManagement.cpuFreqGovernor = "powersave";
   #powerManagement.cpufreq.min =  800000;
@@ -260,18 +326,26 @@ in
 
       WIFI_PWR_ON_AC = "off";
       WIFI_PWR_ON_BAT = "off";
-      DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth wwan";
+      #DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth wwan";
+      DEVICES_TO_DISABLE_ON_STARTUP = "wwan";
       DEVICES_TO_ENABLE_ON_STARTUP = "wifi";
     };
   };
 
+  services.journald.extraConfig = ''
+    SystemMaxUse=50M
+    RuntimeMaxUse=20M
+  '';
+
   systemd.services.NetworkManager-wait-online.enable = false;
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.powersave = false;
-  systemd.watchdog.rebootTime = "10m";
 
-  services.acpid.enable = false; #true;
-  hardware.acpilight.enable = false; #true;
+  systemd.watchdog.rebootTime = "10m";
+  #systemd.settings.Manager.RebootWatchdogSec = 60*10;
+
+  services.acpid.enable = true; # XXX: not tested yet
+  hardware.acpilight.enable = true; # XXX: not tested yet
 
   services.thinkfan.enable = true;
   services.thinkfan.levels = [
@@ -334,12 +408,12 @@ in
 
   services.xserver.enable = true;
 
-  services.xserver.displayManager = {
-    lightdm.enable = true;
-  };
+  #services.xserver.displayManager = {
+  #  lightdm.enable = true;
+  #};
 
   services.xserver.desktopManager = {
-    gnome.enable = true;
+    #gnome.enable = lib.mkForce true;
     lxqt.enable = true;
   };
 
@@ -383,10 +457,12 @@ in
   };
 
   programs = {
-    sway.enable = true;
-    xwayland.enable = true;
+    #sway.enable = true;
+    #xwayland.enable = true;
 
-    firefox.enable = false;
+    #firefox.enable = false;
+
+    tmux.shortcut = lib.mkForce "a"; # t61 and r61 have left-ctrl button problem
 
     starship = {
       enable = false;
@@ -487,7 +563,5 @@ in
 
   };
 
-
-  #system.stateVersion = "${stateVersion}";
-  system.stateVersion = stateVersion;
+  system.stateVersion = "${stateVersion}";
 }

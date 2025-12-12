@@ -81,7 +81,10 @@
     packages = with pkgs; [
       corefonts                         # Microsoft free fonts; Microsoft's TrueType core fonts for the Web
       inconsolata                       # monospaced
-      ubuntu_font_family                # ubuntu fonts
+
+      #ubuntu_font_family                # ubuntu fonts
+      ubuntu-classic               # ubuntu fonts
+
       unifont                           # some international languages
       cardo                             # Cardo is a large Unicode font specifically designed for the needs of classicists, Biblical scholars, medievalists, and linguists.
       google-fonts
@@ -111,7 +114,9 @@
       terminus_font
       ttf_bitstream_vera
 
-      vistafonts                        # Some TrueType fonts from Microsoft Windows Vista (Calibri, Cambria, Candara, Consolas, Constantia, Corbel)
+      #vistafonts                        # Some TrueType fonts from Microsoft Windows Vista (Calibri, Cambria, Candara, Consolas, Constantia, Corbel)
+      vista-fonts                        # Some TrueType fonts from Microsoft Windows Vista (Calibri, Cambria, Candara, Consolas, Constantia, Corbel)
+
       carlito                           # A sans-serif font, metric-compatible with Microsoft Calibri
       wineWowPackages.fonts             # Microsoft replacement fonts by the Wine project
 
@@ -120,10 +125,13 @@
 
       national-park-typeface
 
-      source-han-sans-japanese
-      source-han-sans-korean
-      source-han-sans-simplified-chinese
-      source-han-sans-traditional-chinese
+      #source-han-sans-japanese
+      #source-han-sans-korean
+      #source-han-sans-simplified-chinese
+      #source-han-sans-traditional-chinese
+      source-han-sans
+      #source-han-sans-vf-ttf
+      #source-han-sans-vf-otf
 
       iosevka
 
