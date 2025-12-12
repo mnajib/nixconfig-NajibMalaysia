@@ -1,11 +1,22 @@
-{ config, pkgs, ... }:
-
+{
+  config, pkgs,
+  lib,
+  inputs, outputs,
+  ...
+}:
+let
+  commonDir = "../../common";
+  hmDir = "../../../home-manager/users";
+  hostName = "asmak";
+  hostID = "ec4da958";
+  stateVersion = "22.11";
+in
 {
   nix = {
     #package = pkgs.nixFlakes;
     settings = {
       trusted-users = [ "root" "najib" "naqib" "julia" ];
-      max-jobs = 2;
+      #max-jobs = lib.mkForce 2;
     };
     extraOptions = ''
       experimental-features = nix-command flakes
@@ -16,55 +27,95 @@
   #  allowUnfree = true;
   #};
 
-  imports = [
-    ./hardware-configuration-asmak.nix
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+  in [
+    ./hardware-configuration.nix
+
     #./bootEFI.nix
     #./bootBIOS.nix
-    ./thinkpad.nix
+    (fromCommon "thinkpad.nix")
     #./touchpad-scrollTwofinger-TapTrue.nix
     #./touchpad-scrollEdge-TapTrue.nix
 
     #./zfs.nix
-    ./zfs-for-asmak.nix
+    (fromCommon "zfs-for-asmak.nix")
 
     #./users-anak2.nix
-    ./users-najib.nix
-    #./users-julia.nix
-    ./users-julia-wheel.nix
-    ./users-naqib-wheel.nix
-    ./users-nurnasuha.nix
-    ./users-naim.nix
+    (fromCommon "users-najib.nix")
+    (fromCommon "users-julia.nix")
+    #(fromCommon "users-julia-wheel.nix")
+    (fromCommon "users-naqib-wheel.nix")
+    (fromCommon "users-nurnasuha.nix")
+    (fromCommon "users-naim.nix")
 
-    ./nfs-client-automount.nix
-    ./nfs-client-automount-games.nix
-    ./console-keyboard-dvorak.nix
-    ./keyboard-with-msa.nix
-    ./audio-pipewire.nix
+    (fromCommon "nfs-client-automount.nix")
+    #(fromCommon "nfs-client-automount-games.nix")
+
+    (fromCommon "console-keyboard-dvorak.nix")
+    (fromCommon "keyboard-with-msa.nix")
+
+    (fromCommon "audio-pipewire.nix")
     #./synergy-client.nix
-    ./hardware-printer.nix
-    ./zramSwap.nix
+    (fromCommon "hardware-printer.nix")
+    (fromCommon "zramSwap.nix")
     #./hosts2.nix
-    ./configuration.FULL.nix
-    ./nix-garbage-collector.nix
-    ./flatpak.nix
-    ./steam.nix
-    ./xdg.nix
-    ./opengl_with_vaapiIntel.nix
-    ./xmonad.nix
-    ./stylix.nix
+    (fromCommon "configuration.FULL.nix")
+    (fromCommon "nix-garbage-collector.nix")
+    (fromCommon "flatpak.nix")
+    (fromCommon "steam.nix")
+    (fromCommon "xdg.nix")
+    (fromCommon "opengl_with_vaapiIntel.nix")
+    (fromCommon "stylix.nix")
+    #./xmonad.nix
+    (fromCommon "window-managers.nix")
+    (fromCommon "desktops-wayland.nix")
+    (fromCommon "bluetooth.nix")
+    #(fromCommon "remote-builders.nix")
+
+    #inputs.home-manager.nixosModules.home-manager # tak perlu load di sini, dah load di flake.nix
   ];
+
+  home-manager = let
+    userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}"  );
+  in {
+    backupFileExtension = "backup";
+    extraSpecialArgs = { inherit inputs outputs; };
+    users = {
+      najib = userImport "najib";
+    };
+  };
+
+  users.users.root = {
+    initialPassword = "root123";
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINiCR5IGdvop8gCL/wdEIoZsKzLJU1jiPPhjA1UbDVrt najib@sumayah"
+    ];
+  };
 
   environment.systemPackages = with pkgs; [
     gparted
     simplex-chat-desktop
     lightlocker
+
+    clinfo
+    gpu-viewer
+    vulkan-tools
+
+    gnome-randr
+    foot
+    libnotify
+
+    inputs.home-manager.packages.${pkgs.system}.default
   ];
 
   # For the value of 'networking.hostID', use the following command:
   #   cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   #
-  networking.hostId = "ec4da958";
-  networking.hostName = "asmak";
+  #networking.hostId = "ec4da958";
+  #networking.hostName = "asmak";
+  networking.hostId = "${hostID}";
+  networking.hostName = "${hostName}";
 
   networking.useDHCP = false;
   networking.networkmanager.enable = true;
@@ -78,6 +129,40 @@
     #allowedTCPPorts = [ ... ];
     #allowedUDPPorts = [ 3450 ]; # 3450 for minetest server
   };
+
+  # Create the file and allocate (storage) size for the file
+  #   sudo fallocate -l 4096M /swapfile
+  # OR
+  #   sudo dd if=/dev/zero of=/swapfile bs=1M count=4096
+  # then
+  # Set correct permissions
+  #   sudo chmod 600 /swapfile
+  # Format it as swap
+  #   sudo mkswap /swapfile
+  # Enable the swap
+  #   sudo swapon /swapfile
+  #
+  # If under zfs:
+  #   sudo zfs create -V 4G -b 4K -o compression=off rpool/swap
+  #   sudo mkswap /dev/zvol/rpool/swap
+  #   sudo swapon /dev/zvol/rpool/swap
+  #
+  swapDevices = [
+    {
+      #device = "/swapfile";
+      device = "/dev/zvol/tank/swap"; # for zfs
+      size = 4096;
+    }
+  ];
+
+  # not suitable for zfs?
+  #services.swapspace = {
+  #  enable = true;
+  #  settings = {
+  #    min_swapsize = "4096m";
+  #    max_swapsize = "8192m";
+  #  };
+  #};
 
   boot.loader.timeout = 10;
   boot.loader.grub = {
@@ -105,7 +190,8 @@
   #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
   #boot.kernelPackages = pkgs.linuxPackages_5_4;
   #boot.kernelPackages = pkgs.linuxPackages_4_19;
-  boot.kernelPackages = pkgs.linuxPackages_6_6;
+  #boot.kernelPackages = pkgs.linuxPackages_6_6; # long time used by asmak until 2025-12
+  boot.kernelPackages = pkgs.linuxPackages_6_12; # long time used by asmak until 2025-12
 
   # Tuning other ZFS parameters: To tune other attributes of ARC, L2ARC or of ZFS itself via runtime modprobe config, add this to your NixOS configuration (keys and values are examples only!):
   #boot.extraModprobeConfig = ''
@@ -143,6 +229,10 @@
   networking.networkmanager.wifi.powersave = false;
   systemd.watchdog.rebootTime = "10m";
 
+  hardware.graphics.extraPackages = with pkgs; [
+    mesa
+  ];
+
   services.libinput = {
     enable = true;
 
@@ -158,7 +248,7 @@
   };
 
   services.displayManager.defaultSession = "none+xmonad";
-  services.displayManager.sddm.enable = false;
+  #services.displayManager.sddm.enable = false;
 
   services.xserver = {
     enable = true;
@@ -194,5 +284,6 @@
     };
   };
 
-  system.stateVersion = "22.11";
+  #system.stateVersion = "22.11";
+  system.stateVersion = "${stateVersion}";
 }

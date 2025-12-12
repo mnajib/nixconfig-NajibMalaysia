@@ -15,7 +15,7 @@
 
     peertube
 
-    retroshare
+    #retroshare
     cabal-cli
 
     brig

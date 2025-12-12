@@ -24,14 +24,14 @@ let
   #nixpkgsVersion = lib.versions.majorMinor lib.version; # new syntax
   #hasNewLogind = lib.hasAttr "settings" (lib.optionsOf config.services.logind or {});
   #hasNewLogind = lib.hasAttr "settings" (options.services.logind or {});
-  hasNewLogind =
-    let
-      #opts = options.services.logind or {};
-      opts = lib.options.services.logind or {};
-    in
-      lib.hasAttr "settings" opts; # New syntax have 'services.logind.settings'
+  #hasNewLogind =
+  #  let
+  #    #opts = options.services.logind or {};
+  #    opts = lib.options.services.logind or {};
+  #  in
+  #    lib.hasAttr "settings" opts; # New syntax have 'services.logind.settings'
 
-in with lib;
+in# with lib;
 #with host;
 {
 
@@ -124,7 +124,9 @@ in with lib;
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
   in [
     ./hardware-configuration.nix
-    ./remote-builders.nix
+
+    #./remote-builders.nix
+    (fromCommon "remote-builders.nix")
 
     #../../common/configuration.FULL.nix
     #"${commonDir}/configuration.FULL.nix" # do not work
@@ -207,6 +209,8 @@ in with lib;
     (fromCommon "window-managers.nix")
     #./gpu-config-wayland.nix
     ./gpu-config-xorg.nix
+
+    (fromCommon "bluetooth.nix")
   ];
 
   home-manager = {
@@ -216,7 +220,7 @@ in with lib;
     users = {
       #root = import "${hmDir}/root/taufiq";
       #najib = import "${hmDir}/najib/taufiq";
-      root = import (./. + "/${hmDir}/root/taufiq");
+      #root = import (./. + "/${hmDir}/root/taufiq");
       najib = import (./. + "/${hmDir}/najib/taufiq");
       naqib = import (./. + "/${hmDir}/naqib/taufiq");
     }; # End home-manager.users = { ... };
@@ -461,16 +465,25 @@ in with lib;
 #  };
   #----------------------------------------------------------------------------
 
+  #
+  # Settings option for systemd-logind. See logind.conf(5) for available options.
+  #
   #services.logind.extraConfig = "RuntimeDirectorySize=4G";    # before this it is 100% full with 1.6G tmpfs /run/user/1001
   #
-  services.logind =
-    if hasNewLogind then {
-      # NixOS 25.05 and newer
-      settings.Login.RuntimeDirectorySize = "4G";
-    } else {
-      # Older NixOS versions
-      extraConfig = "RuntimeDirectorySize=4G";
-    };
+  #services.logind =
+  #  if hasNewLogind then {
+  #    # NixOS 25.05 and newer
+  #    settings.Login = {
+  #      RuntimeDirectorySize = "4G";
+  #    };
+  #  } else {
+  #    # Older NixOS versions
+  #    extraConfig = "RuntimeDirectorySize=4G";
+  #  };
+  #
+  services.logind.settings.Login = {
+    RuntimeDirectorySize = "4G";
+  };
 
   #----------------------------------------------------------------------------
 

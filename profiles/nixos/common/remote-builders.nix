@@ -1,3 +1,36 @@
+#
+# NOTE:
+#
+# Best recommendded one-liner method to force your own builder list
+# The format is:
+#   [protocol://][user@]hostname[:port]  systems  [max-jobs] [speed-factor] [supported-features,…] [mandatory-features,…]
+# Example:
+#   sudo nixos-rebuild switch \
+#     --builders 'ssh-ng://nix@fastarm aarch64-linux,x86_64-linux - 64 10 kvm,benchmark' \
+#     --builders 'ssh-ng://nix@m2mac aarch64-darwin,x86_64-darwin - 12 5 big-parallel'
+# or to completely disable remote building for one rebuild:
+#   sudo nixos-rebuild switch --flake . --builders '' --max-jobs auto --verbose --show-trace
+#   sudo nixos-rebuild switch --flake . --builders '' --max-jobs 1 --verbose --show-trace
+#
+# or override the NixOS option with --override-flags
+#   sudo nixos-rebuild switch \
+#     --override-flags nix.buildMachines '[
+#       { hostName = "myfastbuilder";
+#         sshUser = "nix";
+#         sshKey = "/root/.ssh/id_ed25519";
+#         systems = [ "x86_64-linux" "aarch64-linux" ];
+#         maxJobs = 32;
+#         speedFactor = 10;
+#         supportedFeatures = [ "kvm" "big-parallel" ];
+#       }
+#     ]'
+# or disable all remote builders with --override-flags with empty list
+#   sudo nixos-rebuild switch --override-flags nix.buildMachines '[]'
+#
+# or
+#   sudo nixos-rebuild switch --flake . --verbose --show-trace --build-host najib@nyxora --use-remote-root
+#
+
 {
   pkgs, config,
   lib,
@@ -28,11 +61,15 @@
     buildMachines = [
       {
         hostName = "nyxora";  # e.g., builder
-        system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
+        #system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
+        systems = [
+          "x86_64-linux"
+          "i686-linux"
+        ];
         protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
         sshUser = "najib";
         maxJobs = 14; #4;  # Parallel jobs on remote (match its CPU cores)
-        speedFactor = 1; #2;  # Prioritize this builder (higher = faster perceived)
+        speedFactor = 5;  # Prioritize this builder (higher = faster perceived)
         supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
         mandatoryFeatures = [];  # Enforce none unless required
         #notes.memoryPerJob  "=3 GB";
@@ -40,11 +77,15 @@
       }
       {
         hostName = "sumayah";  # e.g., builder
-        system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
+        #system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
+        systems = [
+          "x86_64-linux"
+          "i686-linux"
+        ];
         protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
         sshUser = "najib";
         maxJobs = 6; #4;  # Parallel jobs on remote (match its CPU cores)
-        speedFactor = 2;  # Prioritize this builder (higher = faster perceived)
+        speedFactor = 1;  # Prioritize this builder (higher = faster perceived)
         supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
         mandatoryFeatures = [];  # Enforce none unless required
         #notes.memoryPerJob = "=2 GB";

@@ -17,15 +17,15 @@
   programs.xwayland.enable = false;
 
   # lightdm
-  services.xserver.displayManager.lightdm.enable = true;
+  #services.xserver.displayManager.lightdm.enable = true;
   # OR
   # gdm
-  services.xserver.displayManager.gdm.enable = false;
-  services.xserver.displayManager.gdm.wayland = false;
+  #services.xserver.displayManager.gdm.enable = false;
+  #services.xserver.displayManager.gdm.wayland = false;
   # OR
   # sddm
-  services.displayManager.sddm.enable = false;
-  services.displayManager.sddm.wayland.enable = false;
+  #services.displayManager.sddm.enable = false;
+  #services.displayManager.sddm.wayland.enable = false;
 
   services.xserver.desktopManager.gnome.enable = false;
   services.desktopManager.plasma6.enable = false;
