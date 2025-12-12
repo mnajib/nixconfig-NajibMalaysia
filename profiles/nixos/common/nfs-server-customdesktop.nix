@@ -5,6 +5,10 @@
 #
 # systemctl list-dependencies --fater timers.target
 # systemctl list-dependencies --before sysstat-collect.timer
+#
+# netstat -tulpen
+# rpcinfo -p
+#
 
 {
 
@@ -138,7 +142,21 @@
 
   networking.firewall = {
     # for NFSv3; view with 'rpcinfo -p'
-    allowedTCPPorts = [ 111 2049 4000 4001 4002 20048 ];
-    allowedUDPPorts = [ 111 2049 4000 4001 4002 20048 ];
+    allowedTCPPorts = [
+      111   # rpcbind (Portmapper). Maps RPC program numbers to their current port numbers. Essential for NFS.
+      2049  # NFS. The primary port for file sharing (NFS Daemon).
+      4000  # rpc.statd (Status Daemon). NFS Component: Handles server reboot notifications. (Custom port)
+      4001  # rpc.lockd (Lock Daemon). Daemon) NFS Component: Handles file locking requests. (Custom port)
+      4002  # rpc.mountd (Mount Daemon). NFS Component: Handles file system mounting requests. (Custom port). The default port is 20048.
+      #20048 # NFS Mount Daemon (mountd)
+    ];
+    allowedUDPPorts = [
+      111   # portmapper
+      2049  # nfs
+      4000  # status (rpc.statd)
+      4001  # nlockmgr (rpc.lockd)
+      4002  # mountd (rpc.mountd)
+      #20048
+    ];
   };
 }
