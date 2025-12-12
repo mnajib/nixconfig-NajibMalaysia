@@ -274,25 +274,29 @@ in
   #networking.interfaces.wlp3s0.useDHCP = true;
 
   networking.nftables.enable = true;
-  networking.firewall.enable = false; #true;
+  networking.firewall.enable = true;
   networking.firewall.allowPing = true;
   networking.firewall.allowedTCPPorts = [
+
     # Gluster
-    24007         # gluster daemon
-    24008         # management
-    #49152        # brick1
-    49153         # brick2
-    #38465-38467  # Gluster NFS
-    111           # portmapper
-    1110          # NFS cluster
-    4045          # NFS lock manager
+    # 24007         # gluster daemon
+    # 24008         # management
+    # 49152        # brick1
+    # 49153         # brick2
+    # 38465-38467  # Gluster NFS
+    # 111           # portmapper
+    # 1110          # NFS cluster
+    # 4045          # NFS lock manager
+
   ];
   networking.firewall.allowedUDPPorts = [
+
     # Gluster
-    111           # portmapper
-    3450          # for minetest server
-    1110          # NFS client
-    4045          # NFS lock manager
+    # 111           # portmapper
+    # 3450          # for minetest server
+    # 1110          # NFS client
+    # 4045          # NFS lock manager
+
   ];
 
   # LACT
