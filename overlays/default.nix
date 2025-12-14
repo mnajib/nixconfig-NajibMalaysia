@@ -47,4 +47,6 @@
   #nixvim = import ./nixvim.nix { inherit inputs; };            # Pass all inputs
 
   #flatpak-quick-fix = import ./flatpak.nix;
+
+  #proxmox-nixos = import ./proxmox-nixos.nix { inherit inputs; };
 }

@@ -35,6 +35,7 @@
   services.openssh = {
     enable = true;
     permitRootLogin = "no";
+    #permitRootLogin = lib.mkDefault "no";
     passwordAuthentication = false;
   };
 
