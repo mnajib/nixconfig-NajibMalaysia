@@ -12,15 +12,20 @@ let
   #airbyte_userId    = 200;             # pick a stable unused UID
   #airbyte_groupId   = 200;             # pick a stable unused GID
   #
+  # Airbyte service ports
+  #airbyte_ui_port   = 8000; # Web UI
+  #airbyte_api_port  = 8001; # API
+  #airbyte_debug_port = 8002; # optional debug/metrics
+  #
   # By default, Airbyte state lives in ~/.airbyte and Docker volumes under /var/lib/docker/volumes.
   # Use below command
   #   abctl deploy --data-dir /MyTank/services/airbyte
   # to control where Airbyte stores its configs and logs; but Docker itself still keeps container layers in /var/lib/docker.
-  airbyte_dataDir   = "/MyTank/services/airbyte"; # abctl deploy --data-dir /MyTank/services/airbyte
+  #airbyte_dataDir   = "/MyTank/services/airbyte"; # abctl deploy --data-dir /MyTank/services/airbyte
   #
-  airbytedb        = "airbytedb";
-  airbytedb_user      = "airbyteuser";
-  airbytedb_password  = "myverystrongpassword";
+  #airbytedb        = "airbytedb";
+  #airbytedb_user      = "airbyteuser";
+  #airbytedb_password  = "myverystrongpassword";
 in
 {
 
@@ -30,7 +35,9 @@ in
   };
   #
   # Separate dataset → reproducible snapshots/backups. Keeps each service isolated.
-  # sudo chown -R postgres:postgres /MyTank/services/postgresql
+  #   sudo zfs create MyTank/services/airbyte
+  #   sudo zfs set mountpoint=/MyTank/services/airbyte MyTank/services/airbyte
+  #   sudo chown -R postgres:postgres /MyTank/services/postgresql
   #
   #fileSystems."/MyTank/services/postgresql" = {
   #fileSystems.${postgresql_dataDir} = {
@@ -51,6 +58,7 @@ in
     #  "${postgresql_user}"
     #];
   };
+  users.users.najib.extraGroups = [ "docker" ];
 
   # Declare Airbyte DB user/group explicitly
   #users.groups.${airbyte_group} = {
@@ -93,16 +101,16 @@ in
 
     #mailerPasswordFile = config.age.secrets.forgejo-mailer-password.path;
 
-    authentication = ''
-      # Allow Airbyte user from local network
-      host ${airbytedb} ${airbytedb_user} 0.0.0.0/0 md5
-    '';
+    #authentication = ''
+    #  # Allow Airbyte user from local network
+    #  host ${airbytedb} ${airbytedb_user} 0.0.0.0/0 md5
+    #'';
 
     # Create Airbyte DB + user
-    initialScript = pkgs.writeText "init.sql" ''
-      CREATE USER ${airbytedb_user} WITH PASSWORD '${airbytedb_password}';
-      CREATE DATABASE ${airbytedb} OWNER ${airbytedb_user};
-    '';
+    #initialScript = pkgs.writeText "init.sql" ''
+    #  CREATE USER ${airbytedb_user} WITH PASSWORD '${airbytedb_password}';
+    #  CREATE DATABASE ${airbytedb} OWNER ${airbytedb_user};
+    #'';
 
   }; # End services.forgejo
 
@@ -127,14 +135,26 @@ in
     ];
   };
 
+  # Ensures predictable ingress networking
+  networking.nftables.enable = true;
+  #
   networking.firewall = {
     allowedTCPPorts = [
       postgresql_port
+
+      #airbyte_ui_port
+      #airbyte_api_port
+      #airbyte_debug_port
+
+      # 80 443 8000 8443 30080 30443     # Required for Docker → kind → ingress routing
     ];
     allowedUDPPorts = [
       #...
     ];
   };
+
+  # Required for Docker 27+ and kind
+  boot.kernelParams = [ "systemd.unified_cgroup_hierarchy=1" ];
 
   # Optional: systemd unit to run abctl automatically
   #systemd.services.airbyte = {
@@ -154,10 +174,17 @@ in
   virtualisation.docker = {
     enable = true;
     enableOnBoot = true;
+    enableNvidia = false;
     autoPrune.enable = true;   # optional: cleans up old images/containers
     rootless = {
       enable = false;          # run as root (simpler for services like Airbyte)
     };
+
+    # Required for kind on NixOS
+    #extraOptions = ''
+    #  --iptables=true
+    #'';
+    #  #--log-level=error
   };
 
   environment.systemPackages = with pkgs; [
