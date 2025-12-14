@@ -46,6 +46,7 @@ in
     #./hardware-specific-config/ # harddisk
 
     ./hardware-configuration.nix
+    #./proxmox.nix
 
     #(./. + "${commonDir}/configuration.FULL.nix")
     (fromCommon "configuration.FULL.nix")
@@ -391,7 +392,10 @@ in
     package = config.boot.kernelPackages.nvidiaPackages.production; # v 550.135
   };
 
-  services.logind.extraConfig = "RuntimeDirectorySize=4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001
+  #services.logind.extraConfig = "RuntimeDirectorySize=4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001
+  services.logind.settings.Login = {
+    RuntimeDirectorySize = "4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001
+  };
 
   services.libinput.enable = true;
   services.displayManager.defaultSession = "none+xmonad";
@@ -482,9 +486,9 @@ in
 
   #nixpkgs.config.android_sdk.accept_license = true;
 
-  services.udev.packages = [
-    pkgs.android-udev-rules
-  ];
+  #services.udev.packages = [
+  #  pkgs.android-udev-rules # 'android-udev-rules' has been removed due to being superseded by built-in systemd uaccess rules."; # Added 2025-10-21.
+  #];
 
   #virtualisation.virtualbox.host.enable = true;
 
