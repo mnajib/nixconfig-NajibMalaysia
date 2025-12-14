@@ -7,6 +7,9 @@
 # Kira semua versi nixpkgs yang dimuat turun
 #   nix flake metadata 2>&1 | grep -E "nixpkgs.*github:NixOS" | sort -u | wc -l
 #
+# To view what this flake outputs:
+#   nix flake show
+#
 
 {
   description = "My NixOS Config";
@@ -203,6 +206,8 @@
 
     zfs-snapshot-manager.url = "github:/keithm999/zfs-tools";
 
+    #proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
+
   }; # End of 'inputs = { ... };'
 
   outputs = inputs@{ flake-parts, self, ... }:
@@ -210,13 +215,22 @@
   #outputs = top@inputs@{ flake-parts, self, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
 
-      systems = [ "x86_64-linux" "aarch64-linux" ];
-
+      #------------------------------------------------------------------------
+      # 1. flake-parts.lib.mkFlake.imports
+      #------------------------------------------------------------------------
       imports = [
         #inputs.stylix.flakeModule
         #inputs.hyprland.flakeModule
       ];
 
+      #------------------------------------------------------------------------
+      # 2. flake-parts.lib.mkFlake.systems
+      #------------------------------------------------------------------------
+      systems = [ "x86_64-linux" "aarch64-linux" ];
+
+      #------------------------------------------------------------------------
+      # 3. flake-parts.lib.mkFlake.perSystem
+      #------------------------------------------------------------------------
       perSystem = { config, self, pkgs, system, inputs, outputs, ... }:
         let
           inherit (self) outputs;
@@ -227,6 +241,13 @@
           #inherit (inputs.nixpkgs.lib) mapAttrs attrValues length unique concatStringsSep filterAttrs count;
         in
         {
+          #------------------------------------------------
+          # 3.1 flake-parts.lib.mkFlake.perSystem.packages
+          #       will help generate flake output:
+          #         packages.${system}.default
+          #         packages.${system}.mangayomi
+          #         packages.${system}....
+          #------------------------------------------------
           packages = {
             default = pkgs.hello;
 
@@ -236,9 +257,26 @@
             mangayomi = pkgs.mangayomi;
           };
 
+          #------------------------------------------------
+          # 3.2 flake-parts.lib.mkFlake.perSystem.devShells
+          #       will help generate flake output:
+          #         devShells.${system}.default
+          #         devShells.${system}....
+          #------------------------------------------------
           devShells.default = import ./shell.nix { inherit pkgs; };
 
+          #------------------------------------------------
+          # 3.3 flake-parts.lib.mkFlake.perSystem.formatter
+          #       will help generate flake output:
+          #         formatter.${system}...
+          #------------------------------------------------
           formatter = pkgs.alejandra;
+
+          #------------------------------------------------
+          # 3.4 flake-parts.lib.mkFlake.perSystem.checks
+          #       will help generate
+          #         ???
+          #------------------------------------------------
 
           #checks.hostIdUniqueness =
           #  let
@@ -260,6 +298,12 @@
           #    fi
           #    touch $out
           #  '';
+
+          #------------------------------------------------
+          # 3.5 flake-parts.lib.mkFlake.perSystem.apps
+          #       will help generate
+          #         flake.${system}.apps
+          #------------------------------------------------
 
 #         #
 #         # Usage:
@@ -386,6 +430,12 @@
 
         }; # End perSystem = {}: let .. in { ... };
 
+      #------------------------------------------------------------------------
+      # 4. flake-parts.lib.mkFlake.flake
+      #------------------------------------------------------------------------
+      # Put your original flake attributes here.
+      # Most probably flake-parts not help anything in here, only do "pass-through".
+      #
       flake = let
 
         inherit (self) outputs;
@@ -459,15 +509,29 @@
           };
 
       in {
+        #--------------------------------------------------
+        # flake-parts.lib.mkFlake.flake.overlays
+        #   will pass as
+        #     flake ouputs: overlays
+        #--------------------------------------------------
         #overlays = import ./overlays { inherit inputs outputs; };
         overlays = import ./overlays { inherit inputs; };
+
         nixosModules = import ./modules/nixos;
+
         homeManagerModules = import ./modules/home-manager;
+
+        #templates....
 
         #pkgsRelease = inputs.nixpkgs-release;
         #pkgsStable   = inputs.nixpkgs-stable;
         #pkgsUnstable   = inputs.nixpkgs-unstable;
 
+        #--------------------------------------------------
+        # flake-parts.lib.mkFlake.flake.nixosConfigurations
+        #   will pass as
+        #     flake ouputs: nixConfigurations
+        #--------------------------------------------------
         nixosConfigurations = {
           # NOTE:
           # To test / dry-build nixos for host 'khawlah':
@@ -532,6 +596,12 @@
               # To build and apply
               #   nixos-rebuild switch --flake .#nyxora
               ./profiles/nixos/hosts/nyxora/configuration.nix
+
+              # Pass proxmox-nixos to modules
+              #{ _module.args.proxmox-nixos = inputs.proxmox-nixos; }
+              #
+              # NixOS module: Enables and configures Proxmox services (services.proxmox-ve.*)
+              #inputs.proxmox-nixos.nixosModules.proxmox-ve
             ];
             #pkgsInput = inputs.nixpkgs-unstable; # override
           };
