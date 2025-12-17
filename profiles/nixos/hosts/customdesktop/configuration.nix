@@ -67,11 +67,11 @@ in
 
   nix = {
     #package = pkgs.nixFlakes;
-    distributedBuilds = true;
+    #distributedBuilds = true;
 
     settings = {
       #max-jobs = 2;
-      max-jobs = 0;
+      #max-jobs = 0;
       fallback = true;
       trusted-users = [
         "root" "najib"
@@ -87,36 +87,36 @@ in
       builders-use-substitutes = true
     '';
 
-    buildMachines = [
-      {
-        hostName = "nyxora";  # e.g., builder
-        system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
-        protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
-        sshUser = "najib";
-        #maxJobs = 4;  # Parallel jobs on remote (match its CPU cores)
-        #maxJobs = 6;  # Parallel jobs on remote (match its CPU cores)
-        #speedFactor = 2;  # Prioritize this builder (higher = faster perceived)
-        maxJobs = 14; #8;  # Parallel jobs on remote (match its CPU cores)
-        speedFactor = 1;#1.0; # 2;  # Prioritize this builder (higher = faster perceived)
-        supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
-        mandatoryFeatures = [];  # Enforce none unless required
-        #notes.memoryPerJob = "≈3 GB";
-        #notes.totalRAM = "64 GB";
-      }
-      {
-        hostName = "sumayah";  # e.g., builder
-        system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
-        protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
-        sshUser = "najib";
-        #maxJobs = 8;  # Parallel jobs on remote (match its CPU cores)
-        maxJobs = 6; #10;  # Parallel jobs on remote (match its CPU cores)
-        speedFactor = 2;#1.5; #2;  # Prioritize this builder (higher = faster perceived)
-        supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
-        mandatoryFeatures = [];  # Enforce none unless required
-        #notes.memoryPerJob = "≈2 GB";
-        #notes.totalRAM = "16 GB";
-      }
-    ];
+    #buildMachines = [
+    #  {
+    #    hostName = "nyxora";  # e.g., builder
+    #    system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
+    #    protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
+    #    sshUser = "najib";
+    #    #maxJobs = 4;  # Parallel jobs on remote (match its CPU cores)
+    #    #maxJobs = 6;  # Parallel jobs on remote (match its CPU cores)
+    #    #speedFactor = 2;  # Prioritize this builder (higher = faster perceived)
+    #    maxJobs = 14; #8;  # Parallel jobs on remote (match its CPU cores)
+    #    speedFactor = 1;#1.0; # 2;  # Prioritize this builder (higher = faster perceived)
+    #    supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
+    #    mandatoryFeatures = [];  # Enforce none unless required
+    #    #notes.memoryPerJob = "≈3 GB";
+    #    #notes.totalRAM = "64 GB";
+    #  }
+    #  {
+    #    hostName = "sumayah";  # e.g., builder
+    #    system = "x86_64-linux";  # Match your arch; use ["x86_64-linux" "aarch64-linux"] for multi-arch
+    #    protocol = "ssh-ng";  # Modern SSH protocol (fallback to "ssh" if needed)
+    #    sshUser = "najib";
+    #    #maxJobs = 8;  # Parallel jobs on remote (match its CPU cores)
+    #    maxJobs = 6; #10;  # Parallel jobs on remote (match its CPU cores)
+    #    speedFactor = 2;#1.5; #2;  # Prioritize this builder (higher = faster perceived)
+    #    supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];  # Adjust based on remote capabilities (see table below)
+    #    mandatoryFeatures = [];  # Enforce none unless required
+    #    #notes.memoryPerJob = "≈2 GB";
+    #    #notes.totalRAM = "16 GB";
+    #  }
+    #];
 
   }; # Eng nix = { ... };
 
@@ -138,15 +138,16 @@ in
     #./hardware-specific-config/ # box
     #./hardware-specific-config/ # harddisk
 
-    #./hardware-configuration.nix
-    ./hardware-configuration-with-Riyadh2.nix
-    ./disko/phase1-drives-wrapper.nix
-    #./disko/fstab-legacy.nix
+    ./hardware-configuration.nix
+    #
+    #./hardware-configuration-with-Riyadh2.nix
+    #./disko/phase1-drives-wrapper.nix
 
     inputs.home-manager.nixosModules.home-manager
 
     #./configuration.FULL.nix
     (fromCommon "configuration.FULL.nix")
+    (fromCommon "remote-builders.nix")
 
     #./bootEFI.nix
     #./bootBIOS.nix
@@ -476,7 +477,10 @@ in
   #boot.kernelModules = [ "snd-ctxfi" "snd-ca0106" "snd-hda-intel" ];
   #boot.kernelModules = [ "snd-ctxfi" "snd-hda-intel" ];
 
-  services.logind.extraConfig = "RuntimeDirectorySize=4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001
+  #services.logind.extraConfig = "RuntimeDirectorySize=4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001
+  services.logind.settings.Login = {
+    RuntimeDirectorySize = "4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001
+  };
 
   services.libinput.enable = true;
   services.displayManager.defaultSession = "none+xmonad";
@@ -583,7 +587,7 @@ in
     };
     users = {
       najib = userImport "najib";
-      root = userImport "root";
+      #root = userImport "root";
     };
   };
 
