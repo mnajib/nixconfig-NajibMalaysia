@@ -20,27 +20,27 @@
 #in
 {
 
-  # Define a systemd service to download the named.root file
-  systemd.services.updateRootHints = {
-    description = "Download and update root hints for dnsmasq";
-    serviceConfig = {
-      ExecStart = "${pkgs.curl}/bin/curl -o /etc/dnsmasq/root.hints https://www.internic.net/domain/named.root";
-      User = "nobody";
-      #Group = "nobody";
-      Group = "nogroup";
-    };
-    wantedBy = [ "multi-user.target" ];
-  };
+  ## Define a systemd service to download the named.root file
+  #systemd.services.updateRootHints = {
+  #  description = "Download and update root hints for dnsmasq";
+  #  serviceConfig = {
+  #    ExecStart = "${pkgs.curl}/bin/curl -o /etc/dnsmasq/root.hints https://www.internic.net/domain/named.root";
+  #    User = "nobody";
+  #    #Group = "nobody";
+  #    Group = "nogroup";
+  #  };
+  #  wantedBy = [ "multi-user.target" ];
+  #};
 
-  # Ensure the root hints service runs periodically (e.g., daily)
-  systemd.timers.updateRootHints = {
-    description = "Periodic update of root hints for dnsmasq";
-    timerConfig = {
-      OnCalendar = "daily";
-      Persistent = true;
-    };
-    wantedBy = [ "timers.target" ];
-  };
+  ## Ensure the root hints service runs periodically (e.g., daily)
+  #systemd.timers.updateRootHints = {
+  #  description = "Periodic update of root hints for dnsmasq";
+  #  timerConfig = {
+  #    OnCalendar = "daily";
+  #    Persistent = true;
+  #  };
+  #  wantedBy = [ "timers.target" ];
+  #};
 
   # Ensure /etc/dnsmasq directory exists and is writable by the service
   #environment.etc."dnsmasq".source = pkgs.runCommand "dnsmasq-etc" {} ''
@@ -52,18 +52,33 @@
     enable = true;
     resolveLocalQueries = true;                                                 # resolv localhost/127.0.0.1 queries
     settings = {
+      #interface=enp0s25
+      #interface=wls3
+      #interface=enp2s0
+      #listen-address=127.0.0.1
+      #listen-address=192.168.1.17
+      #listen-address=192.168.0.21
+      interface= "eno1";
       bind-interfaces = true;
 
-      #port = 53;
-      port = 5335; # XXX: testing
+      port = 53;
+      #port = 5335; # XXX: testing
 
-      domain-needed = true;
-      bogus-priv = true;
-      no-resolv = true;
-      no-poll = true;
-      no-hosts = true;
       domain = "localdomain";
-      #alwaysKeepRunning = true;
+      expand-hosts = true;
+
+      # Prevent packets with malformed domain names and packets
+      # with private IP addresses from leaving your network.
+      domain-needed = true; # Blocks incomplete requests from leaving your network, such as google instead of google.com
+      bogus-priv = true; # Prevents non-routable private addresses from being forwarded out of your network.
+
+      # Limits name services exclusively to Dnsmasq, and it
+      # will not use /etc/resolv.conf or any other system
+      # name service files.
+      no-resolv = true;
+      no-poll = true; # Do not poll for changes in resolv.conf
+      no-hosts = true; # Don't read the hostnames in /etc/hosts
+
       server = [
         #"/.localdomain/127.0.0.1"
         #"/fooxample.com/192.168.0.1"
@@ -80,15 +95,22 @@
 
         #"208.67.220.220" # OpenDNS
       ];
-      local = "/localdomain/";         # Ensures that queries for your private domain are only answered by Dnsmasq, from /etc/hosts or DHCP.
+
+      #local = "/localdomain/";         # Ensures that queries for your private domain are only answered by Dnsmasq, from /etc/hosts or DHCP.
 
       #timeout = 5; # increase query timeout to handle delays with root servers
 
       # If Dnsmasq will be the only DHCP server in your network
-      #dhcp-authoritative
+      dhcp-authoritative = true;
 
       #dhcp-relay=efw.localdomain;
       #dhcp-relay=192.168.0.15;
+
+      dhcp-option = [
+        "3,192.168.0.1"   # Option 3: Default Gateway. Default gateway (ISP router)
+        #"6,192.168.0.10"  # Option 6: DNS server. DNS server (your dnsmasq server)
+        "6,192.168.0.11"  # Option 6: DNS server. DNS server (your dnsmasq server)
+      ];
 
       # Enable DNS caching
       cache-size = 1000;
@@ -96,6 +118,39 @@
       # Set the cache expiration time
       #neg-ttl=3600
       ##pos-ttl=3600
+
+      ##dhcp-range=192.168.123.200,192.168.123.250,24h
+      ##dhcp-range=en0s25,192.168.123.100,192.168.123.150,24h
+      ##dhcp-range=wls3,192.168.1.100,192.168.1.199,24h
+      ##dhcp-range=wls3,192.168.1.200,192.168.1.250,24h
+      #dhcp-range=wls3,192.168.1.200,192.168.1.250,2m
+      #dhcp-range=192.168.0.100,192.168.123.200,2m
+      #dhcp-range = [ "192.168.0.100,192.168.0.200,30" ];
+      dhcp-range = [ "192.168.0.100,192.168.0.200,1m" ];
+
+      #dhcp-leasefile = "/var/lib/dnsmasq/dnsmasq.leases";
+      #systemd.tmpfiles.rules = [ "d /var/lib/dnsmasq 0755 root root -" ];
+      #
+      #conf-file = optional cfg.resolveLocalQueries "/etc/dnsmasq-conf.conf";
+      #resolv-file = optional cfg.resolveLocalQueries "/etc/dnsmasq-resolv.conf";
+
+      # -----------------------------
+      # Static leases
+      # -----------------------------
+      dhcp-host = [
+        "34:64:a9:38:3d:ea,customdesktop,192.168.0.10,infinite"
+        "c4:34:6b:71:ce:7e,nyxora,192.168.0.11,infinite"
+        "9c:30:5b:d6:b8:f4,printer,192.168.0.22,infinite"
+        #"18:3d:a2:53:68:a0,keira,192.168.1.101,infinite"
+
+        #"e8:48:b8:cd:68:68,decotamu,192.168.1.60,infinite"
+        #"00:21:86:9f:d9:91,mahirah,192.168.1.72,infinite"
+        #"00:13:e8:d1:5b:dd,maryam,192.168.1.2,infinite"
+        #"60:67:20:a9:a1:b0,asmak,192.168.1.45,infinite"
+        #"74:e5:0b:2c:1a:54,sakinah,192.168.1.4,infinite"
+        #"00:23:14:24:a1:c4,zahrah,192.168.1.74,infinite"
+        #"00:1e:65:f0:09:ae,raudah,192.168.1.154,infinite"
+      ];
 
       # Block ads using a hosts file
       #addn-hosts="/etc/dnsmasq.d/hosts"
@@ -114,6 +169,7 @@
 
       log-queries = true;                     # log all DNS queries
       #log-facility= "/var/log/dnsmasq.log";
+
     }; #End services.dnsmasq.settings
 
     #extraFiles = {
@@ -123,57 +179,6 @@
     #};
 
     #extraConfig = ''
-    #  #interface=enp0s25
-    #  #interface=wls3
-    #  #interface=enp2s0
-    #  #listen-address=127.0.0.1
-    #  #listen-address=192.168.1.17
-    #  #listen-address=192.168.0.21
-    #  bind-interfaces
-
-    #  port=53
-
-    #  ##dhcp-range=192.168.123.200,192.168.123.250,24h
-    #  ##dhcp-range=en0s25,192.168.123.100,192.168.123.150,24h
-    #  ##dhcp-range=wls3,192.168.1.100,192.168.1.199,24h                          # Currently assign by out tm router
-    #  ##dhcp-range=wls3,192.168.1.200,192.168.1.250,24h
-    #  #dhcp-range=wls3,192.168.1.200,192.168.1.250,2m                            # XXX: 2 minutes; for testing
-    #  #dhcp-range=192.168.0.100,192.168.123.200,2m
-
-    #  # Static IPs
-    #  #dhcp-host=9c:30:5b:d6:b8:f4,printer,192.168.1.22,infinite
-    #  #dhcp-host=00:21:86:9f:d9:91,mahirah,192.168.1.72,infinite
-    #  #dhcp-host=e8:48:b8:cd:68:68,decotamu,192.168.1.60,infinite
-    #  #dhcp-host=00:13:e8:d1:5b:dd,maryam,192.168.1.2,infinite
-    #  #dhcp-host=90:2b:34:dd:df:6d,customdesktop,192.168.1.21,infinite
-    #  #dhcp-host=60:67:20:a9:a1:b0,asmak,192.168.1.45,infinite
-    #  #dhcp-host=74:e5:0b:2c:1a:54,sakinah,192.168.1.4,infinite
-    #  #dhcp-host=00:23:14:24:a1:c4,zahrah,192.168.1.74,infinite
-    #  #dhcp-host=00:1e:65:f0:09:ae,raudah,192.168.1.154,infinite
-    #  #dhcp-host=18:3d:a2:53:68:a0,keira,192.168.1.101,infinite
-    #  #manggis
-    #  #khawlah
-    #  #aishah
-    #  #husna
-
-    #  # Prevent packets with malformed domain names and packets
-    #  # with private IP addresses from leaving your network.
-    #  domain-needed         # Blocks incomplete requests from leaving your network, such as google instead of google.com
-    #  bogus-priv            # Prevents non-routable private addresses from being forwarded out of your network.
-
-    #  # Limits name services exclusively to Dnsmasq, and it
-    #  # will not use /etc/resolv.conf or any other system
-    #  # name service files.
-    #  no-resolv
-    #  no-poll                           # Do not poll for changes in resolv.conf
-    #  no-hosts                          # Don't read the hostnames in /etc/hosts
-
-    #  #
-    #  expand-hosts
-    #  #domain=mehxample.com
-    #  domain=localdomain
-    #  #domain=local
-
     #  # Restrict just local domains while allowing external
     #  # lookups for other domains. These are answered only
     #  # from /etc/hosts or DHCP.
@@ -188,36 +193,15 @@
     #  #dhcp-relay=efw.localdomain;
     #  #dhcp-relay=192.168.0.15;
 
-    #  # Enable DNS caching
-    #  cache-size=1000
-    #  #
-    #  # Set the cache expiration time
-    #  #neg-ttl=3600
-    #  ##pos-ttl=3600
-
-    #  # Block ads using a hosts file
-    #  #addn-hosts="/etc/dnsmasq.d/hosts"
-    #  #
-    #  # Custom filtering using a separate configuration file
-    #  #conf-file="/etc/dnsmasq.d/custom-filter.conf"
-    #  #
-    #  # Block entire IP ranges using ipset
-    #  #ipset="/etc/dnsmasq.d/ipset.conf"
-    #  #
-    #  # Enable ad blocking using a third-party list
-    #  #url="http://winhelp2002.mvps.org/hosts.txt"
-
-    #  clear-on-reload
-    #  rebind-localhost-ok
-
     #  log-queries                     # log all DNS queries
     #'';
   };
 
-  services.resolved.domains = [
-    "localdomain"
-    #"local"
-  ];
+  #services.resolved.domains = [
+  #  "localdomain"
+  #  #"local"
+  #];
+  services.resolved.enable = false;
 
   #environment.etc."dnsmasq.conf".text = ''
   #server=1.1.1.1
@@ -231,8 +215,8 @@
     #  53  # DNS
     #];
     allowedUDPPorts = [
-      #53  # DNS
-      5335  # XXX: testing
+      53  # DNS
+      #5335  # XXX: testing
     ];
   };
 }
