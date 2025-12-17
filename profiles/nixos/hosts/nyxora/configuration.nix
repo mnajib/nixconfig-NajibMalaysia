@@ -61,7 +61,7 @@ in
     #./network-dns.nix
 
     # Internal/private network DNS server
-    #./dnsmasq.nix
+    #(fromCommon "dnsmasq.nix")
     #./unbound.nix
 
     (./. + "/${commonDir}/users-abdullah-wheel.nix")
@@ -127,7 +127,7 @@ in
     #(./. + "/${commonDir}/forgejo-sqlite.nix")
     #(fromCommon "forgejo-sqlite.nix")
     (fromCommon "forgejo-sqlite-nyxora.nix")
-    (fromCommon "/services/postgresql-nyxora.nix")
+    #(fromCommon "/services/postgresql-nyxora.nix")
 
     #./hosts2.nix
 
