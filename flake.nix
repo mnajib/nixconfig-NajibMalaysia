@@ -21,6 +21,8 @@
     #extra-trusted-public-keys = [
     #  "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     #];
+
+    # sudo nixos-rebuild switch --flake .   --option extra-substituters "ssh-ng://192.168.0.21"   --option require-sigs false
   };
 
   inputs = {
