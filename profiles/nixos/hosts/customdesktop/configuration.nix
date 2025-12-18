@@ -138,10 +138,10 @@ in
     #./hardware-specific-config/ # box
     #./hardware-specific-config/ # harddisk
 
-    ./hardware-configuration.nix
+    #./hardware-configuration.nix
     #
-    #./hardware-configuration-with-Riyadh2.nix
-    #./disko/phase1-drives-wrapper.nix
+    ./hardware-configuration-with-Riyadh2.nix
+    ./disko/phase1-drives-wrapper.nix
 
     inputs.home-manager.nixosModules.home-manager
 
