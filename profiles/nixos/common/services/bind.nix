@@ -53,6 +53,7 @@
           nyxora          IN A 192.168.0.11
           printer         IN A 192.168.0.22
           taufiq          IN A 192.168.0.12
+          sumayah         IN A 192.168.0.13
         '';
       }; # End zones."localdomain" = { ... };
     };
