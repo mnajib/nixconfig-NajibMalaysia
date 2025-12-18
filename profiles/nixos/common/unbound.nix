@@ -10,26 +10,26 @@
   #  journalctl -u unbound.service -f
 
   # Define a systemd service to download the named.root file
-  systemd.services.updateRootHints = {
-    description = "Download and update root hints for dnsmasq";
-    serviceConfig = {
-      ExecStart = "${pkgs.curl}/bin/curl -o /etc/dnsmasq/root.hints https://www.internic.net/domain/named.root";
-      User = "nobody";
-      #Group = "nobody";
-      Group = "nogroup";
-    };
-    wantedBy = [ "multi-user.target" ];
-  };
+  #systemd.services.updateRootHints = {
+  #  description = "Download and update root hints for dnsmasq";
+  #  serviceConfig = {
+  #    ExecStart = "${pkgs.curl}/bin/curl -o /etc/dnsmasq/root.hints https://www.internic.net/domain/named.root";
+  #    User = "nobody";
+  #    #Group = "nobody";
+  #    Group = "nogroup";
+  #  };
+  #  wantedBy = [ "multi-user.target" ];
+  #};
 
-  # Ensure the root hints service runs periodically (e.g., daily)
-  systemd.timers.updateRootHints = {
-    description = "Periodic update of root hints for dnsmasq";
-    timerConfig = {
-      OnCalendar = "daily";
-      Persistent = true;
-    };
-    wantedBy = [ "timers.target" ];
-  };
+  ## Ensure the root hints service runs periodically (e.g., daily)
+  #systemd.timers.updateRootHints = {
+  #  description = "Periodic update of root hints for dnsmasq";
+  #  timerConfig = {
+  #    OnCalendar = "daily";
+  #    Persistent = true;
+  #  };
+  #  wantedBy = [ "timers.target" ];
+  #};
 
   services.unbound = {
     enable = true;
@@ -55,18 +55,22 @@
         # When using Unbound in combination with pi-hole or Adguard, leave 127.0.0.1, and point Adguard to 127.0.0.1:PORT
         #interface = [ "127.0.0.1" ];
         interface = [
-          "0.0.0.0"
+          #"0.0.0.0"
           #"::0"
+          "127.0.0.1"
+          "192.168.0.11"
         ];
 
         #port = 5335; # Default 53
-        #port = 53; # Default 53
+        port = 53; # Default 53
 
         # addresses from the IP range that are allowed to connect to the resolver
         #access-control = [ "127.0.0.1 allow" ];
         access-control = [
           "127.0.0.1 allow"
-          "192.168.0.0/24 allow"
+          "192.168.0.0/24 allow" # LAN
+          "192.168.1.0/24 allow" #
+          #"192.168.2.0/24 allow" #
           #"2001:DB8/64 allow"
         ];
 
@@ -93,43 +97,48 @@
 
       }; # End services.unbound.settings.server
 
+      #local-zone =  "localdomain. static";
+      #local-data = [
+      #  "gw.localdomain. 10800 IN A 192.168.1.1"
+      #  "customdesktop.localdomain. 10800 IN A 192.168.1.10"
+      #  "nyxora.localdomain. IN A 192.168.1.11"
+      #  "printer.localdomain. IN A 192.168.1.22"
+      #  "taufiq.localdomain. IN A 192.168.1.12"
+      #];
+
       forward-zone = [
-      # # Example config with quad9
-      # {
-      #   name = ".";
-      #   forward-addr = [
-      #     "9.9.9.9#dns.quad9.net"
-      #     "149.112.112.112#dns.quad9.net"
-      #   ];
-      #   forward-tls-upstream = true;  # Protected DNS
-      # }
+        # # Example config with quad9
+        # {
+        #   name = ".";
+        #   forward-addr = [
+        #     "9.9.9.9#dns.quad9.net"
+        #     "149.112.112.112#dns.quad9.net"
+        #   ];
+        #   forward-tls-upstream = true;  # Protected DNS
+        # }
 
-      # {
-      #   name = ".";
-      #   forward-addr = [
-      #     "8.8.8.8"
-      #     "8.8.4.4"
-      #   ];
-      # }
-
-      # {
-      #   name = ".";
-      #   forward-addr = [
-      #     "1.1.1.1"
-      #     "1.0.0.1"
-      #   ];
-      # }
-
+        # Upstream for everything else
         {
-          name = "localdomain.";
+          name = ".";
           forward-addr = [
-            "192.168.0.15"
-          ];
-          #forward-first = true;
-          #do-not-query-localhost = false;
-          #dnssec-bogus-addr = "0.0.0.0";
-          #dnssec-check-unsigned = true; # Allow responses without DNSSEC validation
+             "1.1.1.1"
+             "1.0.0.1"
+             #"8.8.8.8"
+             #"8.8.4.4"
+             #"9.9.9.9"
+           ];
         }
+
+        #{
+        #  name = "localdomain.";
+        #  forward-addr = [
+        #    "192.168.0.15"
+        #  ];
+        #  #forward-first = true;
+        #  #do-not-query-localhost = false;
+        #  #dnssec-bogus-addr = "0.0.0.0";
+        #  #dnssec-check-unsigned = true; # Allow responses without DNSSEC validation
+        #}
 
       ]; # End services.unbound.settings.forward-zone
 
@@ -146,7 +155,7 @@
 
   networking.firewall = {
     allowedUDPPorts = [
-      #5335 # testing
+      # 5335 # testing
       53  # dns default
     ];
   };

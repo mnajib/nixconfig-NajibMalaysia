@@ -11,6 +11,7 @@
 
     # Network monitoring
     iperf bandwhich
+    net-tools
 
     # Misc diagnostics
     xmlstarlet inxi dmidecode lshw hwinfo neofetch cpufetch
