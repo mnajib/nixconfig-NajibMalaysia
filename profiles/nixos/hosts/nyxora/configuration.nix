@@ -61,8 +61,9 @@ in
     #./network-dns.nix
 
     # Internal/private network DNS server
-    #(fromCommon "dnsmasq.nix")
-    #./unbound.nix
+    #(fromCommon "dnsmasq.nix") # dhcpd + dns
+    #(fromCommon "unbound.nix") # dns
+    (fromCommon "services/bind.nix") # dns
 
     (./. + "/${commonDir}/users-abdullah-wheel.nix")
     #./users-anak2.nix
