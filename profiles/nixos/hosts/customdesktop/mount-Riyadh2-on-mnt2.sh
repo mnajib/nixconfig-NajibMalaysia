@@ -144,7 +144,7 @@ set_all() {
   mount_partition "${DRIVE}-part3" "${MPOINT}/boot/efi"
 
   # Enable swap
-  sudo swapon "${DRIVE}-part4"
+  #sudo swapon "${DRIVE}-part4"
 }
 
 # -------------------------------------------------------------------
@@ -156,7 +156,7 @@ set_all() {
 # -------------------------------------------------------------------
 reset_all() {
   # disable swap
-  sudo swapoff "${DRIVE}-part4"
+  #sudo swapoff "${DRIVE}-part4"
 
   # Unmount EFI partition
   sudo umount "${MPOINT}/boot/efi" || echo "⚠️ Warning: EFI not mounted"
@@ -207,11 +207,11 @@ status_all() {
   done
 
   # Optional: check swap
-  if swapon --show | grep -q "${DRIVE}-part4"; then
-    echo "✅ Swap enabled on ${DRIVE}-part4"
-  else
-    echo "❌ Swap not enabled"
-  fi
+  #if swapon --show | grep -q "${DRIVE}-part4"; then
+  #  echo "✅ Swap enabled on ${DRIVE}-part4"
+  #else
+  #  echo "❌ Swap not enabled"
+  #fi
 
   echo "===================="
 }
