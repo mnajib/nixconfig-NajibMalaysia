@@ -4,7 +4,7 @@
 { inputs, outputs, lib, config, pkgs, ... }:
 let
   username = "najib";
-  hostname = "khadijah";
+  hostname = "customdesktop";
   stateVersion = "23.11"; # "22.05";
   commonDir = "../../../common";
 in {
@@ -18,5 +18,5 @@ in {
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = stateVersion; #"22.05";
+  home.stateVersion = "${stateVersion}"; #"22.05";
 }

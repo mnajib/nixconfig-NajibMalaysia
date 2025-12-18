@@ -70,7 +70,7 @@ in
     #distributedBuilds = true;
 
     settings = {
-      #max-jobs = 2;
+      max-jobs = 2;
       #max-jobs = 0;
       fallback = true;
       trusted-users = [
@@ -145,7 +145,6 @@ in
 
     inputs.home-manager.nixosModules.home-manager
 
-    #./configuration.FULL.nix
     (fromCommon "configuration.FULL.nix")
     #(fromCommon "remote-builders.nix")
 
@@ -161,17 +160,6 @@ in
     #(fromCommon "dnsmasq.nix")
     #(./. + "/${commonDir}/unbound.nix")
     #(fromCommon "unbound.nix")
-
-    #./users-abdullah-wheel.nix
-    #./users-anak2.nix
-    #./users-naqib-wheel.nix
-    #./users-nurnasuha-wheel.nix
-
-    #(./. + "/${commonDir}/users-najib.nix")
-    #(./. + "/${commonDir}/users-naqib.nix")
-    #(./. + "/${commonDir}/users-naim.nix")
-    #(./. + "/${commonDir}/users-nurnasuha.nix")
-    #(./. + "/${commonDir}/users-julia.nix")
 
     (fromCommon "users-a-wheel.nix")
     (fromCommon "users-najib.nix")
@@ -200,8 +188,6 @@ in
     (fromCommon "zfs.nix")
     (fromCommon "btrfs.nix")
 
-    #(./. + "/${commonDir}/nfs-server-customdesktop.nix")
-    #(./. + "/${commonDir}/nfs-client-automount.nix")
     (fromCommon "nfs-server-customdesktop.nix")
     (fromCommon "nfs-client-automount.nix")
 
@@ -211,13 +197,9 @@ in
     #./samba-server-customdesktop.nix
     #./samba-client.nix
 
-    #./console-keyboard-dvorak.nix
-    #./keyboard-with-msa.nix
     (fromCommon "console-keyboard-dvorak.nix")
     (fromCommon "keyboard-with-msa.nix")
 
-    #./audio-pulseaudio.nix
-    #./audio-pipewire.nix
     (fromCommon "audio-pipewire.nix")
 
     #./synergy-client.nix # barrier
@@ -234,8 +216,6 @@ in
     #./gogs.nix
     #./gitea.nix
 
-    #./forgejo-sqlite.nix
-    #(fromCommon "forgejo-sqlite.nix")
     (fromCommon "forgejo-sqlite-customdesktop.nix")
 
     #./hosts2.nix
@@ -321,23 +301,28 @@ in
   boot.loader = {
     timeout = 10;
     #systemd-boot.enable = true;
+
     efi = {
-      #canTouchEfiVariables = true;
+      canTouchEfiVariables = false; # IMPORTANT: Set to 'false' for BIOS-only
       efiSysMountPoint = "/boot/efi";
     };
+
     grub = {
       enable = true;
-      efiSupport = true; #false;
-      efiInstallAsRemovable = true;
+      efiSupport = false; #true; #false;
+      #efiInstallAsRemovable = true;
       enableCryptodisk = true;
       copyKernels = true;
-      useOSProber = false; #true;
+      useOSProber = true; #false; #true;
       zfsSupport = true;
       timeoutStyle = "menu";
       memtest86.enable = true;
 
+      #device = (drivePath driveRiyadh3);
+      #device = "/dev/disk/by-id/ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T";
+
       # The devices on which the boot loader, GRUB, will be installed.
-      devices = [
+      #devices = [
         #"/dev/disk/by-id/ata-HUA722010CLA330_43W7625_42C0400IBM_JPW9L0HZ0JD0ZC"
         #"/dev/disk/by-id/ata-WDC_WD10SPCX-75KHST0_WXU1AA60XS04"
 
@@ -350,8 +335,8 @@ in
         #
         #(drivePath driveRiyadh1)
         #(drivePath driveRiyadh2)
-        (drivePath driveRiyadh3)
-      ];
+        #(drivePath driveRiyadh3)
+      #];
 
       #mirroredBoots = [
       #  {
@@ -368,7 +353,7 @@ in
       #  }
       #];
       #
-      # NOTE: Do not need this as wy mirror it using btrfs
+      # NOTE: Do not need this as we mirror it using btrfs
 
     };
   };
