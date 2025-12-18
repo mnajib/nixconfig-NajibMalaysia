@@ -61,8 +61,8 @@ in
     #device = "/dev/disk/by-uuid/b4d2a502-05ea-4b3b-adf5-25e08dc3062a";
     #device = "${drivePath driveRiyadh1}-part3";
     #device = "/dev/disk/by-id/ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T-part2";
-    #device = "${drivePath driveRiyadh3}-part2";
-    device = "/dev/disk/by-label/NIXBOOT";
+    device = "${drivePath driveRiyadh3}-part2";
+    #device = "/dev/disk/by-label/NIXBOOT";
     fsType = "btrfs";
     options = [ "nofail" ];   # safe if some disks missing
   };
@@ -79,8 +79,8 @@ in
   #
   fileSystems."/boot/efi" = {
     #device = "/dev/disk/by-id/ata-WDC_WD10EZEX-60WN4A2_WD-WCC6Y4ZJA16T-part3";
-    #device = "${drivePath driveRiyadh3}-part3";
-    device = "/dev/disk/by-label/NIXEFI";
+    device = "${drivePath driveRiyadh3}-part3";
+    #device = "/dev/disk/by-label/NIXEFI";
     fsType = "vfat";
     options = [ "nofail" ];   # safe if some disks missing
   };
