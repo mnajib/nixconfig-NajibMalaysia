@@ -1,3 +1,4 @@
+# bind.nix
 {
   pkgs,
   ...
@@ -5,6 +6,21 @@
 {
   services.bind = {
     enable = true;
+
+    listenOn = [
+      #"lo"
+      #"eno1"
+      "any" # Default
+    ];
+
+    listenOnPort = 53; # Default: 53
+
+    cacheNetworks = [
+      "127.0.0.0/24"
+      "::1/128"
+      "192.168.0.0/24"
+      "192.168.1.0/24"
+    ];
 
     forwarders = [
       "1.1.1.1"
@@ -63,4 +79,7 @@
 
   #networking.searchDomains = [ "localdomain" ];
   #networking.nameservers = [ "192.168.1.1" ];
+
+  networking.firewall.allowedTCPPorts = [ 53 ];
+  networking.firewall.allowedUDPPorts = [ 53 ];
 }
