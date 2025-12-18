@@ -155,20 +155,19 @@ set_all() {
 # - Ensures clean teardown
 # -------------------------------------------------------------------
 reset_all() {
-  # disable swap
-  #sudo swapoff "${DRIVE}-part4"
+  # Disable swap
+  #run_cmd "sudo swapoff '${DRIVE}-part4'"
 
   # Unmount EFI partition
-  sudo umount "${MPOINT}/boot/efi" || echo "⚠️ Warning: EFI not mounted"
-
+  run_cmd "sudo umount '${MPOINT}/boot/efi'" || echo "⚠️ EFI not mounted"
   # Unmount boot partition
-  sudo umount "${MPOINT}/boot" || echo "⚠️ Warning: boot not mounted"
+  run_cmd "sudo umount '${MPOINT}/boot'" || echo "⚠️ boot not mounted"
 
   # Unmount ZFS datasets (reverse order)
-  sudo umount "${MPOINT}/nix" || echo "⚠️ Warning: nix not mounted"
-  sudo umount "${MPOINT}/home" || echo "⚠️ Warning: home not mounted"
-  sudo umount "${MPOINT}/root" || echo "⚠️ Warning: root not mounted"
-  sudo umount "${MPOINT}" || echo "⚠️ Warning: nixos not mounted"
+  run_cmd "sudo umount '${MPOINT}/nix'" || echo "⚠️ nix not mounted"
+  run_cmd "sudo umount '${MPOINT}/home'" || echo "⚠️ home not mounted"
+  run_cmd "sudo umount '${MPOINT}/root'" || echo "⚠️ root not mounted"
+  run_cmd "sudo umount '${MPOINT}'" || echo "⚠️ nixos not mounted"
 }
 
 # -------------------------------------------------------------------
@@ -220,9 +219,18 @@ status_all() {
 # Function: usage
 # Prints help message and exits.
 # -------------------------------------------------------------------
+#
+# XXX:
+# Usage: [ENVIRONMENT_OVERRIDES] $0 {set|reset|status}
+# Usage: $0 {set|reset|status} [options]
+# Usage: $0 [options] {set|reset|status}
+# Usage: [options] $0 {set|reset|status}
+#
+# which one?
+#
 usage() {
   cat <<EOF
-Usage: $0 {set|reset|status} [options]
+Usage: [ENVIRONMENT_OVERRIDES] $0 {set|reset|status}
 
 Commands:
   set       Mount all ZFS datasets and boot partitions
