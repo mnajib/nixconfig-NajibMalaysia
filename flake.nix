@@ -742,6 +742,11 @@
             modules = [ ./profiles/home-manager/users/najib/maryam ];
           };
 
+          "najib@customdesktop" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/najib/customdesktop ];
+          };
+
           "najib@asmak" = mkHome {
             system = "x86_64-linux";
             modules = [ ./profiles/home-manager/users/najib/asmak ];
