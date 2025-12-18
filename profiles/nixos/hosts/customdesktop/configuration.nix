@@ -82,9 +82,9 @@ in
       ];
     };
 
+      #builders-use-substitutes = true
     extraOptions = ''
       experimental-features = nix-command flakes
-      builders-use-substitutes = true
     '';
 
     #buildMachines = [
@@ -147,7 +147,7 @@ in
 
     #./configuration.FULL.nix
     (fromCommon "configuration.FULL.nix")
-    (fromCommon "remote-builders.nix")
+    #(fromCommon "remote-builders.nix")
 
     #./bootEFI.nix
     #./bootBIOS.nix
@@ -158,7 +158,7 @@ in
     #./network-dns.nix
 
     # Internal/private network DNS server
-    #./dnsmasq.nix
+    #(fromCommon "dnsmasq.nix")
     #(./. + "/${commonDir}/unbound.nix")
     #(fromCommon "unbound.nix")
 
@@ -311,7 +311,8 @@ in
   #
   #    devices = [
   #      #"/dev/disk/by-id/wwn-0x5000c500a837f420" # 500GB HDD from sakinah
-  #      "/dev/disk/by-id/wwn-0x5000039fe7c9db77" # HDD from HP ProDesk Naqib
+  #      #"/dev/disk/by-id/wwn-0x5000039fe7c9db77" # HDD from HP ProDesk Naqib
+  #       (drivePath driveRiyadh3)
   #    ];
   #
   #  }; # End boot.loader.grub
