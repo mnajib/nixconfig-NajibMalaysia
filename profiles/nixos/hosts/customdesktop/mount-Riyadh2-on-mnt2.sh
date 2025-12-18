@@ -37,77 +37,21 @@ make_dir() {
   #  return 1
   #fi
 
-  echo "✅ Created directory '${DIR}'"
-  return 0
+  #echo "✅ Created directory '${DIR}'"
+  #return 0
+  echo "✅ Directory ensured: '${DIR}'"
 }
 
 #
 # Usage:
-#   make_dirs
+#   mount_dataset "/Riyadh2/home" "/mnt2/home"
 #
-make_dirs() {
-  make_dir "${MPOINT}"
-  make_dir "${MPOINT}/nixos"
-  make_dir "${MPOINT}/root"
-  make_dir "${MPOINT}/home"
-  make_dir "${MPOINT}/nix"
-}
-
-#
-# Usage:
-#   mount_drive "/Riyadh2/home" "/mnt2/home"
-#
-mount_drive_old() {
-  local DATASET="$1"
-  local MOUNTPOINT="$2"
-
-  #sudo mount -t zfs "${DATASET}" "${MOUNTPOINT}"
-
-  # Validate arguments
-  if [ -z "${DATASET}" ] || [ -z "${MOUNTPOINT}" ]; then
-    echo "❌ Error: mount_drive requires both dataset and mountpoint" >&2
-    return 1
-  fi
-
-  # Ensure mountpoint exists
-  #if [ ! -d "${MOUNTPOINT}" ]; then
-  #  echo "⚠️ Warning: Mountpoint '${MOUNTPOINT}' does not exist, creating..."
-  #  if ! sudo mkdir -p "${MOUNTPOINT}"; then
-  #    echo "❌ Error: Failed to create mountpoint '${MOUNTPOINT}'" >&2
-  #    return 1
-  #  fi
-  #fi
-  #
-  make_dir "${MOUNTPOINT}"
-
-  # Check if already mounted
-  if mountpoint -q "${MOUNTPOINT}"; then
-    echo "ℹ️ Info: '${MOUNTPOINT}' is already mounted, skipping '${DATASET}'"
-    return 0
-  fi
-
-  # Attempt mount
-  if ! sudo mount -t zfs "${DATASET}" "${MOUNTPOINT}"; then
-    echo "❌ Error: Failed to mount dataset '${DATASET}' at '${MOUNTPOINT}'" >&2
-    return 1
-  fi
-
-  # Verify mount succeeded
-  if ! mountpoint -q "${MOUNTPOINT}"; then
-    echo "❌ Error: '${MOUNTPOINT}' is not a valid mountpoint after mount" >&2
-    return 1
-  fi
-
-  echo "✅ Mounted '${DATASET}' at '${MOUNTPOINT}'"
-  return 0
-}
-#
-mount_drive() {
+mount_dataset() {
   local DATASET="$1"
   local MOUNTPOINT="$2"
 
   if [ -z "${DATASET}" ] || [ -z "${MOUNTPOINT}" ]; then
-    echo "❌ Error: mount_drive requires dataset and mountpoint" >&2
+    echo "❌ Error: mount_dataset requires dataset and mountpoint" >&2
     return 1
   fi
 
@@ -131,17 +75,6 @@ mount_drive() {
   fi
 
   echo "✅ Mounted '${DATASET}' at '${MOUNTPOINT}'"
-}
-
-mount_drives() {
-  mount_drive "${POOL}/nixos" "${MPOINT}"
-  sleep 1
-  mount_drive "${POOL}/rootuser" "${MPOINT}/root"
-  sleep 1
-  mount_drive "${POOL}/home" "${MPOINT}/home"
-  sleep 1
-  mount_drive "${POOL}/nix" "${MPOINT}/nix"
-  sleep 1
 }
 
 mount_partition() {
@@ -173,47 +106,167 @@ mount_partition() {
   echo "✅ Mounted '${PART}' at '${TARGET}'"
 }
 
-# mount all
+# -------------------------------------------------------------------
+# Function: set_all
+# Mounts all required ZFS datasets and partitions in one go.
+# - Creates base mountpoint and subdirectories
+# - Mounts ZFS datasets with error checking
+# - Mounts boot partitions with error checking
+# - Leaves swap commented for optional activation
+# -------------------------------------------------------------------
 set_all() {
+  # Ensure base mountpoint exists
   make_dir "${MPOINT}"
-  mount_drive "${POOL}/nixos" "${MPOINT}"
+
+  # Mount the root "nixos" dataset at /mnt2
+  mount_dataset "${POOL}/nixos" "${MPOINT}"
   sleep 1
 
+  # Prepare subdirectories under /mnt2
   make_dir "${MPOINT}/root"
   make_dir "${MPOINT}/home"
   make_dir "${MPOINT}/nix"
   sleep 1
-  mount_drive "${POOL}/rootuser" "${MPOINT}/root"
-  mount_drive "${POOL}/home" "${MPOINT}/home"
-  mount_drive "${POOL}/nix" "${MPOINT}/nix"
 
+  # Mount additional datasets
+  mount_dataset "${POOL}/rootuser" "${MPOINT}/root"
+  mount_dataset "${POOL}/home" "${MPOINT}/home"
+  mount_dataset "${POOL}/nix" "${MPOINT}/nix"
+
+  # Mount /boot partition
   make_dir "${MPOINT}/boot"
   sleep 1
-  #sudo mount /dev/sde2 /boot
-  #sudo mount "${DRIVE}-part2" /boot
   mount_partition "${DRIVE}-part2" "${MPOINT}/boot"
 
+  # Mount EFI partition
   make_dir "${MPOINT}/boot/efi"
   sleep 1
-  #sudo mount /dev/sde3 /boot/efi
-  #sudo mount "${DRIVE}-part3" /boot/efi
-  mount_partition "${DRIVE}-part3" "${MPOINT}/efi"
+  mount_partition "${DRIVE}-part3" "${MPOINT}/boot/efi"
 
-  #sudo swapon /dev/sde4
+  # Enable swap
+  sudo swapon "${DRIVE}-part4"
 }
 
-# Unmount all
+# -------------------------------------------------------------------
+# Function: reset_all
+# Unmounts all datasets and partitions in reverse order.
+# - Swapoff first (if enabled)
+# - Unmount EFI, boot, then ZFS datasets
+# - Ensures clean teardown
+# -------------------------------------------------------------------
 reset_all() {
-  #swapoff /dev/sde4
+  # disable swap
+  sudo swapoff "${DRIVE}-part4"
 
-  sudo umount /boot/efi
-  sudo umount /
+  # Unmount EFI partition
+  sudo umount "${MPOINT}/boot/efi" || echo "⚠️ Warning: EFI not mounted"
 
-  #...
+  # Unmount boot partition
+  sudo umount "${MPOINT}/boot" || echo "⚠️ Warning: boot not mounted"
+
+  # Unmount ZFS datasets (reverse order)
+  sudo umount "${MPOINT}/nix" || echo "⚠️ Warning: nix not mounted"
+  sudo umount "${MPOINT}/home" || echo "⚠️ Warning: home not mounted"
+  sudo umount "${MPOINT}/root" || echo "⚠️ Warning: root not mounted"
+  sudo umount "${MPOINT}" || echo "⚠️ Warning: nixos not mounted"
 }
 
-#make_dirs
-#mount_drives
+# -------------------------------------------------------------------
+# Function: status_all
+# Displays the current mount status of all datasets and partitions.
+# - Uses findmnt to check each mountpoint
+# - Prints dataset/partition identity if mounted
+# - Provides clear feedback for onboarding
+# -------------------------------------------------------------------
+status_all() {
+  echo "=== Mount Status ==="
+
+  # Check ZFS datasets
+  for target in "${MPOINT}" \
+                "${MPOINT}/root" \
+                "${MPOINT}/home" \
+                "${MPOINT}/nix"; do
+    if mountpoint -q "${target}"; then
+      local src
+      src=$(findmnt -n -o SOURCE --target "${target}")
+      echo "✅ ${target} mounted from ${src}"
+    else
+      echo "❌ ${target} not mounted"
+    fi
+  done
+
+  # Check boot partitions
+  for target in "${MPOINT}/boot" "${MPOINT}/boot/efi"; do
+    if mountpoint -q "${target}"; then
+      local src
+      src=$(findmnt -n -o SOURCE --target "${target}")
+      echo "✅ ${target} mounted from ${src}"
+    else
+      echo "❌ ${target} not mounted"
+    fi
+  done
+
+  # Optional: check swap
+  if swapon --show | grep -q "${DRIVE}-part4"; then
+    echo "✅ Swap enabled on ${DRIVE}-part4"
+  else
+    echo "❌ Swap not enabled"
+  fi
+
+  echo "===================="
+}
+
+# -------------------------------------------------------------------
+# Function: usage
+# Prints help message and exits.
+# -------------------------------------------------------------------
+usage() {
+  cat <<EOF
+Usage: $0 {set|reset|status} [options]
+
+Commands:
+  set       Mount all ZFS datasets and boot partitions
+  reset     Unmount all datasets and partitions (reverse order)
+  status    Show current mount status
+
+Options:
+  DRYRUN=true   Preview commands without executing them
+  POOL=<name>   Override ZFS pool name (default: ${POOL})
+  MPOINT=<dir>  Override base mountpoint (default: ${MPOINT})
+  DRIVE=<path>  Override disk device ID (default: ${DRIVE})
+
+Examples:
+  $0 set
+  DRYRUN=true $0 status
+  POOL=MyPool MPOINT=/mnt3 $0 reset
+
+EOF
+  exit 1
+}
 
 #set_all
 #reset_all
+
+if [ $# -lt 1 ]; then
+  echo "❌ Error: Missing command argument" >&2
+  usage
+fi
+
+case "$1" in
+  set)
+    set_all
+    ;;
+  reset)
+    reset_all
+    ;;
+  status)
+    status_all
+    ;;
+  -h|--help|help)
+    usage
+    ;;
+  *)
+    echo "❌ Error: Unknown command '$1'" >&2
+    usage
+    ;;
+esac
