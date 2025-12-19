@@ -653,6 +653,17 @@
             #pkgsInput = inputs.nixpkgs-unstable; # override
           };
 
+          durian = mkNixos {
+            system = "x86_64-linux";
+            modules = [
+              ./profiles/nixos/hosts/durian/configuration.nix
+              inputs.sops-nix.nixosModules.sops
+              inputs.disko.nixosModules.disko
+              inputs.zfs-snapshot-manager.nixosModules.default
+            ];
+            #pkgsInput = inputs.nixpkgs-unstable; # override
+          };
+
           #asmak = mkNixos "x86_64-linux" [
           #  ./profiles/nixos/hosts/asmak/configuration.nix
           #  inputs.stylix.nixosModules.stylix
