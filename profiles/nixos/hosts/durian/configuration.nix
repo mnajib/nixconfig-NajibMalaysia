@@ -27,11 +27,11 @@ in
 
   nix = {
     #package = pkgs.nixFlakes;
-    distributedBuilds = true;
+    #distributedBuilds = true;
 
     settings = {
-      #max-jobs = 2;
-      max-jobs = 0;
+      max-jobs = 2;
+      #max-jobs = 0;
       fallback = true;
       trusted-users = [
         "root" "najib"
