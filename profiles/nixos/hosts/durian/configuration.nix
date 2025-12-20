@@ -123,7 +123,7 @@ in
     #./netdata.nix
 
     (fromCommon "zfs.nix")
-    (fromCommon "btrfs.nix")
+    #(fromCommon "btrfs.nix")
 
     (fromCommon "nfs-server-customdesktop.nix")
     (fromCommon "nfs-client-automount.nix")
@@ -138,7 +138,7 @@ in
 
     #./synergy-client.nix # barrier
 
-    ./hardware-printer.nix
+    (fromCommon "hardware-printer.nix")
     #./hardware-tablet-wacom.nix
 
     #./zramSwap.nix
@@ -150,7 +150,8 @@ in
     #./gogs.nix
     #./gitea.nix
 
-    (fromCommon "forgejo-sqlite-customdesktop.nix")
+    #(fromCommon "forgejo-sqlite-customdesktop.nix")
+    (fromCommon "forgejo-sqlite-durian.nix")
 
     (fromCommon "nix-garbage-collector.nix")
 
@@ -231,7 +232,7 @@ in
     #timeout = 10;
     #systemd-boot.enable = true;
     #efi = {
-    #  #canTouchEfiVariables = true;
+    #  #canTouchEfiVariables = true; # IMPORTANT: Set to 'false' for BIOS-only
     #  efiSysMountPoint = "/boot/efi";
     #};
     grub = {
@@ -343,26 +344,18 @@ in
   time.timeZone = "Asia/Kuala_Lumpur";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "ms_MY.UTF-8";
-    LC_IDENTIFICATION = "ms_MY.UTF-8";
-    LC_MEASUREMENT = "ms_MY.UTF-8";
-    LC_MONETARY = "ms_MY.UTF-8";
-    LC_NAME = "ms_MY.UTF-8";
-    LC_NUMERIC = "ms_MY.UTF-8";
-    LC_PAPER = "ms_MY.UTF-8";
-    LC_TELEPHONE = "ms_MY.UTF-8";
-    LC_TIME = "ms_MY.UTF-8";
-  };
-
-  #services.btrfs.autoScrub = {
-  #  enable = true;
-  #  fileSystems = [
-  #    "/"
-  #  ];
-  #  interval = "weekly";
+  #i18n.defaultLocale = "en_US.UTF-8";
+  #
+  #i18n.extraLocaleSettings = {
+  #  LC_ADDRESS = "ms_MY.UTF-8";
+  #  LC_IDENTIFICATION = "ms_MY.UTF-8";
+  #  LC_MEASUREMENT = "ms_MY.UTF-8";
+  #  LC_MONETARY = "ms_MY.UTF-8";
+  #  LC_NAME = "ms_MY.UTF-8";
+  #  LC_NUMERIC = "ms_MY.UTF-8";
+  #  LC_PAPER = "ms_MY.UTF-8";
+  #  LC_TELEPHONE = "ms_MY.UTF-8";
+  #  LC_TIME = "ms_MY.UTF-8";
   #};
 
   services.fstrim.enable = true;
@@ -409,7 +402,11 @@ in
   #boot.kernelModules = [ "snd-ctxfi" "snd-ca0106" "snd-hda-intel" ];
   #boot.kernelModules = [ "snd-ctxfi" "snd-hda-intel" ];
 
-  services.logind.extraConfig = "RuntimeDirectorySize=4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001
+  # Before this it is 100% full with 1.6G tmpfs /run/user/1001
+  #services.logind.extraConfig = "RuntimeDirectorySize=4G";
+  services.logind.settings.Login = {
+    RuntimeDirectorySize = "4G";
+  };
 
   services.libinput.enable = true;
   services.displayManager.defaultSession = "none+xmonad";
