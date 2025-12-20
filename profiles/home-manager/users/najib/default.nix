@@ -55,7 +55,12 @@ in
     (./. + "/${commonDir}/chemistry.nix")
     (./. + "/${commonDir}/git.nix")
     (./. + "/${commonDir}/alacritty.nix")
+
+    (fromCommon "repo-bootstrap.nix")
   ];
+
+  programs.repo-bootstrap.enable = true;
+  #programs.repo-bootstrap.basePath = "~/src";
 
   #nixpkgs = {
   #  # You can add overlays here
