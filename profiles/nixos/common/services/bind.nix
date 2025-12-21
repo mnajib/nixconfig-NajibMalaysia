@@ -4,17 +4,26 @@
   ...
 }:
 let
+
+  #
+  # NOTE:
+  #
+  #   dhcpd is configured to give dynamic ip in range from 192.168.0.100 to 192.168.0.200.
+  #
+
   hosts = {
     ns1             = "192.168.0.11";
     gw              = "192.168.0.1";
+    printer         = "192.168.0.22";
 
     customdesktop   = "192.168.0.10";
     durian          = "192.168.0.10";
     nyxora          = "192.168.0.11";
-    printer         = "192.168.0.22";
 
     taufiq          = "192.168.0.12";
     sumayah         = "192.168.0.13";
+    khawlah         = "192.168.0.14";
+    keira           = "192.168.0.15";
   };
 
   zoneFile = pkgs.writeText "zone-localdomain" ''
