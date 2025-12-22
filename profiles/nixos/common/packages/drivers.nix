@@ -26,8 +26,7 @@
     unixODBC
     #unixODBCDrivers.sqlite
 
-    glxinfo
->>>>>>> ac27a59 (nixos: drivers.nix: +glxinfo)
+    mesa-demos #glxinfo
   ];
 }
 
