@@ -83,6 +83,7 @@ in
     dataDir = "${postgresql_dataDir}";
 
     settings = {
+      listen_addresses = '*';
       port = postgresql_port;
     }; # End services.postgresql.settings
 
@@ -112,7 +113,56 @@ in
     #  CREATE DATABASE ${airbytedb} OWNER ${airbytedb_user};
     #'';
 
-  }; # End services.forgejo
+    # Create databases
+    ensureDatabases = [
+      "sekolah"
+      "test"
+    ];
+
+    # Create users
+    ensureUsers = [
+      { name = "sekolah"; password = "sekolah123"; }
+      { name = "pengetua"; passworkd = "pengetua123"; }
+      { name = "guru"; }
+      { name = "tester"; }
+    ];
+
+     # Set up ownership and permissions
+    initialScript = pkgs.writeText "init-pg.sql" ''
+      -- Assign ownership
+      ALTER DATABASE sekolah OWNER TO sekolah;
+      ALTER DATABASE test OWNER TO tester;
+
+      -- Grant access to multiple users
+      GRANT CONNECT ON DATABASE sekolah TO sekolah, guru, pengetua;
+      GRANT CONNECT ON DATABASE test TO tester;
+
+      -- Schema and table privileges
+      \connect sekolah
+      GRANT USAGE ON SCHEMA public TO sekolah, guru, pengetua;
+      GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO sekolah, guru;
+      GRANT SELECT ON ALL TABLES IN SCHEMA public TO pengetua, sekolah;
+
+      \connect test
+      GRANT USAGE ON SCHEMA public TO sekolah, pengetua;
+      GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO tester;
+      GRANT SELECT ON ALL TABLES IN SCHEMA public TO pengetua, sekolah;
+    '';
+
+    # Local trust authentication (for development)
+    # Uses trust for local dev (no password); use md5 for production
+    authentication = pkgs.lib.mkOverride 10 ''
+      local all all trust
+    '';
+
+    #authentication = pkgs.lib.mkOverride 10 ''
+    #  # TYPE  DATABASE        USER            METHOD
+    #  local   all             all             md5
+    #  host    all             all     127.0.0.1/32    md5
+    #  host    all             all     ::1/128         md5
+    #'';
+
+  }; # End services.postgresql
 
   #age.secrets.forgejo-mailer-password = {
   #  file = ../secrets/forgejo-mailer-password.age;
