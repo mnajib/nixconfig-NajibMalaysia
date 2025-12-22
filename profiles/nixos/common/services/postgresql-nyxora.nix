@@ -58,7 +58,7 @@ in
     #  "${postgresql_user}"
     #];
   };
-  users.users.najib.extraGroups = [ "docker" ];
+  #users.users.najib.extraGroups = [ "docker" ];
 
   # Declare Airbyte DB user/group explicitly
   #users.groups.${airbyte_group} = {
@@ -154,7 +154,7 @@ in
   };
 
   # Required for Docker 27+ and kind
-  boot.kernelParams = [ "systemd.unified_cgroup_hierarchy=1" ];
+  #boot.kernelParams = [ "systemd.unified_cgroup_hierarchy=1" ];
 
   # Optional: systemd unit to run abctl automatically
   #systemd.services.airbyte = {
@@ -171,24 +171,24 @@ in
   #};
 
   # for airbyte, as nixos provide abctl to control airbyte docker, airbyte in nixos run as docker
-  virtualisation.docker = {
-    enable = true;
-    enableOnBoot = true;
-    enableNvidia = false;
-    autoPrune.enable = true;   # optional: cleans up old images/containers
-    rootless = {
-      enable = false;          # run as root (simpler for services like Airbyte)
-    };
+  #virtualisation.docker = {
+  #  enable = true;
+  #  enableOnBoot = true;
+  #  enableNvidia = false;
+  #  autoPrune.enable = true;   # optional: cleans up old images/containers
+  #  rootless = {
+  #    enable = false;          # run as root (simpler for services like Airbyte)
+  #  };
+  #
+  #  # Required for kind on NixOS
+  #  #extraOptions = ''
+  #  #  --iptables=true
+  #  #'';
+  #  #  #--log-level=error
+  #};
 
-    # Required for kind on NixOS
-    #extraOptions = ''
-    #  --iptables=true
-    #'';
-    #  #--log-level=error
-  };
-
-  environment.systemPackages = with pkgs; [
-    abctl # airbyte control: Airbyte's CLI for managing local Airbyte (docker?) installations
-  ];
+  #environment.systemPackages = with pkgs; [
+  #  abctl # airbyte control: Airbyte's CLI for managing local Airbyte (docker?) installations
+  #];
 
 }
