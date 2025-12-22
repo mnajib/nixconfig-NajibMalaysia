@@ -83,7 +83,7 @@ in
     dataDir = "${postgresql_dataDir}";
 
     settings = {
-      listen_addresses = '*';
+      #listen_addresses = '*';
       port = postgresql_port;
     }; # End services.postgresql.settings
 
@@ -121,8 +121,11 @@ in
 
     # Create users
     ensureUsers = [
-      { name = "sekolah"; password = "sekolah123"; }
-      { name = "pengetua"; passworkd = "pengetua123"; }
+      {
+        name = "sekolah";
+        #password = "sekolah123";
+      }
+      { name = "pengetua"; }
       { name = "guru"; }
       { name = "tester"; }
     ];
