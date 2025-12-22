@@ -24,6 +24,7 @@ let
     sumayah         = "192.168.0.13";
     khawlah         = "192.168.0.14";
     keira           = "192.168.0.15";
+    maryam          = "192.168.0.16";
   };
 
   zoneFile = pkgs.writeText "zone-localdomain" ''
