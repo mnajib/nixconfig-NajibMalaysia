@@ -387,10 +387,16 @@ in
     # Card Nvidia GeForce GT 720 (in acer aspire taufiq).
     #package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
     #
-    # Card Nvidia Quadro K620 (in HP Z420 nyxora). --> Display Driver 570.133.07
+    # Card Nvidia Quadro K620 (in HP Z420 nyxora).
+    #   --> Display Driver 570.133.07
+    #   --> Display Dirver 580.119.02 (2025-12-11) (Info 2025-12-22)
+    #
     #package = config.boot.kernelPackages.nvidiaPackages.stable; # v 565.77
     #package = config.boot.kernelPackages.nvidiaPackages.latest; # v 565.77
-    package = config.boot.kernelPackages.nvidiaPackages.production; # v 550.135
+
+    # Version 550.135 (info ...) .
+    # Version 580.119.02 (info 2025-12-22).
+    package = config.boot.kernelPackages.nvidiaPackages.production;
   };
 
   #services.logind.extraConfig = "RuntimeDirectorySize=4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001
@@ -433,7 +439,8 @@ in
     #desktopManager.plasma5.enable = true;
     #desktopManager.xfce.enable = true;
     #desktopManager.mate.enable = true;
-    desktopManager.gnome.enable = true;
+    #desktopManager.gnome.enable = true;
+    desktopManager.lxqt.enable = true;
     #desktopManager.enlightenment.enable = true;
 
   }; # End services.xserver
