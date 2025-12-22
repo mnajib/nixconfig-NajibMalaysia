@@ -222,7 +222,7 @@ in# with lib;
       #najib = import "${hmDir}/najib/taufiq";
       #root = import (./. + "/${hmDir}/root/taufiq");
       najib = import (./. + "/${hmDir}/najib/taufiq");
-      naqib = import (./. + "/${hmDir}/naqib/taufiq");
+      #naqib = import (./. + "/${hmDir}/naqib/taufiq");
     }; # End home-manager.users = { ... };
   }; # End home-manager = { ... };
 
@@ -239,8 +239,7 @@ in# with lib;
   #--------------------------------------------------------
   networking.nftables.enable = true;    # 'nftable' is enable; 'iptables' if not.
   networking.firewall = {
-    enable = false;                      #'false' is the default.
-    #enable = true;                      #'false' is the default.
+    enable = true;                      #'false' is the default.
 
     #trustedInterfaces = [ "enp0s2" ];
     #interfaces = {};
@@ -249,18 +248,18 @@ in# with lib;
     #pingLimit = "2/second";
     #pingLimit = "1/minute burst 5 packets";
     allowedTCPPorts = [
-      #24007                            # gluster daemon
-      #24008                            # gluster management
-      #49152                            # gluster brick1
-      #49153                            # gluster brick2
+      # 24007                            # gluster daemon
+      # 24008                            # gluster management
+      # 49152                            # gluster brick1
+      # 49153                            # gluster brick2
       #{ from = 38465; to = 38467; }    # Gluster NFS
-      #111                              # portmapper
+      # 111                              # portmapper
       1110                              # NFS cluster
       4045                              # NFS lock manager
     ];
     allowedUDPPorts = [
-      #111                              # Gluster: portmapper
-      #3450                             # for minetest server
+      # 111                              # Gluster: portmapper
+      # 3450                             # for minetest server
       1110                              # NFS client
       4045                              # NFS lock manager
       #{ from = 4000; to = 4007; }
