@@ -3,10 +3,13 @@
   environment.unixODBCDrivers = with pkgs.unixODBCDrivers; [
     sqlite
     psql
+
     mariadb
     #mysql
+
     msodbcsql18
     #msodbcsql17
+
     #redshift
   ];
 
@@ -19,6 +22,9 @@
     fwup
     fwupd
     fwupd-efi
+
+    unixODBC
+    #unixODBCDrivers.sqlite
   ];
 }
 
