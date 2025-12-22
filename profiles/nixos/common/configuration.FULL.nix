@@ -65,7 +65,7 @@
   imports = [
     ./users-najib.nix
     #./garbage-collect.nix
-    #./sqlite.nix
+    ./sqlite.nix
 
     # Check: load in per-host config
     #./xdg.nix
