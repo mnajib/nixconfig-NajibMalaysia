@@ -34,7 +34,7 @@
 
     ./console-keyboard-dvorak.nix
     #./keyboard-with-msa.nix
-    ./keyboard-kmonad.nix
+    #./keyboard-kmonad.nix
 
     ./audio-pipewire.nix
     #./audio-pulseaudio.nix

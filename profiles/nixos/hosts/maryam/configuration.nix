@@ -62,7 +62,8 @@ in
     (fromCommon "users-naim.nix")
 
     (fromCommon "console-keyboard-dvorak.nix")
-    (fromCommon "keyboard-kmonad.nix")
+    #(fromCommon "keyboard-kmonad.nix")
+    #./kmonad.nix
 
     (fromCommon "audio-pipewire.nix")
     (fromCommon "hardware-printer.nix")
