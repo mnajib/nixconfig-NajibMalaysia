@@ -14,6 +14,9 @@
   home.packages = with pkgs; [
     pass
     keepassxc
+
+    ente-auth
+    ente-cli
   ];
 
   #programs.doom-emacs = {
