@@ -75,6 +75,7 @@ in
 
   services.postgresql = {
     enable = true;
+    enableTCPIP = true; # Required to enable networking beyond Unix sockets
     package = pkgs.postgresql_16;
 
     #user = "${forgejo_user}";
@@ -84,6 +85,7 @@ in
 
     settings = {
       #listen_addresses = '*';
+      listen_addresses = lib.mkForce "127.0.0.1, 192.168.0.11";
       port = postgresql_port;
     }; # End services.postgresql.settings
 
@@ -115,12 +117,13 @@ in
 
     # Create databases
     ensureDatabases = [
-      "sekolah"
-      "test"
+      "sekolahdb"
+      "testdb"
     ];
 
     # Create users
     ensureUsers = [
+      #{ name = "admin"; }
       {
         name = "sekolah";
         #password = "sekolah123";
@@ -130,15 +133,26 @@ in
       { name = "tester"; }
     ];
 
+    # To set password
+    #   sudo -u postgres psql
+    #   ALTER USER sekolah WITH PASSWORD 'your_new_password_here';
+
      # Set up ownership and permissions
     initialScript = pkgs.writeText "init-pg.sql" ''
+      -- XXX: Set/reset test password
+      -- ALTER USER sekolah WITH PASSWORD 'sekolah123';
+
       -- Assign ownership
       ALTER DATABASE sekolah OWNER TO sekolah;
+      ALTER DATABASE sekolahdb OWNER TO sekolah;
       ALTER DATABASE test OWNER TO tester;
+      ALTER DATABASE testdb OWNER TO tester;
 
       -- Grant access to multiple users
       GRANT CONNECT ON DATABASE sekolah TO sekolah, guru, pengetua;
+      GRANT CONNECT ON DATABASE sekolahdb TO sekolah, guru, pengetua;
       GRANT CONNECT ON DATABASE test TO tester;
+      GRANT CONNECT ON DATABASE testdb TO tester;
 
       -- Schema and table privileges
       \connect sekolah
@@ -155,8 +169,21 @@ in
     # Local trust authentication (for development)
     # Uses trust for local dev (no password); use md5 for production
     authentication = pkgs.lib.mkOverride 10 ''
-      local all all trust
+      # TYPE    DATABASE        USER              ADDRESS           METHOD
+      local     all             all                                 trust
+      #host      all             all               127.0.0.0.1/8     trust
+
+      #host      sekolah         sekolah           192.168.0.0/24    md5
+      #host      all             all               192.168.0.12/24   md5
+      host      all             all               192.168.0.12/24   md5
     '';
+
+    #authentication = pkgs.lib.mkOverride 10 ''
+    #  # TYPE  DATABASE        USER            ADDRESS                 METHOD
+    #  local   all             all                                     trust
+    #  host    all             all             127.0.0.1/32            trust
+    #  host    all             all             192.168.1.0/24          md5
+    #'';
 
     #authentication = pkgs.lib.mkOverride 10 ''
     #  # TYPE  DATABASE        USER            METHOD
