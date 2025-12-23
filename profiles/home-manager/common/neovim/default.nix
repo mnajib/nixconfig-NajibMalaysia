@@ -197,8 +197,8 @@ in
     # https://search.nixos.org/packages
     plugins = with pkgs.vimPlugins; [
       ##nvim-lspconfig
-      #nvim-treesitter
-      nvim-treesitter.withAllGrammars
+      nvim-treesitter
+      #nvim-treesitter.withAllGrammars
       #plenary-nvim
       #gruvbox
       vim-gruvbox8

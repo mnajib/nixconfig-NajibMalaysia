@@ -22,10 +22,11 @@ in
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
 
-    (./. + "/${commonDir}/youtube.nix")
+    (fromCommon "youtube.nix")
 
-    (./. + "/${commonDir}/common-configs.nix")
-    (./. + "/${commonDir}/common-packages.nix")
+    (fromCommon "common-configs.nix")
+    (fromCommon "common-packages.nix")
+    (fromCommon "postgresql.nix")
 
     #../neovim
     #../neovim/lazyvim.nix
@@ -51,10 +52,10 @@ in
     #./hyprland.nix
     #../evince.nix
 
-    (./. + "/${commonDir}/cmus.nix")
-    (./. + "/${commonDir}/chemistry.nix")
-    (./. + "/${commonDir}/git.nix")
-    (./. + "/${commonDir}/alacritty.nix")
+    (fromCommon "cmus.nix")
+    (fromCommon "chemistry.nix")
+    (fromCommon "git.nix")
+    (fromCommon "alacritty.nix")
 
     (fromCommon "repo-bootstrap.nix")
   ];
