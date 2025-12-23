@@ -271,4 +271,16 @@ in
   #  abctl # airbyte control: Airbyte's CLI for managing local Airbyte (docker?) installations
   #];
 
+  services.pgadmin = {
+    enable = true;
+    port = 5050; # Default: 5050
+    openFirewall = true;
+
+    #initialEmail = "mnajib@gmail.com";
+
+    #settings = {
+    #};
+
+  };
+
 }
