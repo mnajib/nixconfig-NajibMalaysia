@@ -24,6 +24,7 @@
     tabiew
     miller
     json-plot
+    visidata # interactive terminal multitool for tabular data
   ];
 }
 
