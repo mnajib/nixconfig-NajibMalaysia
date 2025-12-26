@@ -213,7 +213,6 @@ in# with lib;
     (fromCommon "bluetooth.nix")
 
     (fromCommon "packages/databases.nix")
-    (fromCommon "postgresql.nix")
   ];
 
   home-manager = {
