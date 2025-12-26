@@ -7,6 +7,11 @@ let
   postgresql_groupId = 71; # 71 is the default. can pick any unused UID/GID (≥100 is safe for system users you define)
   postgresql_dataDir = "/MyTank/services/postgresql"; # Default: "";
 
+  # To login pgadmin web interfacea (http://nyxora:5050)
+  pgadmin_port = 5050; # Default 5050
+  pgadmin_user = "mnajib@gmail.com";
+  pgadmin_password = "thisismysecurepassword";
+
   #airbyte_user      = "airbyte";
   #airbyte_group     = "airbyte";       # optional, if you want a dedicated group
   #airbyte_userId    = 200;             # pick a stable unused UID
@@ -271,12 +276,18 @@ in
   #  abctl # airbyte control: Airbyte's CLI for managing local Airbyte (docker?) installations
   #];
 
+  # create secret file at runtime (not in /nix/store)
+  environment.etc."pgadmin/initial-password".text = "${pgadmin_password}"; #"ChangMeStrong123!";
+  environment.etc."pgadmin/initial-password".mode = "0600";
+
   services.pgadmin = {
     enable = true;
-    port = 5050; # Default: 5050
+    #listenAddress = "127.0.0.1";
+    port = pgadmin_port; # 5050; # Default: 5050
     openFirewall = true;
 
-    #initialEmail = "mnajib@gmail.com";
+    initialEmail = "${pgadmin_user}"; # "mnajib@gmail.com";
+    initialPasswordFile = "/etc/pgadmin/initial-password";
 
     #settings = {
     #};
