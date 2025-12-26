@@ -211,6 +211,9 @@ in# with lib;
     ./gpu-config-xorg.nix
 
     (fromCommon "bluetooth.nix")
+
+    (fromCommon "packages/databases.nix")
+    (fromCommon "postgresql.nix")
   ];
 
   home-manager = {
