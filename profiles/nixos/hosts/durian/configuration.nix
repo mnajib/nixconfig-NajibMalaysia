@@ -365,10 +365,10 @@ in
 
   services.openssh = {
     enable = true;
-    #settings = {
-      #PermitRootLogin = "yes";
+    settings = {
+      PermitRootLogin = "yes"; # Needed for current syncoid config
       #PermitRootLogin = "prohibit-password";             # Needed for btrbk
-    #};
+    };
   };
 
   programs.gnupg.agent = {
