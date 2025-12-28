@@ -68,7 +68,7 @@ in
     #posterazor                          # for print on big paper?
     #remmina                             # RDP remote desktop client ?
     #wpsoffice                           #
-    libreoffice
+    #libreoffice
     clamav                              # scan anti-virus ?
     mindustry                           # game
     luanti #minetest                            # game

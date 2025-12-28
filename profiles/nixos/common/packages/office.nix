@@ -2,7 +2,8 @@
 {
   environment.systemPackages = with pkgs; [
     # Office suite
-    libreoffice scribus
+    libreoffice hyphen hunspell hunspellDicts.en_US google-fonts
+    scribus
 
     # Typesetting
     texlive.combined.scheme-full texstudio texmaker lyx tikzit tectonic pandoc

@@ -160,7 +160,7 @@ in
 
     #libreoffice-fresh
     #libreoffice-qt-fresh
-    libreoffice
+    #libreoffice
 
     #opera
 
