@@ -11,6 +11,7 @@
 
     # GUI editors
     geany
+    kdePackages.kate
     #notepadqq
     #xfce.mousepad
     #enlightenment.ecrire
