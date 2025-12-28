@@ -177,7 +177,7 @@ with lib;
     firefox
     qutebrowser
     #floorp
-    libreoffice
+    #libreoffice
     gimp
     unzip
     telegram-desktop

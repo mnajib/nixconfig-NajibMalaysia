@@ -128,10 +128,7 @@ in# with lib;
     #./remote-builders.nix
     (fromCommon "remote-builders.nix")
 
-    #../../common/configuration.FULL.nix
-    #"${commonDir}/configuration.FULL.nix" # do not work
-    #./. + "/${commonDir}/configuration.FULL.nix" # do not work
-    (./. + "/${commonDir}/configuration.FULL.nix")
+    (fromCommon "configuration.FULL.nix")
 
     #./hosts.nix
     #./hosts2.nix

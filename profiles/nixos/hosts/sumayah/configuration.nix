@@ -243,7 +243,7 @@ in
     input-leap
     #barrier
 
-    libreoffice
+    #libreoffice
     popcorntime
 
     telegram-desktop
