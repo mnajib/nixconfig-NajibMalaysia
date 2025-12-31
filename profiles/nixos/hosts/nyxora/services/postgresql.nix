@@ -122,6 +122,7 @@ in
 
     # Create databases
     ensureDatabases = [
+      "sekolah"
       "sekolahdb"
       "testdb"
     ];
@@ -132,10 +133,14 @@ in
       {
         name = "sekolah";
         #password = "sekolah123";
+        ensureDBOwnership = true; # Make postgres user "sekolah" as owner of postgres database "sekolah"
       }
       { name = "pengetua"; }
       { name = "guru"; }
       { name = "tester"; }
+      {
+        name = "authenticator"; # Role PostgREST uses to connect
+      }
     ];
 
     # To set password
@@ -169,33 +174,37 @@ in
       GRANT USAGE ON SCHEMA public TO sekolah, pengetua;
       GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO tester;
       GRANT SELECT ON ALL TABLES IN SCHEMA public TO pengetua, sekolah;
+
+      -- --------------------------------------------------
+      -- For PostgREST
+      -- Create a role for the API to use
+      -- CREATE ROLE web_anon NOLOGIN;
+      -- GRANT USAGE ON SCHEMA public TO web_anon;
+
+      -- Grant access to your specific table
+      -- GRANT SELECT, INSERT, UPDATE, DELETE ON public.murid TO web_anon;
+      -- Important: Grant usage on the identity sequence for inserts
+      -- GRANT USAGE, SELECT ON SEQUENCE murid_id_seq TO web_anon;
+      -- --------------------------------------------------
     '';
 
     # Local trust authentication (for development)
     # Uses trust for local dev (no password); use md5 for production
     authentication = pkgs.lib.mkOverride 10 ''
-      # TYPE    DATABASE        USER              ADDRESS           METHOD
-      local     all             all                                 trust
-      #host      all             all               127.0.0.0.1/8     trust
+      # --------- --------------- ----------------- ----------------- --------
+      # TYPE      DATABASE        USER              ADDRESS           METHOD
+      # --------- --------------- ----------------- ----------------- --------
 
-      #host      sekolah         sekolah           192.168.0.0/24    md5
-      #host      all             all               192.168.0.12/24   md5
-      host      all             all               192.168.0.12/24   md5
+      local       all             all                                 trust
+
+      host        all             all               ::1/128           trust
+      host        all             all               127.0.0.1/32      trust
+
+      host        all             all               127.0.0.1/8       scram-sha-256
+
+      host        all             all               192.168.0.12/32   scram-sha-256       # allow only the specific IP
+      host        sekolah         sekolah           192.168.0.0/24    scram-sha-256       # allow the entire 192.168.0.0 network
     '';
-
-    #authentication = pkgs.lib.mkOverride 10 ''
-    #  # TYPE  DATABASE        USER            ADDRESS                 METHOD
-    #  local   all             all                                     trust
-    #  host    all             all             127.0.0.1/32            trust
-    #  host    all             all             192.168.1.0/24          md5
-    #'';
-
-    #authentication = pkgs.lib.mkOverride 10 ''
-    #  # TYPE  DATABASE        USER            METHOD
-    #  local   all             all             md5
-    #  host    all             all     127.0.0.1/32    md5
-    #  host    all             all     ::1/128         md5
-    #'';
 
   }; # End services.postgresql
 
@@ -293,5 +302,7 @@ in
     #};
 
   };
+
+  # TODO: services.nginx
 
 }
