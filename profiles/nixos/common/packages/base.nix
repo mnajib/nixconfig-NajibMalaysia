@@ -19,6 +19,9 @@
 
     # Calculators
     bc eva clac gnome-calculator
+
+    # Managing Secrets
+    sops age
   ];
 }
 

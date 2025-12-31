@@ -60,11 +60,6 @@ in
     # Disable this; as we can just set custom DNS in NetworkManager
     #./network-dns.nix
 
-    # Internal/private network DNS server
-    #(fromCommon "dnsmasq.nix") # dhcpd + dns
-    #(fromCommon "unbound.nix") # dns
-    (fromCommon "services/bind.nix") # dns
-
     (./. + "/${commonDir}/users-abdullah-wheel.nix")
     #./users-anak2.nix
     #./users-naqib.nix
@@ -122,13 +117,16 @@ in
     #./btrbk-pull.nix
     #./btrbk-tv.nix # XXX: Temporarily disabled as the HDD is failing.
 
-    #./gogs.nix
-    #./gitea.nix
-    #./forgejo-sqlite.nix
-    #(./. + "/${commonDir}/forgejo-sqlite.nix")
-    #(fromCommon "forgejo-sqlite.nix")
-    (fromCommon "forgejo-sqlite-nyxora.nix")
-    (fromCommon "services/postgresql-nyxora.nix")
+    ./services/bind.nix
+    ./services/nginx.nix
+    ./services/forgejo.nix
+    ./services/postgresql.nix
+    ./services/refine.nix
+
+    #./nginx/default.nix
+    #./nginx/forgejo.nix
+    #./nginx/refine.nix
+    #./nginx/postgrest.nix
 
     #./hosts2.nix
 

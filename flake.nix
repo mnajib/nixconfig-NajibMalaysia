@@ -599,6 +599,8 @@
               #   nixos-rebuild switch --flake .#nyxora
               ./profiles/nixos/hosts/nyxora/configuration.nix
 
+              inputs.sops-nix.nixosModules.sops
+
               # Pass proxmox-nixos to modules
               #{ _module.args.proxmox-nixos = inputs.proxmox-nixos; }
               #
