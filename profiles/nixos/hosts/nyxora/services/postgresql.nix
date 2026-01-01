@@ -147,45 +147,99 @@ in
     #   sudo -u postgres psql
     #   ALTER USER sekolah WITH PASSWORD 'your_new_password_here';
 
-     # Set up ownership and permissions
+    # To apply grants.sql
+    #   psql -d sekolah -f grants.sql
+
+    # Set up ownership and permissions
+    # will run once, as superuser.
+    # PostgreSQL has a data directory (PGDATA)
+    # If that directory does not exist yet, PostgreSQL must initialize it
+    # During that initialization → initialScript is executed once
     initialScript = pkgs.writeText "init-pg.sql" ''
-      -- XXX: Set/reset test password
-      -- ALTER USER sekolah WITH PASSWORD 'sekolah123';
+      -- ==================================================
+      -- Ownership
+      -- ==================================================
 
-      -- Assign ownership
-      ALTER DATABASE sekolah OWNER TO sekolah;
+      ALTER DATABASE sekolah   OWNER TO sekolah;
       ALTER DATABASE sekolahdb OWNER TO sekolah;
-      ALTER DATABASE test OWNER TO tester;
-      ALTER DATABASE testdb OWNER TO tester;
+      -- ALTER DATABASE test      OWNER TO tester;
+      ALTER DATABASE testdb    OWNER TO tester;
 
-      -- Grant access to multiple users
-      GRANT CONNECT ON DATABASE sekolah TO sekolah, guru, pengetua;
+      -- ==================================================
+      -- Connection privileges
+      -- ==================================================
+
+      GRANT CONNECT ON DATABASE sekolah   TO sekolah, guru, pengetua;
       GRANT CONNECT ON DATABASE sekolahdb TO sekolah, guru, pengetua;
-      GRANT CONNECT ON DATABASE test TO tester;
-      GRANT CONNECT ON DATABASE testdb TO tester;
+      -- GRANT CONNECT ON DATABASE test      TO tester;
+      GRANT CONNECT ON DATABASE testdb    TO tester;
 
-      -- Schema and table privileges
-      \connect sekolah
+      -- ==================================================
+      -- Schema ownership & base access
+      -- ==================================================
+
+      -- Always be explicit
+      ALTER SCHEMA public OWNER TO sekolah;
+
       GRANT USAGE ON SCHEMA public TO sekolah, guru, pengetua;
-      GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO sekolah, guru;
-      GRANT SELECT ON ALL TABLES IN SCHEMA public TO pengetua, sekolah;
 
-      \connect test
-      GRANT USAGE ON SCHEMA public TO sekolah, pengetua;
-      GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO tester;
-      GRANT SELECT ON ALL TABLES IN SCHEMA public TO pengetua, sekolah;
+      -- ==================================================
+      -- Table privileges (existing tables)
+      -- ==================================================
 
-      -- --------------------------------------------------
-      -- For PostgREST
-      -- Create a role for the API to use
-      -- CREATE ROLE web_anon NOLOGIN;
-      -- GRANT USAGE ON SCHEMA public TO web_anon;
+      GRANT SELECT, INSERT, UPDATE, DELETE
+        ON ALL TABLES IN SCHEMA public
+        TO sekolah, guru;
 
-      -- Grant access to your specific table
-      -- GRANT SELECT, INSERT, UPDATE, DELETE ON public.murid TO web_anon;
-      -- Important: Grant usage on the identity sequence for inserts
-      -- GRANT USAGE, SELECT ON SEQUENCE murid_id_seq TO web_anon;
-      -- --------------------------------------------------
+      GRANT SELECT
+        ON ALL TABLES IN SCHEMA public
+        TO pengetua;
+
+      -- ==================================================
+      -- Future tables (VERY IMPORTANT)
+      -- ==================================================
+
+      ALTER DEFAULT PRIVILEGES IN SCHEMA public
+        GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES
+        TO sekolah, guru;
+
+      ALTER DEFAULT PRIVILEGES IN SCHEMA public
+        GRANT SELECT ON TABLES
+        TO pengetua;
+
+      -- ==================================================
+      -- Sequences (SERIAL / IDENTITY)
+      -- ==================================================
+
+      GRANT USAGE, SELECT
+        ON ALL SEQUENCES IN SCHEMA public
+        TO sekolah, guru;
+
+      ALTER DEFAULT PRIVILEGES IN SCHEMA public
+        GRANT USAGE, SELECT ON SEQUENCES
+        TO sekolah, guru;
+
+      -- ==================================================
+      -- PostgREST
+      -- ==================================================
+
+      DO $$
+      BEGIN
+        CREATE ROLE web_anon NOLOGIN;
+      EXCEPTION WHEN duplicate_object THEN
+        NULL;
+      END $$;
+
+      GRANT USAGE ON SCHEMA public TO web_anon;
+
+      -- Table-specific access for API
+      GRANT SELECT, INSERT, UPDATE, DELETE
+        ON TABLE public.murid
+        TO web_anon;
+
+      GRANT USAGE, SELECT
+        ON ALL SEQUENCES IN SCHEMA public
+        TO web_anon;
     '';
 
     # Local trust authentication (for development)
