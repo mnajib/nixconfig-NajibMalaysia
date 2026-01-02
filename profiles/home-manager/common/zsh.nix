@@ -7,7 +7,7 @@
       save = 10000;
       size = 10000;
     };
-    defaultKeymap = "viins";
+    defaultKeymap = "emacs"; #"viins";
     autosuggestion.enable = true; #enableAutosuggestions = true;
     enableCompletion = true;
     syntaxHighlighting = {
@@ -38,8 +38,30 @@
     #'';
 
     # Extra commands that should be added to .zshrc
-    #initExtra = ''
-    #'';
+    initExtra = ''
+      # Enable prompt expansion
+      setopt PROMPT_SUBST
+
+      # Colors
+      autoload -U colors && colors
+
+      # Left prompt
+      #PROMPT='%F{yellow}[%D{%Y-%m-%d} %*]%f %F{cyan}%n@%m%f:%F{green}%~%f %# '
+      PROMPT='%B%F{yellow}[%D{%Y-%m-%d} %*]%f %F{cyan}%n@%m%f:%F{green}%~%f %#%b '
+
+      # Optional right prompt (example: exit code)
+      # RPROMPT='%F{red}%?%f'
+
+      # switch to vi-mode
+      #bindkey -v
+      export KEYTIMEOUT=1
+      # make Alt+. work in insert mode
+      bindkey -M viins '^[.' insert-last-word
+
+      # Quick toggle between emacs-mode and vi-mode
+      #bindkey '^E' bindkey -e   # example: Ctrl+E switches to emacs-mode
+      #bindkey '^V' bindkey -v   # Ctrl+V switches back to vi-mode
+    '';
 
     # Extra commands that should be added to .zlogin
     #loginExtra = ''

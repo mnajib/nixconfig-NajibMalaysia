@@ -310,9 +310,10 @@
   #programs.fish.enable = true;
   programs.xonsh.enable = true;
 
-  #users.users.najib.shell = pkgs.fish;    #pkgs.zsh; # pkgs.fish;
-  #users.defaultUserShell = pkgs.fish;    #pkgs.zsh;
-  #users.users.root.shell = pkgs.fish;    #pkgs.zsh;
+  users.users.najib.shell = pkgs.zsh;
+  #users.users.najib.shell = pkgs.fish;
+  #users.users.root.shell = pkgs.fish;
+  #users.defaultUserShell = pkgs.fish;
 
   #services.clipcat.enable = true;         # clipboard manager daemon
 
