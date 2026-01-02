@@ -6,7 +6,9 @@
     hexchat discord discord-ptb
 
     # Secure/alt messengers
-    simplex-chat-desktop session-desktop briar-desktop
+    simplex-chat-desktop
+    session-desktop jami
+    briar-desktop
 
     # Email
     neomutt
