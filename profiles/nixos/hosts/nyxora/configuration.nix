@@ -121,12 +121,9 @@ in
     ./services/nginx.nix
     ./services/forgejo.nix
     ./services/postgresql.nix
+    ./services/pgadmin.nix
+    ./services/postgrest.nix
     ./services/refine.nix
-
-    #./nginx/default.nix
-    #./nginx/forgejo.nix
-    #./nginx/refine.nix
-    #./nginx/postgrest.nix
 
     #./hosts2.nix
 
