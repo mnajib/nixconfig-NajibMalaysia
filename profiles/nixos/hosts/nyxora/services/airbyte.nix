@@ -6,6 +6,31 @@ let
   postgresql_userId = 71; # 71 is the default. can pick any unused UID/GID (≥100 is safe for system users you define)
   postgresql_groupId = 71; # 71 is the default. can pick any unused UID/GID (≥100 is safe for system users you define)
   postgresql_dataDir = "/MyTank/services/postgresql"; # Default: "";
+
+  # To login pgadmin web interfacea (http://nyxora:5050)
+  pgadmin_port = 5050; # Default 5050
+  pgadmin_user = "mnajib@gmail.com";
+  pgadmin_password = "thisismysecurepassword";
+
+  #airbyte_user      = "airbyte";
+  #airbyte_group     = "airbyte";       # optional, if you want a dedicated group
+  #airbyte_userId    = 200;             # pick a stable unused UID
+  #airbyte_groupId   = 200;             # pick a stable unused GID
+  #
+  # Airbyte service ports
+  #airbyte_ui_port   = 8000; # Web UI
+  #airbyte_api_port  = 8001; # API
+  #airbyte_debug_port = 8002; # optional debug/metrics
+  #
+  # By default, Airbyte state lives in ~/.airbyte and Docker volumes under /var/lib/docker/volumes.
+  # Use below command
+  #   abctl deploy --data-dir /MyTank/services/airbyte
+  # to control where Airbyte stores its configs and logs; but Docker itself still keeps container layers in /var/lib/docker.
+  #airbyte_dataDir   = "/MyTank/services/airbyte"; # abctl deploy --data-dir /MyTank/services/airbyte
+  #
+  #airbytedb        = "airbytedb";
+  #airbytedb_user      = "airbyteuser";
+  #airbytedb_password  = "myverystrongpassword";
 in
 {
 
@@ -38,11 +63,28 @@ in
     #  "${postgresql_user}"
     #];
   };
+  #users.users.najib.extraGroups = [ "docker" ];
+
+  # Declare Airbyte DB user/group explicitly
+  #users.groups.${airbyte_group} = {
+  #  gid = airbyte_groupId;
+  #};
+  #users.users.${airbyte_user} = {
+  #  isSystemUser = true;
+  #  uid          = airbyte_userId;
+  #  group        = airbyte_group;
+  #  description  = "Airbyte replication user";
+  #  #home         = "/var/lib/airbyte";
+  #  home         = "${airbyte_dataDir}";
+  #};
 
   services.postgresql = {
     enable = true;
     enableTCPIP = true; # Required to enable networking beyond Unix sockets
     package = pkgs.postgresql_16;
+
+    #user = "${forgejo_user}";
+    #group = "${forgejo_group}";
 
     dataDir = "${postgresql_dataDir}";
 
@@ -55,6 +97,32 @@ in
       #unix_socket_group = "${postgresql_group}";
       #unix_socket_permissions = 0777;
     }; # End services.postgresql.settings
+
+    #secrets = {
+    #  metrics = {
+    #    TOKEN = "/run/keys/forgejo-metrics-token";
+    #  };
+    #  camo = {
+    #    HMAC_KEY = "/run/keys/forgejo-camo-hmac";
+    #  };
+    #  service = {
+    #    HCAPTCHA_SECRET = "/run/keys/forgejo-hcaptcha-secret";
+    #    HCAPTCHA_SITEKEY = "/run/keys/forgejo-hcaptcha-sitekey";
+    #  };
+    #};
+
+    #mailerPasswordFile = config.age.secrets.forgejo-mailer-password.path;
+
+    #authentication = ''
+    #  # Allow Airbyte user from local network
+    #  host ${airbytedb} ${airbytedb_user} 0.0.0.0/0 md5
+    #'';
+
+    # Create Airbyte DB + user
+    #initialScript = pkgs.writeText "init.sql" ''
+    #  CREATE USER ${airbytedb_user} WITH PASSWORD '${airbytedb_password}';
+    #  CREATE DATABASE ${airbytedb} OWNER ${airbytedb_user};
+    #'';
 
     # Create databases
     ensureDatabases = [
@@ -198,6 +266,12 @@ in
 
   }; # End services.postgresql
 
+  #age.secrets.forgejo-mailer-password = {
+  #  file = ../secrets/forgejo-mailer-password.age;
+  #  mode = "400";
+  #  owner = "forgejo";
+  #};
+
   # Need to mount the my zfs storage first
   systemd.services.postgresql = {
     after = [
@@ -230,5 +304,43 @@ in
       #...
     ];
   };
+
+  # Required for Docker 27+ and kind
+  #boot.kernelParams = [ "systemd.unified_cgroup_hierarchy=1" ];
+
+  # Optional: systemd unit to run abctl automatically
+  #systemd.services.airbyte = {
+  #  description = "Airbyte deployment via abctl";
+  #  after       = [ "docker.service" ];
+  #  requires    = [ "docker.service" ];
+  #  serviceConfig = {
+  #    User = airbyte_user;
+  #    Group = airbyte_group;
+  #    ExecStart = "${pkgs.abctl}/bin/abctl deploy --data-dir ${airbyte_dataDir}";
+  #    Restart = "always";
+  #  };
+  #  wantedBy = [ "multi-user.target" ];
+  #};
+
+  # for airbyte, as nixos provide abctl to control airbyte docker, airbyte in nixos run as docker
+  #virtualisation.docker = {
+  #  enable = true;
+  #  enableOnBoot = true;
+  #  enableNvidia = false;
+  #  autoPrune.enable = true;   # optional: cleans up old images/containers
+  #  rootless = {
+  #    enable = false;          # run as root (simpler for services like Airbyte)
+  #  };
+  #
+  #  # Required for kind on NixOS
+  #  #extraOptions = ''
+  #  #  --iptables=true
+  #  #'';
+  #  #  #--log-level=error
+  #};
+
+  #environment.systemPackages = with pkgs; [
+  #  abctl # airbyte control: Airbyte's CLI for managing local Airbyte (docker?) installations
+  #];
 
 }

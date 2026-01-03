@@ -74,7 +74,8 @@ let
 
       locations."/" = {
         #proxyPass = "http://127.0.0.1:5173"; # Default Vite port
-        proxyPass = "http://127.0.0.1:${toString port}";
+        #proxyPass = "http://127.0.0.1:${toString port}";
+        proxyPass = "http://unix:/run/postgrest/postgrest.sock";
         proxyWebsockets = true; # Necessary for Hot Module Replacement (HMR)
       };
     };
