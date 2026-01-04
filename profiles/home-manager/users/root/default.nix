@@ -10,7 +10,9 @@ let
 in
 {
   # You can import other home-manager modules here
-  imports = [
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+  in [
     # If you want to use modules your own flake exports (from modules/home-manager):
     # outputs.homeManagerModules.example
 
@@ -24,6 +26,7 @@ in
 
     (./. + "/${commonDir}/common-configs.nix")
     #../common-packages.nix
+    (fromCommon "git.nix")
 
     #../neovim
     #../neovim/lazyvim.nix
@@ -182,11 +185,22 @@ in
   # Enable home-manager and git
   programs.home-manager.enable = true;
   programs.git.enable = true;
-  programs.git.userName = "Najib Ibrahim";
-  programs.git.userEmail = "mnajib@gmail.com";
-  programs.git.aliases = {
+  programs.git.settings.user.name = "Najib Ibrahim";
+  programs.git.settings.user.email = "mnajib@gmail.com";
+  programs.git.settings.alias = {
     co = "checkout";
   };
+  #programs.git = {
+  #  settings = {
+  #    user = {
+  #      name = "Najib Ibrahim";
+  #      email = "mnajib@gmail.com";
+  #    };
+  #    alias = {
+  #      co = "checkout"
+  #    };
+  #  };
+  #};
 
   programs.gpg.enable = true;
   programs.fzf.enable = true;                    # A command-line fuzzy finder written in Go
