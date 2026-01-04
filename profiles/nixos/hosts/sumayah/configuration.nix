@@ -50,6 +50,7 @@ in
     (fromCommon "window-managers.nix")
     (fromCommon "desktops-xorg.nix")
     #(fromCommon "3D.nix")
+    (fromCommon "whatsapp.nix")
   ];
 
   # Test if the module is available
@@ -247,8 +248,6 @@ in
     popcorntime
 
     telegram-desktop
-    whatsie # whatsapp client
-    whatsapp-for-linux # whatsapp client
     kchat # kde app
     hexchat # IRC client
     #fluffychat # matrix client. Marked as insecure package.
@@ -281,7 +280,7 @@ in
   networking.firewall.allowedTCPPorts = [ 16216 ];
   networking.firewall.allowedUDPPorts = [ 16216 ];
   # Or disable the firewall altogether.
-  networking.firewall.enable = false;
+  networking.firewall.enable = lib.mkForce false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

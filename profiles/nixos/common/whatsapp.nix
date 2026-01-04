@@ -1,10 +1,10 @@
 { pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    whatsapp-for-linux
+    wasistlos #whatsapp-for-linux
     whatsapp-emoji-font
 
-    whatsie		# Feature rich WhatsApp Client for Desktop Linux
+    #whatsie		# Feature rich WhatsApp Client for Desktop Linux. Disabled because use unsecure qtwebengine-5...
 
     nchat
   ];
