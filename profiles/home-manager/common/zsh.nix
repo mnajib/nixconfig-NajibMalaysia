@@ -38,7 +38,8 @@
     #'';
 
     # Extra commands that should be added to .zshrc
-    initExtra = ''
+    #initExtra = ''
+    initContent = ''
       # Enable prompt expansion
       setopt PROMPT_SUBST
 

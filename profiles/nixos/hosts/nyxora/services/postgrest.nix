@@ -22,19 +22,21 @@
       #db-uri = "postgresql://authenticator@/sekolahdb?connect_timeout=10"; # Tell PostgREST to connects no RostgreSQL via TCP
       #db-uri = "postgresql://sekolah:sekolah123@localhost:5432/sekolahdb"; # Tell PostgREST to connects no RostgreSQL via TCP
       #db-uri = "postgresql://authenticator@/sekolahdb?host=/run/postgresql"; # Tell PostgREST to connects no RostgreSQL via Unix socket
+      #db-uri = "postgresql://sekolah/sekolahdb?host=/run/postgresql"; # Tell PostgREST to connects no RostgreSQL via Unix socket
       #db-uri = "postgresql://sekolah@/sekolahdb?host=/run/postgresql"; # Tell PostgREST to connects no RostgreSQL via Unix socket
       #db-uri = "postgresql:///sekolahdb?host=/run/postgresql"; # Tell PostgREST to connects no RostgreSQL via Unix socket
       #db-uri = "postgres:///mydb";
       #db-uri = "postgres:///sekolahdb";
       db-uri = {
-        host = "localhost";
+        host = "127.0.0.1"; #"localhost";
         dbname = "sekolahdb";
+        user = "postgrest";
+        #password = lib.mkForce "postgrest123";
       };
 
       db-schema = "public"; # This tells PostgREST where/which "folder" (schema) inside your database contains the tables you want to turn into an API.
-
-      #db-anon-role = "web_anon"; # This thell PostgREST who/which "database user" it should "pretend" to be when a request comes in from the internet without any login credentiols (anonymous).
-      db-anon-role = "anon";
+      db-anon-role = "web_anon"; # This thell PostgREST who/which "database user" it should "pretend" to be when a request comes in from the internet without any login credentiols (anonymous).
+      #db-anon-role = "anon";
 
       #----------------------------------------------------
       # You/Client <-> PostgREST
@@ -83,7 +85,6 @@
       extraConfig = ''
         # Family-only network
         allow 192.168.0.0/24;
-        allow 192.168.1.0/24;
         allow 127.0.0.1;
         deny all;
       '';
