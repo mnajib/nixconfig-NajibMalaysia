@@ -158,24 +158,11 @@ in
       -- ==================================================
       -- PostgREST
       -- ==================================================
-
-      DO $$
-      BEGIN
-        CREATE ROLE web_anon NOLOGIN;
-      EXCEPTION WHEN duplicate_object THEN
-        NULL;
-      END $$;
-
+      CREATE ROLE web_anon NOLOGIN;
       GRANT USAGE ON SCHEMA public TO web_anon;
-
-      -- Table-specific access for API
-      GRANT SELECT, INSERT, UPDATE, DELETE
-        ON TABLE public.murid
-        TO web_anon;
-
-      GRANT USAGE, SELECT
-        ON ALL SEQUENCES IN SCHEMA public
-        TO web_anon;
+      GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.murid TO web_anon;
+      GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO web_anon;
+      GRANT web_anon TO postgrest;
     '';
 
     # Local trust authentication (for development)
