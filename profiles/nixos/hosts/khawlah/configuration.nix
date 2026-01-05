@@ -60,7 +60,9 @@ in
     (fromCommon "users-naim.nix")
 
     (fromCommon "console-keyboard-dvorak.nix")
+    (fromCommon "keyboard-with-msa.nix")
     #(fromCommon "keyboard-kmonad.nix")
+
     (fromCommon "audio-pipewire.nix")
     (fromCommon "hardware-printer.nix")
     (fromCommon "zramSwap.nix")
@@ -76,7 +78,7 @@ in
     #./radeon-legacy.nix
 
     ./desktops.nix
-    (fromCommon "desktops.nix")
+    #(fromCommon "desktops.nix")
 
     #(fromCommon "nfs-client.nix")
     (fromCommon "nfs-client-automount.nix")
