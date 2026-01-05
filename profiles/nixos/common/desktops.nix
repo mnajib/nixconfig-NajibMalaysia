@@ -23,15 +23,10 @@
     enable = true;
     generateScript = true;
   };
-
-  services.xserver.displayManager.lightdm.enable = true;
-  # OR
-  # gdm
-  #services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.lightdm.enable = lib.mkForce true;
+  services.xserver.displayManager.gdm.enable = lib.mkForce false;
+  services.displayManager.sddm.enable = lib.mkForce false;
   #services.xserver.displayManager.gdm.wayland = true;
-  # OR
-  # sddm
-  #services.displayManager.sddm.enable = false;
   #services.displayManager.sddm.wayland.enable = false;
 
   services.xserver.desktopManager.lxqt.enable = true;
