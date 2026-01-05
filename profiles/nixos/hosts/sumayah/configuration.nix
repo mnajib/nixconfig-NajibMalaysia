@@ -84,6 +84,9 @@ in
   # Set your time zone.
   time.timeZone = "Asia/Kuala_Lumpur";
 
+  services.zfs.autoSnapshot.enable = lib.mkForce false;
+  services.zfs.autoScrub.enable = lib.mkForce false;
+
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
