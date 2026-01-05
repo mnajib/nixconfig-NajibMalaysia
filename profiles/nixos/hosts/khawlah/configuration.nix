@@ -22,7 +22,7 @@ in
       experimental-features = nix-command flakes
     '';
     settings = {
-      max-jobs = 2;
+      max-jobs = lib.mkDefault 2;
       trusted-users = [
         "root" "najib"
         "naqib"
@@ -74,7 +74,9 @@ in
     #(fromCommon "xmonad.nix")
     #./gpu-config.nix
     #./radeon-legacy.nix
+
     ./desktops.nix
+    (fromCommon "desktops.nix")
 
     #(fromCommon "nfs-client.nix")
     (fromCommon "nfs-client-automount.nix")

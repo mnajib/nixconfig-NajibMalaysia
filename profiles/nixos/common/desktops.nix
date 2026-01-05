@@ -10,19 +10,31 @@
 { config, lib, pkgs, ... }:
 
 {
+  imports = [
+    ./window-managers.nix
+  ];
+
   ###################################
   # Common graphics & display config #
   ###################################
   services.xserver.enable = true;
 
+  services.xserver.displayManager.startx = {
+    enable = true;
+    generateScript = true;
+  };
+
+  services.xserver.displayManager.lightdm.enable = true;
+  # OR
   # gdm
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland = true;
+  #services.xserver.displayManager.gdm.enable = true;
+  #services.xserver.displayManager.gdm.wayland = true;
   # OR
   # sddm
-  services.displayManager.sddm.enable = false;
-  services.displayManager.sddm.wayland.enable = false;
+  #services.displayManager.sddm.enable = false;
+  #services.displayManager.sddm.wayland.enable = false;
 
+  services.xserver.desktopManager.lxqt.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
   services.desktopManager.plasma6.enable = true;
 
@@ -33,6 +45,13 @@
   programs.river-classic.enable = true;
   programs.hyprland.enable = true;
   programs.xwayland.enable = true;
+  services.hypridle.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    hypridle
+    hyprlock
+    brightnessctl
+  ];
 
   # The Plasma vs GNOME overlap problem;
   #
@@ -51,6 +70,8 @@
   #programs.ssh.askPassword = lib.mkForce "${pkgs.ksshaskpass}/bin/ksshaskpass";
   # OR, If you want a neutral option that works in either environment, you can use x11-ssh-askpass instead of GNOME/KDE’s:
   #programs.ssh.askPassword = lib.mkForce "${pkgs.x11_ssh_askpass}/bin/x11-ssh-askpass";
+
+  programs.gnupg.agent.pinentryPackage = lib.mkForce pkgs.pinentry-qt;
 
   #################################
   # Keyboard: Dvorak everywhere   #
