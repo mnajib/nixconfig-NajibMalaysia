@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
     environment.systemPackages = with pkgs; [
-        wacomtablet
+        kdePackages.wacomtablet #wacomtablet
         krita
         xf86_input_wacom
         libwacom

@@ -40,8 +40,14 @@
   programs.sway.enable = true;
   programs.river.enable = true;
   programs.hyprland.enable = true;
-
+  services.hypridle.enable = true;
   programs.xwayland.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    hypridle
+    hyprlock
+    brightnessctl
+  ];
 
   # The Plasma vs GNOME overlap problem;
   #
