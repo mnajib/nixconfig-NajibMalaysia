@@ -2,23 +2,23 @@
 
 {
   # 🧠 Enable Hyprland compositor
-  programs.hyprland = {
-    enable = true;
-    package = pkgs.hyprland;
-    extraConfig = ''
-      # Hyprland core config
-      monitor=HDMI-A-1,1920x1080@60,0x0,1
-      exec-once = waybar
-      exec-once = swaync
-      input {
-        kb_layout = us
-      }
-      general {
-        gaps_in = 5
-        border_size = 2
-      }
-    '';
-  };
+  #programs.hyprland = {
+  #  enable = true;
+  #  package = pkgs.hyprland;
+  #  extraConfig = ''
+  #    # Hyprland core config
+  #    monitor=HDMI-A-1,1920x1080@60,0x0,1
+  #    exec-once = waybar
+  #    exec-once = swaync
+  #    input {
+  #      kb_layout = us
+  #    }
+  #    general {
+  #      gaps_in = 5
+  #      border_size = 2
+  #    }
+  #  '';
+  #};
 
   # 🧠 Wayland environment variables
   environment.sessionVariables = {

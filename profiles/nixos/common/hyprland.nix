@@ -10,6 +10,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    hyprland
     #----------------------------------
     waybar
     #
@@ -58,12 +59,12 @@
     jack.enable = true;
   };
 
-  programs.hyprland = {
-    enable = true;
-    #nvidiaPatches = true;
-    xwayland.enable = true;
-    withUWSM = true; # Launch Hyprland with the UWSM (Universal Wayland Session Manager) session manager.
-  };
+  #programs.hyprland = {
+  #  enable = true;
+  #  #nvidiaPatches = true;
+  #  xwayland.enable = true;
+  #  withUWSM = true; # Launch Hyprland with the UWSM (Universal Wayland Session Manager) session manager.
+  #};
 
   environment.sessionVariables = rec {
     WLR_NO_HARDWARE_CURSORS = "1";      # If your cursor becomes invisible

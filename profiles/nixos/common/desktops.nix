@@ -38,7 +38,7 @@
 
   programs.sway.enable = true;
   programs.river-classic.enable = true;
-  programs.hyprland.enable = true;
+  #programs.hyprland.enable = true; # XXX
   programs.xwayland.enable = true;
   services.hypridle.enable = true;
 
