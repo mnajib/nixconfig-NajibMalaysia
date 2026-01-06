@@ -50,7 +50,7 @@
     blueman              # Bluetooth GUI
     lxappearance #qt5ct   # GTK/Qt theming
     firefox              # Browser
-    nnn                  # File manager
+    #nnn                  # File manager
   ];
 
   # 🧠 Autostart clipboard manager

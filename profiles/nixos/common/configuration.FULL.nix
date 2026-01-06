@@ -67,6 +67,8 @@
     #./garbage-collect.nix
     ./sqlite.nix
 
+    ./home-manager.nix
+
     # Check: load in per-host config
     #./xdg.nix
     #./xdg-gtk.nix

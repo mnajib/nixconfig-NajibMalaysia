@@ -44,7 +44,7 @@ in
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
     ./hardware-configuration.nix
-    inputs.home-manager.nixosModules.home-manager
+    #inputs.home-manager.nixosModules.home-manager
 
     (fromCommon "remote-builders.nix")
 
@@ -77,8 +77,10 @@ in
     #./gpu-config.nix
     #./radeon-legacy.nix
 
-    ./desktops.nix
-    #(fromCommon "desktops.nix")
+    #./desktops.nix
+    #(fromCommon "desktop-wayland.nix")
+    (fromCommon "desktops.nix")
+    (fromCommon "hyprland.nix")
 
     #(fromCommon "nfs-client.nix")
     (fromCommon "nfs-client-automount.nix")
@@ -99,13 +101,6 @@ in
   in {
     extraSpecialArgs = { inherit inputs outputs; };
     users = {
-      # Import your home-manager configuration
-      #najib = import ../home-manager/user-najib;
-      #root = import ../home-manager/user-root;
-      #
-      #najib = import (./. + "/${hmDir}/najib/zahrah");
-      #root = import (./. + "/${hmDir}/root/zahrah");
-      #
       root = userImport "root";
       najib = userImport "najib";
       naqib = userImport "naqib";

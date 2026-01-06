@@ -91,8 +91,8 @@ in
 
   nixpkgs.overlays = builtins.attrValues outputs.overlays;
 
-  #nixpkgs.config = {
-  #  allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
   #  allowUnfreePredicate = _: true;
   #  permittedInsecurePackages = [
   #    #"nix-2.15.3"
@@ -100,7 +100,7 @@ in
   #  ];
   #  #firefox.enableAdobeFlash = false;
   #  pulseaudio = true;
-  #};
+  };
 
   colorscheme = lib.mkDefault colorSchemes.dracula;
   #colorscheme = lib.mkDefault colorSchemes.nord;
