@@ -39,7 +39,7 @@
 
       programs.sway.enable = (config.myGpu.driver == "nouveau");
       programs.river.enable = (config.myGpu.driver == "nouveau");
-      programs.hyprland.enable = (config.myGpu.driver == "nouveau");
+      #programs.hyprland.enable = (config.myGpu.driver == "nouveau");
 
       # The Plasma vs GNOME overlap problem;
       #
