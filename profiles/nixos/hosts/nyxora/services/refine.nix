@@ -27,10 +27,26 @@ let
   refine_root = "/MyTank/services/refine";
 
   # A helper function to create a Refine service
-  #mkRefineApp = { name, dev_port, domain }: {
-  mkRefineApp = { name, domain }: {
+  mkRefineApp = { name, dev_port, domain }: {
     # Phase-1: only nginx reverse proxy, app build
 
+    #----------------------------------
+    # For dev (TCP -> manual dev server
+    #----------------------------------
+    services.nginx.virtualHosts."dev${domain}" = {
+      forceSSL = false;
+      enableACME = false;
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:${toString dev_port}";
+        proxyWebsockets = true;
+      };
+    };
+    #----------------------------------
+
+    #----------------------------------
+    # For staging / prod (static files)
+    #----------------------------------
     services.nginx.virtualHosts."${domain}" = {
       #sslCertificate     = "/etc/nixos/secrets/tls/app.home.crt";
       #sslCertificateKey  = "/etc/nixos/secrets/tls/app.home.key";
@@ -45,23 +61,22 @@ let
       root = "${refine_root}/${name}/dist";
 
       locations."/" = {
-        #proxyPass = "http://127.0.0.1:5173"; # Default Vite port
-        #proxyPass = "http://127.0.0.1:${toString port}";
-        #proxyPass = "http://unix:/run/postgrest/postgrest.sock";
-        #proxyWebsockets = true; # Necessary for Hot Module Replacement (HMR)
         tryFiles = "$uri $uri/ /index.html";
       };
     };
-  };
+    #----------------------------------
+
+  }; # End mkRefineApp
 
   # -----------------------------
   # List of Refine apps
   # -----------------------------
   refineApps = [
-    { name = "sijilberhenti"; domain = "sijilberhenti.localdomain"; }
-    #{ name = "app2";          domain = "app2.localdomain"; }
-    #{ name = "app3";          domain = "app3.localdomain"; }
+    { name = "sijilberhenti";       dev_port = 3003;    domain = "sijilberhenti.localdomain"; }
+    #{ name = "app2";               dev_port = 3004;    domain = "app2.localdomain"; }
+    #{ name = "app3";               dev_port = 3005;    domain = "app3.localdomain"; }
   ];
+
 in
 {
   fileSystems."/MyTank/services" = {
@@ -126,5 +141,26 @@ in
   # Import each Refine app nginx configuration
   # -----------------------------
   imports = map (app: mkRefineApp app) refineApps;
+
+  #
+  # NOTE:
+  #
+  #   How you actually use this (day-to-day
+  #
+  #     Dev workflow
+  #       #cd /MyTank/services/refine/sijilberhenti
+  #       #npm install
+  #       #npm run dev -- --port 3003
+  #       sudo -u refine -- bash -lc 'cd /MyTank/services/refine/sijilberhenti/ && npm install'
+  #       sudo -u refine -- bash -lc 'cd /MyTank/services/refine/sijilberhenti && npm run dev -- --host 127.0.0.1 --port 3003'
+  #       #Open 'http://devsijilberhenti.localdomain' via web browser.
+  #
+  #
+  #     Staging / Prod workflow
+  #       #npm run build
+  #       sudo -u refine -- bash -lc 'cd /MyTank/services/refine/sijilberhenti/ && npm run build'
+  #       #Open 'http://sijilberhenti.localdomain' via web browser
+  #
+
 }
 

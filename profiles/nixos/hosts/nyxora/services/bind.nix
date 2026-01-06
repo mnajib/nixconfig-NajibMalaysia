@@ -13,14 +13,16 @@ let
 
   hosts = {
     # Services
-    gw              = "192.168.0.1";
-    printer         = "192.168.0.22";
-    ns1             = "192.168.0.11";
-    api             = "192.168.0.11";
-    git             = "192.168.0.11";
-    pgadmin         = "192.168.0.11";
-    sijilberhenti   = "192.168.0.11";
-    sbdev           = "192.168.0.11";
+    gw                  = "192.168.0.1";
+    printer             = "192.168.0.22";
+    ns1                 = "192.168.0.11";
+    api                 = "192.168.0.11";
+    git                 = "192.168.0.11";
+    pgadmin             = "192.168.0.11";
+    sijilberhenti       = "192.168.0.11";
+    devsijilberhenti    = "192.168.0.11";
+    #dev.sijilberhenti  = "192.168.0.11";
+    #sbdev              = "192.168.0.11";
 
     # Hosts
     customdesktop   = "192.168.0.10";
