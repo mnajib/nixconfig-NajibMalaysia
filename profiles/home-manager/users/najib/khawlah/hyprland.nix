@@ -17,6 +17,9 @@ in
   in [
     #../default.nix
     #(fromCommon "neovim")
+
+    #(fromCommon "wayland-desktop.nix")
+    (fromCommon "hyprland.nix")
   ];
 
   home.packages = with pkgs; [

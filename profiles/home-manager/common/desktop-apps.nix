@@ -39,6 +39,16 @@
     #nheko # a desktop client for the Matrix protocol
     #element-desktop # A feature-rich client for Matrix.org
     #fluffychat # Chat with your friends (matrix client)
+    teams-for-linux # Unofficial Microsoft Teams client for Linux
+    vesktop # Alternate client for Discord with Vencord built-in
+
+    anki # Spaced repetition flashcard program
+    code-cursor # AI-powered code editor built on vscode. unfree
+    obsidian # Powerful knowledge base that works on top of a local folder of plain text Markdown files. unfree
+
+    imv # Command line image viewer for tiling window managers
+    bemoji # Emoji picker with support for bemenu/wofi/rofi/dmenu and wayland/X11
+    nix-prefetch-scripts # Collection of all the nix-prefetch-* scripts which may be used to obtain source hashes
   ];
 
 }

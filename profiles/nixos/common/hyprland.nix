@@ -11,12 +11,13 @@
 
   environment.systemPackages = with pkgs; [
     #----------------------------------
-    #waybar
-    (
-      waybar.overrideAttrs ( oldAttrs: {
-        mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-      })
-    )
+    waybar
+    #
+    #(
+    #  waybar.overrideAttrs ( oldAttrs: {
+    #    mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+    #  })
+    #)
 
     eww
     #----------------------------------
@@ -33,7 +34,7 @@
     alacritty
     wezterm
     #----------------------------------
-    rofi-wayland
+    rofi
     wofi                                # gtk rofi
     bemenu
     fuzzel
@@ -48,7 +49,6 @@
     ];
   };
 
-  sound.enable = true;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -62,16 +62,26 @@
     enable = true;
     #nvidiaPatches = true;
     xwayland.enable = true;
+    withUWSM = true; # Launch Hyprland with the UWSM (Universal Wayland Session Manager) session manager.
   };
 
-  environment.sessionVariables = {
+  environment.sessionVariables = rec {
     WLR_NO_HARDWARE_CURSORS = "1";      # If your cursor becomes invisible
     NIXOS_OZONE_WL = "1";               # Optional, hint electron apps to use wayland instead of xorg
+    TERMINAL = "alacritty";
+    EDITOR = "nvim";
+    XDG_BIN_HOME = "$HOME/.local/bin";
+    #XDG_BIN_HOME = "$HOME/bin";
+    PATH = [
+      "${XDG_BIN_HOME}"
+    ];
   };
 
   hardware = {
     opengl.enable = true;
     #nvidia.modesetting.enable = true;   # Most wayland compositors need this
   };
+
+  security.pam.services.hyprlock = {};
 
 }
