@@ -99,6 +99,7 @@ in
     members = [
       "${refine_user}"
       "nginx"
+      "najib"
     ];
   };
 
