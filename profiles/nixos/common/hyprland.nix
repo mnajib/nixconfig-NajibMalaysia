@@ -11,6 +11,8 @@
 
   environment.systemPackages = with pkgs; [
     hyprland
+    font-awesome
+    hyprpaper
     #----------------------------------
     waybar
     #
@@ -41,6 +43,7 @@
     fuzzel
     tofi
     #----------------------------------
+    kdePackages.dolphin
   ];
 
   xdg.portal = {
