@@ -25,6 +25,7 @@
     oneko
     xcape
     find-cursor
+    tldr
   ];
 }
 
