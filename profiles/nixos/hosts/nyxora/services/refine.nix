@@ -42,6 +42,13 @@ let
     #----------------------------------
     # For dev (TCP -> manual dev server
     #----------------------------------
+    #
+    # Better use ssh tunnel:
+    #   ssh -N \
+    #     -L 3003:localhost:3003 \
+    #     -L 5001:localhost:5001 \
+    #     refine@nyxora
+    #
     services.nginx.virtualHosts."dev${domain}" = {
       forceSSL = false;
       enableACME = false;
