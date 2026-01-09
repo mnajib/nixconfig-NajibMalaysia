@@ -1,3 +1,4 @@
+# profiles/nixos/hosts/nyxora/services/refine.nix
 {
   config,
   pkgs,
@@ -25,6 +26,14 @@ let
   refine_uid = 400;
   refine_gid = 400;
   refine_root = "/MyTank/services/refine";
+
+  #
+  # NOTE:
+  #
+  # To enable setgid on directories, so that new files inherit the directory's group.
+  # 2 means in 2775: setgid bit
+  #   sudo find /MyTank/services/refine -type d -exec chmod 2775 {} \;
+  #
 
   # A helper function to create a Refine service
   mkRefineApp = { name, dev_port, domain }: {
@@ -127,6 +136,27 @@ in
     nodejs_24
     yarn
   ];
+
+  services.nginx.virtualHosts."refinedevtools.localdomain" = {
+    enableACME = false;
+    forceSSL = false;
+
+    # --- WebSocket support ---
+    #proxy_http_version = 1.1;
+    #proxy_set_header Upgrade $http_upgrade;
+    #proxy_set_header Connection "upgrade";
+
+    # --- Standard headers ---
+    #proxy_set_header Host $host;
+    #proxy_set_header X-Real-IP $remote_addr;
+    #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    #proxy_set_header X-Forwarded-Proto $scheme;
+
+    locations."/" = {
+        proxyPass = "http://127.0.0.1:5001";
+        proxyWebsockets = true;
+    };
+  };
 
   # Define your apps here in one line each!
   # This executes the logic for app1, app2, etc.
