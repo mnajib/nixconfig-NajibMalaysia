@@ -137,6 +137,10 @@ in
     yarn
   ];
 
+  # This method is working
+  #   ssh -L 5001:localhost:5001 najib@nyxora
+  # OR
+  #   Not work as refine restrict this for enterprice use only $$$
   services.nginx.virtualHosts."refinedevtools.localdomain" = {
     enableACME = false;
     forceSSL = false;
