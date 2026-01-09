@@ -20,10 +20,16 @@ let
     git                 = "192.168.0.11";
     pgadmin             = "192.168.0.11";
     sijilberhenti       = "192.168.0.11";
+
+    # Better use ssh tunnel, rather than nginx
+    #
+    # ssh -N \
+    #   -L 3003:localhost:3003 \
+    #   -L 5001:localhost:5001 \
+    #   refine@nyxora
+    #
     devsijilberhenti    = "192.168.0.11";
     refinedevtools      = "192.168.0.11";
-    #dev.sijilberhenti  = "192.168.0.11";
-    #sbdev              = "192.168.0.11";
 
     # Hosts
     customdesktop   = "192.168.0.10";
