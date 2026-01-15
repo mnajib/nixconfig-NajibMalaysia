@@ -53,10 +53,32 @@ home-manager switch --flake .#najib@khawlah -b backup
 #nix build --target-host target-host --build-host build-host --flake /path/to/flake#user@target-host
 #scp -r result user@target-host:/path/to/built-result
 #ssh user@target-host 'home-manager switch --flake /path/to/built-result#user@target-host'
-
 sudo nixos-rebuild dry-build  --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
 #sudo nixos-rebuild build      --flake .#zahrah    --target-host naim@zahrah     --build-host localhost    --use-remote-sudo
 sudo nixos-rebuild build --flake .#zahrah --target-host naim@zahrah --use-remote-sudo
+sudo nixos-rebuild boot --flake .#huda --build-host najib@nyxora --build-host najib@sumayah --sudo --ask-sudo-password --use-substitutes --target-host a@192.168.0.19
+sudo nixos-rebuild boot --flake .#huda --build-host najib@nyxora --sudo --ask-sudo-password --target-host a@192.168.0.19 --option require-sigs false
+#
+# On host 'huda'
+sudo nvim /etc/nixos/configuration.nix
+  # add in configuration.nix or similar
+  nix = {
+    settings = {
+      require-sigs = false;
+      trusted-users = ["root" "najib" "a"];
+
+      # Also ensure substituters are properly configured
+      substituters = ["https://cache.nixos.org"];
+      trusted-public-keys = ["cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="];
+    };
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+  };
+# and then run
+# On host 'nyxora' or others
+sudo nixos-rebuild boot --flake .#huda --build-host najib@sumayah --sudo --ask-sudo-password --target-host a@192.168.0.19
+
 #
 # XXX: tested, worked only halfway
 # From manggis;
