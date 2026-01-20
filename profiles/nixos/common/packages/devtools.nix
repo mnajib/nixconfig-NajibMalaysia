@@ -6,6 +6,7 @@
 
     # Nix helpers
     direnv nix-top niv npins
+    devenv
 
     # Languages
     lua python3Minimal
