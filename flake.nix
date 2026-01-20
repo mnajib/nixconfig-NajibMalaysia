@@ -777,6 +777,15 @@
             #pkgsInput = inputs.nixpkgs-unstable; # override
           };
 
+          laila = mkNixos {
+            system = "x86_64-linux";
+            modules = [
+              ./profiles/nixos/hosts/laila/configuration.nix
+            ];
+            #pkgsInput = inputs.nixpkgs-release; # override
+            #pkgsInput = inputs.nixpkgs-unstable; # override
+          };
+
           keira = mkNixos {
             system = "x86_64-linux";
             modules = [

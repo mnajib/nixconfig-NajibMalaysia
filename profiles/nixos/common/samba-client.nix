@@ -101,4 +101,17 @@
     ];
   };
 
+  networking.firewall.allowedTCPPorts = [ 445 139 ];
+  networking.firewall.allowedUDPPorts = [ 137 138 ];
+
+  # to help NixOS find Windows machines by name rather than just IP
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    publish = {
+      enable = true;
+      addresses = true;
+    };
+  };
+
 }
