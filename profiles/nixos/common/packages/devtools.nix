@@ -17,6 +17,9 @@
     # Fonts & publishing
     fontforge fontforge-fonttools
     sigil manuskript
+
+    # Code editor
+    zed-editor
   ];
 }
 
