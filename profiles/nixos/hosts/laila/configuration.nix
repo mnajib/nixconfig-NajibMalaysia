@@ -188,8 +188,6 @@ in
   {
     extraSpecialArgs = { inherit inputs outputs; };
     users = {
-      #root = import (./. + "/${hmDir}/root/${hostName}");
-      #najib = import (./. + "/${hmDir}/najib/${hostName}");
       #root = userImport "root";
       najib = userImport "najib";
       naqib = userImport "naqib";

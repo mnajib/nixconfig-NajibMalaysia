@@ -926,6 +926,11 @@
             modules = [ ./profiles/home-manager/users/naqib/sumayah ];
           };
 
+          "naqib@laila" = mkHome {
+            system = "x86_64-linux";
+            modules = [ ./profiles/home-manager/users/naqib/laila ];
+          };
+
           "naqib@asmak" = mkHome {
             system = "x86_64-linux";
             modules = [ ./profiles/home-manager/users/naqib/asmak ];
