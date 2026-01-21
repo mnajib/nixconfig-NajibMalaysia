@@ -4,9 +4,11 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 {
-  config, pkgs,
+  config,
+  pkgs,
   lib,
-  inputs, outputs, # Need for home-manager ?
+  inputs,
+  outputs, # Need for home-manager ?
   ...
 }:
 let
@@ -17,43 +19,46 @@ let
   stateVersion = "25.11";
 in
 {
-  imports = let
-    fromCommon = name: ./. + "/${toString commonDir}/${name}";
-  in [ # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-    ./zfs.nix
-    inputs.home-manager.nixosModules.home-manager
-    #./turn-off-rgb.nix
-    #./grafito.nix
+  imports =
+    let
+      fromCommon = name: ./. + "/${toString commonDir}/${name}";
+    in
+    [
+      # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+      ./zfs.nix
+      inputs.home-manager.nixosModules.home-manager
+      #./turn-off-rgb.nix
+      #./grafito.nix
 
-    (fromCommon "configuration.FULL.nix")
-    #(fromCommon "configuration.MIN.nix")
-    #(fromCommon "locale.nix")
-    #(fromCommon "session.nix")
+      (fromCommon "configuration.FULL.nix")
+      #(fromCommon "configuration.MIN.nix")
+      #(fromCommon "locale.nix")
+      #(fromCommon "session.nix")
 
-    (fromCommon "console-keyboard-dvorak.nix")
-    (fromCommon "keyboard-with-msa.nix")
-    (fromCommon "users-a-wheel.nix")
-    (fromCommon "users-naqib-wheel.nix")
-    (fromCommon "users-najib.nix")
-    (fromCommon "users-julia.nix")
-    (fromCommon "users-naim.nix")
-    (fromCommon "users-nurnasuha.nix")
-    #(fromCommon "users-anak2.nix")
+      (fromCommon "console-keyboard-dvorak.nix")
+      (fromCommon "keyboard-with-msa.nix")
+      (fromCommon "users-a-wheel.nix")
+      (fromCommon "users-naqib-wheel.nix")
+      (fromCommon "users-najib.nix")
+      (fromCommon "users-julia.nix")
+      (fromCommon "users-naim.nix")
+      (fromCommon "users-nurnasuha.nix")
+      #(fromCommon "users-anak2.nix")
 
-    #(fromCommon "nfs-client-automount.nix")
-    (fromCommon "samba-client.nix")
-    (fromCommon "zramSwap.nix")
-    (fromCommon "nix-garbage-collector.nix")
-    (fromCommon "flatpak.nix")
-    (fromCommon "opengl.nix")
-    (fromCommon "xdg.nix")
-    (fromCommon "window-managers.nix")
-    #(fromCommon "desktops-xorg.nix")
-    (fromCommon "desktops.nix")
-    #(fromCommon "3D.nix")
-    (fromCommon "whatsapp.nix")
-  ];
+      #(fromCommon "nfs-client-automount.nix")
+      (fromCommon "samba-client.nix")
+      (fromCommon "zramSwap.nix")
+      (fromCommon "nix-garbage-collector.nix")
+      (fromCommon "flatpak.nix")
+      (fromCommon "opengl.nix")
+      (fromCommon "xdg.nix")
+      (fromCommon "window-managers.nix")
+      #(fromCommon "desktops-xorg.nix")
+      (fromCommon "desktops.nix")
+      #(fromCommon "3D.nix")
+      (fromCommon "whatsapp.nix")
+    ];
 
   # Test if the module is available
   #assertions = [
@@ -81,9 +86,15 @@ in
 
   # Fix Windows/Linux clock drift
   time.hardwareClockInLocalTime = true;
-  
+
   #boot.kernelPackages = pkgs.linuxPackages_latest; # disable this because marked broken with zfs
-  boot.supportedFilesystems =        [ "ext4" "btrfs" "xfs" "vfat" "ntfs" ];
+  boot.supportedFilesystems = [
+    "ext4"
+    "btrfs"
+    "xfs"
+    "vfat"
+    "ntfs"
+  ];
 
   networking.hostId = "${hostId}"; # required by zfs
   networking.hostName = "${hostName}"; # Define your hostname.
@@ -107,7 +118,7 @@ in
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
-  i18n.extraLocaleSettings =  {
+  i18n.extraLocaleSettings = {
     LC_ADDRESS = lib.mkForce "ms_MY.UTF-8";
     LC_IDENTIFICATION = lib.mkForce "ms_MY.UTF-8";
     LC_MEASUREMENT = lib.mkForce "ms_MY.UTF-8";
@@ -182,19 +193,24 @@ in
   #  ];
   #};
 
-  home-manager = let
-    userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}" );
-  in
-  {
-    extraSpecialArgs = { inherit inputs outputs; };
-    users = {
-      #root = userImport "root";
-      najib = userImport "najib";
-      naqib = userImport "naqib";
+  home-manager =
+    let
+      userImport = user: import (./. + "/${hmDir}/${user}/${hostName}");
+    in
+    {
+      extraSpecialArgs = { inherit inputs outputs; };
+      users = {
+        #root = userImport "root";
+        najib = userImport "najib";
+        naqib = userImport "naqib";
+      };
     };
-  };
 
-  nix.settings.trusted-users = [ "root" "najib" "naqib" ];
+  nix.settings.trusted-users = [
+    "root"
+    "najib"
+    "naqib"
+  ];
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
@@ -253,7 +269,7 @@ in
     qbittorrent
     bottles
     #zeroad-unwrapped
-    luanti #minetest
+    luanti # minetest
     firefox
     brave
     varia
@@ -299,6 +315,34 @@ in
   networking.firewall.allowedUDPPorts = [ 16216 ];
   # Or disable the firewall altogether.
   networking.firewall.enable = lib.mkForce false;
+
+  #-----------------------------------------------
+  powerManagement.enable = true;
+  services.auto-cpufreq.enable = true;
+  systemd.services."auto-cpufreq" = {
+    after = [
+      "display-manager.service"
+    ];
+  };
+  powerManagement.cpuFreqGovernor = "powersave";
+  #powerManagement.cpufreq.min =  800000;
+  powerManagement.cpufreq.max = 1500000;
+
+  services.power-profiles-daemon.enable = false;
+
+  services.tlp = {
+    enable = true;
+    settings = {
+      START_CHARGE_THRESH_BAT0 = 75;
+      STOP_CHARGE_THRESH_BAT0 = 80;
+
+      WIFI_PWR_ON_AC = "off";
+      WIFI_PWR_ON_BAT = "off";
+      DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth wwan";
+      DEVICES_TO_ENABLE_ON_STARTUP = "wifi";
+    };
+  };
+  #-----------------------------------------------
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
