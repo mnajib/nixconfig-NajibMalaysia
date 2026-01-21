@@ -3,7 +3,7 @@
   environment.systemPackages = with pkgs; [
     postgresql
     dbeaver-bin
-    beekeeper-studio
+    #beekeeper-studio
     pgadmin4-desktopmode
     dbgate
   ];
