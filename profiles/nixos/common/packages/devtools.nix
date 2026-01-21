@@ -10,6 +10,7 @@
 
     # Languages
     lua python3Minimal
+    nixd
 
     # Build tools
     git cmake libtool expect
