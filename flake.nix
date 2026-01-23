@@ -1045,6 +1045,37 @@
           #    "✅ All hostIds are present and unique";
           #}; # End check = { ... };
 
-        }; # End of 'flake = let ... in { ... };'
+          #"najib@taufiq" = inputs.home-manager.lib.homeManagerConfiguration {
+          #  pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+          #  extraSpecialArgs = { inherit inputs; };
+          #  modules = [
+          #    ./home-manager/user-najib/host-taufiq
+          #  ];
+          #};
+          "najib@taufiq" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/taufiq ];
+          "najib@sumayah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/sumayah ];
+          "najib@maryam" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/maryam ];
+          "najib@zahrah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/zahrah ];
+          "najib@manggis" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/manggis ];
+
+          "root@taufiq" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/root/taufiq ];
+
+          "julia@manggis" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/julia/manggis ];
+          "julia@keira" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/julia/keira ];
+
+          "nurnasuha@manggis" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/nurnasuha/manggis ];
+          "nurnasuha@asmak" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/nurnasuha/asmak ];
+
+          "naqib@sumayah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/sumayah ];
+          "naqib@asmak" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/asmak ];
+          "naqib@zahrah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/zahrah ];
+          "naqib@raudah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/raudah ];
+
+          "naim@manggis" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naim/manggis ];
+          "naim@keira" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naim/keira ];
+
+        }; # End of 'homeConfigurations = { ... };'
+
+      }; # End of 'flake = let ... in { ... };'
     }; # End of 'flake-parts.lib.mkFlake { inherit inputs; } { ... };
 }
