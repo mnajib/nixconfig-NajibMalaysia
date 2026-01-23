@@ -917,6 +917,14 @@
               #pkgsInputs = inputs.nixpkgs-unstable; # override
             };
 
+            "najib@manggis" = mkHome {
+              system = "x86_64-linux";
+              modules = [
+                ./profiles/home-manager/users/najib/manggis
+              ];
+            };
+
+
             #-----------------------------------------------------------------------------
             # root
             #-----------------------------------------------------------------------------
@@ -1000,79 +1008,6 @@
               system = "x86_64-linux";
               modules = [ ./profiles/home-manager/users/naim/keira ];
             };
-
-          }; # End of 'homeConfigurations = { ... };'
-
-          #
-          # Ensure all hostIds are unique across nixosConfigurations
-          #
-          # To run the check:
-          #   nix flake check
-          #
-          # It will:
-          #   Fail with a clear error if any two hosts share the same hostId.
-          #   or, Pass if all hostIds are unique.
-          #
-          #checks.x86_64-linux = {
-          #  hostIdUniqueness = let
-          #    lib = inputs.nixpkgs.lib;
-          #    inherit (lib) mapAttrs attrValues length unique concatStringsSep filterAttrs;
-          #
-          #    hostIds =
-          #      mapAttrs (_: cfg: cfg.config.networking.hostId or null)
-          #        self.nixosConfigurations;
-          #
-          #    # Hosts missing hostId
-          #    missingHosts = lib.attrNames (filterAttrs (_: v: v == null) hostIds);
-          #
-          #    # Collect non-null hostIds
-          #    nonNullHostIds = filterAttrs (_: v: v != null) hostIds;
-          #
-          #    # Detect duplicates
-          #    ids = attrValues nonNullHostIds;
-          #    dupIds = lib.filter (id: lib.count (x: x == id) ids > 1) (unique ids);
-          #    dupHosts = map (id: {
-          #      id = id;
-          #      hosts = lib.attrNames (filterAttrs (_: v: v == id) nonNullHostIds);
-          #    }) dupIds;
-          #
-          #    prettyDup = concatStringsSep "; " (map (d: "${d.id} → ${concatStringsSep "," d.hosts}") dupHosts);
-          #  in
-          #    assert (missingHosts == [])
-          #      "❌ Some hosts are missing networking.hostId: ${concatStringsSep ", " missingHosts}";
-          #    assert (dupIds == [])
-          #      "❌ Duplicate hostIds detected: ${prettyDup}";
-          #    "✅ All hostIds are present and unique";
-          #}; # End check = { ... };
-
-          #"najib@taufiq" = inputs.home-manager.lib.homeManagerConfiguration {
-          #  pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-          #  extraSpecialArgs = { inherit inputs; };
-          #  modules = [
-          #    ./home-manager/user-najib/host-taufiq
-          #  ];
-          #};
-          "najib@taufiq" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/taufiq ];
-          "najib@sumayah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/sumayah ];
-          "najib@maryam" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/maryam ];
-          "najib@zahrah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/zahrah ];
-          "najib@manggis" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/manggis ];
-
-          "root@taufiq" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/root/taufiq ];
-
-          "julia@manggis" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/julia/manggis ];
-          "julia@keira" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/julia/keira ];
-
-          "nurnasuha@manggis" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/nurnasuha/manggis ];
-          "nurnasuha@asmak" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/nurnasuha/asmak ];
-
-          "naqib@sumayah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/sumayah ];
-          "naqib@asmak" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/asmak ];
-          "naqib@zahrah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/zahrah ];
-          "naqib@raudah" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naqib/raudah ];
-
-          "naim@manggis" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naim/manggis ];
-          "naim@keira" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/naim/keira ];
 
         }; # End of 'homeConfigurations = { ... };'
 

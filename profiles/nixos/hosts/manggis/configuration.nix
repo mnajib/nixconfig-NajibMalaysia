@@ -39,6 +39,7 @@ in
     inputs.home-manager.nixosModules.home-manager
 
     (fromCommon "configuration.FULL.nix")
+    #(fromCommon "configuration.LESS.nix")
 
     #./bootEFI.nix
     #./bootBIOS.nix
@@ -84,7 +85,7 @@ in
     (fromCommon "nix-garbage-collector.nix")
     (fromCommon "teamviewer.nix")
 
-    (fromCommon "lutris.nix")
+    #(fromCommon "lutris.nix")
 
     (fromCommon "xdg.nix")
     (fromCommon "opengl.nix")
@@ -282,8 +283,8 @@ in
 
     # services.xserver.displayManager.desktopManager
     desktopManager = {
-      plasma5.enable = false;
-      gnome.enable = true; #false;
+      #plasma5.enable = false;
+      #gnome.enable = true; #false;
       #xfce.enable = true;
       #mate.enable = true;
     };
