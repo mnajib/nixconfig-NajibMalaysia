@@ -141,9 +141,9 @@ in
     #libreoffice
     pixelorama
 
-    godot_4
-    gdtoolkit_4
-    godot_4-export-templates-bin
+    #godot_4
+    #gdtoolkit_4
+    #godot_4-export-templates-bin
 
     #firefox
     #brave
@@ -158,8 +158,8 @@ in
     #haskellPackages.yi # marked as broken
 
     #zeroad
-    luanti #minetest
-    _4d-minesweeper
+    #luanti #minetest
+    #_4d-minesweeper
 
     fluxbox                             # need fbsetroot to set desktop background color
 
