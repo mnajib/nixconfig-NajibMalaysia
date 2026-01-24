@@ -21,7 +21,7 @@ in
       trusted-users = [
         "root" "najib"
         #"nurnasuha"
-        #"naqib"
+        "naqib"
         #"naim"
         "julia"
       ];
@@ -62,13 +62,12 @@ in
     (fromCommon "flatpak.nix")
 
     # Keyboard for console:
-    #./console-keyboard-dvorak.nix
-    (fromCommon "console-keyboard-us.nix")
+    #(fromCommon "console-keyboard-us.nix")
+    (fromCommon "console-keyboard-dvorak.nix")
     #
     # Keyboard for xorg:
-    #./keyboard-us_and_dv.nix
-    #./keyboard-with-msa.nix
-    (fromCommon "keyboard-with-msa-keira.nix")
+    #(fromCommon "keyboard-with-msa-keira.nix")
+    (fromCommon "keyboard-with-msa.nix")
 
     #./audio-pulseaudio.nix
     (fromCommon "audio-pipewire.nix")
@@ -89,6 +88,7 @@ in
 
     (fromCommon "xdg.nix")
     (fromCommon "opengl.nix")
+    (fromCommon "desktops.nix")
   ];
 
   #
@@ -103,11 +103,8 @@ in
       inherit inputs outputs;
     };
     users = {
-      #najib = import (./. + "/${hmDir}/najib/${hostName}");
-      #root = import (./. + "/${hmDir}/root/${hostName}");
-
       najib = userImport "najib";
-      root = userImport "root";
+      #root = userImport "root";
       julia = userImport "julia";
     };
   };
@@ -231,86 +228,6 @@ in
     touchpad.scrollMethod = "twofinger";
     touchpad.tapping = true; #false;
   };
-
-  services.displayManager = {
-    #enable = false;
-    defaultSession = "none+xmonad";
-    #sddm.enable = true;
-  };
-
-  services.xserver = {
-    enable = true;
-    #dpi = 96;
-
-    # services.xserver.displayManager
-    displayManager = {
-      #defaultSession = "none+xmonad";
-
-      lightdm = {
-        enable = true;
-        #background = "";
-        greeters = {
-          gtk.enable = true;
-          slick.enable = false;
-          mini.enable = false;
-          tiny.enable = false;
-          enso.enable = false;
-          lomiri.enable = false;
-        };
-      };
-
-      gdm = {
-        enable = false;
-        wayland = false;
-        autoSuspend = false;
-      };
-
-      #sddm = {
-      #  enable = false;
-      #};
-
-      sessionCommands = ''
-      xset -dpms                      # Disable Energy Star, as we are going to suspend anyway and it may hide "success" on that
-      xset s blank                    # `noblank` may be useful for debugging
-      xset s 120                      # in seconds
-      #xset s 300                     # in seconds
-      #${pkgs.lightlocker}/bin/light-locker --idle-hint &
-      '';
-
-      #sddm.enable = true;
-
-    }; # End services.xserver.displayManager
-
-    # services.xserver.displayManager.desktopManager
-    desktopManager = {
-      #plasma5.enable = false;
-      #gnome.enable = true; #false;
-      #xfce.enable = true;
-      #mate.enable = true;
-    };
-
-    # services.xserver.displayManager.windowManager
-    windowManager = {
-      awesome.enable = true;
-      jwm.enable = true;
-      icewm.enable = true;
-      fluxbox.enable = true;
-      xmonad = {
-        enable = true;
-        enableContribAndExtras = true;
-        extraPackages = haskellPackages: [
-          haskellPackages.xmonad
-          haskellPackages.xmonad-extras
-          haskellPackages.xmonad-contrib
-          haskellPackages.dbus
-          haskellPackages.List
-          haskellPackages.monad-logger
-          haskellPackages.xmobar
-        ];
-      };
-    }; # End services.xserver.displayManager.windowManager
-
-  }; # End services.xserver
 
   system.stateVersion = "22.05";
 }
