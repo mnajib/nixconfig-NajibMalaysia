@@ -3,6 +3,7 @@
 {
   config,
   pkgs,
+  lib,
   inputs, outputs, # For home-manager
   ...
 }:
@@ -103,8 +104,9 @@ in
       inherit inputs outputs;
     };
     users = {
-      najib = userImport "najib";
       #root = userImport "root";
+      najib = userImport "najib";
+      naqib = userImport "naqib";
       julia = userImport "julia";
     };
   };
@@ -227,6 +229,12 @@ in
     touchpad.disableWhileTyping = true;
     touchpad.scrollMethod = "twofinger";
     touchpad.tapping = true; #false;
+  };
+
+  services.xserver.displayManager = {
+    lightdm.enable = lib.mkForce false;
+    gdm.enable = lib.mkForce false;
+    sddm.enable = lib.mkForce true;
   };
 
   system.stateVersion = "22.05";
