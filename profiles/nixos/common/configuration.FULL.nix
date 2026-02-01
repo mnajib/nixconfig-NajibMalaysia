@@ -392,6 +392,8 @@
     enable = true;
   };
 
+  services.fwupd.enable = true;
+
   networking.nftables.enable = true;
   networking.firewall.enable = true;
   networking.firewall.allowPing = true;

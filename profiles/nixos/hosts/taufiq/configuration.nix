@@ -283,6 +283,9 @@ in# with lib;
     #freecad
 
     inputs.home-manager.packages.${pkgs.system}.default # To install (globally, instead of per user) home-manager packages
+
+    #fwupd
+    #fwupd-efi
   ];
   #
   #config = mkIf (config.services.xserver.videoDrivers == "nvidia") {
@@ -606,6 +609,10 @@ in# with lib;
   # echo 1 > /sys/module/processor/parameters/ignore_ppc
 
   systemd.watchdog.rebootTime = "10m";
+
+  # enable fwupd; a DBus service that allows applications to update firmware
+  # the command-line client used to check for and install updates
+  services.fwupd.enable = true;
 
   # High-DPI console
   #console.font = lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
