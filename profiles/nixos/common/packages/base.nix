@@ -22,6 +22,9 @@
 
     # Managing Secrets
     sops age
+
+    #fwupd
+    #fwupd-efi
   ];
 }
 
