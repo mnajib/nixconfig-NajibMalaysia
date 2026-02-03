@@ -181,6 +181,7 @@ in
 
       host        all             all               192.168.0.12/32   scram-sha-256       # allow only the specific IP
       host        sekolah         sekolah           192.168.0.0/24    scram-sha-256       # allow the entire 192.168.0.0 network
+      host        sekolahdb       sekolah           192.168.0.0/24    scram-sha-256       # allow the entire 192.168.0.0 network
     '';
 
   }; # End services.postgresql
