@@ -388,10 +388,6 @@
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
   hardware.enableAllFirmware = true;
-  services.fwupd = {
-    enable = true;
-  };
-
   services.fwupd.enable = true;
 
   networking.nftables.enable = true;
