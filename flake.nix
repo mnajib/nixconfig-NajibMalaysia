@@ -820,6 +820,16 @@
               #pkgsInput = inputs.nixpkgs-unstable; # override
             };
 
+            # external USB 2.5" 256GB SSD brand SP
+            sukun = mkNixos {
+              system = "x86_64-linux";
+              modules = [
+                ./profiles/nixos/hosts/sukun/configuration.nix
+              ];
+              #pkgsInput = inputs.nixpkgs-release; # override
+              #pkgsInput = inputs.nixpkgs-unstable; # override
+            };
+
             keira = mkNixos {
               system = "x86_64-linux";
               modules = [
@@ -971,6 +981,11 @@
             "naqib@laila" = mkHome {
               system = "x86_64-linux";
               modules = [ ./profiles/home-manager/users/naqib/laila ];
+            };
+
+            "naqib@sukun" = mkHome {
+              system = "x86_64-linux";
+              modules = [ ./profiles/home-manager/users/naqib/sukun ];
             };
 
             "naqib@asmak" = mkHome {
