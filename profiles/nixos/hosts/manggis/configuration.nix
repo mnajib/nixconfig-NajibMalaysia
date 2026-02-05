@@ -5,6 +5,7 @@
   pkgs,
   lib,
   inputs, outputs, # For home-manager
+  lib,
   ...
 }:
 let
@@ -107,7 +108,7 @@ in
       #root = userImport "root";
       najib = userImport "najib";
       naqib = userImport "naqib";
-      julia = userImport "julia";
+      #julia = userImport "julia";
     };
   };
 
