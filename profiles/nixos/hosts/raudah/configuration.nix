@@ -46,8 +46,10 @@ in
     (fromCommon "users-naqib-wheel.nix")
     #(fromCommon "users-naim-wheel.nix")
 
-    #(fromCommon "configuration.FULL.nix")
-    (fromCommon "configuration.MIN.nix")
+    #(fromCommon "configuration.OBESS.nix") # FULL
+    (fromCommon "configuration.OVERWEIGHT.nix")
+    #(fromCommon "configuration.NORMAL.nix")
+    #(fromCommon "configuration.UNDERWEIGHT.nix") # MIN
     #(fromCommon "locale.nix")
 
     (fromCommon "thinkpad.nix")
@@ -204,7 +206,7 @@ in
     enable = true;
   };
 
-  networking.firewall.enable = false;
+  #networking.firewall.enable = false;
   networking.firewall.allowedTCPPorts = [
     # Gluster
     24007         # gluster daemon
