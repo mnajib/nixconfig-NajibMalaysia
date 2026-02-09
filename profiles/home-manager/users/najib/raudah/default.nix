@@ -6,7 +6,7 @@ let
   username = "najib";
   hostname = "raudah";
   commonDir = "../../../common";
-  stateVersion = "24.11";
+  stateVersion = "25.11";
 in
 {
   # You can import other home-manager modules here
