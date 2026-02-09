@@ -9,7 +9,7 @@ let
   commonDir = "../../common";
   hmDir = "../../../home-manager/users";
   hostName = "raudah";
-  stateVersion = "23.05";
+  stateVersion = "25.11";
 in
 {
   nix = {
@@ -40,6 +40,7 @@ in
     ./hardware-configuration.nix
     inputs.home-manager.nixosModules.home-manager
 
+    (fromCommon "users-a-wheel.nix")
     (fromCommon "users-najib.nix")
     (fromCommon "users-julia.nix")
     (fromCommon "users-anak2.nix")
@@ -72,7 +73,7 @@ in
 
     (fromCommon "zramSwap.nix")
     (fromCommon "nix-garbage-collector.nix")
-    (fromCommon "btrfs.nix")
+    #(fromCommon "btrfs.nix")
 
     #./btrbk.nix
     (fromCommon "typesetting.nix")
@@ -84,10 +85,11 @@ in
     (fromCommon "opengl.nix")
     (fromCommon "xdg.nix")
 
-    (fromCommon "window-managers.nix")
-    (fromCommon "xmonad.nix")
+    #(fromCommon "window-managers.nix")
+    #(fromCommon "xmonad.nix")
     #(fromCommon "desktops-wayland.nix")
-    (fromCommon "desktops-xorg.nix")
+    #(fromCommon "desktops-xorg.nix")
+    (fromCommon "desktops.nix")
   ];
 
   home-manager = let
@@ -144,53 +146,58 @@ in
   #services.btrfs.autoScrub =
 
   # Setup keyfile
-  boot.initrd.secrets = {
-    "/crypto_keyfile.bin" = null;
-  };
+  #boot.initrd.secrets = {
+  #  "/crypto_keyfile.bin" = null;
+  #};
+  #
+  # no initrd secrets
 
-  boot.initrd.luks.devices."luks-b945d308-998d-4495-85f6-abb513ee0bff".keyFile = "/crypto_keyfile.bin";
-  boot.initrd.luks.devices."luks-bd75b3b8-e980-4bc6-a304-de56ee23859c".keyFile = "/crypto_keyfile.bin";
-  # Enable swap on luks
-  boot.initrd.luks.devices."luks-320f1fbc-c916-47e5-9d2b-c8e0416702eb".device = "/dev/disk/by-uuid/320f1fbc-c916-47e5-9d2b-c8e0416702eb";
-  boot.initrd.luks.devices."luks-320f1fbc-c916-47e5-9d2b-c8e0416702eb".keyFile = "/crypto_keyfile.bin";
+  #boot.initrd.luks.devices."luks-b945d308-998d-4495-85f6-abb513ee0bff".keyFile = "/crypto_keyfile.bin";
+  #boot.initrd.luks.devices."luks-bd75b3b8-e980-4bc6-a304-de56ee23859c".keyFile = "/crypto_keyfile.bin";
+  ## Enable swap on luks
+  #boot.initrd.luks.devices."luks-320f1fbc-c916-47e5-9d2b-c8e0416702eb".device = "/dev/disk/by-uuid/320f1fbc-c916-47e5-9d2b-c8e0416702eb";
+  #boot.initrd.luks.devices."luks-320f1fbc-c916-47e5-9d2b-c8e0416702eb".keyFile = "/crypto_keyfile.bin";
+  #
+  boot.initrd.luks.devices."luks-f3fa1ee5-9218-41a2-a0d5-78c0cb17f758".device = "/dev/disk/by-uuid/f3fa1ee5-9218-41a2-a0d5-78c0cb17f758";
 
-  #boot.loader.systemd-boot.enable = true; # gummi-boot for EFI
-  #boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.grub = {
-    enable = true;
-    #version = 2;
-    enableCryptodisk = true;
-    copyKernels = true;
-    useOSProber = true;
-    #backgroundColor = "#7EBAE4"; # lightblue
-
-    #------------------------------------------
-    # BIOS
-    #------------------------------------------
-    devices = [
-      #"/dev/disk/by-id/wwn-0x5000c5002ea341bc"
-      #"/dev/disk/by-id/wwn-0x5000c5002ec8a164"
-      #"/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK0803806"
-      "/dev/disk/by-id/ata-PH6-CE120-G_511190117056007159"      # /dev/sda (120GB SSD)
-      #"/dev/disk/by-id/ata-LITEONIT_LCS-256M6S_2.5_7mm_256GB_TW0XFJWX550854255987"   # /dev/sdb (256GB SSD)
-    ];
-    #device = "/dev/disk/by-id/ata-PH6-CE120-G_511190117056007159";
-    #device = "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1011006";
-    #device = "/dev/disk/by-id/ata-TOSHIBA_THNSNF128GCSS_43ES105NT8KY";
-    #efiSupport = true;
-
-    #------------------------------------------
-    # EFI
-    #------------------------------------------
-    #device = "nodev";
-    #efiSupport = true;
-    #mirroredBoots = [
-    #    {
-    #        devices = [ "/dev/disk/by-id/wwn-0x5000c5002ec8a164" ]; # /dev/sdb1
-    #        path = "/boot2";
-    #    }
-    #];
-  };
+  boot.loader.systemd-boot.enable = true; # gummi-boot for EFI
+  boot.loader.efi.canTouchEfiVariables = true;
+  #
+  #boot.loader.grub = {
+  #  enable = true;
+  #  #version = 2;
+  #  enableCryptodisk = true;
+  #  copyKernels = true;
+  #  useOSProber = true;
+  #  #backgroundColor = "#7EBAE4"; # lightblue
+  #
+  #  #------------------------------------------
+  #  # BIOS
+  #  #------------------------------------------
+  #  devices = [
+  #    #"/dev/disk/by-id/wwn-0x5000c5002ea341bc"
+  #    #"/dev/disk/by-id/wwn-0x5000c5002ec8a164"
+  #    #"/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK0803806"
+  #    "/dev/disk/by-id/ata-PH6-CE120-G_511190117056007159"      # /dev/sda (120GB SSD)
+  #    #"/dev/disk/by-id/ata-LITEONIT_LCS-256M6S_2.5_7mm_256GB_TW0XFJWX550854255987"   # /dev/sdb (256GB SSD)
+  #  ];
+  #  #device = "/dev/disk/by-id/ata-PH6-CE120-G_511190117056007159";
+  #  #device = "/dev/disk/by-id/ata-AGI256G06AI138_AGISAMUWK1011006";
+  #  #device = "/dev/disk/by-id/ata-TOSHIBA_THNSNF128GCSS_43ES105NT8KY";
+  #  #efiSupport = true;
+  #
+  #  #------------------------------------------
+  #  # EFI
+  #  #------------------------------------------
+  #  #device = "nodev";
+  #  #efiSupport = true;
+  #  #mirroredBoots = [
+  #  #    {
+  #  #        devices = [ "/dev/disk/by-id/wwn-0x5000c5002ec8a164" ]; # /dev/sdb1
+  #  #        path = "/boot2";
+  #  #    }
+  #  #];
+  #};
 
   services.fstrim.enable = true;
   services.smartd.enable = true;
