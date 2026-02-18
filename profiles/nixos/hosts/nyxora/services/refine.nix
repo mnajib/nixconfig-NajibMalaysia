@@ -95,9 +95,13 @@ let
 
 in
 {
-  fileSystems."/MyTank/services" = {
-    device = "MyTank/services";
+  #fileSystems."/MyTank/services" = {
+  #  device = "MyTank/services";
+  fileSystems."/MyTank/services/refine" = {
+    device = "MyTank/services/refine";
     fsType = "zfs";
+    options = [ "nofail" "x-systemd.device-timeout=5s" ];
+    neededForBoot = false; # Services can wait a few seconds
   };
 
   users.users."${refine_user}" = {
@@ -134,15 +138,12 @@ in
     "${refine_user}"
   ];
 
-  services.nginx.enable = true;
-
-  networking.firewall.enable = lib.mkDefault true;
-  networking.firewall.allowedTCPPorts = [ 80 443 ]; # HTTP + HTTPS
-
   environment.systemPackages = with pkgs; [
     nodejs_24
     yarn
   ];
+
+  services.nginx.enable = true;
 
   # This method is working
   #   ssh -L 5001:localhost:5001 najib@nyxora
@@ -203,6 +204,9 @@ in
   #       sudo -u refine -- bash -lc 'cd /MyTank/services/refine/sijilberhenti/ && npm run build'
   #       #Open 'http://sijilberhenti.localdomain' via web browser
   #
+
+  networking.firewall.enable = lib.mkDefault true;
+  networking.firewall.allowedTCPPorts = [ 80 443 ]; # HTTP + HTTPS
 
 }
 

@@ -11,9 +11,13 @@ let
   forgejo_stateDir = "/MyTank/services/forgejo"; # "/mnt/data/forgejo";
 in
 {
-  fileSystems."/MyTank/services" = {
-    device = "MyTank/services";
+  #fileSystems."/MyTank/services" = {
+  #  device = "MyTank/services";
+  fileSystems."/MyTank/services/forgejo" = {
+    device = "MyTank/services/forgejo";
     fsType = "zfs";
+    options = [ "nofail" "x-systemd.device-timeout=5s" ];
+    neededForBoot = false; # Services can wait a few seconds
   };
 
   #users.users.git = {
@@ -101,16 +105,34 @@ in
   # Need to mount the my zfs storage first
   systemd.services.forgejo = {
     after = [
-      "MyTank-services.mount"
-      "zfs-mount.service"
+      #"MyTank-services.mount"
+      "MyTank-services-forgejo.mount"
+      #"zfs-mount.service"
       #"mnt-data.automount"
     ];
 
     # Explicit requires → PostgreSQL won’t even try to start if the mount isn’t there.
     requires = [
-      "MyTank-services.mount"
+    #
+    # bindsTo is stronger than requires:
+    # If the mount stops (or fails to start), Forgejo stops immediately.
+    #bindsTo = [
+      #"MyTank-services.mount"
+      "MyTank-services-forgejo.mount"
       #"MyTank-services-postgresql.mount"
     ];
+
+    unitConfig = {
+      # This prevents Forgejo from starting if the mount is in a "failed" state
+      #ConditionPathIsMountPoint = "/MyTank/services";
+      ConditionPathIsMountPoint = "/MyTank/services/forgejo";
+    };
+
+    serviceConfig = {
+      # Optional: ensure it doesn't keep restarting if the mount is gone
+      Restart = lib.mkForce "on-failure"; # Use mkForce to override the default "always" from the NixOS module
+      RestartSec = "30s";
+    };
   };
 
   networking.firewall = {

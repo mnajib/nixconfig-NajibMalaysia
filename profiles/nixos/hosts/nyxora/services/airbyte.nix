@@ -34,10 +34,10 @@ let
 in
 {
 
-  fileSystems."/MyTank/services" = {
-    device = "MyTank/services";
-    fsType = "zfs";
-  };
+  #fileSystems."/MyTank/services" = {
+  #  device = "MyTank/services";
+  #  fsType = "zfs";
+  #};
   #
   # Separate dataset → reproducible snapshots/backups. Keeps each service isolated.
   #   sudo zfs create MyTank/services/airbyte
@@ -275,14 +275,14 @@ in
   # Need to mount the my zfs storage first
   systemd.services.postgresql = {
     after = [
-      "MyTank-services.mount"
-      "zfs-mount.service"
+      #"MyTank-services.mount"
+      #"zfs-mount.service"
       #"mnt-data.automount"
     ];
 
     # Explicit requires → PostgreSQL won’t even try to start if the mount isn’t there.
     requires = [
-      "MyTank-services.mount"
+      #"MyTank-services.mount"
       #"MyTank-services-postgresql.mount"
     ];
   };

@@ -67,6 +67,16 @@
       #RuntimeDirectoryMode = "0750"; # Allow group members to access
       #UMask = "0077";               # Ensure the socket created is group-readable
     };
+
+    # bindsTo ensures if postgresql stops, postgrest stops too
+    bindsTo = [ "postgresql.service" ];
+
+    #
+    after = [ "postgresql.service" ];
+
+    # This is the "Safety Net"
+    # It prevents PostgREST from even trying to connect if the DB is down
+    requires = [ "postgresql.service" ];
   };
 
   # Add nginx user to the postgrest group so it can read the socket

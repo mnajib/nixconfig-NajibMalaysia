@@ -9,9 +9,12 @@ let
 in
 {
 
-  fileSystems."/MyTank/services" = {
-    device = "MyTank/services";
+  #fileSystems."/MyTank/services" = {
+  #  device = "MyTank/services";
+  fileSystems."/MyTank/services/postgresql" = {
+    device = "MyTank/services/postgresql";
     fsType = "zfs";
+    neededForBoot = false;
   };
   #
   # Separate dataset → reproducible snapshots/backups. Keeps each service isolated.
@@ -189,16 +192,22 @@ in
   # Need to mount the my zfs storage first
   systemd.services.postgresql = {
     after = [
-      "MyTank-services.mount"
-      "zfs-mount.service"
+      #"MyTank-services.mount"
+      "MyTank-services-postgresql.mount"
+      #"zfs-mount.service"
       #"mnt-data.automount"
     ];
 
     # Explicit requires → PostgreSQL won’t even try to start if the mount isn’t there.
     requires = [
-      "MyTank-services.mount"
-      #"MyTank-services-postgresql.mount"
+    #
+    #bindsTo = [
+      #"MyTank-services.mount"
+      "MyTank-services-postgresql.mount"
     ];
+
+    #unitConfig.ConditionPathIsMountPoint = "/MyTank/services";
+    unitConfig.ConditionPathIsMountPoint = "/MyTank/services/postgresql";
   };
 
   # Ensures predictable ingress networking
