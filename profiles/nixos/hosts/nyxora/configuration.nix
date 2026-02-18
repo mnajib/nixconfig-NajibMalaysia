@@ -11,6 +11,13 @@ let
   commonDir = "../../common";
   hmDir = "../../../home-manager/users";
   stateVersion = "24.11";
+
+  inherit (import ./drives.nix)
+    drivePath
+    driveMyStation1 driveMyStation2
+    swapMyStation1 swapMyStation2
+    bootMyStation1 bootMyStation2
+    ;
 in
 {
   nix = {
@@ -90,7 +97,8 @@ in
     #./email.nix
 
     #./zfs.nix
-    (./. + "/${commonDir}/zfs-nyxora.nix")
+    #(./. + "/${commonDir}/zfs-nyxora.nix")
+    ./zfs.nix
 
     #./nfs-server-customdesktop.nix
     (./. + "/${commonDir}/nfs-client-automount.nix")
@@ -165,7 +173,7 @@ in
       #najib = import ../home-manager/user-najib;
       #root = import ../home-manager/user-root;
       najib = import (./. + "/${hmDir}/najib/nyxora");
-      root = import (./. + "/${hmDir}/root/nyxora");
+      #root = import (./. + "/${hmDir}/root/nyxora");
     };
   };
 
@@ -197,14 +205,25 @@ in
 
   #--------------------------------------------------------
   boot.loader = {
-    systemd-boot.enable = true;
+    systemd-boot.enable = false; # true;
     efi.canTouchEfiVariables = true;
     timeout = 10;
 
     grub = {
-      #enable = true;
+      enable = true;
       #version = 2;
       efiSupport = true;
+      zfsSupport = true;
+
+      # IMPORTANT: Set this to "nodev" for UEFI mirrored installs. This
+      # prevents GRUB from trying to install to an MBR.
+      #
+      # When efiSupport = true is active, NixOS uses the mirroredBoots list to
+      # determine where the EFI files go. Setting device = "nodev" tells the
+      # NixOS GRUB wrapper: "Don't try to install a traditional boot sector to
+      # a specific hard drive's MBR; just handle the EFI files and variables."
+      device = "nodev";
+
       enableCryptodisk = true;
       copyKernels = true;
       useOSProber = true;
@@ -218,25 +237,30 @@ in
         #}
         {
           devices = [
-            "/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
             #"/dev/disk/by-id/wwn-0x50014ee65ba9826e-part2"
+            #"/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
+            (drivePath bootMyStation1)
+            #(drivePath driveMyStation1)
           ];
           path = "/boot";
         }
         {
           devices = [
             #"/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
-            "/dev/disk/by-id/wwn-0x50014ee65ba9826e-part2"
+            #"/dev/disk/by-id/wwn-0x50014ee65ba9826e-part2"
+            (drivePath bootMyStation2)
+            #(drivePath driveMyStation2)
           ];
           path = "/boot2";
         }
-        {
-          devices = [
-            #"/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
-            "/dev/disk/by-id/wwn-0x5000c5003fe08743-part2"  # "/dev/disk/by-id/ata-ST3500413AS_Z2ALGCNL-part2"
-          ];
-          path = "/boot3";
-        }
+        #{
+        #  devices = [
+        #    #"/dev/disk/by-id/wwn-0x5000c500a837f420-part2"
+        #    #"/dev/disk/by-id/wwn-0x5000c5003fe08743-part2"  # "/dev/disk/by-id/ata-ST3500413AS_Z2ALGCNL-part2"
+        #    (drivePath driveMyStation3)
+        #  ];
+        #  path = "/boot3";
+        #}
       ];
 
       # This tells NixOS where to install GRUB — specifically, which disks' MBR or EFI partitions should receive the bootloader.
@@ -246,11 +270,14 @@ in
       # - install GRUB's EFI files to the EFI System Partition (ESP) on each disk.
       #
       # This installs GRUB to both drives — so either can boot independently.
-      devices = [
-        "/dev/disk/by-id/wwn-0x5000c500a837f420"
-        "/dev/disk/by-id/wwn-0x50014ee65ba9826e"
-        "/dev/disk/by-id/wwn-0x5000c5003fe08743"
-      ];
+      #devices = [
+      #  #"/dev/disk/by-id/wwn-0x5000c500a837f420"
+      #  #"/dev/disk/by-id/wwn-0x50014ee65ba9826e"
+      #  #"/dev/disk/by-id/wwn-0x5000c5003fe08743"
+      #  (drivePath driveMyStation1)
+      #  (drivePath driveMyStation2)
+      #  #(drivePath driveMyStation3)
+      #];
 
     }; # End boot.loader.grub
   }; # End boot.loader

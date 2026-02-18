@@ -176,11 +176,6 @@
       fsType = "zfs";
     };
 
-  fileSystems."/root" =
-    { device = "MyStation/safe/rootuserhomedir";
-      fsType = "zfs";
-    };
-
   fileSystems."/home" =
     { device = "MyStation/safe/home";
       fsType = "zfs";
@@ -197,32 +192,20 @@
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/4237-2B9B";
       fsType = "vfat";
-      options = [
-        "fmask=0022" "dmask=0022"
-        #"fmask=0077" "dmask=0077"
-        "nofail" # Ignore if drive is missing
-        "x-systemd.device-timeout=5s" # Don't wait forever if it's broken
-        "x-systemd.mount-timeout=5s"  # Don't wait forever to mount it
-      ];
+      options = [ "fmask=0022" "dmask=0022" ];
     };
 
   fileSystems."/boot2" =
     { device = "/dev/disk/by-uuid/423B-CFCE";
       fsType = "vfat";
-      options = [
-        "fmask=0022" "dmask=0022"
-        #"fmask=0077" "dmask=0077"
-        "nofail" # Ignore if drive is missing
-        "x-systemd.device-timeout=5s" # Don't wait forever if it's broken
-        "x-systemd.mount-timeout=5s"  # Don't wait forever to mount it
-      ];
+      options = [ "fmask=0022" "dmask=0022" ];
     };
 
-  #fileSystems."/boot3" =
-  #  { device = "/dev/disk/by-uuid/2CA8-8859";
-  #    fsType = "vfat";
-  #    options = [ "fmask=0022" "dmask=0022" ];
-  #  };
+  fileSystems."/boot3" =
+    { device = "/dev/disk/by-uuid/2CA8-8859";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
+    };
 
 
   #---------------------------------------------------------------------------
@@ -308,10 +291,8 @@
     #{ device = "/dev/disk/by-uuid/12e7efc0-480c-4960-be2a-8a7ce64db443"; }
     #{ device = "/dev/disk/by-uuid/f8df46f9-f349-4dfe-9880-87f67dbf52e2"; }
 
-    #{ device = "/dev/disk/by-uuid/271a21a1-fd81-4a15-9a5f-937174204363"; }
     { device = "/dev/disk/by-id/ata-WDC_WD10JPVX-08JC3T6_WD-WX71AB6RKVV1-part6"; }
-    #( drivePath swapMyStation1)
-    #( drivePath swapMyStation2)
+    #{ device = "/dev/disk/by-uuid/271a21a1-fd81-4a15-9a5f-937174204363"; }
 
   ];
 

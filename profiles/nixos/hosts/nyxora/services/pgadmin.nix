@@ -61,6 +61,24 @@ in
 
   };
 
+  systemd.services.pgadmin = {
+    #bindsTo = [ "MyTank-services.mount" ];
+    #
+    # 'after' ensures the start order: PostgreSQL starts first.
+    after = [
+      #"MyTank-services.mount"
+      "postgresql.service"
+    ];
+
+    # 'requires' ensures that if postgresql fails or is stopped,
+    # pgadmin won't try to stay running alone.
+    requires = [
+      "postgresql.service"
+    ];
+
+    #unitConfig.ConditionPathIsMountPoint = "/MyTank/services";
+  };
+
   # -------------------------------------------------------
   # nginx
   # -------------------------------------------------------
