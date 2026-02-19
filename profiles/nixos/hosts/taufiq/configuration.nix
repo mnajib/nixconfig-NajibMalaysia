@@ -361,10 +361,19 @@ in# with lib;
   #};
 
   #boot.kernelPackages = pkgs.linuxPackages_latest;
-  #boot.kernelParams = [
-  #  #"i915.modeset=0" "nouveau.modeset=1"                                        # to disable i915 and enable nouveau
-  #  "video=eDP-1:1920x1080" "video=VGA-1:1280x1024" "video=DP-1-3:1280x1024"    #
-  #];
+  boot.kernelParams = [
+    #"i915.modeset=0" "nouveau.modeset=1"                                        # to disable i915 and enable nouveau
+    #"video=eDP-1:1920x1080" "video=VGA-1:1280x1024" "video=DP-1-3:1280x1024"    #
+
+    # Since we can't toggle it in the BIOS, the most stable way to handle this on NixOS is to tell the kernel to stop "knocking on the door" of a feature the BIOS has locked.
+    # Why do this? By setting no_turbo, you aren't actually "losing" performance you currently have (since the BIOS was already blocking it), but you are stopping the kernel from constantly retrying, which reduces CPU overhead and stops the massive log bloat.
+    #
+    # Run this one-liner to see your current max frequency across all cores:
+    #   watch -n 1 "grep \"cpu MHz\" /proc/cpuinfo"
+    # If every core stays at 3200 or lower even when you're doing something heavy, the BIOS lock is absolute.
+    #
+    #"intel_pstate=no_turbo"
+  ];
 
   #
   # NOTE:
