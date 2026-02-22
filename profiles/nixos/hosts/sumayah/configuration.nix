@@ -234,6 +234,7 @@ in
     gimp
     freecad
     steam
+    prismlauncher
 
     qbittorrent
     bottles
