@@ -122,7 +122,8 @@ in
     # System health monitoring
     #./netdata.nix
 
-    (fromCommon "zfs.nix")
+    #(fromCommon "zfs.nix")
+    ./zfs.nix
     #(fromCommon "btrfs.nix")
 
     (fromCommon "nfs-server-customdesktop.nix")
