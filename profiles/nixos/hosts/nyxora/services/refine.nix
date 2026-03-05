@@ -100,7 +100,10 @@ in
   fileSystems."/MyTank/services/refine" = {
     device = "MyTank/services/refine";
     fsType = "zfs";
-    options = [ "nofail" "x-systemd.device-timeout=5s" ];
+    options = [
+      "nofail"
+      #"x-systemd.device-timeout=5s"
+    ];
     neededForBoot = false; # Services can wait a few seconds
   };
 

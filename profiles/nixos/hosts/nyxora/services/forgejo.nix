@@ -16,7 +16,10 @@ in
   fileSystems."/MyTank/services/forgejo" = {
     device = "MyTank/services/forgejo";
     fsType = "zfs";
-    options = [ "nofail" "x-systemd.device-timeout=5s" ];
+    options = [
+      "nofail"
+      #"x-systemd.device-timeout=5s"
+    ];
     neededForBoot = false; # Services can wait a few seconds
   };
 
