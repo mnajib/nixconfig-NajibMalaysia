@@ -54,6 +54,7 @@ in
 
     ./hardware-configuration.nix
     #./proxmox.nix
+    ./smartd.nix # some drive with old controller board
 
     #(./. + "${commonDir}/configuration.FULL.nix")
     (fromCommon "configuration.FULL.nix")
