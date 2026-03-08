@@ -22,6 +22,7 @@ let
     git                 = "192.168.0.11";
     pgadmin             = "192.168.0.11";
     sijilberhenti       = "192.168.0.11";
+    nfs                 = "192.168.0.10";
 
     # Better use ssh tunnel, rather than nginx
     #

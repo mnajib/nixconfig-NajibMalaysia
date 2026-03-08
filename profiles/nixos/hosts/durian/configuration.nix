@@ -126,7 +126,8 @@ in
     ./zfs.nix
     #(fromCommon "btrfs.nix")
 
-    (fromCommon "nfs-server-customdesktop.nix")
+    #(fromCommon "nfs-server-customdesktop.nix")
+    ./nfs-server.nix
     (fromCommon "nfs-client-automount.nix")
 
     #./samba-server-customdesktop.nix
