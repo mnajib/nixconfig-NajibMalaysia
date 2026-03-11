@@ -74,7 +74,7 @@
       "soft"
       "timeo=30"
       "retrans=3"
-      "intr"
+      #"intr" # Deprecated parameter
       "vers=4.2"
     ];
   };
