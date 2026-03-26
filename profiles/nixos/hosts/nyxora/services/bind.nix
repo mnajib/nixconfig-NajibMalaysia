@@ -154,11 +154,23 @@ in
       "localdomain" = {
         master = true;
         file = zoneFile;
+        slaves = [
+          "192.168.0.0/24"
+
+          #"127.0.0.1" "::1"
+          "localhost"
+        ];
       };
 
       "${reverseZone}" = {
         master = true;
         file = reverseFile;
+        slaves = [
+          "192.168.0.0/24"
+
+          #"127.0.0.1" "::1"
+          "localhost"
+        ];
       };
 
     };
