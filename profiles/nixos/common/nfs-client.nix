@@ -29,7 +29,7 @@
     "soft"
     "timeo=30"
     "retrans=3"
-    "intr"
+    #"intr" # Commented because deprecated
     "vers=4.2"
   ];
 
