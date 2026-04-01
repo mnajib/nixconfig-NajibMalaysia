@@ -16,7 +16,7 @@ let
   hmDir = "../../../home-manager/users";
 
   hostName = "parang";
-  hostId = ""; # required by zfs
+  hostId = "cde25408"; # required by zfs. cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   stateVersion = "25.11";
 in
 {
@@ -80,7 +80,8 @@ in
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   #boot.initrd.luks.devices."crypted".device = "/dev/nvme0n1p3";
-  boot.initrd.luks.devices."crypted".device = "/dev/disk/by-id/nvme-Netac_NVMe_SSD_250GB_AA20251120250G076005";
+  #boot.initrd.luks.devices."crypted".device = "/dev/disk/by-id/nvme-Netac_NVMe_SSD_250GB_AA20251120250G076005-part3";
+  #boot.initrd.luks.devices."disk-main-luks".device = "/dev/disk/by-id/nvme-Netac_NVMe_SSD_250GB_AA20251120250G076005-part3";
   #boot.initrd.luks.devices."luks-nvme-Netac_NVMe_SSD_250GB_AA20251120250G076005".device = "/dev/disk/by-id/nvme-Netac_NVMe_SSD_250GB_AA20251120250G076005";
 
   boot.kernelPackages = pkgs.linuxPackages_latest; # need disable this because marked broken with zfs
