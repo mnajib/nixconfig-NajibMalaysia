@@ -8,6 +8,7 @@
         content = {
           type = "gpt";
           partitions = {
+
             # 1. EFI Partition
             bootefi = {
               #size = "512M";
@@ -20,6 +21,7 @@
                 mountOptions = [ "umask=0077" ];
               };
             };
+
             # 2. Separate Boot Partition
             boot = {
               size = "2G";
@@ -29,6 +31,7 @@
                 mountpoint = "/boot";
               };
             };
+
             # 3. Encrypted Main Partition
             luks = {
               size = "100%";
@@ -38,6 +41,7 @@
                 # passwordFile = "/tmp/secret.key"; # Optional: for automated installs
                 settings.allowDiscards = true;
                 content = {
+
                   type = "btrfs";
                   extraArgs = [ "-f" ]; # Force overwrite
                   subvolumes = {
@@ -58,12 +62,14 @@
                       swap.swapfile.size = "16G";
                     };
                   };
+
                 };
               };
             };
+
           };
         };
-      };
-    };
-  };
+      }; # End of disko.devices.disk.main = { ... }
+    }; # End of disko.devices.disk = { ... }
+  }; # End of disko.devices = { ... }
 }
