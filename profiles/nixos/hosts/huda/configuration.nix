@@ -30,8 +30,8 @@ in
     (fromCommon "configuration.FULL.nix") # timezone, locale, ...
 
     (fromCommon "users-a-wheel.nix")
-    #(fromCommon "users-naqib-wheel.nix")
-    (fromCommon "users-naqib.nix")
+    (fromCommon "users-naqib-wheel.nix")
+    #(fromCommon "users-naqib.nix")
     (fromCommon "users-naim.nix")
     (fromCommon "users-nurnasuha.nix")
     (fromCommon "users-julia-wheel.nix")
