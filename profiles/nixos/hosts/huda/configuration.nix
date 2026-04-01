@@ -125,6 +125,9 @@ in
     gcc
     gparted
     fatresize
+    prismlauncher
+    flatpak
+    luanti
     #kate
     #kitty
     #blender
