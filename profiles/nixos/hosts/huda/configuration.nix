@@ -22,6 +22,10 @@ in
     ./hardware-configuration.nix
     (fromCommon "bootBIOS.nix")
 
+    #./roles/base.nix
+    #./roles/stage-1.nix
+    #./roles/stage-2.nix
+
     #(fromCommon "remote-builders.nix")
     (fromCommon "configuration.FULL.nix") # timezone, locale, ...
 
