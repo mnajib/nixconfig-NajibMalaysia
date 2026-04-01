@@ -830,6 +830,16 @@
               #pkgsInput = inputs.nixpkgs-unstable; # override
             };
 
+            # nixos on acer laptop
+            parang = mkNixos {
+              system = "x86_64-linux";
+              modules = [
+                ./profiles/nixos/hosts/parang/configuration.nix
+              ];
+              #pkgsInput = inputs.nixpkgs-release; # override
+              #pkgsInput = inputs.nixpkgs-unstable; # override
+            };
+
             keira = mkNixos {
               system = "x86_64-linux";
               modules = [
