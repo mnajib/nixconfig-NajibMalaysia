@@ -169,6 +169,7 @@ in
     #pragtical
     cudatext #cudatext-gtk
     #sublime4
+    netbeans
   ];
 
   # Enable home-manager and git
