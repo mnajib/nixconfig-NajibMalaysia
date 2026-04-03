@@ -998,6 +998,11 @@
               modules = [ ./profiles/home-manager/users/naqib/sukun ];
             };
 
+            "naqib@parang" = mkHome {
+              system = "x86_64-linux";
+              modules = [ ./profiles/home-manager/users/naqib/parang ];
+            };
+
             "naqib@asmak" = mkHome {
               system = "x86_64-linux";
               modules = [ ./profiles/home-manager/users/naqib/asmak ];
