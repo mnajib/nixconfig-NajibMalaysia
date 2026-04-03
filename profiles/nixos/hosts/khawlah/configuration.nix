@@ -122,6 +122,13 @@ in
     ];
   };
 
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 16384; #16GB
+    }
+  ];
+
   hardware.enableAllFirmware = true;
 
   hardware.graphics.extraPackages = with pkgs; [
