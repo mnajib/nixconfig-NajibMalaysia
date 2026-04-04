@@ -9,7 +9,17 @@
           type = "gpt";
           partitions = {
 
-            # 1. EFI Partition
+            # 1. Separate Boot Partition
+            boot = {
+              size = "2G";
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/boot";
+              };
+            };
+
+            # 2. EFI Partition
             bootefi = {
               #size = "512M";
               size = "1G";
@@ -19,16 +29,6 @@
                 format = "vfat";
                 mountpoint = "/boot/efi";
                 mountOptions = [ "umask=0077" ];
-              };
-            };
-
-            # 2. Separate Boot Partition
-            boot = {
-              size = "2G";
-              content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/boot";
               };
             };
 
