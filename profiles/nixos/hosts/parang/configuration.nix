@@ -8,6 +8,11 @@
 #     --root /mnt \
 #     --flake /home/najib/src/nixconfig-NajibMalaysia#parang
 #
+# Untuk semak boot entri/order:
+#   efibootmgr
+# Buang duplicate pada boot entri:
+#   sudo efibootmgr --delete-bootnum --bootnum 0002
+#
 
 {
   config,
