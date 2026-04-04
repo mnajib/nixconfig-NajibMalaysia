@@ -944,6 +944,11 @@
               ];
             };
 
+            "najib@parang" = mkHome {
+              system = "x86_64-linux";
+              modules = [ ./profiles/home-manager/users/najib/parang ];
+            };
+
 
             #-----------------------------------------------------------------------------
             # root
