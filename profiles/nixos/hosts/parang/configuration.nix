@@ -2,6 +2,12 @@
 #
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
+#
+# Untuk install:
+#   sudo nixos-install \
+#     --root /mnt \
+#     --flake /home/najib/src/nixconfig-NajibMalaysia#parang
+#
 
 {
   config,
@@ -25,13 +31,13 @@ in
       fromCommon = name: ./. + "/${toString commonDir}/${name}";
     in
     [
+      inputs.disko.nixosModules.disko
+      ./disko-config.nix
+
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       #./zfs.nix
       ./btrfs.nix
-
-      inputs.disko.nixosModules.disko
-      ./disko-config.nix
 
       inputs.home-manager.nixosModules.home-manager
       #./turn-off-rgb.nix
@@ -80,10 +86,24 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
+  # Ini PERLU — disko tidak handle initrd <-- ??? Disko memang handle boot.initrd.luks.devices secara automatik melalui inputs.disko.nixosModules.disko. Jadi, ini tidak perlu.
+  #
   #boot.initrd.luks.devices."crypted".device = "/dev/nvme0n1p3";
   #boot.initrd.luks.devices."crypted".device = "/dev/disk/by-id/nvme-Netac_NVMe_SSD_250GB_AA20251120250G076005-part3";
   #boot.initrd.luks.devices."disk-main-luks".device = "/dev/disk/by-id/nvme-Netac_NVMe_SSD_250GB_AA20251120250G076005-part3";
-  #boot.initrd.luks.devices."luks-nvme-Netac_NVMe_SSD_250GB_AA20251120250G076005".device = "/dev/disk/by-id/nvme-Netac_NVMe_SSD_250GB_AA20251120250G076005";
+  #
+  #boot.initrd.luks.devices."luks-nvme-Netac_NVMe_SSD_250GB_AA20251120250G076005" = {
+  #  device = "/dev/disk/by-id/nvme-Netac_NVMe_SSD_250GB_AA20251120250G076005";
+  #  allowDiscards = true;
+  #};
+  #
+  boot.initrd.luks.devices."crypted" = {
+    # by-id adalah lebih baik daripada by-uuid untuk initrd.
+    #device = "/dev/disk/by-uuid/d4149e86-ec60-45d7-8cf9-30de0e3d391e";
+    #device = "/dev/disk/by-id/nvme-Netac_NVMe_SSD_250GB_AA20251120250G076005-part3";
+    device = lib.mkForce "/dev/disk/by-id/nvme-Netac_NVMe_SSD_250GB_AA20251120250G076005-part3";
+    allowDiscards = true;
+  };
 
   boot.kernelPackages = pkgs.linuxPackages_latest; # need disable this because marked broken with zfs
   boot.supportedFilesystems = [
