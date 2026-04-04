@@ -1,3 +1,15 @@
+#
+# To mount dan tidak format:
+#   sudo nix run github:nix-community/disko -- \
+#     --mode mount \
+#     profiles/nixos/hosts/parang/disko-config.nix
+#
+# To repartition/reformat semula dengan disko (destroy + format + mount)
+#   sudo nix run github:nix-community/disko -- \
+#     --mode destroy,format,mount \
+#     profiles/nixos/hosts/parang/disko-config.nix
+#
+
 {
   disko.devices = {
     disk = {
