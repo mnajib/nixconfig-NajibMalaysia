@@ -28,6 +28,7 @@ in
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       #./zfs.nix
+      ./btrfs.nix
 
       inputs.disko.nixosModules.disko
       ./disko-config.nix
