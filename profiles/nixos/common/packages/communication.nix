@@ -7,7 +7,8 @@
 
     # Secure/alt messengers
     simplex-chat-desktop
-    session-desktop jami
+    #session-desktop
+    jami
     briar-desktop
 
     # Email
