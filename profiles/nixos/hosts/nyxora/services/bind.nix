@@ -48,6 +48,7 @@ let
     huda            = "192.168.0.19";
     laila           = "192.168.0.20";
     sukun           = "192.168.0.21";
+    parang          = "192.168.0.23";
   };
 
   zoneFile = pkgs.writeText "zone-localdomain" ''
