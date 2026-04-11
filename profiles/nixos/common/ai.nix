@@ -23,7 +23,7 @@
     #
     #  NOTE:
     #
-    #    To find out whether a model is running on CPU or GPU, you can either look at the logs of 
+    #    To find out whether a model is running on CPU or GPU, you can either look at the logs of
     #
     #      $ ollama serve
     #
@@ -53,6 +53,10 @@
     openFirewall = true;
 
   }; # End services.ollama
+
+  services.open-webui = {
+    enable = true;
+  };
 
   services.tabby = {
     enable = true;
