@@ -318,7 +318,7 @@ in
   #boot.kernelPackages = pkgs.linuxPackages_latest; # test disable this while trying to solve monitor on build-in VGA, DVI, HDMI not detectded in Xorg, but detected in Wayland.
   #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
   #boot.kernelPackages = pkgs.linuxPackages_6_6;
-  #boot.kernelParams = [
+  boot.kernelParams = [
     ##"i915.modeset=0" "nouveau.modeset=1" # to disable i915 and enable nouveau
     #"video=DisplayPort-2:D"
     #"video=DP-1:D"
@@ -332,7 +332,11 @@ in
     #"video=DVI-1-1:D"
     #"video=VGA-0:1280x1024@60me"
     #"video=VGA-1:1280x1024@60me"
-  #];
+
+    # NVidia card wint LG monitor: still not working
+    #"video=DVI-1-0:e"
+    #"video=DVI-1-1:e"
+  ];
 
   #boot.extraModulePackages = [
     #config.boot.kernelPackages.rtl8821cu
