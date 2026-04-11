@@ -1,22 +1,25 @@
-{ pkgs, config, ... }:
+{
+ pkgs,
+ config,
+ ...
+}:
 # nixos/ai.nix
 
 {
 
   environment.systemPackages = with pkgs; [
-    ollama
+    #ollama
     aichat
     kdePackages.alpaka
   ]; # End environment.systemPackages = with pkgs;
 
   services.ollama = {
     enable = true;
+    package = pkgs.unstable.ollama; # from overlay
 
     #host = ""; # default "127.0.0.1"
     port = 11434; # default 11434
     #listenAddress = ...
-
-    #package = ...;
 
     #home = "";
 
