@@ -160,7 +160,7 @@ in
     #./opengl.nix
 
     #./tabby.nix # self-hosted AI coding assistant
-    #./ai.nix
+    (fromCommon "ai.nix")
 
     #./tenda-usb-wifi-dongle.nix
 
