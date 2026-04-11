@@ -61,6 +61,7 @@
   nix.daemonIOSchedClass = "idle";
   nix.daemonCPUSchedPolicy = "idle";
   nix.daemonIOSchedPriority = 7;            # 0(high) (default) ... 7 (low) priority
+  nix.settings.download-buffer-size = 134217728; # 128MB
 
   imports = [
     ./users-najib.nix

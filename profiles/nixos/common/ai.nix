@@ -17,7 +17,7 @@
     enable = true;
     package = pkgs.unstable.ollama; # from overlay
 
-    #host = ""; # default "127.0.0.1"
+    host = "0.0.0.0"; #host = ""; # default "127.0.0.1"
     port = 11434; # default 11434
     #listenAddress = ...
 
@@ -63,9 +63,12 @@
 
   services.tabby = {
     enable = true;
+    #package = pkgs.unstable.tabby;
 
-    #host = ""; # default "127.0.0.1"
+    host = "0.0.0.0"; #host = ""; # default "127.0.0.1"
     port = 11029; # default 11029
+
+    acceleration = "cuda";
 
     # See for Model Options: https://github.com/TabbyML/registry-tabby
     #model = "TabbyML/DeepSeek-Coder-6.7B-instruct";
