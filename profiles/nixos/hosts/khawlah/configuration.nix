@@ -91,7 +91,9 @@ in
     #./inspircd.nix # IRC server
     #./opengl_with_vaapiIntel.nix
     #./stylix.nix
+
     #./barrier.nix
+    (fromCommon "deskflow.nix")
 
     (fromCommon "bluetooth.nix")
   ];
