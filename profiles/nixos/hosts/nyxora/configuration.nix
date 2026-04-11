@@ -117,6 +117,7 @@ in
     (./. + "/${commonDir}/audio-pipewire.nix")
 
     #./synergy-client.nix # barrier
+    (fromCommon "deskflow.nix")
 
     (./. + "/${commonDir}/hardware-printer.nix")
     #./hardware-tablet-wacom.nix
