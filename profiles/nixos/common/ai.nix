@@ -74,4 +74,17 @@
     #model = "TabbyML/DeepSeek-Coder-6.7B-instruct";
   }; # End services.tabby
 
+  networking.firewall = {
+    allowedTCPPorts = [
+      8080 # webui
+      11029 # tabby
+      11434 # ollama
+    ];
+    allowedUDPPorts = [
+      8080 # webui
+      11029 # tabby
+      11434 # ollama
+    ];
+  };
+
 }
