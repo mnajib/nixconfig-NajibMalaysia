@@ -9,7 +9,7 @@
     #--------------------------------------------------------------------------
     #smtube # insecure because using unmaintained qtwebkit
     minitube # watch youtube with tv-like experience
-    freetube # the private youtube client
+    unstable.freetube #freetube # the private youtube client
     headset
     invidious
     #gtk-pipe-viewer
