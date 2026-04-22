@@ -151,6 +151,8 @@
 
       jetbrains-mono # An opensource typeface made for developers. suitable for coding
       mononoki # A font for programming and code review
+
+      libertine # Font Serif lebih mudah dibaca untuk teks yang panjang dalam buku fizikal.
     ];
   }; # End font = { ... };
 
