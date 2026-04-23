@@ -337,6 +337,11 @@ in
     # NVidia card wint LG monitor: still not working
     #"video=DVI-1-0:e"
     #"video=DVI-1-1:e"
+
+    # Disables Aggressive Link Power Management
+    "ahci.mobile_lpm_policy=1"
+    # Increases the timeout for SCSI commands to 60 seconds
+    "scsi_mod.scan=async"
   ];
 
   #boot.extraModulePackages = [
