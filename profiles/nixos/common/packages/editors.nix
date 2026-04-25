@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
+
     # CLI editors
     nano
     neovim
@@ -16,6 +17,11 @@
     #xfce.mousepad
     #enlightenment.ecrire
     #gnome-text-editor
+
+    vscode
+    code-cursor
+    zed-editor
+
   ];
 }
 
