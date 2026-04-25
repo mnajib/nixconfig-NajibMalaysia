@@ -39,6 +39,9 @@
     #nixpkgs-unstable.url    = "github:NixOS/nixpkgs/nixpkgs-unstable";
     #nixpkgs-master.url      = "github:nixos/nixpkgs/master";
 
+    #nixpkgs-nonetprob.url = "github:NixOS/nixpkgs/040d0d17f15957e4a08f14abfa3032cd96cc82fe";
+    #nixpkgs.follows = "nixpkgs-nonetprob"; # Make 'nixpkgs' point to nixpkgs-stable as default.
+
     #nixpkgs.url            = "github:nixos/nixpkgs/nixos-25.05";
     #nixpkgs.url      = "github:nixos/nixpkgs/nixos-25.11";
     #nixpkgs.follows         = "nixpkgs-stable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
