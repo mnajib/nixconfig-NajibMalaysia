@@ -108,6 +108,7 @@ in
     ];
 
     listenOnPort = 53; # Default: 53
+    ipv4Only = true;
 
     cacheNetworks = [
       "127.0.0.0/24"
@@ -192,6 +193,14 @@ in
       //  1.1.1.1;
       //  8.8.8.8;
       //};
+
+      //dnssec-enable yes; // this config option no longer exist
+      dnssec-validation no; //auto;
+      auth-nxdomain no;
+
+      //server-id "none";
+      listen-on-v6 { none; };
+
     ''; # End services.bind.extraOptions = "";
 
   }; # End service.bind = { ... };

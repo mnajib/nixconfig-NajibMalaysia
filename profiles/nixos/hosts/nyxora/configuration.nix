@@ -319,7 +319,7 @@ in
   #boot.kernelPackages = pkgs.linuxPackages_latest; # test disable this while trying to solve monitor on build-in VGA, DVI, HDMI not detectded in Xorg, but detected in Wayland.
   #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
   #boot.kernelPackages = pkgs.linuxPackages_6_6;
-  boot.kernelPackages = pkgs.linuxPackages_6_12;
+  boot.kernelPackages = pkgs.linuxPackages_6_12; # Pinned to 6.12 because 6.13+ causes networking issues on this hardware
 
   boot.kernelParams = [
     ##"i915.modeset=0" "nouveau.modeset=1" # to disable i915 and enable nouveau
