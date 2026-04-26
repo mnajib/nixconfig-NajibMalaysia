@@ -16,7 +16,7 @@
   ]; # End environment.systemPackages = with pkgs;
 
   services.ollama = {
-    enable = true;
+    enable = false; #true;
     package = pkgs.unstable.ollama; # from overlay
 
     host = "0.0.0.0"; #host = ""; # default "127.0.0.1"
@@ -60,9 +60,9 @@
   }; # End services.ollama
 
   services.open-webui = {
-    #enable = true;
-    enable = false;
+    enable = false; #true;
   };
+
 
   services.tabby = {
     enable = true;
