@@ -340,6 +340,21 @@ in
     "zfs.zfs_arc_max=2147483648" "zfs.zfs_arc_min=1073741824"                   # Need this to limit RAM usage for zfs cache.
 
     "nohibernate"
+
+    # Recurring hardware-level communication failure between your LSI HBA (using the mpt2sas driver) and the drive at SCSI address 0:0:5:0
+    # The log typically translate to "Aborted Command" or "Link Not Established."
+    # The disk at 0:0:5:0 (S/N: WD-WXK2A80LH7PC):
+    #
+    # Problem: SATA Power Management (ALPM)
+    # Recommended Solutions: Disable Aggressive Link Power Management (ALPM).
+    #
+    # Even though ZFS says ONLINE, the drive is physically "stuttering." Before you replace the drive, I recommend swapping the power cable or the HBA port with one of the other drives in the Garden pool.
+    # If the error follows the drive WD-WXK2A80LH7PC to a new port: The drive's internal controller is failing.
+    # If the error stays on 0:0:5:0: The HBA port or that specific leg of the SAS breakout cable is faulty.
+    #
+    # If you are using a SAS-to-SATA adapter or certain backplanes, some newer WD drives feature Power Disable (PWDIS). If the 3.3V rail is active on the power connector, the drive might intermittently reset itself.
+    # Test: Try using a Molex-to-SATA adapter (which doesn't carry 3.3V) for this specific drive to see if the resets stop.
+    "ahci.mobile_lpm_policy=1" # (Policy 1 sets it to "max performance" / no power saving)
   ];
 
   # Set your time zone.
