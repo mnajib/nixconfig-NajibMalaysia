@@ -125,7 +125,7 @@ in
 
   networking.nftables.enable = true;
   networking.firewall = {
-    enable = false;
+    #enable = false;
     #allowedTCPPorts = [ ... ];
     #allowedUDPPorts = [ 3450 ]; # 3450 for minetest server
   };
