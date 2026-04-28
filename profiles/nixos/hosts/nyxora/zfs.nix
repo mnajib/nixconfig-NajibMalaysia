@@ -27,6 +27,14 @@ in
     #"zfs.zfs_arc_max=17179869184"
   ];
 
+  boot.initrd.availableKernelModules = [
+    "zfs"
+  ];
+
+  boot.initrd.kernelModules = {
+    zfs = true;
+  };
+
   boot.supportedFilesystems = [ "vfat" "zfs" ];
 
   environment.systemPackages = with pkgs; [
@@ -79,7 +87,8 @@ in
      # work
      #interval = "Sun, 02:00";            # "Sun, 02:00" is the default. See systemd.time(7) for formatting.
      #interval = "Wed,Sat *-*-* 02:00";
-     interval = "Thu,Sun *-*-* 02:00";
+     #interval = "Thu,Sun *-*-* 02:00";
+     interval = "Sun *-*-* 02:00";
 
      # test
      #interval = "daily";            # "Sun, 02:00" is the default. See systemd.time(7) for formatting.
@@ -114,7 +123,7 @@ in
   # You can adjust retention durations for the snapshots easily, and pick which datasets you want to snapshot.
 
   services.sanoid = {
-    #enable = true; # Default is "false"
+    enable = false; # true; # Default is "false"
     interval = "hourly"; # Run this hourly, run syncoid daily to prune ok
 
     templates = {
@@ -139,7 +148,7 @@ in
   # Syncoid simply transfers datasets from one location to another.
 
   services.syncoid = {
-    #enable = true; # Default is 'false'
+    enable = false; # true; # Default is 'false'
     interval = "daily"; # important that syncoid runs less often than sanoid
   };
 
