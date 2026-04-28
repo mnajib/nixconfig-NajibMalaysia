@@ -33,6 +33,21 @@ in
   #----------------------------------------------------------------------------
   # 2. Bind Mounts for NFS Exports
 
+  # Ensure the mount points are created by the system
+  # Ensure the /export directory and subdirectories exist
+  systemd.tmpfiles.rules = [
+    "d /mnt/data 0755 root root -"
+    "d /export 0755 root root -"
+    "d /export/nfsshare2 0755 root root -"
+    "d /export/batocera 0755 root root -"
+    "d /export/nixforbatocera 0755 root root -"
+    "d /export/najib 0755 root root -"
+    "d /export/julia 0755 root root -"
+    "d /export/naqib 0755 root root -"
+    "d /export/nurnasuha 0755 root root -"
+    "d /export/naim 0755 root root -"
+  ];
+
   fileSystems."/export/nfsshare2" = {
     #device = "/home/nfs/share";
     device = "/mnt/data/nfs/share";
