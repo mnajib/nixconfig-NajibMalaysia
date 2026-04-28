@@ -127,7 +127,7 @@ in
     #(fromCommon "btrfs.nix")
 
     #(fromCommon "nfs-server-customdesktop.nix")
-    ./nfs-server.nix
+    #./nfs-server.nix
     (fromCommon "nfs-client-automount.nix")
 
     #./samba-server-customdesktop.nix
@@ -153,7 +153,8 @@ in
     #./gitea.nix
 
     #(fromCommon "forgejo-sqlite-customdesktop.nix")
-    (fromCommon "forgejo-sqlite-durian.nix")
+    #(fromCommon "forgejo-sqlite-durian.nix")
+    ./services/forgejo-sqlite.nix
 
     (fromCommon "nix-garbage-collector.nix")
 
