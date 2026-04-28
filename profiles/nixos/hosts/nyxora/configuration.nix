@@ -102,6 +102,8 @@ in
     ./zfs.nix
 
     #./nfs-server-customdesktop.nix
+    ./services/nfs-server.nix
+
     (./. + "/${commonDir}/nfs-client-automount.nix")
     #./nfs-client-automount-games.nix
     #./nfs-client.nix
@@ -161,7 +163,7 @@ in
 
     #./tabby.nix # self-hosted AI coding assistant
     #(fromCommon "ai.nix")
-    ./services/ai.nix
+    #./services/ai.nix
 
     #./tenda-usb-wifi-dongle.nix
 
