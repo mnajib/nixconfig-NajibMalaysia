@@ -17,6 +17,10 @@ let
   migrationPath = "/MyTank/shared/data/garden_migration";
 in
 {
+  boot.kernelModules = [
+    "nfsd"
+    "lockd"
+  ];
 
   #----------------------------------------------------------------------------
   # 1. Mount the primary ZFS dataset
@@ -159,8 +163,11 @@ in
     mountdPort = 4002;
     statdPort = 4000;
 
+    createMountPoints = true;
+
+      #/export                   *(rw,fsid=0,no_subtree_check,fsid=0)
     exports = ''
-      /export                   *(rw,fsid=0,no_subtree_check,fsid=0)
+      /export                   *(rw,fsid=0,no_subtree_check)
       /export/nfsshare2         *(rw,nohide,insecure,no_subtree_check)
       /export/batocera          *(rw,nohide,insecure,no_subtree_check)
       /export/najib             *(rw,nohide,insecure,no_subtree_check)
