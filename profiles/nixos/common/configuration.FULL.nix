@@ -389,7 +389,14 @@
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
   hardware.enableAllFirmware = true;
-  services.fwupd.enable = true;
+  services.fwupd = {
+    enable = true;
+    daemonSettings = {
+      DisabledPlugins = [
+        "tpm"
+      ];
+    };
+  };
 
   networking.nftables.enable = true;
   networking.firewall.enable = true;
