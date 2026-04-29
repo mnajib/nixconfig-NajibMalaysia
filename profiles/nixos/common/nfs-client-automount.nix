@@ -51,6 +51,13 @@
   #  ];
   #};
 
+  # Ensure mountpoint directory exists ---
+  # Ensure the mount point exists with permissions that allow
+  # non-root users to trigger the automount.
+  systemd.tmpfiles.rules = [
+    "d /mnt/nfsshare2 0755 root root -"
+  ];
+
   fileSystems."/mnt/nfsshare2" = {
     #device = "customdesktop:/nfsshare2";
     #device = "customdesktop.localdomain:/nfsshare2";
@@ -66,6 +73,9 @@
 
       # Disconnects after 10 minutes (i.e. 600 seconds)
       "x-systemd.idle-timeout=600"
+
+      "user" # Allows a user to mount the filesystem
+      "users" # Allows any user to unmount it as well
 
       # XXX:
       "noatime"
@@ -148,11 +158,6 @@
       "noatime"
     ];
   };
-
-  # Ensure mountpoint directory exists ---
-  systemd.tmpfiles.rules = [
-    "d /mnt/nfsshare2 0755 root root -"
-  ];
 
 #  # XXX: This is a workaround to prevent systemd from failing during nixos-rebuild switch. It creates a dummy unit file to satisfy the reference.
 #  environment.etc."systemd/system/mnt-nfsshare2.mount".source = "/dev/null";
