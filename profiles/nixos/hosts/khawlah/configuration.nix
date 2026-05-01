@@ -171,9 +171,16 @@ in
   boot.kernelParams = [
     #"radeon.modeset=1" # enable radeon
 
-    "video=LVDS-1:d" # disable
+    "video=LVDS-1:d" # !!! disable because currently it is broken, need to get replacement
     "video=VGA-1:e"  # enable
+
+    # ARC (Adaptive Replacement Cache): The memory management system used by ZFS.
+    # On systems with limited RAM, it's often helpful to limit this.
+    "zfs.zfs_arc_max=2147483648"  # for 2GB. Limit ZFS cache to 2GB.
   ];
+
+  # This tells the kernel to prefer zRam and physical RAM as much as possible, only touching the 16GB swapfile as a last resort.
+  boot.kernel.sysctl."vm.swappiness" = 10;
 
   boot.loader.grub = {
     efiSupport = true;
@@ -193,6 +200,7 @@ in
       "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs"
       #"ntfs"
       "kvm-intel"
+      "msr" # (Model Specific Register), a kernel module to write voltage changes. Required by undervolt service.
     ];
     supportedFilesystems = [
       "ext4" "btrfs" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid"
@@ -260,19 +268,53 @@ in
   #];
   #systemd.services.lactd.wantedBy = [ "multi-user.target" ];
 
+  # Keep tlp for battery thresholds and auto-cpufreq for dynamic governor
+  # switching, but remove the manual powerManagement.cpufreq.max limit if you
+  # want the CPU to actually perform when needed (undervolting will handle the
+  # heat instead of hard-capping the speed).
+
+  # Frequency Capping: Manually limiting the maximum clock speed of a CPU
+  # (e.g., your max = 1500000). While it saves heat, it limits performance.
+  # Undervolting is usually preferred as it preserves the performance while
+  # reducing the heat.
+
+  # --- Power & Thermal Management ---
   powerManagement.enable = true;
+  #powerManagement.cpuFreqGovernor = "powersave";
+  #powerManagement.cpufreq.min =  800000;
+  #powerManagement.cpufreq.max = 1500000;
+
+  # Better than manual freq capping when combined with undervolting
   services.auto-cpufreq.enable = true;
   systemd.services."auto-cpufreq" = {
     after = [
       "display-manager.service"
     ];
   };
-  powerManagement.cpuFreqGovernor = "powersave";
-  #powerManagement.cpufreq.min =  800000;
-  powerManagement.cpufreq.max = 1500000;
 
+  # Disable power-profiles-daemon as it conflicts with TLP/auto-cpufreq
   services.power-profiles-daemon.enable = false;
 
+  # Thermal management (Intel Proprietary)
+  services.thermald.enable = true;
+
+  # Undervolting for Ivy Bridge
+  services.undervolt = {
+    enable = false; # true; Remove/Comment this as it's unsupported by your specific CPU/Firmware:
+    # Start conservative. Ivy Bridge usually handles -50mV well.
+    # If stable, you can try pushing to -60mV or -70mV later.
+    #offsets = {
+    #  cpu = -50;
+    #  gpu = -30;
+    #  cache = -50;
+    #};
+    coreOffset = -50;    # Offset in mV
+    gpuOffset = -35;     # Integrated GPU offset
+    uncoreOffset = -50;  # Often matches core/cache
+    # Note: the NixOS 'undervolt' module applies coreOffset to cache automatically
+  };
+
+  # Keep TLP for battery health/thresholds
   services.tlp = {
     enable = true;
     settings = {
