@@ -51,6 +51,7 @@ in
     "d /export/nurnasuha 0755 root root -"
     "d /export/naim 0755 root root -"
   ];
+    #"d /export/photos 0755 root root -"
 
   fileSystems."/export/nfsshare2" = {
     #device = "/home/nfs/share";
