@@ -25,6 +25,7 @@ let
     pgadmin             = "192.168.0.11";
     sijilberhenti       = "192.168.0.11";
     nfs                 = "192.168.0.11"; # "192.168.0.10"; # Migrate from host durian to nyxora
+    immich              = "192.168.0.11";
 
     # Better use ssh tunnel, rather than nginx
     #
