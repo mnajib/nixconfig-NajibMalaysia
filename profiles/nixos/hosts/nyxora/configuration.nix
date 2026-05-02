@@ -136,7 +136,7 @@ in
     ./services/pgadmin.nix
     ./services/postgrest.nix
     ./services/refine.nix
-    #./services/immich.nix
+    ./services/immich.nix
 
     #./hosts2.nix
 
