@@ -1,13 +1,34 @@
 { config, pkgs, ... }:
 
+#
+# Check the service status
+#   sudo systemctl list-units "immich*"
+#
+# Test if the immich service running
+#   curl -I http://127.0.0.1:2283
+#
+# Open from web browser
+#   http://immich.localdomain
+#
+
 let
   # 1. Path Definitions from your sketch
+  #
   # High-speed ZFS for Database/Cache
   baseStateDir = "/MyTank/services/immich";
+  #
   # The managed library for new uploads
   uploadDir    = "/MyTank/services/immich/photos/upload";
+  #
   # The legacy archive (External Library)
-  monitorDir   = "/mnt/data/nfs/share/DATA/11 Else/MediaArchive";
+  #monitorDir   = "/mnt/data/nfs/share/DATA/11 Else/MediaArchive";
+  #
+  # External storage path (OUTSIDE the baseStateDir)
+  externalRoot = "/MyTank/services/immich-external";
+  monitorPath  = "${externalRoot}/monitor";
+  #
+  # NFS source
+  nfsSource    = "/mnt/data/nfs/share/DATA/11 Else/MediaArchive";
 
   immichUser = "immich";
   immichGroup = "immich";
@@ -36,8 +57,9 @@ in {
   # 2. Filesystem Persistence
   # Ensure the bind mount for the legacy archive is defined
   #fileSystems."/MyTank/services/immich/photos/monitor" = {
-  fileSystems."${baseStateDir}/photos/monitor" = {
-    device = monitorDir;
+  #fileSystems."${baseStateDir}/photos/monitor" = {
+  fileSystems."${monitorPath}" = {
+    device = nfsSource; #monitorDir;
     fsType = "none";
     options = [ "bind" "ro" ]; # 'ro' for safety as an external library
   };
@@ -48,7 +70,9 @@ in {
   systemd.tmpfiles.rules = [
     "d ${baseStateDir} 0750 ${immichUser} ${immichGroup} -"
     "d ${uploadDir} 0750 ${immichUser} ${immichGroup} -"
-    "d ${baseStateDir}/photos/monitor 0750 ${immichUser} ${immichGroup} -"
+    #"d ${baseStateDir}/photos/monitor 0750 ${immichUser} ${immichGroup} -"
+    "d ${externalRoot} 0750 ${immichUser} ${immichGroup} -"
+    "d ${monitorPath} 0750 ${immichUser} ${immichGroup} -"
   ];
 
   # 4. Immich Service Configuration
