@@ -10,6 +10,9 @@
 # Open from web browser
 #   http://immich.localdomain
 #
+# Watch logs in real-time
+#   journalctl -u immich-server -f
+#
 
 let
   # 1. Path Definitions from your sketch
