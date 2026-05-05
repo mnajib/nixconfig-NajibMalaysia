@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 #
 # Check the service status
@@ -94,6 +99,14 @@ in {
     baseStateDir
     externalRoot
   ];
+
+  systemd.services.immich-machine-learning.serviceConfig = {
+    # Directs the ML library to a writable cache location
+    #Environment = "MPLCONFIGDIR=/var/cache/immich-ml";
+    Environment = "MPLCONFIGDIR=/var/cache/immich/matplotlib";
+    # Ensures the directory is created automatically
+    #CacheDirectory = "immich-ml";
+  };
 
   # 4. Immich Service Configuration
   services.immich = {
