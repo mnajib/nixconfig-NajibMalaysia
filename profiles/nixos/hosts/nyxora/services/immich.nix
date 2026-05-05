@@ -13,6 +13,9 @@
 # Watch logs in real-time
 #   journalctl -u immich-server -f
 #
+# To update/chang ownership to the immich user
+#   sudo chown -R immich:immich /MyTank/services/immich-external/monitor
+#
 
 let
   # 1. Path Definitions from your sketch
@@ -64,7 +67,10 @@ in {
   fileSystems."${monitorPath}" = {
     device = nfsSource; #monitorDir;
     fsType = "none";
-    options = [ "bind" "ro" ]; # 'ro' for safety as an external library
+    options = [
+      "bind"
+      "rw" #"ro" # 'ro' for safety as an external library
+    ];
   };
 
   # 3. Directory Initialization
@@ -76,6 +82,17 @@ in {
     #"d ${baseStateDir}/photos/monitor 0750 ${immichUser} ${immichGroup} -"
     "d ${externalRoot} 0750 ${immichUser} ${immichGroup} -"
     "d ${monitorPath} 0750 ${immichUser} ${immichGroup} -"
+  ];
+
+  # Grant the systemd service write access to your ZFS paths
+  systemd.services.immich-server.serviceConfig.ReadWritePaths = [
+    baseStateDir
+    externalRoot #"/MyTank/services/immich-external"
+  ];
+
+  systemd.services.immich-microservices.serviceConfig.ReadWritePaths = [
+    baseStateDir
+    externalRoot
   ];
 
   # 4. Immich Service Configuration
@@ -101,6 +118,7 @@ in {
         externalDomain = externalUrl;
       };
     };
+
   };
 
   services.nginx.virtualHosts."immich.localdomain" = {
