@@ -21,6 +21,8 @@
 
     # DNS tools
     drill bind
+
+    ethtool # Utility for controlling network drivers and hardware
   ];
 }
 
