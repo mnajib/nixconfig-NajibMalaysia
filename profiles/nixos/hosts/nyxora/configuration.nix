@@ -349,6 +349,16 @@ in
     "ahci.mobile_lpm_policy=1"
     # Increases the timeout for SCSI commands to 60 seconds
     "scsi_mod.scan=async"
+
+    #
+    # sudo ethtool --set-eee eno1 eee off
+    #
+    # disabling Active State Power Management (ASPM)
+    # in order try to resolve a Flapping Network Link, a condition where a
+    # network interface repeatedly transitions between "Up" (connected) and
+    # "Down" (disconnected) states.
+    #
+    "pcie_aspm=off"
   ];
 
   #boot.extraModulePackages = [
