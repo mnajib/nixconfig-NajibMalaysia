@@ -162,5 +162,11 @@ in {
   environment.systemPackages = [ pkgs.immich-cli ];
 
   # Grant service access to your user-owned files on NFS
-  users.users.immich.extraGroups = [ "users" ];
+  users.users.immich.extraGroups = [
+    "users"
+  ];
+  users.users.najib.extraGroups = [
+    "immich"
+  ];
+
 }
