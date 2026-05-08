@@ -16,6 +16,7 @@
     # Display tools
     arandr autorandr
     xlockmore
+    v4l-utils # provide edid-decode
 
     # Scanning
     simple-scan
