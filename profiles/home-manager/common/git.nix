@@ -39,19 +39,24 @@
           st = "status";
           br = "branch";
 
-          #hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cr)' --graph --date=short --all";
-          hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all";
-          #hist = "log --pretty=format:'%C(auto)%h% %d - %an : %s (%cd)' --graph --date=short --all";
-          #hist = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=relative --all";
-          histp   = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all -p";
-          hist2   = "log --graph --oneline --simplify-by-decoration --all";                   #
+          #hist   = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cr)' --graph --date=short --all";
+          #hist   = "log --pretty=format:'%C(auto)%h% %d - %an : %s (%cd)' --graph --date=short --all";
+          #hist   = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=relative --all";
+          hist    = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all";
+          hist2   = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all --simplify-by-decoration";
+          hist25  = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all --simplify-by-decoration --oneline";
           hist22  = "!sh -c 'git log --graph --pretty=format:\"%C(auto)%h %d %s\" --simplify-by-decoration --all --color=always | grep --color=always -v \"tag:\"'";
           hist23  = "!sh -c 'git log --graph --pretty=format:\"%C(auto)%h %d %s\" --simplify-by-decoration --all --color=always | grep --color=always \"tag:\"'";
+          hist24  = "log --graph --oneline --simplify-by-decoration --all";                   #
+          histp   = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all -p";
           hist3   = "log --graph --oneline --decorate --all";                                 #
           hist4   = "log --stat --graph --pretty=format:'%h - %an: %s (%cd)' --all";          # '--pretty=format:' show custom commit info.
           hist5   = "log --graph --pretty=format:'%h - %an: %s (%cd)' --numstat --all";       # '--numstat' show files changed with numerac stats, easier to compute percentages.
           hist6   = "log --graph --pretty=format:'%C(yellow)%h%Creset - %C(cyan)%an%Creset: %s %Cgreen(%cd)' --stat --all";         # '--stat' show files changed and lines added/deleted (summary).
           hist7   = "log --graph --pretty=format:'%C(yellow)%h%Creset - %C(cyan)%an%Creset: %s %Cgreen(%cd)' -p --all";             # '-p' show full patch/diff per commit.
+
+          log1 = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all";
+          log2 = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all --simplify-by-decoration";
 
           type = "cat-file -t";
           dump = "cat-file -p";
