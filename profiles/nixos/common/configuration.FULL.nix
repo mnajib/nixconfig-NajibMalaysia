@@ -393,7 +393,14 @@
     enable = true;
     daemonSettings = {
       DisabledPlugins = [
-        "tpm"
+
+        # There are specific, rare cases where you might need to disable the tpm plugin, usually to work around hardware bugs or conflicts with security features.
+        # A small number of TPM devices have firmware bugs that cause them to hang or respond extremely slowly when queried by fwupd
+        # Do not disable the plugin preemptively. Only consider it if you are actively experiencing one of the specific problems
+        # Normal Behavior: The command should complete in a few seconds. If it hangs for over a minute, it points to a hardware communication problem with the TPM
+        # Suppose not disable it globally, but disable it per-host (for the specific problematic host)
+        "tpm" # XXX:
+
       ];
     };
   };
