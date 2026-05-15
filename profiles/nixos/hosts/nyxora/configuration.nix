@@ -400,6 +400,15 @@ in
 
   services.fstrim.enable = true;
   hardware.enableAllFirmware = true;
+  services.fwupd = {
+    enable = true;
+    daemonSettings = {
+      DisabledPlugins = [
+        "tpm"
+        "uefi-capsule"
+      ];
+    };
+  };
 
   services.smartd.enable = true;
 
