@@ -105,7 +105,7 @@ in
     };
     users = {
       najib = userImport "najib";
-      root = userImport "root";
+      #root = userImport "root";
       #julia = userImport "julia";
     };
   };
@@ -228,7 +228,7 @@ in
   #networking.interface.eno1.useDHCP = true;
 
   networking.nftables.enable = true;
-  networking.firewall.enable = false;
+  networking.firewall.enable = lib.mkDefault false;
   networking.firewall.allowPing = true;
   networking.firewall.allowedTCPPorts = [
     # Gluster
