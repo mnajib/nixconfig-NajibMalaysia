@@ -9,12 +9,15 @@ let
   commonDir = "../../common";
   hmDir = "../../../home-manager/users";
   hostName = "raudah";
+  hostId = "ca54952d";
   stateVersion = "25.11";
 in
 {
   nix = {
     settings = {
       trusted-users = [ "root" "najib" "naqib" ];
+
+      #require-sigs = false;
     };
 
     #package = pkgs.nixFlakes; # or versioned attributes like nixVersions.nix_2_8
@@ -76,12 +79,12 @@ in
     #(fromCommon "btrfs.nix")
 
     #./btrbk.nix
-    (fromCommon "typesetting.nix")
+    #(fromCommon "typesetting.nix")
     (fromCommon "jupyter.nix")
 
     (fromCommon "flatpak.nix")
     (fromCommon "mame.nix")
-    (fromCommon "lutris.nix")
+    #(fromCommon "lutris.nix")
     (fromCommon "opengl.nix")
     (fromCommon "xdg.nix")
 
@@ -101,9 +104,9 @@ in
       #root = import (./. + "/${hmDir}/root/raudah");
       #najib = import (./. + "/${hmDir}/najib/raudah");
       #naqib = import (./. + "/${hmDir}/naqib/raudah");
-      root = userImport "root";
+      #root = userImport "root";
       najib = userImport "najib";
-      naqib = userImport "naqib";
+      #naqib = userImport "naqib";
     };
   };
 
@@ -120,8 +123,8 @@ in
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   #
-  networking.hostId = "ca54952d";
-  networking.hostName = "raudah"; # T400
+  networking.hostId = hostId; #"ca54952d";
+  networking.hostName = hostName; #"raudah"; # T400
 
   hardware.enableAllFirmware = true;
   hardware.enableRedistributableFirmware = true;
