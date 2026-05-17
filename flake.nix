@@ -952,6 +952,11 @@
               modules = [ ./profiles/home-manager/users/najib/parang ];
             };
 
+            "najib@raudah" = mkHome {
+              system = "x86_64-linux";
+              modules = [ ./profiles/home-manager/users/najib/raudah ];
+            };
+
 
             #-----------------------------------------------------------------------------
             # root
