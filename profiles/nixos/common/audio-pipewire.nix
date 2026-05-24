@@ -25,6 +25,7 @@
   environment.systemPackages = with pkgs; [
     pulseaudioFull
     pulsemixer
+    easyeffects
   ];
 
   networking.firewall = {
