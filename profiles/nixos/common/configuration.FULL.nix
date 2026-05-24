@@ -75,6 +75,8 @@
     #./xdg-gtk.nix
     #./xdg-kde.nix
 
+    ./kmscon.nix
+
     #./doom-emacs.nix
 
     ./packages/base.nix
