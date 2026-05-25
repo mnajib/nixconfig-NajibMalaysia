@@ -57,6 +57,7 @@
         haskellPackages.monad-logger
         haskellPackages.xmobar
         haskellPackages.network
+        haskellPackages.network-info
 
         haskellPackages.GLHUI
       ];

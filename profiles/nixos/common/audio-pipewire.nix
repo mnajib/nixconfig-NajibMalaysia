@@ -26,6 +26,7 @@
     pulseaudioFull
     pulsemixer
     easyeffects
+    pamixer
   ];
 
   networking.firewall = {
