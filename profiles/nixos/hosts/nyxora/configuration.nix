@@ -56,6 +56,9 @@ in
     #./proxmox.nix
     ./smartd.nix # some drive with old controller board
 
+    #./nvidia-quadro-k620.nix # Commented because replace this card with Radeon card
+    #./radeon-rx-9060-xt.nix
+
     #(./. + "${commonDir}/configuration.FULL.nix")
     (fromCommon "configuration.FULL.nix")
     #./configuration.SERVER.nix
@@ -412,6 +415,7 @@ in
 
   services.smartd.enable = true;
 
+  # XXX: ???
   services.openssh.settings.PermitRootLogin = "yes";                            #
   #services.openssh.settings.PermitRootLogin = "prohibit-password";             # Needed for btrbk
 
@@ -436,28 +440,6 @@ in
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
-    open = false;
-    nvidiaSettings = true;
-
-    # Card Nvidia GeForce GT 720 (in acer aspire taufiq).
-    #package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
-    #
-    # Card Nvidia Quadro K620 (in HP Z420 nyxora).
-    #   --> Display Driver 570.133.07
-    #   --> Display Dirver 580.119.02 (2025-12-11) (Info 2025-12-22)
-    #
-    #package = config.boot.kernelPackages.nvidiaPackages.stable; # v 565.77
-    #package = config.boot.kernelPackages.nvidiaPackages.latest; # v 565.77
-
-    # Version 550.135 (info ...) .
-    # Version 580.119.02 (info 2025-12-22).
-    package = config.boot.kernelPackages.nvidiaPackages.production;
-  };
-
   #services.logind.extraConfig = "RuntimeDirectorySize=4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001
   services.logind.settings.Login = {
     RuntimeDirectorySize = "4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001
@@ -469,11 +451,11 @@ in
   #------------------------------------
   services.xserver = {
     enable = true;
-    dpi = 96;
+    #dpi = 96;
 
     # Test: Cuba disable, sebab SweetHome3D tak dapat jalan
     #videoDrivers = [ "nvidiaLegacy390" ]; #"radeon" "cirrus" "vesa"  "vmware"  "modesetting" ];
-    videoDrivers = [ "nvidia" ];
+    #videoDrivers = [ "nvidia" ];
     #
     #videoDrivers = [ "radeon" ];
 
