@@ -25,6 +25,15 @@
     xorg.libX11
     xorg.libXrandr
 
+    #
+    # Example inside your NixOS/Home-Manager configuration
+    #xmonad = xmonad-with-packages.override {
+    #  packages = self: [
+    #    self.xmonad-contrib
+    #    self.network-hostname  # Add your new package here
+    #  ];
+    #};
+    #
     #xmobar
     haskellPackages.xmobar
 
@@ -58,6 +67,7 @@
         haskellPackages.xmobar
         haskellPackages.network
         haskellPackages.network-info
+        haskellPackages.hostname
 
         haskellPackages.GLHUI
       ];
