@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
+
     # Office suite
     libreoffice hyphen hunspell hunspellDicts.en_US google-fonts
     scribus
@@ -13,6 +14,10 @@
 
     # Finance
     gnucash homebank
+
+    # PDF viewer/reader
+    kdePackages.okular
+
   ];
 }
 
