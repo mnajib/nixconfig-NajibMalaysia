@@ -62,10 +62,10 @@
           #  pushUrl = "ssh://forgejo@customdesktop/najib/nixconfig-NajibMalaysia.git";
           #};
 
-          durian = {
-            url = "http://durian:3000/najib/nixconfig-NajibMalaysia.git";
-            pushUrl = "ssh://forgejo@durian/najib/nixconfig-NajibMalaysia.git";
-          };
+          #durian = {
+          #  url = "http://durian:3000/najib/nixconfig-NajibMalaysia.git";
+          #  pushUrl = "ssh://forgejo@durian/najib/nixconfig-NajibMalaysia.git";
+          #};
 
         };
       };
@@ -91,7 +91,7 @@
             #url = "http://nyxora:3000/najib/xmonad-config.git";
             #pushUrl = "ssh://forgejo@nyxora/najib/xmonad-config.git";
             url = "http://git.localdomain/najib/xmonad-config.git";
-            pushUrl = "ssh://git.localdomain/najib/xmonad-config.git";
+            pushUrl = "ssh://forgejo@git.localdomain/najib/xmonad-config.git";
           };
 
           #customdesktop = {
@@ -99,10 +99,10 @@
           #  pushUrl = "ssh://forgejo@customdesktop/najib/xmonad-config.git";
           #};
 
-          durian = {
-            url = "http://durian:3000/najib/xmonad-config.git";
-            pushUrl = "ssh://forgejo@durian/najib/xmonad-config.git";
-          };
+          #durian = {
+          #  url = "http://durian:3000/najib/xmonad-config.git";
+          #  pushUrl = "ssh://forgejo@durian/najib/xmonad-config.git";
+          #};
 
 
         };
@@ -132,10 +132,10 @@
           #  pushUrl = "ssh://forgejo@customdesktop/najib/bin.git";
           #};
 
-          durian = {
-            url = "http://durian:3000/najib/bin.git";
-            pushUrl = "ssh://forgejo@durian/najib/bin.git";
-          };
+          #durian = {
+          #  url = "http://durian:3000/najib/bin.git";
+          #  pushUrl = "ssh://forgejo@durian/najib/bin.git";
+          #};
 
           github = {
             #url = "https://github.com/NajibMalaysia/bin-NajibMalaysia.git";
