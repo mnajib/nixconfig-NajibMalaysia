@@ -22,7 +22,14 @@ in
 
   ];
 
-  #services.xserver.videoDrivers = [ "nvidia" ];
+  # Enable the open-source AMDGPU driver for Xserver/Wayland
+  services.xserver.videoDrivers = [ "amdgpu" ];
+
+  #  Force early Kernel Mode Setting (KMS) for the AMD driver
+  boot.initrd.kernelModules = [ "amdgpu" ];
+
+  #  Ensure hardware firmware is available
+  hardware.enableRedistributableFirmware = true;
 
   #
   # Using a GUI Tool (lact)
@@ -46,6 +53,7 @@ in
   environment.systemPackages = with pkgs; [
     pciutils
     lact # Linux AMDGPU Controller Tool
+    amdgpu_top # like nvtop
   ];
 
   # Enable the systemd daemon for LACT to apply profiles on boot
