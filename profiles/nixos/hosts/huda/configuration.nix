@@ -125,18 +125,22 @@ in
     gcc
     gparted
     fatresize
-    prismlauncher
+    #prismlauncher
     flatpak
     luanti
+    (prismlauncher.override {
+      jdks = [ jdk25 jdk21 jdk17 jdk8 ]; # Include jdk25 and other versions you need
+    })   
     #kate
     #kitty
     #blender
-    #freecad
+    freecad
 
     inputs.home-manager.packages.${pkgs.system}.default # To install (globally, instead of per user) home-manager packages
   ];
 
   services.fstrim.enable = true;
+  services.flatpak.enable = true;  
 
   #boot.kernelPackages = pkgs.linuxPackages_latest;
   #boot.kernelParams = [
