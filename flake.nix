@@ -901,6 +901,13 @@
               #pkgsInputs = inputs.nixpkgs-unstable; # override
             };
 
+            "najib@huda" = mkHome {
+              system = "x86_64-linux";
+              modules = [ ./profiles/home-manager/users/najib/huda ];
+              #pkgsInputs = inputs.nixpkgs-release; # override
+              #pkgsInputs = inputs.nixpkgs-unstable; # override
+            };
+
             "najib@maryam" = mkHome {
               system = "x86_64-linux";
               modules = [ ./profiles/home-manager/users/najib/maryam ];
@@ -999,6 +1006,11 @@
             "naqib@sumayah" = mkHome {
               system = "x86_64-linux";
               modules = [ ./profiles/home-manager/users/naqib/sumayah ];
+            };
+
+            "naqib@huda" = mkHome {
+              system = "x86_64-linux";
+              modules = [ ./profiles/home-manager/users/naqib/huda ];
             };
 
             "naqib@laila" = mkHome {

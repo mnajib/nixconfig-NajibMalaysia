@@ -13,5 +13,8 @@
     ];
 
     # Adding users to the group vboxusers allows them to use the virtualbox functionality.
-    users.extraGroups.vboxusers.members = [ "najib" ];
+    users.extraGroups.vboxusers.members = [
+    	"najib"
+	"naqib"
+    ];
 }

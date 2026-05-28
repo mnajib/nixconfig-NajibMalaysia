@@ -24,7 +24,8 @@ in
 
     #./roles/base.nix
     #./roles/stage-1.nix
-    #./roles/stage-2.nix
+    #./roles/stage-2.nix\
+    ./nvidia-quadro-k620.nix
 
     #(fromCommon "remote-builders.nix")
     (fromCommon "configuration.FULL.nix") # timezone, locale, ...
@@ -43,23 +44,31 @@ in
     (fromCommon "zramSwap.nix")
     (fromCommon "audio-pipewire.nix")
     (fromCommon "hardware-printer.nix")
+    (fromCommon "nix-garbage-collector.nix")
 
-    #(fromCommon "nfs-client-automount.nix")
-    (fromCommon "nfs-client.nix")
+    (fromCommon "nfs-client-automount.nix")
+    #(fromCommon "nfs-client.nix")
 
     #(fromCommon "opengl.nix")
-    (fromCommon "opengl2.nix")
+    #(fromCommon "opengl2.nix")
     #(fromCommon "xdg-gtk.nix")
-    (fromCommon "xdg.nix")
+    #(fromCommon "xdg.nix")
     (fromCommon "window-managers.nix")
     (fromCommon "desktops.nix")
-    (fromCommon "hyprland.nix")
-    (fromCommon "stylix.nix")
+    #(fromCommon "desktops-xorg.nix")
+    #(fromCommon "hyprland.nix")
+    #(fromCommon "stylix.nix")
 
-    #(fromCommon "bluetooth.nix")
+    (fromCommon "bluetooth.nix")
     #(fromCommon "packages/databases.nix")
-    #(fromCommon "flatpak.nix")
+    (fromCommon "flatpak.nix")
   ];
+
+  #services.xserver = {
+  #  enable = true;
+  #  displayManager.lightdm.enable = true;
+  #  desktopManager.lxqt.enable = true;
+  #};
 
   home-manager = {
     backupFileExtension = "backup";
@@ -70,9 +79,14 @@ in
       #najib = import "${hmDir}/najib/taufiq";
       #root = import (./. + "/${hmDir}/root/taufiq");
       najib = import (./. + "/${hmDir}/najib/${hostName}");
-      #naqib = import (./. + "/${hmDir}/naqib/taufiq");
+      naqib = import (./. + "/${hmDir}/naqib/${hostName}");
     }; # End home-manager.users = { ... };
   }; # End home-manager = { ... };
+
+  nix.settings.trusted-users = [ "root" "najib" "naqib" ];
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
 
   networking.hostName = "${hostName}";
   # For the value of 'networking.hostID', use the following command:
@@ -126,8 +140,8 @@ in
     gparted
     fatresize
     #prismlauncher
-    flatpak
-    luanti
+    #flatpak
+    #luanti
     (prismlauncher.override {
       jdks = [ jdk25 jdk21 jdk17 jdk8 ]; # Include jdk25 and other versions you need
     })   
@@ -147,6 +161,7 @@ in
   #  #"i915.modeset=0" "nouveau.modeset=1"                                        # to disable i915 and enable nouveau
   #  "video=eDP-1:1920x1080" "video=VGA-1:1280x1024" "video=DP-1-3:1280x1024"    #
   #];
+  boot.kernelPackages = pkgs.linuxPackages_6_12; # Pinned to 6.12 because 6.13+ causes networking issues on HP Z420 hardware
 
   services.openssh = {
     enable = true;
