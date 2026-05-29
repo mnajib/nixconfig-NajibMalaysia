@@ -13,9 +13,16 @@ let
   hostId = "cfe5d01f";          # cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   stateVersion = "25.11";
 
+   prismPkgs = import (builtins.fetchTarball {
+    url = "https://github.com/NixOS/nixpkgs/archive/e6f23dc08d3624daab7094b701aa3954923c6bbb.tar.gz";
+    # Replace <COMMIT_HASH> with a commit from late April 2025.
+    # Example: Find a commit where pkgs.prismlauncher.version == "9.4"
+    sha256 = "0m0xmk8sjb5gv2pq7s8w7qxf7qggqsd3rxzv3xrqkhfimy2x7bnx";    # Run 'nix-prefetch-url --unpack <url>' to get this
+  }) { system = pkgs.system; };
+
 in
 {
-
+    
   imports = let
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
   in [
@@ -142,7 +149,7 @@ in
     #prismlauncher
     #flatpak
     #luanti
-    (prismlauncher.override {
+    (prismPkgs.prismlauncher.override {
       jdks = [ jdk25 jdk21 jdk17 jdk8 ]; # Include jdk25 and other versions you need
     })   
     #kate
