@@ -136,7 +136,7 @@ in
     ./services/nginx.nix
     ./services/forgejo.nix
     ./services/postgresql.nix
-    ./services/pgadmin.nix
+    #./services/pgadmin.nix
     ./services/postgrest.nix
     ./services/refine.nix
     ./services/immich.nix
