@@ -11,6 +11,13 @@ let
   #   dhcpd is configured to give dynamic ip in range from 192.168.0.100 to 192.168.0.200.
   #
 
+  # To get current IP for dirtforever.net:
+  #   dig +short dirtforever.net
+  #   37.27.53.115
+  #
+  # The current public IP address of the community server
+  dirtForeverIp = "37.27.53.115";
+
   hosts = {
     # Services
     gw                  = "192.168.0.1";
@@ -99,6 +106,27 @@ let
       )
     )}
   '';
+
+  # Dedicated authoritative override zone for the game backend redirection
+  dirtForeverZone = pkgs.writeText "zone-dirtforever" ''
+    $ORIGIN racenet.dirtgame.com.
+    $TTL    1h
+
+    @               IN SOA ns1.localdomain. hostmaster.localdomain. (
+                        2026053102 ; Serial (YYYYMMDDNN format preferred)
+                        3h         ; Refresh
+                        1h         ; Retry
+                        1w         ; Expire
+                        1h         ; Negative Cache TTL
+                    )
+
+                    IN NS  ns1.localdomain.
+
+    ; Redirect root domain and all wildcards to the community cluster
+    @               IN A   ${dirtForeverIp}
+    *               IN A   ${dirtForeverIp}
+  '';
+
 in
 {
   services.bind = {
@@ -176,6 +204,13 @@ in
           #"127.0.0.1" "::1"
           "localhost"
         ];
+      };
+
+      # Injecting the game override zone block here
+      "racenet.dirtgame.com" = {
+        master = true;
+        file = dirtForeverZone;
+        slaves = [ "192.168.0.0/24" "localhost" ];
       };
 
     };
