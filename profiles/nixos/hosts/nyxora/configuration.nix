@@ -168,6 +168,8 @@ in
     #./tabby.nix # self-hosted AI coding assistant
     #(fromCommon "ai.nix")
     #./services/ai.nix
+    #./services/ai-nvidia.nix
+    ./services/ai-radeon.nix
 
     #./tenda-usb-wifi-dongle.nix
 
@@ -508,6 +510,7 @@ in
   #};
 
   systemd.watchdog.rebootTime = "10m";
+  #systemd.settings.Manager.RebootWatchdogSec = "10min";
 
   #nix.maxJobs = 4;
 
