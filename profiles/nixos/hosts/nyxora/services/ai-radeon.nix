@@ -28,13 +28,27 @@
 
   environment.systemPackages = with pkgs; [
     #ollama
+    #ollama-rocm
+    #rocmPackages.rocm-smi
+
     aichat
     kdePackages.alpaka
     zed-editor
   ]; # End environment.systemPackages = with pkgs;
 
+  users.users.najib.extraGroups = [ "video" "render" ];
+  #
+  # Because group assignment parameters only initialize fully during an account
+  # authentication event, you must log out of your session and log back in (or
+  # apply them dynamically to your active terminal process using newgrp
+  #   newgrp render
+  #   newgrp video
+  #
+
   # Allow Zed to run downloaded language servers flawlessly
   programs.nix-ld.enable = true;
+
+  boot.initrd.kernelModules = [ "amdgpu" ];
 
   # Enable hardware-accelerated graphics for Zed's UI
   hardware.graphics = {
@@ -44,7 +58,19 @@
 
   services.ollama = {
     enable = true;
-    package = pkgs.unstable.ollama; # from overlay
+
+    #package = pkgs.unstable.ollama; # from overlay
+    #package = pkgs.ollama-cpu;
+    #package = pkgs.ollama-rocm;
+    #package = pkgs.unstable.ollama-rocm; # from overlay
+    #
+    # AMD RX 9060 XT belongs to the modern gfx1200 (RDNA4) hardware family. The
+    # version of ROCm bundled inside Ollama's code library does not contain
+    # pre-compiled matrix calculation structures (called TensileLibrary kernels)
+    # for gfx1200 series chips yet.
+    # The clean workaround for modern RDNA4 cards under NixOS is to switch from
+    # the ROCm compute stack over to the Vulkan compute stack.
+    package = pkgs.ollama-vulkan;
 
     host = "0.0.0.0"; #host = ""; # default "127.0.0.1"
     port = 11434; # default 11434
@@ -70,7 +96,20 @@
     #
     #acceleration = false; # disable GPU, only use CPU
     #acceleration = "cuda"; # supported by most modern NVIDIA GPUs
-    acceleration = "rocm"; # supported by most modern AMD GPUs
+    #acceleration = "rocm"; # supported by most modern AMD GPUs
+
+    #
+    # To forces the compiler engine to treat your graphics processor as a standard target
+    # (Note: Replace "11.0.0" with your card's explicit LLVM generation block if needed.
+    # You can check your version by running
+    #   nix run nixpkgs#rocmPackages.rocminfo -- | grep gfx
+    # inside your shell.
+    #
+    #rocmOverrideGfx = "11.0.0";
+    #rocmOverrideGfx = "12.0.0";
+    #
+    #Completely remove or nullify the failing ROCm override
+    rocmOverrideGfx = null;
 
     #models = "llama3.2:3b";
     #models = "codellama:13b";
