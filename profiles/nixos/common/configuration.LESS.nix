@@ -397,7 +397,6 @@
   networking.firewall.allowPing = true;
 
   #services.locate.enable = true; # default false
-  #services.picom.enable = true; #services.compton.enable = true;
   programs.adb.enable = true;
 
   #services.cron = {

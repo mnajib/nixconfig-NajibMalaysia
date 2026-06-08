@@ -2,7 +2,9 @@
 {
   environment.systemPackages = with pkgs; [
     # Window managers & compositors
-    fluxbox picom dmenu xscreensaver brightnessctl
+    fluxbox
+    #picom
+    dmenu xscreensaver brightnessctl
 
     # X11 utilities
     xorg.xmodmap xorg.xev xclip xdotool xbindkeys

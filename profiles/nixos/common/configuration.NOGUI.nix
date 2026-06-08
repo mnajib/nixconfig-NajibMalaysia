@@ -178,8 +178,6 @@
 		pass # CLI password manager
 		qtpass
 
-		picom   # compositor manager; try to use picom for gromit-mpx (screen annotation) in xmonad (window manager).
-
 		rofi # Using rofi in xmonad.
 		rofi-pass
 		rofi-calc
@@ -442,8 +440,6 @@
 		pass # CLI password manager
 		qtpass
 
-		picom   # compositor manager; try to use picom for gromit-mpx (screen annotation) in xmonad (window manager).
-
 		fluxbox # Need this because I need to use command 'fbsetroot' to set plain black background when using xmonad.
 		#glow # markdown viewer for CLI
 		retext # markdow editor
@@ -642,7 +638,6 @@
 	hardware.enableRedistributableFirmware = true;
 
 	#services.locate.enable = true; # default false
-	#services.picom.enable = true; #services.compton.enable = true;
 	programs.adb.enable = true;
 
 	#services.cron = {
