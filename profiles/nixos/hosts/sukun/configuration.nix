@@ -257,7 +257,7 @@ in
     qbittorrent
     bottles
     #zeroad-unwrapped
-    luanti # minetest
+    #luanti # minetest
     firefox
     brave
     varia
