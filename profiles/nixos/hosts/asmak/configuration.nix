@@ -38,8 +38,8 @@ in
     #./touchpad-scrollTwofinger-TapTrue.nix
     #./touchpad-scrollEdge-TapTrue.nix
 
-    #./zfs.nix
-    (fromCommon "zfs-for-asmak.nix")
+    ./zfs.nix
+    #(fromCommon "zfs-for-asmak.nix")
 
     #./users-anak2.nix
     (fromCommon "users-najib.nix")
@@ -147,13 +147,13 @@ in
   #   sudo mkswap /dev/zvol/rpool/swap
   #   sudo swapon /dev/zvol/rpool/swap
   #
-  swapDevices = [
-    {
-      #device = "/swapfile";
-      device = "/dev/zvol/tank/swap"; # for zfs
-      size = 4096;
-    }
-  ];
+  #swapDevices = [
+  #  {
+  #    #device = "/swapfile";
+  #    device = "/dev/zvol/tank/swap"; # for zfs
+  #    size = 4096;
+  #  }
+  #];
 
   # not suitable for zfs?
   #services.swapspace = {
