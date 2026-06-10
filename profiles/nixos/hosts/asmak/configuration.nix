@@ -66,7 +66,7 @@ in
     (fromCommon "steam.nix")
     (fromCommon "xdg.nix")
     (fromCommon "opengl_with_vaapiIntel.nix")
-    (fromCommon "stylix.nix")
+    #(fromCommon "stylix.nix")
     #./xmonad.nix
     (fromCommon "window-managers.nix")
     (fromCommon "desktops-wayland.nix")
