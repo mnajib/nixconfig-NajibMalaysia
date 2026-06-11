@@ -632,6 +632,19 @@
               #pkgsInput = inputs.nixpkgs-unstable; # override
             };
 
+            bawang = mkNixos {
+              system = "x86_64-linux";
+              modules = [
+                ./profiles/nixos/hosts/bawang/configuration.nix
+                inputs.home-manager.nixosModules.home-manager
+                inputs.hardware.nixosModules.common-cpu-intel
+                inputs.hardware.nixosModules.common-pc-laptop-ssd
+                inputs.stylix.nixosModules.stylix
+                #inputs.disko.nixosModules.disko
+              ];
+              #pkgsInput = inputs.nixpkgs-unstable; # override
+            };
+
             #nyxora = let
             # Toggle these to true/false before running nixos-rebuild or nix run
             # Only enabled drive will be process
@@ -907,6 +920,15 @@
               #pkgsInputs = inputs.nixpkgs-release; # override
               #pkgsInputs = inputs.nixpkgs-unstable; # override
             };
+
+            /*
+            "najib@bawang" = mkHome {
+              system = "x86_64-linux";
+              modules = [ ./profiles/home-manager/users/najib/bawang ];
+              #pkgsInputs = inputs.nixpkgs-release; # override
+              #pkgsInputs = inputs.nixpkgs-unstable; # override
+            };
+            */
 
             "najib@maryam" = mkHome {
               system = "x86_64-linux";
