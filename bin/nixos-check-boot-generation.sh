@@ -16,6 +16,7 @@ CYAN="\e[36m"
 # 1. Fetch live system profiles
 ACTIVE_GEN_PATH=$(readlink -f /nix/var/nix/profiles/system)
 CURRENT_ENV_PATH=$(readlink -f /run/current-system)
+DEFAULT_PROFILE=$(readlink -f /nix/var/nix/profiles/system)
 
 echo -e "${BOLD}=========================================================================================${RESET}"
 echo -e "${BOLD}   NIXOS SYSTEM GENERATIONS STATUS${RESET}"
@@ -80,5 +81,13 @@ awk -F"[\"']" '/^[[:space:]]*menuentry / {print $2}' /boot/grub/grub.cfg | while
 
     # %-22s handles the padded spacing label perfectly before the color reset sequence takes effect
     printf " ${COLOR}%-22s -> %s${RESET}\n" "$LABEL" "$TITLE"
+done
+echo -e "${DIM}-----------------------------------------------------------------------------------------${RESET}"
+for profile in /nix/var/nix/profiles/system-*-link; do
+    TARGET=$(readlink -f "$profile")
+
+    if [ "$TARGET" = "$DEFAULT_PROFILE" ]; then
+        echo "DEFAULT BOOT GENERATION: $(basename "$profile")"
+    fi
 done
 echo -e "${BOLD}=========================================================================================${RESET}"
