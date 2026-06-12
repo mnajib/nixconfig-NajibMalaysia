@@ -2,13 +2,38 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  config, pkgs,
+  lib,
+  inputs, outputs, # for home-manager
+  ...
+}:
+let
+  commonDir = "../../common";
+  hmDir = "../../../home-manager/users";
+  stateVersion = "25.11";
+in
+{
+
+  nix = {
+    settings = {
+      trusted-users = [
+        "root" "najib"
+        "a"
+      ];
+    };
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+  };
+
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+  in [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    inputs.home-manager.nixosModules.home-manager
+    (fromCommon "deskflow.nix")
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -147,6 +172,11 @@
     ripgrep-all
     dig
 
+    zigfetch
+    fastfetch
+    neofetch
+    honeyfetch
+
     neovim
     vim
     nano
@@ -154,9 +184,6 @@
     gedit
     kdePackages.kate
     geany
-
-    joplin-desktop
-    #joplin-cli
 
     devenv
     direnv
@@ -172,6 +199,8 @@
     ahoviewer
     qcomicbook
 
+    #deskflow
+
     hygg
     evince
     kdePackages.okular
@@ -179,10 +208,10 @@
     #bookworm
     mupdf
     calibre
-
     xournalpp
-    deskflow
     telegram-desktop
+    joplin-desktop
+    #joplin-cli
 
     nnn ranger
 
@@ -205,8 +234,10 @@
   programs.mosh.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [
+  ];
+  networking.firewall.allowedUDPPorts = [
+  ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
@@ -216,6 +247,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.11"; # Did you read the comment?
+  system.stateVersion = "${stateVersion}"; #"25.11"; # Did you read the comment?
 
 }
