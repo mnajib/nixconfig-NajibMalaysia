@@ -145,6 +145,7 @@
     git
     tmux
     ripgrep-all
+    dig
 
     neovim
     vim
@@ -180,6 +181,8 @@
     calibre
 
     xournalpp
+    deskflow
+    telegram-desktop
 
     nnn ranger
 
@@ -199,6 +202,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  programs.mosh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
