@@ -16,6 +16,27 @@ let
 in
 {
 
+  nix = {
+    #package = pkgs.nixFlakes;
+
+    settings = {
+      #max-jobs = 2;
+
+      trusted-users = [
+        "root" "najib"
+        "naqib"
+        "naim"
+        #"abdullah"
+        #"a"
+      ];
+
+    }; # End nix.settings = { ... };
+
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+  }; # End nix = { ... };
+
   imports = let
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
   in [
