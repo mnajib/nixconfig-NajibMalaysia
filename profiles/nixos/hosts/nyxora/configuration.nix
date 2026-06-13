@@ -89,8 +89,6 @@ in
 
     #./typesetting.nix
 
-    #./syncthing.nix
-
     # /var/lib/nextcloud/config/config.php
     #./nextcloud.nix  # OpenSSL 1.1 is marked as unsecured
 
@@ -177,6 +175,7 @@ in
     (fromCommon "qemu.nix")
     (fromCommon "bluetooth.nix")
 
+    #./syncthing.nix
     ./services/syncthing.nix
   ];
 
