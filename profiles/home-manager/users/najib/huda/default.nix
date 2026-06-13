@@ -33,7 +33,7 @@ in
   #home.homeDirectory = "/home/najib";
 
   programs.repo-bootstrap.enable = true;
-  programs.repo-bootstrap.basePath = "~/src";
+  programs.repo-bootstrap.basePath = "~/Projects"; #"~/src";
 
   programs.nh = {
     enable = true;
