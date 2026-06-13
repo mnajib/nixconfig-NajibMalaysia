@@ -176,6 +176,8 @@ in
     (fromCommon "window-managers.nix")
     (fromCommon "qemu.nix")
     (fromCommon "bluetooth.nix")
+
+    ./services/syncthing.nix
   ];
 
   home-manager = {
