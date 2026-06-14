@@ -74,7 +74,7 @@ in
     #(fromCommon "xdg-gtk.nix")
     #(fromCommon "xdg.nix")
     (fromCommon "window-managers.nix")
-    (fromCommon "desktops.nix")
+    #(fromCommon "desktops.nix")
     #(fromCommon "hyprland.nix")
     #(fromCommon "stylix.nix")
 
@@ -185,6 +185,25 @@ in
 
   # High-DPI console
   #console.font = lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
+
+  services.xserver = {
+    enable = true;
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
+  };
+
+  /*services.displayManager = {
+    enable = true;
+    gdm = {
+      enable = true;
+    };
+  };
+
+  services.desktopManager = {
+    gnome = {
+      enable = true;
+    };
+  };*/
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
