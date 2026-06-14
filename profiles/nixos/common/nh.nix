@@ -12,13 +12,16 @@
 {
   environment.systemPackages = with pkgs; [
     #nh
+    nix-output-monitor # (nom)
+    nvd
   ];
 
   programs.nh = {
     enable = true;
 
     # sets NH_OS_FLAKE variable
-    flake = "${config.home.homeDirectory}/src/nixconfig-NajibMalaysia";
+    #flake = "${config.home.homeDirectory}/src/nixconfig-NajibMalaysia";
+    flake = "${config.home.homeDirectory}/Projects/nixconfig-NajibMalaysia";
 
     clean = {
       enable = true;

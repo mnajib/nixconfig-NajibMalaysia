@@ -37,7 +37,8 @@ in
 
   programs.nh = {
     enable = true;
-    flake = "${config.home.homeDirectory}/src/nixconfig-NajibMalaysia";
+    #flake = "${config.home.homeDirectory}/src/nixconfig-NajibMalaysia";
+    flake = lib.mkForce "${config.home.homeDirectory}/Projects/nixconfig-NajibMalaysia";
   };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

@@ -79,6 +79,8 @@
 
     #./doom-emacs.nix
 
+    #./nh.nix
+
     ./packages/base.nix
     ./packages/android.nix
     ./packages/browsers.nix

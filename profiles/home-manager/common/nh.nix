@@ -13,5 +13,6 @@
     #flake = "~/src/nixconfig";
     #flake = "${config.home.homeDirectory}/src/nixconfig";
     flake = "${config.home.homeDirectory}/src/nixconfig-NajibMalaysia";
+    #flake = "${config.home.homeDirectory}/Projects/nixconfig-NajibMalaysia";
   };
 }
