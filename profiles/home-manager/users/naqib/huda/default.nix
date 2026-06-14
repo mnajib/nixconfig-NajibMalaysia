@@ -6,12 +6,12 @@ let
   username = "naqib";
   hostname = "huda";
   commonDir = "../../../common";
-  stateVersion = "25.05";
+  stateVersion = "25.11";
   #lazyvim = pkgs.lazygit.lazylvimPackages.lazylvim;
 in
 {
   # You can import other home-manager modules here
-  imports = let 
+  imports = let
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
     fromCommonWithParams = name: params: import ( ./. + "/${toString commonDir}/${name}" ) params;
   in [
@@ -21,8 +21,7 @@ in
     (fromCommon "repo-bootstrap.nix")
   ];
 
-  programs.repo-bootstrap.enable = true;
-  programs.repo-bootstrap.basePath = "~/src";
+  programs.repo-bootstrap.basePath = lib.mkForce "~/Projects";
 
   fonts.fontconfig.enable = true;
 

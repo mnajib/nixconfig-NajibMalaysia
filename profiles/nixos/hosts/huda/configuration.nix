@@ -25,7 +25,7 @@ in
       trusted-users = [
         "root" "najib"
         "naqib"
-        "naim"
+        #"naim"
         #"abdullah"
         #"a"
       ];
@@ -51,12 +51,12 @@ in
     #(fromCommon "remote-builders.nix")
     (fromCommon "configuration.FULL.nix") # timezone, locale, ...
 
-    (fromCommon "users-a-wheel.nix")
+    #(fromCommon "users-a-wheel.nix")
     (fromCommon "users-naqib-wheel.nix")
     #(fromCommon "users-naqib.nix")
     (fromCommon "users-naim.nix")
     (fromCommon "users-nurnasuha.nix")
-    (fromCommon "users-julia-wheel.nix")
+    (fromCommon "users-julia.nix")
     inputs.home-manager.nixosModules.home-manager
 
     (fromCommon "console-keyboard-dvorak.nix")       # keyboard layout for console environment
@@ -92,7 +92,7 @@ in
       #najib = import "${hmDir}/najib/taufiq";
       #root = import (./. + "/${hmDir}/root/taufiq");
       najib = import (./. + "/${hmDir}/najib/${hostName}");
-      #naqib = import (./. + "/${hmDir}/naqib/taufiq");
+      naqib = import (./. + "/${hmDir}/naqib/${hostName}");
     }; # End home-manager.users = { ... };
   }; # End home-manager = { ... };
 
