@@ -10,13 +10,17 @@
 { config, lib, pkgs, ... }:
 
 {
+
+  #
+
+
   ###################################
   # Common graphics & display config #
   ###################################
   services.xserver.enable = true;
 
   # lightdm
-  #services.xserver.displayManager.lightdm.enable = lib.mkForce true;
+  services.xserver.displayManager.lightdm.enable = lib.mkForce true;
   #
   # gdm
   #services.xserver.displayManager.gdm.enable = true;
