@@ -19,7 +19,8 @@ end
 
   -- Search related
   Hi("IncSearch",                       { reverse = true })
-  Hi("Search",                          { bg = "#444444", fg = "#ffffff" })
+  --Hi("Search",                          { bg = "#444444", fg = "#ffffff" })
+  Hi("Search",                          { bg = "#3a3a3a", fg = "#ffffff" })
 
   -- Command-line completion
   Hi("WildMenu",                        { fg = "Black", bg = "Yellow" })
@@ -39,7 +40,8 @@ end
   Hi("DiagnosticHint",                  { fg = "#5fff5f" })
 
   -- Base UI
-  Hi( "Normal",                         { fg = "LightGrey", bg = "Black" })
+  --Hi( "Normal",                         { fg = "LightGrey", bg = "Black" })
+  Hi( "Normal",                         { fg = "White", bg = "Black" })
   Hi( "CursorLine",                     { bg = "#1a1a1a" })
 
   Hi( "LineNr",                         { fg = "#696969", bg = "#333333" })
@@ -47,7 +49,10 @@ end
 
   Hi( "ColorColumn",                    { bg = "#111111" })
 
-  Hi( "Comment",                        { fg = "#444444", italic = true })
+  --Hi( "Comment",                        { fg = "#444444", italic = true })
+  Hi( "Comment",                        { fg = "#767676", italic = true }) -- traditional vim/xterm gray
+  --Hi( "Comment",                        { fg = "#6c7a6b", italic = true }) -- dark olive/sage green
+  --Hi( "Comment",                        { fg = "#5f87af", italic = true }) -- classic steel blue
 
   -- oren --> merah cair ?
   Hi( "String",                         { fg = "#ffa0a0" })                  -- "hello"

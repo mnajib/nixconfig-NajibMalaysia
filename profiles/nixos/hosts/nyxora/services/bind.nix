@@ -1,4 +1,4 @@
-# bind.nix
+# ./profile/nixos/hosts/nyxora/services/bind.nix
 {
   pkgs,
   ...
@@ -247,6 +247,11 @@ in
   #networking.searchDomains = [ "localdomain" ];
   #networking.nameservers = [ "192.168.1.1" ];
 
-  networking.firewall.allowedTCPPorts = [ 53 ];
-  networking.firewall.allowedUDPPorts = [ 53 ];
+  networking.firewall.allowedTCPPorts = [
+    53
+  ];
+  networking.firewall.allowedUDPPorts = [
+    53
+  ];
+
 }

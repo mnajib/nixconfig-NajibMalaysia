@@ -156,7 +156,8 @@ in {
   # 5. Infrastructure Integration
   networking.firewall.allowedTCPPorts = [
     #2283 # Not needed because immich now serve behind nginx
-    80 443 # nginx
+    80  # HTTP (Nginx handles the redirect)
+    443 # HTTPS (Nginx handles the secure interface)
   ];
 
   environment.systemPackages = [ pkgs.immich-cli ];
