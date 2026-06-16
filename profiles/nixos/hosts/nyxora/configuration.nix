@@ -59,6 +59,8 @@ in
     #./nvidia-quadro-k620.nix # Commented because replace this card with Radeon card
     ./radeon-rx-9060-xt.nix
 
+    ./jami.nix
+
     #(./. + "${commonDir}/configuration.FULL.nix")
     (fromCommon "configuration.FULL.nix")
     #./configuration.SERVER.nix
