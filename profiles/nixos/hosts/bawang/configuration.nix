@@ -39,6 +39,10 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Disable TPM
+  boot.initrd.systemd.tpm2.enable = false;
+  systemd.tpm2.enable = false;
+
   networking.hostName = "bawang"; #"nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -172,6 +176,8 @@ in
     ripgrep-all
     dig
 
+    arandr
+
     zigfetch
     fastfetch
     neofetch
@@ -217,6 +223,10 @@ in
 
     nh
     #nina
+
+    # Try to fix mouse cursor icon problem on Gnome desktop
+    adwaita-icon-theme
+    xcursor-themes
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -235,8 +245,10 @@ in
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [
+    24800 # for deskflow
   ];
   networking.firewall.allowedUDPPorts = [
+    24800 # for deskflow
   ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
