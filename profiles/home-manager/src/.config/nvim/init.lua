@@ -66,7 +66,8 @@ vim.opt.listchars = {
 -- ----------------------------------------------------------------------------
 -- Load SkyWizard colorscheme
 --require("theme.skywizard")
-require("theme.skywizardb")
+--require("theme.skywizardb")
+require("theme.skywizardc")
 -- require("theme.NajibMalaysia")
 
 -- ----------------------------------------------------------------------------
