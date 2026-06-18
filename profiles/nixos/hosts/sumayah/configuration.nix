@@ -21,8 +21,9 @@ in
   in [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./zfs.nix
+    ./Minecraft/minecraft.nix
     inputs.home-manager.nixosModules.home-manager
-    #./turn-off-rgb.nix
+    ./turn-off-rgb.nix
     #./grafito.nix
 
     (fromCommon "configuration.FULL.nix")
@@ -232,6 +233,7 @@ in
     htop
     #flatpak
     gimp
+    amdgpu_top
     freecad
     steam
     (prismlauncher.override {
@@ -268,6 +270,9 @@ in
 
     radeontop
   ];
+  
+  #services.minecraft-server.enable = true;
+  #services.minecraft-server.eula = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
