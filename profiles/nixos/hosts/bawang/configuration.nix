@@ -34,6 +34,7 @@ in
     inputs.home-manager.nixosModules.home-manager
     (fromCommon "deskflow.nix")
     ./tablet.nix
+    ./syncthing.nix
   ];
 
   # Bootloader.
