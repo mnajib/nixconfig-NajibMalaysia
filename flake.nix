@@ -38,6 +38,7 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     #nixpkgs-unstable.url    = "github:NixOS/nixpkgs/nixpkgs-unstable";
     #nixpkgs-master.url      = "github:nixos/nixpkgs/master";
+    nixpkgs-release-26_05.url = "github:nixos/nixpkgs/release-26.05";
 
     #nixpkgs-nonetprob.url = "github:NixOS/nixpkgs/040d0d17f15957e4a08f14abfa3032cd96cc82fe";
     #nixpkgs.follows = "nixpkgs-nonetprob"; # Make 'nixpkgs' point to nixpkgs-stable as default.
@@ -643,6 +644,9 @@
                 #inputs.disko.nixosModules.disko
               ];
               #pkgsInput = inputs.nixpkgs-unstable; # override
+
+              # nixpkgs-release-26_05.url = "github:nixos/nixpkgs/release-26.05";
+              pkgsInput = inputs.nixpkgs-release-26_05; # override
             };
 
             #nyxora = let

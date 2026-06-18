@@ -33,6 +33,7 @@ in
     ./hardware-configuration.nix
     inputs.home-manager.nixosModules.home-manager
     (fromCommon "deskflow.nix")
+    ./tablet.nix
   ];
 
   # Bootloader.
@@ -75,8 +76,8 @@ in
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -180,7 +181,6 @@ in
 
     zigfetch
     fastfetch
-    neofetch
     honeyfetch
 
     neovim
@@ -204,8 +204,6 @@ in
     komikku
     ahoviewer
     qcomicbook
-
-    #deskflow
 
     hygg
     evince
