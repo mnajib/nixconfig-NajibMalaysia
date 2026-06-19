@@ -30,7 +30,8 @@
 
   # This links the JSON file into your system profile for easy tracking/access
   # It will be accessible at: /etc/via/linky87.json
-  environment.etc."via/linky87.json".source = ./linky87.json;
+  #environment.etc."via/linky87pro.json".source = ./linky87pro.json;
+  environment.etc."via/linky87pro.json".source = ./../src/etc/via/linky87pro.json;
   #
   # Open usevia.app via web browser or "via" GUI desktop program.
   # Go to the Design Tab.

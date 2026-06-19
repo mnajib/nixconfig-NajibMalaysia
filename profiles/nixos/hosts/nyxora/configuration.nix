@@ -70,6 +70,8 @@ in
 
     #./thinkpad.nix
 
+    (fromCommon "keyboard-QMK-VIA.nix")
+
     # Disable this; as we can just set custom DNS in NetworkManager
     #./network-dns.nix
 
