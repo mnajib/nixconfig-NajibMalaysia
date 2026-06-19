@@ -13,7 +13,11 @@
     nixd
 
     # Build tools
-    git cmake libtool expect
+    cmake libtool expect
+
+    # Version control
+    git
+    jujutsu
 
     # Fonts & publishing
     fontforge fontforge-fonttools
@@ -22,5 +26,17 @@
     # Code editor
     zed-editor
   ];
+
+  /*
+  environment.etc."jj/config.toml".text = ''
+    [user]
+    name = "Najib Ibrahim"
+    email = "mnajib@gmail.com"
+
+    [aliases]
+    hist = ["log", "-r", "all()", "--template", 'builtin_log_compact ++ if(remote_bookmarks, "\n  " ++ remote_bookmarks)']
+  '';
+  */
+
 }
 
