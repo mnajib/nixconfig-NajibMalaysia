@@ -59,5 +59,8 @@
 
   #proxmox-nixos = import ./proxmox-nixos.nix { inherit inputs; };
 
+  #nix-minecraft = import ./nix-minecraft.nix;
+
   prismlauncher-version-fix = import ./prismlauncher.nix;
+
 }

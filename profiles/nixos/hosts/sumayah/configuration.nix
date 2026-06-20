@@ -27,7 +27,7 @@ in
     #./grafito.nix
 
     #./keyboard-QMK-VIA.nix
-    (fromCommond "keyboard-QMK-VIA.nix")
+    (fromCommon "keyboard-QMK-VIA.nix")
 
     (fromCommon "configuration.FULL.nix")
     #(fromCommon "configuration.MIN.nix")

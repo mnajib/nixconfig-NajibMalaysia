@@ -1,5 +1,9 @@
 # overlays/nix-minecraft.nix
-{ inputs }: final: prev: {
+
+#{ inputs }:
+(
+
+final: prev: {
   # Access legacyPackages instead of packages
   inherit (inputs.nix-minecraft.legacyPackages.${prev.system})
     neoforgeServers
@@ -14,4 +18,6 @@
   inherit (inputs.nix-minecraft.packages.${prev.system})
     fetchPackwizModpack
     fetchModrinthModpack;
-}   
+
+#}
+)
