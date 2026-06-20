@@ -25,7 +25,9 @@ in
     inputs.home-manager.nixosModules.home-manager
     ./turn-off-rgb.nix
     #./grafito.nix
-    ./keyboard-QMK-VIA.nix
+
+    #./keyboard-QMK-VIA.nix
+    (fromCommond "keyboard-QMK-VIA.nix")
 
     (fromCommon "configuration.FULL.nix")
     #(fromCommon "configuration.MIN.nix")
