@@ -240,8 +240,8 @@ in
     qbittorrent
     bottles
     zeroad-unwrapped
-    luanti #minetest
     pkgs.unstable.luanti # luanti #minetest
+
     firefox
     brave
     varia
