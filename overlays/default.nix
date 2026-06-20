@@ -6,8 +6,12 @@
   # additions = import ./additions.nix { inherit inputs; };      # Probably needs inputs
 
   # This one contains whatever you want to overlay
+  # This one contains general inline modifications
+  # Inline modifications can stay here if small, no need separate file.
+  #
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
+  #
   modifications = final: prev: {
 
     # wezterm-nightly = prev.wezterm.overrideAttrs (oldAttrs: rec {
@@ -29,12 +33,17 @@
 
     #nixvim = prev.callPackage nixvim.packages.${prev.system}.default { };
 
+    #qemu = import ./qemu-without-ceph-varian2.nix { inherit inputs final prev; };
+
   };
   # modifications = import ./modifications.nix;                  # Probably doesn't need inputs
 
+  # QEMU overlay passing the flake inputs
+  qemu-without-ceph = import ./qemu-without-ceph-variant1.nix { inherit inputs; };
+
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
   # be accessible through 'pkgs.unstable'
-  unstable-packages = final: _prev: {
+  unstable-packages = final: prev: {
     unstable = import inputs.nixpkgs-unstable {
       inherit (final) system;
       config.allowUnfree = true;

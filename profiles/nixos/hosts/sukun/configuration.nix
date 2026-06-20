@@ -26,6 +26,8 @@ in
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      #./bootUEFI.nix
+      ./bootBIOS.nix # Dell Inspiron 620s only support legacy MBR/BIOS, not UEFI/GPT
       #./zfs.nix
       inputs.home-manager.nixosModules.home-manager
       #./turn-off-rgb.nix
@@ -47,6 +49,8 @@ in
       #(fromCommon "users-anak2.nix")
 
       #(fromCommon "nfs-client-automount.nix")
+      (fromCommon "nfs-client.nix")
+
       #(fromCommon "samba-client.nix")
       (fromCommon "zramSwap.nix")
       (fromCommon "nix-garbage-collector.nix")
@@ -67,9 +71,6 @@ in
   #    message = "grafito module not found in flake outputs";
   #  }
   #];
-
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
 
   # Fix Windows/Linux clock drift
   time.hardwareClockInLocalTime = true;
@@ -256,7 +257,7 @@ in
     qbittorrent
     bottles
     #zeroad-unwrapped
-    luanti # minetest
+    #luanti # minetest
     firefox
     brave
     varia

@@ -212,6 +212,7 @@ in
       #vim-nix
       #vim-godot
       #orgmode
+      vimwiki
 
       #{
       #  plugin = vim-startify;

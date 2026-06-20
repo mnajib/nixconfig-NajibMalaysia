@@ -133,6 +133,25 @@ in
     enableZshIntegration = true;
   };
 
+  programs.jujutsu = {
+    enable = true;
+    settings = {
+      user = {
+        name = "Najib Ibrahim";
+        email = "mnajib@gmail.com";
+      };
+      aliases = {
+        hist = [
+          "log"
+          "-r"
+          "all()"
+          "--template"
+          "builtin_log_compact ++ if(remote_bookmarks, \"\\n  \" ++ remote_bookmarks)"
+        ];
+      };
+    };
+  };
+
   home.packages = with pkgs; [
     #tmux
     mtm

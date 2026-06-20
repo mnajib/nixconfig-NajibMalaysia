@@ -1,4 +1,4 @@
-# bind.nix
+# ./profile/nixos/hosts/nyxora/services/bind.nix
 {
   pkgs,
   ...
@@ -11,18 +11,28 @@ let
   #   dhcpd is configured to give dynamic ip in range from 192.168.0.100 to 192.168.0.200.
   #
 
+  # To get current IP for dirtforever.net:
+  #   dig +short dirtforever.net
+  #   37.27.53.115
+  #
+  # The current public IP address of the community server
+  dirtForeverIp = "37.27.53.115";
+
   hosts = {
     # Services
     gw                  = "192.168.0.1";
     printer             = "192.168.0.22";
+    ns                  = "192.168.0.11";
     ns1                 = "192.168.0.11";
+    #ns2                = "192.168.0.10";
     #dns                = "192.168.0.11";
-    #ns                 = "192.168.0.11";
     api                 = "192.168.0.11";
     git                 = "192.168.0.11";
+    git2                = "192.168.0.10";
     pgadmin             = "192.168.0.11";
     sijilberhenti       = "192.168.0.11";
-    nfs                 = "192.168.0.10";
+    nfs                 = "192.168.0.11"; # "192.168.0.10"; # Migrate from host durian to nyxora
+    immich              = "192.168.0.11";
 
     # Better use ssh tunnel, rather than nginx
     #
@@ -48,6 +58,8 @@ let
     huda            = "192.168.0.19";
     laila           = "192.168.0.20";
     sukun           = "192.168.0.21";
+    parang          = "192.168.0.23";
+    bawang          = "192.168.0.24";
   };
 
   zoneFile = pkgs.writeText "zone-localdomain" ''
@@ -95,6 +107,27 @@ let
       )
     )}
   '';
+
+  # Dedicated authoritative override zone for the game backend redirection
+  dirtForeverZone = pkgs.writeText "zone-dirtforever" ''
+    $ORIGIN racenet.dirtgame.com.
+    $TTL    1h
+
+    @               IN SOA ns1.localdomain. hostmaster.localdomain. (
+                        2026053102 ; Serial (YYYYMMDDNN format preferred)
+                        3h         ; Refresh
+                        1h         ; Retry
+                        1w         ; Expire
+                        1h         ; Negative Cache TTL
+                    )
+
+                    IN NS  ns1.localdomain.
+
+    ; Redirect root domain and all wildcards to the community cluster
+    @               IN A   ${dirtForeverIp}
+    *               IN A   ${dirtForeverIp}
+  '';
+
 in
 {
   services.bind = {
@@ -107,6 +140,7 @@ in
     ];
 
     listenOnPort = 53; # Default: 53
+    ipv4Only = true;
 
     cacheNetworks = [
       "127.0.0.0/24"
@@ -154,11 +188,30 @@ in
       "localdomain" = {
         master = true;
         file = zoneFile;
+        slaves = [
+          "192.168.0.0/24"
+
+          #"127.0.0.1" "::1"
+          "localhost"
+        ];
       };
 
       "${reverseZone}" = {
         master = true;
         file = reverseFile;
+        slaves = [
+          "192.168.0.0/24"
+
+          #"127.0.0.1" "::1"
+          "localhost"
+        ];
+      };
+
+      # Injecting the game override zone block here
+      "racenet.dirtgame.com" = {
+        master = true;
+        file = dirtForeverZone;
+        slaves = [ "192.168.0.0/24" "localhost" ];
       };
 
     };
@@ -179,6 +232,14 @@ in
       //  1.1.1.1;
       //  8.8.8.8;
       //};
+
+      //dnssec-enable yes; // this config option no longer exist
+      dnssec-validation no; //auto;
+      auth-nxdomain no;
+
+      //server-id "none";
+      listen-on-v6 { none; };
+
     ''; # End services.bind.extraOptions = "";
 
   }; # End service.bind = { ... };
@@ -186,6 +247,11 @@ in
   #networking.searchDomains = [ "localdomain" ];
   #networking.nameservers = [ "192.168.1.1" ];
 
-  networking.firewall.allowedTCPPorts = [ 53 ];
-  networking.firewall.allowedUDPPorts = [ 53 ];
+  networking.firewall.allowedTCPPorts = [
+    53
+  ];
+  networking.firewall.allowedUDPPorts = [
+    53
+  ];
+
 }

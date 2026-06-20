@@ -16,21 +16,47 @@ let
 in
 {
 
+  nix = {
+    #package = pkgs.nixFlakes;
+
+    settings = {
+      #max-jobs = 2;
+
+      trusted-users = [
+        "root" "najib"
+        "naqib"
+        #"naim"
+        #"abdullah"
+        #"a"
+      ];
+
+    }; # End nix.settings = { ... };
+
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+  }; # End nix = { ... };
+
   imports = let
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
   in [
     ./hardware-configuration.nix
-    (fromCommon "bootBIOS.nix")
+    #(fromCommon "bootBIOS.nix")
+    ./bootEFI.nix
+
+    #./roles/base.nix
+    #./roles/stage-1.nix
+    #./roles/stage-2.nix
 
     #(fromCommon "remote-builders.nix")
     (fromCommon "configuration.FULL.nix") # timezone, locale, ...
 
-    (fromCommon "users-a-wheel.nix")
-    #(fromCommon "users-naqib-wheel.nix")
-    (fromCommon "users-naqib.nix")
+    #(fromCommon "users-a-wheel.nix")
+    (fromCommon "users-naqib-wheel.nix")
+    #(fromCommon "users-naqib.nix")
     (fromCommon "users-naim.nix")
     (fromCommon "users-nurnasuha.nix")
-    (fromCommon "users-julia-wheel.nix")
+    (fromCommon "users-julia.nix")
     inputs.home-manager.nixosModules.home-manager
 
     (fromCommon "console-keyboard-dvorak.nix")       # keyboard layout for console environment
@@ -44,13 +70,15 @@ in
     (fromCommon "nfs-client.nix")
 
     #(fromCommon "opengl.nix")
-    (fromCommon "opengl2.nix")
+    #(fromCommon "opengl2.nix")
     #(fromCommon "xdg-gtk.nix")
-    (fromCommon "xdg.nix")
+    #(fromCommon "xdg.nix")
     (fromCommon "window-managers.nix")
-    (fromCommon "desktops.nix")
-    (fromCommon "hyprland.nix")
-    (fromCommon "stylix.nix")
+    #(fromCommon "desktops.nix")
+    #(fromCommon "desktops-wayland.nix")
+    ./desktops-wayland.nix
+    #(fromCommon "hyprland.nix")
+    #(fromCommon "stylix.nix")
 
     #(fromCommon "bluetooth.nix")
     #(fromCommon "packages/databases.nix")
@@ -66,7 +94,7 @@ in
       #najib = import "${hmDir}/najib/taufiq";
       #root = import (./. + "/${hmDir}/root/taufiq");
       najib = import (./. + "/${hmDir}/najib/${hostName}");
-      #naqib = import (./. + "/${hmDir}/naqib/taufiq");
+      naqib = import (./. + "/${hmDir}/naqib/${hostName}");
     }; # End home-manager.users = { ... };
   }; # End home-manager = { ... };
 
@@ -121,6 +149,9 @@ in
     gcc
     gparted
     fatresize
+    prismlauncher
+    flatpak
+    #luanti
     #kate
     #kitty
     #blender
@@ -156,6 +187,26 @@ in
 
   # High-DPI console
   #console.font = lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
+
+  #services.xserver = {
+  #  enable = true;
+  #  #displayManager.gdm.enable = true;
+  #  #desktopManager.gnome.enable = true;
+  #};
+
+  /*services.displayManager = {
+    enable = true;
+    gdm = {
+      enable = true;
+    };
+  };
+
+  services.desktopManager = {
+    gnome = {
+      enable = true;
+    };
+  };
+  */
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

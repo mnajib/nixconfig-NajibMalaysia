@@ -56,6 +56,11 @@ in
     #./proxmox.nix
     ./smartd.nix # some drive with old controller board
 
+    #./nvidia-quadro-k620.nix # Commented because replace this card with Radeon card
+    ./radeon-rx-9060-xt.nix
+
+    ./jami.nix
+
     #(./. + "${commonDir}/configuration.FULL.nix")
     (fromCommon "configuration.FULL.nix")
     #./configuration.SERVER.nix
@@ -64,6 +69,8 @@ in
     #./bootBIOS.nix
 
     #./thinkpad.nix
+
+    (fromCommon "keyboard-QMK-VIA.nix")
 
     # Disable this; as we can just set custom DNS in NetworkManager
     #./network-dns.nix
@@ -86,8 +93,6 @@ in
 
     #./typesetting.nix
 
-    #./syncthing.nix
-
     # /var/lib/nextcloud/config/config.php
     #./nextcloud.nix  # OpenSSL 1.1 is marked as unsecured
 
@@ -102,6 +107,8 @@ in
     ./zfs.nix
 
     #./nfs-server-customdesktop.nix
+    ./services/nfs-server.nix
+
     (./. + "/${commonDir}/nfs-client-automount.nix")
     #./nfs-client-automount-games.nix
     #./nfs-client.nix
@@ -117,6 +124,7 @@ in
     (./. + "/${commonDir}/audio-pipewire.nix")
 
     #./synergy-client.nix # barrier
+    (fromCommon "deskflow.nix")
 
     (./. + "/${commonDir}/hardware-printer.nix")
     #./hardware-tablet-wacom.nix
@@ -130,9 +138,10 @@ in
     ./services/nginx.nix
     ./services/forgejo.nix
     ./services/postgresql.nix
-    ./services/pgadmin.nix
+    #./services/pgadmin.nix
     ./services/postgrest.nix
     ./services/refine.nix
+    ./services/immich.nix
 
     #./hosts2.nix
 
@@ -159,12 +168,19 @@ in
     #./opengl.nix
 
     #./tabby.nix # self-hosted AI coding assistant
-    #./ai.nix
+    #(fromCommon "ai.nix")
+    #./services/ai.nix
+    #./services/ai-nvidia.nix
+    ./services/ai-radeon.nix
 
     #./tenda-usb-wifi-dongle.nix
 
     (fromCommon "window-managers.nix")
     (fromCommon "qemu.nix")
+    (fromCommon "bluetooth.nix")
+
+    #./syncthing.nix
+    ./services/syncthing.nix
   ];
 
   home-manager = {
@@ -318,7 +334,9 @@ in
   #boot.kernelPackages = pkgs.linuxPackages_latest; # test disable this while trying to solve monitor on build-in VGA, DVI, HDMI not detectded in Xorg, but detected in Wayland.
   #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
   #boot.kernelPackages = pkgs.linuxPackages_6_6;
-  #boot.kernelParams = [
+  boot.kernelPackages = pkgs.linuxPackages_6_12; # Pinned to 6.12 because 6.13+ causes networking issues on this hardware
+
+  boot.kernelParams = [
     ##"i915.modeset=0" "nouveau.modeset=1" # to disable i915 and enable nouveau
     #"video=DisplayPort-2:D"
     #"video=DP-1:D"
@@ -332,7 +350,26 @@ in
     #"video=DVI-1-1:D"
     #"video=VGA-0:1280x1024@60me"
     #"video=VGA-1:1280x1024@60me"
-  #];
+
+    # NVidia card wint LG monitor: still not working
+    #"video=DVI-1-0:e"
+    #"video=DVI-1-1:e"
+
+    # Disables Aggressive Link Power Management
+    "ahci.mobile_lpm_policy=1"
+    # Increases the timeout for SCSI commands to 60 seconds
+    "scsi_mod.scan=async"
+
+    #
+    # sudo ethtool --set-eee eno1 eee off
+    #
+    # disabling Active State Power Management (ASPM)
+    # in order try to resolve a Flapping Network Link, a condition where a
+    # network interface repeatedly transitions between "Up" (connected) and
+    # "Down" (disconnected) states.
+    #
+    "pcie_aspm=off"
+  ];
 
   #boot.extraModulePackages = [
     #config.boot.kernelPackages.rtl8821cu
@@ -373,9 +410,19 @@ in
 
   services.fstrim.enable = true;
   hardware.enableAllFirmware = true;
+  services.fwupd = {
+    enable = true;
+    daemonSettings = {
+      DisabledPlugins = [
+        "tpm"
+        "uefi-capsule"
+      ];
+    };
+  };
 
   services.smartd.enable = true;
 
+  # XXX: ???
   services.openssh.settings.PermitRootLogin = "yes";                            #
   #services.openssh.settings.PermitRootLogin = "prohibit-password";             # Needed for btrbk
 
@@ -400,28 +447,6 @@ in
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
-    open = false;
-    nvidiaSettings = true;
-
-    # Card Nvidia GeForce GT 720 (in acer aspire taufiq).
-    #package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
-    #
-    # Card Nvidia Quadro K620 (in HP Z420 nyxora).
-    #   --> Display Driver 570.133.07
-    #   --> Display Dirver 580.119.02 (2025-12-11) (Info 2025-12-22)
-    #
-    #package = config.boot.kernelPackages.nvidiaPackages.stable; # v 565.77
-    #package = config.boot.kernelPackages.nvidiaPackages.latest; # v 565.77
-
-    # Version 550.135 (info ...) .
-    # Version 580.119.02 (info 2025-12-22).
-    package = config.boot.kernelPackages.nvidiaPackages.production;
-  };
-
   #services.logind.extraConfig = "RuntimeDirectorySize=4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001
   services.logind.settings.Login = {
     RuntimeDirectorySize = "4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001
@@ -433,11 +458,11 @@ in
   #------------------------------------
   services.xserver = {
     enable = true;
-    dpi = 96;
+    #dpi = 96;
 
     # Test: Cuba disable, sebab SweetHome3D tak dapat jalan
     #videoDrivers = [ "nvidiaLegacy390" ]; #"radeon" "cirrus" "vesa"  "vmware"  "modesetting" ];
-    videoDrivers = [ "nvidia" ];
+    #videoDrivers = [ "nvidia" ];
     #
     #videoDrivers = [ "radeon" ];
 
@@ -490,6 +515,7 @@ in
   #};
 
   systemd.watchdog.rebootTime = "10m";
+  #systemd.settings.Manager.RebootWatchdogSec = "10min";
 
   #nix.maxJobs = 4;
 

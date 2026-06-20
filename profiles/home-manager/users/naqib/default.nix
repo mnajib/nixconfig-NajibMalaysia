@@ -164,6 +164,12 @@ in
     fluxbox                             # need fbsetroot to set desktop background color
 
     #clang
+    vscode
+    bluefish
+    #pragtical
+    cudatext #cudatext-gtk
+    #sublime4
+    netbeans
   ];
 
   # Enable home-manager and git

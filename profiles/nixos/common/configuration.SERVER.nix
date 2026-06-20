@@ -324,8 +324,6 @@
     qtpass
     bsd-finger
 
-    picom    # compositor manager; try to use picom for gromit-mpx (screen annotation) in xmonad (window manager).
-
     fluxbox    # Need this because I need to use command 'fbsetroot' to set plain black background when using xmonad.
 
     #--------------------------------------------------------------------------
@@ -890,8 +888,6 @@
     pass        # CLI password manager
     qtpass
 
-    picom       # compositor manager; try to use picom for gromit-mpx (screen annotation) in xmonad (window manager).
-
     fluxbox     # Need this because I need to use command 'fbsetroot' to set plain black background when using xmonad.
 
     rsync grsync zsync luckybackup
@@ -1231,7 +1227,6 @@
   hardware.enableRedistributableFirmware = true;
 
   #services.locate.enable = true; # default false
-  #services.picom.enable = true; #services.compton.enable = true;
   programs.adb.enable = true;
 
   #services.cron = {

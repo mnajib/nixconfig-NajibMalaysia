@@ -61,6 +61,7 @@
   nix.daemonIOSchedClass = "idle";
   nix.daemonCPUSchedPolicy = "idle";
   nix.daemonIOSchedPriority = 7;            # 0(high) (default) ... 7 (low) priority
+  nix.settings.download-buffer-size = 134217728; # 128MB
 
   imports = [
     ./users-najib.nix
@@ -74,7 +75,11 @@
     #./xdg-gtk.nix
     #./xdg-kde.nix
 
+    #./kmscon.nix
+
     #./doom-emacs.nix
+
+    #./nh.nix
 
     ./packages/base.nix
     ./packages/android.nix
@@ -388,7 +393,21 @@
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
   hardware.enableAllFirmware = true;
-  services.fwupd.enable = true;
+  services.fwupd = {
+    enable = true;
+    daemonSettings = {
+      DisabledPlugins = [
+
+        # There are specific, rare cases where you might need to disable the tpm plugin, usually to work around hardware bugs or conflicts with security features.
+        # A small number of TPM devices have firmware bugs that cause them to hang or respond extremely slowly when queried by fwupd
+        # Do not disable the plugin preemptively. Only consider it if you are actively experiencing one of the specific problems
+        # Normal Behavior: The command should complete in a few seconds. If it hangs for over a minute, it points to a hardware communication problem with the TPM
+        # Suppose not disable it globally, but disable it per-host (for the specific problematic host)
+        "tpm" # XXX:
+
+      ];
+    };
+  };
 
   networking.nftables.enable = true;
   networking.firewall.enable = true;

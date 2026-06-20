@@ -26,7 +26,6 @@
   };
 
   inputs = {
-    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
 
     #------------------------------------------------------
     # nixpkgs
@@ -39,6 +38,10 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     #nixpkgs-unstable.url    = "github:NixOS/nixpkgs/nixpkgs-unstable";
     #nixpkgs-master.url      = "github:nixos/nixpkgs/master";
+    nixpkgs-release-26_05.url = "github:nixos/nixpkgs/release-26.05";
+
+    #nixpkgs-nonetprob.url = "github:NixOS/nixpkgs/040d0d17f15957e4a08f14abfa3032cd96cc82fe";
+    #nixpkgs.follows = "nixpkgs-nonetprob"; # Make 'nixpkgs' point to nixpkgs-stable as default.
 
     #nixpkgs.url            = "github:nixos/nixpkgs/nixos-25.05";
     #nixpkgs.url      = "github:nixos/nixpkgs/nixos-25.11";
@@ -630,6 +633,22 @@
               #pkgsInput = inputs.nixpkgs-unstable; # override
             };
 
+            bawang = mkNixos {
+              system = "x86_64-linux";
+              modules = [
+                ./profiles/nixos/hosts/bawang/configuration.nix
+                inputs.home-manager.nixosModules.home-manager
+                inputs.hardware.nixosModules.common-cpu-intel
+                inputs.hardware.nixosModules.common-pc-laptop-ssd
+                inputs.stylix.nixosModules.stylix
+                #inputs.disko.nixosModules.disko
+              ];
+              #pkgsInput = inputs.nixpkgs-unstable; # override
+
+              # nixpkgs-release-26_05.url = "github:nixos/nixpkgs/release-26.05";
+              pkgsInput = inputs.nixpkgs-release-26_05; # override
+            };
+
             #nyxora = let
             # Toggle these to true/false before running nixos-rebuild or nix run
             # Only enabled drive will be process
@@ -831,6 +850,16 @@
               #pkgsInput = inputs.nixpkgs-unstable; # override
             };
 
+            # nixos on acer laptop
+            parang = mkNixos {
+              system = "x86_64-linux";
+              modules = [
+                ./profiles/nixos/hosts/parang/configuration.nix
+              ];
+              #pkgsInput = inputs.nixpkgs-release; # override
+              #pkgsInput = inputs.nixpkgs-unstable; # override
+            };
+
             keira = mkNixos {
               system = "x86_64-linux";
               modules = [
@@ -889,6 +918,22 @@
               #pkgsInputs = inputs.nixpkgs-unstable; # override
             };
 
+            "najib@huda" = mkHome {
+              system = "x86_64-linux";
+              modules = [ ./profiles/home-manager/users/najib/huda ];
+              #pkgsInputs = inputs.nixpkgs-release; # override
+              #pkgsInputs = inputs.nixpkgs-unstable; # override
+            };
+
+            /*
+            "najib@bawang" = mkHome {
+              system = "x86_64-linux";
+              modules = [ ./profiles/home-manager/users/najib/bawang ];
+              #pkgsInputs = inputs.nixpkgs-release; # override
+              #pkgsInputs = inputs.nixpkgs-unstable; # override
+            };
+            */
+
             "najib@maryam" = mkHome {
               system = "x86_64-linux";
               modules = [ ./profiles/home-manager/users/najib/maryam ];
@@ -935,6 +980,16 @@
               ];
             };
 
+            "najib@parang" = mkHome {
+              system = "x86_64-linux";
+              modules = [ ./profiles/home-manager/users/najib/parang ];
+            };
+
+            "najib@raudah" = mkHome {
+              system = "x86_64-linux";
+              modules = [ ./profiles/home-manager/users/najib/raudah ];
+            };
+
 
             #-----------------------------------------------------------------------------
             # root
@@ -979,6 +1034,11 @@
               modules = [ ./profiles/home-manager/users/naqib/sumayah ];
             };
 
+            "naqib@huda" = mkHome {
+              system = "x86_64-linux";
+              modules = [ ./profiles/home-manager/users/naqib/huda ];
+            };
+
             "naqib@laila" = mkHome {
               system = "x86_64-linux";
               modules = [ ./profiles/home-manager/users/naqib/laila ];
@@ -987,6 +1047,11 @@
             "naqib@sukun" = mkHome {
               system = "x86_64-linux";
               modules = [ ./profiles/home-manager/users/naqib/sukun ];
+            };
+
+            "naqib@parang" = mkHome {
+              system = "x86_64-linux";
+              modules = [ ./profiles/home-manager/users/naqib/parang ];
             };
 
             "naqib@asmak" = mkHome {

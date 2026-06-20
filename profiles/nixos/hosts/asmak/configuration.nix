@@ -38,8 +38,8 @@ in
     #./touchpad-scrollTwofinger-TapTrue.nix
     #./touchpad-scrollEdge-TapTrue.nix
 
-    #./zfs.nix
-    (fromCommon "zfs-for-asmak.nix")
+    ./zfs.nix
+    #(fromCommon "zfs-for-asmak.nix")
 
     #./users-anak2.nix
     (fromCommon "users-najib.nix")
@@ -66,7 +66,7 @@ in
     (fromCommon "steam.nix")
     (fromCommon "xdg.nix")
     (fromCommon "opengl_with_vaapiIntel.nix")
-    (fromCommon "stylix.nix")
+    #(fromCommon "stylix.nix")
     #./xmonad.nix
     (fromCommon "window-managers.nix")
     (fromCommon "desktops-wayland.nix")
@@ -125,7 +125,7 @@ in
 
   networking.nftables.enable = true;
   networking.firewall = {
-    enable = false;
+    #enable = false;
     #allowedTCPPorts = [ ... ];
     #allowedUDPPorts = [ 3450 ]; # 3450 for minetest server
   };
@@ -147,13 +147,13 @@ in
   #   sudo mkswap /dev/zvol/rpool/swap
   #   sudo swapon /dev/zvol/rpool/swap
   #
-  swapDevices = [
-    {
-      #device = "/swapfile";
-      device = "/dev/zvol/tank/swap"; # for zfs
-      size = 4096;
-    }
-  ];
+  #swapDevices = [
+  #  {
+  #    #device = "/swapfile";
+  #    device = "/dev/zvol/tank/swap"; # for zfs
+  #    size = 4096;
+  #  }
+  #];
 
   # not suitable for zfs?
   #services.swapspace = {

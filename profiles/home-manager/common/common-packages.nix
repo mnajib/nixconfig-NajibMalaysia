@@ -90,7 +90,7 @@
 
     # GUI E-mail Client
     sylpheed
-    thunderbird
+    #thunderbird
     #mailspring                    # is marked as insecure
     geary
     balsa

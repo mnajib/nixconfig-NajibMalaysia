@@ -89,6 +89,11 @@
 
     addSSL = false;
 
+    # Ensure this is NOT the default server
+    extraConfig = ''
+      server_name api.localdomain;
+    '';
+
     locations."/" = {
       proxyPass = "http://unix:/run/postgrest/postgrest.sock:/";
 

@@ -16,7 +16,7 @@
   services.xserver.enable = true;
 
   # lightdm
-  services.xserver.displayManager.lightdm.enable = true;
+  #services.xserver.displayManager.lightdm.enable = lib.mkForce true;
   #
   # gdm
   #services.xserver.displayManager.gdm.enable = true;
@@ -35,7 +35,8 @@
     #'';
   };
 
-  services.xserver.desktopManager.gnome.enable = true;
+  #services.xserver.desktopManager.gnome.enable = true;
+  services.desktopManager.gnome.enable = true;
   services.desktopManager.plasma6.enable = true;
   services.desktopManager.cosmic.enable = true;
 

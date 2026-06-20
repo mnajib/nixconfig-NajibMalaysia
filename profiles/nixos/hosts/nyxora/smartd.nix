@@ -22,7 +22,9 @@ in
 
     # Apply to all devices by default, but be more lenient with sda
     #defaults.autodetect = "-a -d sat -o on -S on";
-    defaults.monitored = "-a -d sat -o on -S on";
+    #defaults.monitored = "-a -d sat -o on -S on";
+    #defaults.monitor = "-m <nomailer> -M exec /run/current-system/sw/bin/true"; # disable broadcast messages
+    defaults.monitored = "-a -d sat -o on -S on -m <nomailer> -M exec /run/current-system/sw/bin/true";
 
     # Disable the 'wall' terminal spam
     #notifications.wall.enable = false;

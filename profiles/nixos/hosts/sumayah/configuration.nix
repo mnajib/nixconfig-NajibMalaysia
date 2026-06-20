@@ -234,17 +234,14 @@ in
     htop
     #flatpak
     gimp
-    amdgpu_top
     freecad
     steam
-    (prismlauncher.override {
-      jdks = [ jdk25 jdk21 jdk17 jdk8 ]; # Include jdk25 and other versions you need
-    })
 
     qbittorrent
     bottles
     zeroad-unwrapped
     luanti #minetest
+    pkgs.unstable.luanti # luanti #minetest
     firefox
     brave
     varia

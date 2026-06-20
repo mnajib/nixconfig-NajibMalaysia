@@ -25,6 +25,15 @@
     xorg.libX11
     xorg.libXrandr
 
+    #
+    # Example inside your NixOS/Home-Manager configuration
+    #xmonad = xmonad-with-packages.override {
+    #  packages = self: [
+    #    self.xmonad-contrib
+    #    self.network-hostname  # Add your new package here
+    #  ];
+    #};
+    #
     #xmobar
     haskellPackages.xmobar
 
@@ -39,7 +48,7 @@
     alacritty alacritty-theme
     xlockmore
 
-    picom       # compositor manager; try to use picom for gromit-mpx (screen annotation) in xmonad (window manager).
+    #picom       # compositor manager; try to use picom for gromit-mpx (screen annotation) in xmonad (window manager).
     fluxbox     # Need this because I need to use command 'fbsetroot' to set plain black background when using xmonad
     gxmessage   # use it for display keybinding
   ];
@@ -57,6 +66,8 @@
         haskellPackages.monad-logger
         haskellPackages.xmobar
         haskellPackages.network
+        haskellPackages.network-info
+        haskellPackages.hostname
 
         haskellPackages.GLHUI
       ];
