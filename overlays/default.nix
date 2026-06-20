@@ -58,4 +58,6 @@
   #flatpak-quick-fix = import ./flatpak.nix;
 
   #proxmox-nixos = import ./proxmox-nixos.nix { inherit inputs; };
+
+  prismlauncher-version-fix = import ./prismlauncher.nix;
 }

@@ -28,6 +28,10 @@
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="36b0", ATTRS{idProduct}=="3005", MODE="0666", TAG+="uaccess"
   '';
 
+  #
+  # https://www.mecha.com.my/pages/downloads
+  #
+
   # This links the JSON file into your system profile for easy tracking/access
   # It will be accessible at: /etc/via/linky87.json
   #environment.etc."via/linky87pro.json".source = ./linky87pro.json;
