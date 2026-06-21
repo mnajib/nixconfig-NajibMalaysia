@@ -212,6 +212,8 @@
 
     #proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
 
+    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+
   }; # End of 'inputs = { ... };'
 
   outputs =

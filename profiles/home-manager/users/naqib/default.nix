@@ -199,4 +199,8 @@ in
   #   nixconfig-NajibMalaysia/home-manager/julia-keira.nix
   #   nixconfig-NajibMalaysia/home-manager/julia-manggis.nix
   #   nixconfig-NajibMalaysia/home-manager/julia-taufiq.nix
+
+  programs.bash.shellAliases = {
+    flatpak = "echo '!!! LOVELY REMINDER !!! Do not wasting your time anymore with flatpak'";
+  };
 }
