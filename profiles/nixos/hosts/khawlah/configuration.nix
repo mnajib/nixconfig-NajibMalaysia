@@ -60,7 +60,9 @@ in
     (fromCommon "users-naim.nix")
 
     (fromCommon "console-keyboard-dvorak.nix")
-    (fromCommon "keyboard-with-msa.nix")
+    #(fromCommon "keyboard-with-msa.nix")
+    ./kanata/keyboard-with-msa.nix
+    ./kanata/kanata.nix
     #(fromCommon "keyboard-kmonad.nix")
 
     (fromCommon "audio-pipewire.nix")
