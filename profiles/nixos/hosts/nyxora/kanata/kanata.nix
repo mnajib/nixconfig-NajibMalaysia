@@ -26,14 +26,38 @@
     options = lib.mkForce ""; # Clear any conflicting shortcuts
   };
 
+  # ---------------------------------------------------------------------------
+  # Membuka sekatan akses uinput untuk Perkhidmatan Kanata Systemd
+  # ---------------------------------------------------------------------------
+  systemd.services."kanata-internalEngine" = {
+    serviceConfig = {
+      # Memaksa systemd menjalankan perkhidmatan ini sebagai root (melangkau sandboxing)
+      DynamicUser = lib.mkForce false;
+
+      # Membenarkan perkhidmatan membaca dan menulis ke subsistem peranti uinput
+      DeviceAllow = [ "/dev/uinput rw" ];
+      # Memastikan Systemd tidak menyekat akses perkakasan maya ini
+      PrivateDevices = lib.mkForce false;
+      # Menambah kumpulan uinput ke dalam perkhidmatan jika diperlukan
+      SupplementaryGroups = [ "uinput" "input" ];
+    };
+  };
+
   # Declarative Kanata Service Configuration
   services.kanata = {
     enable = true;
     keyboards = {
       internalEngine = {
         devices = [
-          "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
-          "/dev/input/by-path/pci-0000:00:14.0-usb-0:2.3.1.2:1.0-event-kbd"
+
+          # khawlah
+          #"/dev/input/by-path/platform-i8042-serio-0-event-kbd"
+          #"/dev/input/by-path/pci-0000:00:14.0-usb-0:2.3.1.2:1.0-event-kbd"
+
+          # nyxora
+          "/dev/input/by-path/pci-0000:00:1d.0-usb-0:1.1:1.0-event-kbd"
+          "/dev/input/by-path/pci-0000:00:1d.0-usb-0:1.4:1.0-event-kbd"
+
         ];
 
         extraDefCfg = "process-unmapped-keys yes";

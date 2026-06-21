@@ -116,10 +116,10 @@ in
     #./samba-client.nix
 
     (./. + "/${commonDir}/console-keyboard-dvorak.nix")
-    (./. + "/${commonDir}/keyboard-with-msa.nix")
+    #(./. + "/${commonDir}/keyboard-with-msa.nix")
     #
-    #./kanata/keyboard-with-msa.nix
-    #./kanata/kanata.nix
+    ./kanata/keyboard-with-msa.nix
+    ./kanata/kanata.nix
 
     (fromCommon "keyboard-QMK-VIA.nix")
 
