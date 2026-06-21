@@ -1248,27 +1248,6 @@
         "url": "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-1.tar.gz"
       }
     },
-    "nh": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1712645404,
-        "narHash": "sha256-uEVd15WsX+Wti9PXW724puFcsFO72VTiJyBwW2WXT9M=",
-        "owner": "viperML",
-        "repo": "nh",
-        "rev": "fe4a96a0b0b0662dba7c186b4a1746c70bbcad03",
-        "type": "github"
-      },
-      "original": {
-        "owner": "viperML",
-        "ref": "fe4a96a0b0b0662dba7c186b4a1746c70bbcad03",
-        "repo": "nh",
-        "type": "github"
-      }
-    },
     "nix-colors": {
       "inputs": {
         "base16-schemes": "base16-schemes",
@@ -1738,7 +1717,6 @@
         "hyprwn-contrib": "hyprwn-contrib",
         "impermanence": "impermanence",
         "lix-module": "lix-module",
-        "nh": "nh",
         "nix-colors": "nix-colors",
         "nix-doom-emacs": "nix-doom-emacs",
         "nix-ld": "nix-ld",

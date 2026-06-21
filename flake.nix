@@ -167,13 +167,13 @@
       #inputs.nixpkgs.follows = "nixpkgs-release";
     };
 
-    nh = {
+    /*nh = {
       url = "github:viperML/nh?ref=fe4a96a0b0b0662dba7c186b4a1746c70bbcad03";
       #inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs";
       #inputs.nixpkgs.follows = "nixpkgs-stable";
       #inputs.nixpkgs.follows = "nixpkgs-release";
-    };
+    };*/
 
     sops-nix = {
       url = "github:mic92/sops-nix";
