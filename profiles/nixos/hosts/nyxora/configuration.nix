@@ -70,8 +70,6 @@ in
 
     #./thinkpad.nix
 
-    (fromCommon "keyboard-QMK-VIA.nix")
-
     # Disable this; as we can just set custom DNS in NetworkManager
     #./network-dns.nix
 
@@ -119,6 +117,11 @@ in
 
     (./. + "/${commonDir}/console-keyboard-dvorak.nix")
     (./. + "/${commonDir}/keyboard-with-msa.nix")
+    #
+    #./kanata/keyboard-with-msa.nix
+    #./kanata/kanata.nix
+
+    (fromCommon "keyboard-QMK-VIA.nix")
 
     #./audio-pulseaudio.nix
     (./. + "/${commonDir}/audio-pipewire.nix")

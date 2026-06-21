@@ -1,3 +1,5 @@
+# profiles/nixos/common/keyboard-with-msa.nix
+
 {
   lib,
   ...
