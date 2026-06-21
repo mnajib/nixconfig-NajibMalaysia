@@ -39,10 +39,8 @@
   #
 
   # Make sure your user is in the 'plugdev' group
-  #users.users.naqib.extraGroups = [
-  #   #"networkmanager"
-  #   "plugdev"
-  #];
+  #users.users.naqib.extraGroups = [ "plugdev" ];
+  #users.users.najib.extraGroups = [ "plugdev" ];
 
   #
   # Unplug your keyboard and plug it back in
