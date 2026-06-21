@@ -31,7 +31,11 @@
     enable = true;
     keyboards = {
       internalEngine = {
-        devices = [ ];
+        devices = [
+          "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
+          "/dev/input/by-path/pci-0000:00:14.0-usb-0:2.3.1.2:1.0-event-kbd"
+        ];
+
         extraDefCfg = "process-unmapped-keys yes";
 
         # This is where the magic happens: Nix pulls the text file content in at build time
