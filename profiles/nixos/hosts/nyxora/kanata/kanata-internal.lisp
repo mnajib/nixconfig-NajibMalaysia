@@ -56,7 +56,7 @@
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  x    ,    y    r    n    c    p    f    t    z    [    ]    \
   @caps-c a o   ;    k    u    m    l    d    g    s    i    ret
-  lsft /    b    i    h    .    v    j    w    e    [    rsft
+  lsft b    i    h    .    /    v    j    w    e    [    rsft
   lctl lmet lalt           spc            ralt rmet rctl
 )
 
