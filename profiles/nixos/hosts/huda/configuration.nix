@@ -82,7 +82,7 @@ in
 
     #(fromCommon "bluetooth.nix")
     #(fromCommon "packages/databases.nix")
-    #(fromCommon "flatpak.nix")
+    (fromCommon "flatpak.nix")
   ];
 
   home-manager = {
@@ -150,7 +150,7 @@ in
     gparted
     fatresize
     prismlauncher
-    flatpak
+    #flatpak
     #luanti
     #kate
     #kitty
