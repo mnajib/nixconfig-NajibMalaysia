@@ -9,6 +9,7 @@
 
     # Torrent clients
     transmission_4-gtk rtorrent qbittorrent deluge-gtk
+    rqbit
 
     # Download
     axel
