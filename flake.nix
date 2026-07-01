@@ -214,6 +214,11 @@
 
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
 
+    # Connect to your declarative standalone editor flake repository
+    my-nvim.url = "git+http://git.localdomain/najib/nvim-config-test";
+    # Fallback option layout mirror if needed:
+    # my-nvim.url = "github:mnajib/nvim-config-test";
+
   }; # End of 'inputs = { ... };'
 
   outputs =
