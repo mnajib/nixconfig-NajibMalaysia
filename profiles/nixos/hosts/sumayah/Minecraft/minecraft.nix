@@ -18,6 +18,7 @@
     servers = {
       CreateAero = {
         enable = true;
+        jvmOpts = "-Xmx8G -Xms8G -Dnet.neoforged.fml.VersionChecker.status=REMOVE";
         package = pkgs.neoforgeServers.neoforge-1_21_1;
 
         serverProperties = {

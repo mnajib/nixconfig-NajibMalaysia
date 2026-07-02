@@ -234,10 +234,13 @@ in
     kmonad
     discord
     htop
-    #flatpak
+    flatpak
     gimp
     freecad
     steam
+    (prismlauncher.override {
+      jdks = [ jdk25 jdk21 jdk17 jdk8 ]; # Include jdk25 and other versions you need
+    })
 
     qbittorrent
     bottles
