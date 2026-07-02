@@ -1496,11 +1496,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1782990724,
-        "narHash": "sha256-GXRuhOe8rQmfYvTqsUzagaAArJzxUvFrTzudIjkspt8=",
+        "lastModified": 1783005193,
+        "narHash": "sha256-ttR8pe5HABzzOYqCZXLmRWyu0xc63Xa6pWcYFDsRLD8=",
         "ref": "refs/heads/main",
-        "rev": "c86cda0ef276203d118d4d1287ae6030233422b1",
-        "revCount": 3,
+        "rev": "d5ce93f55b704528b4b56ce0a858264e58335848",
+        "revCount": 5,
         "type": "git",
         "url": "http://git.localdomain/naqib/minecraft-infra"
       },
@@ -1517,15 +1517,15 @@
       "locked": {
         "lastModified": 1782996811,
         "narHash": "sha256-JCVlAt76bC2BMfmdDK7znPe6kNxrhPIUYVRQFqjaApk=",
-        "ref": "refs/heads/main",
+        "owner": "mnajib",
+        "repo": "nvim-config-test",
         "rev": "06a3c1d5e66a33a53ad04d238bd1ba096057a2ba",
-        "revCount": 11,
-        "type": "git",
-        "url": "http://git.localdomain/najib/nvim-config-test"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "http://git.localdomain/najib/nvim-config-test"
+        "owner": "mnajib",
+        "repo": "nvim-config-test",
+        "type": "github"
       }
     },
     "nix": {
