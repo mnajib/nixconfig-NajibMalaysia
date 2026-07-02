@@ -234,7 +234,7 @@ in
     kmonad
     discord
     htop
-    flatpak
+    #flatpak
     gimp
     freecad
     steam

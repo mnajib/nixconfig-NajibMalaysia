@@ -65,6 +65,8 @@ in
     ./kanata/kanata.nix
     #(fromCommon "keyboard-kmonad.nix")
 
+    #(fromCommon "logitech-unifying.nix")
+
     (fromCommon "audio-pipewire.nix")
     (fromCommon "hardware-printer.nix")
     (fromCommon "zramSwap.nix")

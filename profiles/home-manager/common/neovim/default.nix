@@ -1,3 +1,5 @@
+# profiles/home-manager/common/neovim/default.nix
+#
 #
 # Ref:
 #   - https://github.com/nix-community/nixvim

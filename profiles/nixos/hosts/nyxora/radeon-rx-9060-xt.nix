@@ -1,7 +1,7 @@
 {
   pkgs,
   config,
-  #lib,
+  lib,
   ...
 }:
 let
@@ -25,11 +25,28 @@ in
   # Enable the open-source AMDGPU driver for Xserver/Wayland
   services.xserver.videoDrivers = [ "amdgpu" ];
 
+  # XXX: Explicitly set a modern kernel version that supports both RDNA4 and OpenZFS
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_6_12;
+
   #  Force early Kernel Mode Setting (KMS) for the AMD driver
   boot.initrd.kernelModules = [ "amdgpu" ];
 
+  # XXX: already defined in flake.nix
+  #nixpkgs.config.allowUnfree = true;
+
+  # Ensure the firmware for modern cards is present
+  hardware.enableAllFirmware = true;
+
   #  Ensure hardware firmware is available
   hardware.enableRedistributableFirmware = true;
+
+  # This exposes the raw driver libraries to the system
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      rocmPackages.clr.icd  # Installs the AMD Common Language Runtime OpenCL driver
+    ];
+  };
 
   #
   # Using a GUI Tool (lact)
@@ -54,7 +71,14 @@ in
     pciutils
     lact # Linux AMDGPU Controller Tool
     amdgpu_top # like nvtop
+    rocmPackages.rocminfo # Diagnostic tool to verify HSA agents
+    rocmPackages.rocm-smi # System Management Interface to monitor the RX 9060 XT
   ];
+
+  # XXX:
+  environment.sessionVariables = {
+    HSA_OVERRIDE_GFX_VERSION = "12.0.0";
+  };
 
   # Enable the systemd daemon for LACT to apply profiles on boot
   systemd.services.lactd = {

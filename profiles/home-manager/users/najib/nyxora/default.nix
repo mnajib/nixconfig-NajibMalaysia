@@ -23,7 +23,7 @@ in
   in [
     ../default.nix
 
-    (./. + "/${commonDir}/neovim")
+    #(./. + "/${commonDir}/neovim")
     #(./. + "/${commonDir}/ai.nix")
 
     (fromCommon "repo-bootstrap.nix")
@@ -38,7 +38,16 @@ in
 
   home.packages = with pkgs; [
     vscode
+
+    # Install the compiled output from your external flake directly into your path
+    inputs.my-nvim.packages.${pkgs.system}.default
+
   ];
+
+  # Optional: Set environment variables to make it your primary system default
+  home.sessionVariables = {
+    EDITOR = "nvim";
+  };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   #home.stateVersion = "22.05";

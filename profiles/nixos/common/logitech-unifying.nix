@@ -5,4 +5,5 @@
     gnomeExtensions.solaar-extension
   ];
   hardware.logitech.wireless.enable = true;
+  hardware.logitech.wireless.enableGraphical = true; # Adds Solaar to system packages
 }
