@@ -1496,14 +1496,17 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1782990954,
-        "narHash": "sha256-gN5wd+7lvKirkWgH0u4mPoOqw4x1k0aNK5GxnKoEJ2s=",
-        "path": "/home/naqib/src/minecraft-infra",
-        "type": "path"
+        "lastModified": 1782990724,
+        "narHash": "sha256-GXRuhOe8rQmfYvTqsUzagaAArJzxUvFrTzudIjkspt8=",
+        "ref": "refs/heads/main",
+        "rev": "c86cda0ef276203d118d4d1287ae6030233422b1",
+        "revCount": 3,
+        "type": "git",
+        "url": "http://git.localdomain/naqib/minecraft-infra"
       },
       "original": {
-        "path": "/home/naqib/src/minecraft-infra",
-        "type": "path"
+        "type": "git",
+        "url": "http://git.localdomain/naqib/minecraft-infra"
       }
     },
     "my-nvim": {
@@ -1512,11 +1515,11 @@
         "nixvim": "nixvim"
       },
       "locked": {
-        "lastModified": 1782918387,
-        "narHash": "sha256-Sd/rtmVDdTQSf7OYM6zkoR04oVoVWZ29wHmkEXT0Oa0=",
+        "lastModified": 1782996811,
+        "narHash": "sha256-JCVlAt76bC2BMfmdDK7znPe6kNxrhPIUYVRQFqjaApk=",
         "ref": "refs/heads/main",
-        "rev": "62502cf153904b8a0647924d6efb953c592cbc9c",
-        "revCount": 10,
+        "rev": "06a3c1d5e66a33a53ad04d238bd1ba096057a2ba",
+        "revCount": 11,
         "type": "git",
         "url": "http://git.localdomain/najib/nvim-config-test"
       },

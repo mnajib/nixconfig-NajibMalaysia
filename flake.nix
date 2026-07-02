@@ -214,6 +214,12 @@
 
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
 
+    #
+    # cd ~/src/nixconfig-NajibMalaysia
+    # nix flake update my-nvim
+    # nixos-rebuild switch --flake .
+    # nh os switch .
+    #
     # Connect to your declarative standalone editor flake repository
     my-nvim.url = "git+http://git.localdomain/najib/nvim-config-test";
     # Fallback option layout mirror if needed:
@@ -228,12 +234,12 @@
     #      cd ~/src/nixconfig-NajibMalaysia
     #      git add .
     #
-    # 3. Test and build your system with the local path override flags
+    # 3. To test your system with the local path override flags
     #      nh os test . -- --override-input mc-project path:/home/naqib/src/minecraft-infra
     #
     #mc-project.url = "git+file:///home/naqib/src/minecraft-infra";
-    mc-project.url = "path:/home/naqib/src/minecraft-infra";
-    #mc-project.url = "git+http://git.localdomain/naqib/minecraft-infra";
+    #mc-project.url = "path:/home/naqib/src/minecraft-infra";
+    mc-project.url = "git+http://git.localdomain/naqib/minecraft-infra";
     #mc-project.url = "github:naqib:/minecraft-infra";
 
   }; # End of 'inputs = { ... };'
