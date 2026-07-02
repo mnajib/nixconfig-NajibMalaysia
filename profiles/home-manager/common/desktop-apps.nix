@@ -18,7 +18,7 @@
 
     # Web browser
     #firefox
-    librewolf
+    #librewolf
 
     # Create a pdf
     rst2pdf
