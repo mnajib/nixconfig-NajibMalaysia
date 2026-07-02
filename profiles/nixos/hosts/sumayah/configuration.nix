@@ -21,8 +21,11 @@ in
   in [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./zfs.nix
-    ./Minecraft/minecraft.nix
     inputs.home-manager.nixosModules.home-manager
+
+    #./Minecraft/minecraft.nix
+    inputs.mc-project.nixosModules.minecraft-server # Inject the server configuration directly
+
     ./turn-off-rgb.nix
     #./grafito.nix
 
@@ -238,9 +241,10 @@ in
     gimp
     freecad
     steam
-    (prismlauncher.override {
-      jdks = [ jdk25 jdk21 jdk17 jdk8 ]; # Include jdk25 and other versions you need
-    })
+
+    #(prismlauncher.override {
+    #  jdks = [ jdk25 jdk21 jdk17 jdk8 ]; # Include jdk25 and other versions you need
+    #})
 
     qbittorrent
     bottles

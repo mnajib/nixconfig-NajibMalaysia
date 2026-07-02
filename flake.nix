@@ -219,6 +219,23 @@
     # Fallback option layout mirror if needed:
     # my-nvim.url = "github:mnajib/nvim-config-test";
 
+    #
+    # 1. Switch to your infrastructure directory and stage the updates
+    #      cd ~/src/minecraft-infra
+    #      git add .
+    #
+    # 2. Return to your main system configuration directory
+    #      cd ~/src/nixconfig-NajibMalaysia
+    #      git add .
+    #
+    # 3. Test and build your system with the local path override flags
+    #      nh os test . -- --override-input mc-project path:/home/naqib/src/minecraft-infra
+    #
+    #mc-project.url = "git+file:///home/naqib/src/minecraft-infra";
+    mc-project.url = "path:/home/naqib/src/minecraft-infra";
+    #mc-project.url = "git+http://git.localdomain/naqib/minecraft-infra";
+    #mc-project.url = "github:naqib:/minecraft-infra";
+
   }; # End of 'inputs = { ... };'
 
   outputs =
@@ -1038,7 +1055,12 @@
             #-----------------------------------------------------------------------------
             "naqib@sumayah" = mkHome {
               system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/naqib/sumayah ];
+              modules = [
+	      	./profiles/home-manager/users/naqib/sumayah
+
+                # Ensure this line is present here so it builds for the naqib user!
+                #inputs.mc-project.homeModules.minecraft-client
+	      ];
             };
 
             "naqib@huda" = mkHome {

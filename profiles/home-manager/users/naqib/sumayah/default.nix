@@ -1,3 +1,5 @@
+# profiles/home-manager/users/naqib/sumayah/default.nix
+#
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 
@@ -19,6 +21,23 @@ in
 
     #(fromCommon "neovim")
     (fromCommon "repo-bootstrap.nix")
+
+    #--------------------------------------------------------------------------
+    # NOTE
+    #--------------------------------------------------------------------------
+    #
+    # To test:
+    #   cd ~/src/nixconfig-NajibMalaysia
+    #   nh os test . -- --override-input mc-project path:/home/naqib/src/minecraft-infra
+    #
+    # To switch:
+    #   cd ~/src/nixconfig-NajibMalaysia
+    #   nix flake update mc-project   
+    #   nh os switch .
+    #
+    inputs.mc-project.homeModules.minecraft-client
+    #mc-project.homeModules.minecraft-client
+
   ];
 
   programs.repo-bootstrap.enable = true;

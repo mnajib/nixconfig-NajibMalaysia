@@ -61,6 +61,6 @@
 
   #nix-minecraft = import ./nix-minecraft.nix;
 
-  prismlauncher-version-fix = import ./prismlauncher.nix;
+  #prismlauncher-version-fix = import ./prismlauncher.nix;
 
 }
