@@ -221,9 +221,10 @@
     # nh os switch .
     #
     # Connect to your declarative standalone editor flake repository
-    my-nvim.url = "git+http://git.localdomain/najib/nvim-config-test";
+    #my-nvim.url = "git+http://git.localdomain/najib/nvim-config-test";
     # Fallback option layout mirror if needed:
-    # my-nvim.url = "github:mnajib/nvim-config-test";
+    my-nvim.url = "github:mnajib/nvim-config-test";
+    #my-nvim.url = "https://github.com/mnajib/nvim-config-test.git";
 
     #
     # 1. Switch to your infrastructure directory and stage the updates
