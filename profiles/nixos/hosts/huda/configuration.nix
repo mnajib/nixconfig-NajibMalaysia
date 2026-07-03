@@ -95,6 +95,7 @@ in
       #root = import (./. + "/${hmDir}/root/taufiq");
       najib = import (./. + "/${hmDir}/najib/${hostName}");
       naqib = import (./. + "/${hmDir}/naqib/${hostName}");
+      naim  = import (./. + "/${hmDir}/naim/${hostName}");
     }; # End home-manager.users = { ... };
   }; # End home-manager = { ... };
 

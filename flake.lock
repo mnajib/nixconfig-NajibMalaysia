@@ -1496,17 +1496,17 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1783005193,
-        "narHash": "sha256-ttR8pe5HABzzOYqCZXLmRWyu0xc63Xa6pWcYFDsRLD8=",
-        "ref": "refs/heads/main",
-        "rev": "d5ce93f55b704528b4b56ce0a858264e58335848",
-        "revCount": 5,
-        "type": "git",
-        "url": "http://git.localdomain/naqib/minecraft-infra"
+        "lastModified": 1783047499,
+        "narHash": "sha256-6zBUXlXD1Ojef9eSogALBO/0wOxLpB2Ko2YcLmX+oG8=",
+        "owner": "NaqibNajib",
+        "repo": "minecraft-infra",
+        "rev": "2cd449468d875848963f6747ee3118cf20193e68",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "http://git.localdomain/naqib/minecraft-infra"
+        "owner": "NaqibNajib",
+        "repo": "minecraft-infra",
+        "type": "github"
       }
     },
     "my-nvim": {

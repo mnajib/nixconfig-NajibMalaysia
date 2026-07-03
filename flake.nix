@@ -240,8 +240,8 @@
     #
     #mc-project.url = "git+file:///home/naqib/src/minecraft-infra";
     #mc-project.url = "path:/home/naqib/src/minecraft-infra";
-    mc-project.url = "git+http://git.localdomain/naqib/minecraft-infra";
-    #mc-project.url = "github:naqib:/minecraft-infra";
+    #mc-project.url = "git+http://git.localdomain/naqib/minecraft-infra";
+    mc-project.url = "github:NaqibNajib/minecraft-infra";
 
   }; # End of 'inputs = { ... };'
 
@@ -1125,6 +1125,14 @@
               system = "x86_64-linux";
               modules = [ ./profiles/home-manager/users/naim/keira ];
             };
+
+            "naim@huda" = mkHome {
+              system = "x86_64-linux";
+              modules = [ ./profiles/home-manager/users/naim/huda ];
+              #pkgsInputs = inputs.nixpkgs-release; # override
+              #pkgsInputs = inputs.nixpkgs-unstable; # override
+            };
+
 
         }; # End of 'homeConfigurations = { ... };'
 

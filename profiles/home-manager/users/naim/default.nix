@@ -1,3 +1,6 @@
+
+# profiles/home-manager/users/naim/default.nix
+#
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 
@@ -7,10 +10,13 @@ let
   name = "Muhammad Na'im";
   fullname = "Muhammad Na'im Bin Muhammad Najib";
   email = "muhammadnaimbinmohdnajib@gmail.com";
+  commonDir = "../../common";
 in
 {
   # You can import other home-manager modules here
-  imports = [
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+  in [
     # If you want to use modules your own flake exports (from modules/home-manager):
     # outputs.homeManagerModules.example
 
@@ -21,16 +27,19 @@ in
     # ./nvim.nix
     #../neovim
 
-    ../common-configs.nix
-    ../common-packages.nix
+    (fromCommon "common-configs.nix")
+    #(fromCommon "common-packages.nix")
 
     #../roblox.nix
     #../wesnoth.nix
     #./system-benchmark.nix
     #./minecraft.nix
-    ../youtube.nix
-    ../time-management.nix
-  ];
+    #(fromCommon "youtube.nix")
+    #(fromCommon "time-management.nix")
+    (fromCommon "repo-bootstrap.nix")
+  ]
+  #++ (builtins.attrValues outputs.homeManagerModules)
+  ;
 
   nixpkgs = {
     # You can add overlays here
@@ -64,10 +73,13 @@ in
     homeDirectory = "/home/${username}";
   };
 
+   programs.repo-bootstrap.enable = true;
+   programs.repo-bootstrap.basePath = "~/src";
+
   # Add stuff for your user as you see fit:
   home.packages = with pkgs; [
     #posterazor
-    remmina
+    #remmina
     #wpsoffice
     #libreoffice
     clamav
@@ -97,7 +109,7 @@ in
     #evince
     gnome-clocks
     smlnj
-    waydroid
+    #waydroid
     #kmymoney
     #anbox
     #pmbootstrap
@@ -122,21 +134,21 @@ in
 
     #blender
     #gimp
-    inkscape
+    #inkscape
     #libreoffice
 
     #firefox
     #chromium
     #ungoogled-chromium
     #palemoon-bin
-    qutebrowser
-    netsurf.browser
-    midori
-    epiphany
-    ephemeral
-    #eolie # 
-    surf
-    dillo-plus #dillo
+    #qutebrowser
+    #netsurf.browser
+    #midori
+    #epiphany
+    #ephemeral
+    #eolie #
+    #surf
+    #dillo-plus #dillo
     #brave
     #opera
     #google-chrome
@@ -148,9 +160,9 @@ in
     emacs
 
     #zeroad
-    luanti #minetest
-    hedgewars
-    openttd
+    #luanti #minetest
+    #hedgewars
+    #openttd
 
     fluxbox                             # need fbsetroot to set desktop background color
   ];
