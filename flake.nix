@@ -1063,7 +1063,7 @@
             "naqib@sumayah" = mkHome {
               system = "x86_64-linux";
               modules = [
-	      	./profiles/home-manager/users/naqib/sumayah
+                ./profiles/home-manager/users/naqib/sumayah
 
                 # Ensure this line is present here so it builds for the naqib user!
                 #inputs.mc-project.homeModules.minecraft-client

@@ -66,8 +66,8 @@ in
     (fromCommon "audio-pipewire.nix")
     (fromCommon "hardware-printer.nix")
 
-    #(fromCommon "nfs-client-automount.nix")
-    (fromCommon "nfs-client.nix")
+    (fromCommon "nfs-client-automount.nix")
+    #(fromCommon "nfs-client.nix")
 
     #(fromCommon "opengl.nix")
     #(fromCommon "opengl2.nix")
