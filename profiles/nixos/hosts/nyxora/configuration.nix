@@ -145,6 +145,7 @@ in
     ./services/postgrest.nix
     ./services/refine.nix
     ./services/immich.nix
+    ./services/tailscale.nix
 
     #./hosts2.nix
 
