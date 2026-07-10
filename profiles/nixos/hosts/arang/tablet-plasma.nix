@@ -5,52 +5,34 @@
 }:
 {
 
+  # Force-load the kernel module for synthetic user input devices
+  boot.kernelModules = [ "uinput" ];
 
-  # Via Home-Manager
-  /*
-  dconf.settings = {
-    "org/gnome/desktop/a11y/applications" = {
-      screen-keyboard-enabled = true;
-    };
+  # Define hardware rules allowing members of the "input" group to use uinput
+  services.udev.extraRules = ''
+    KERNEL=="uinput", MODE="0660", GROUP="input"
+  '';
+
+  # Declaratively register the XWayland autostart profile for all users
+  environment.etc."xdg/autostart/onboard.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Name=Onboard Virtual Keyboard
+    Exec=env GDK_BACKEND=x11 onboard
+    Hidden=false
+    NoDisplay=false
+    X-KDE-autostart-after=panel
+  '';
+
+  # Forces the Wayland compositor to activate the on-screen keyboard layer on the lock screen
+  #environment.variables = {
+  #  QT_IM_MODULE = "maliit";
+  #};
+
+  # Lock Screen OSK configuration (Maliit framework engine)
+  environment.sessionVariables = {
+    QT_IM_MODULE = "maliit";
   };
-
-  dconf.settings = {
-    "org/gnome/shell" = {
-      favorite-apps = [
-        "org.gnome.Settings.desktop"
-        "org.gnome.Nautilus.desktop"
-      ];
-    };
-  };
-
-  home.packages = with pkgs; [
-    gnomeExtensions.improved-osk
-  ];
-  */
-
-
-  #programs.dconf.enable = true;
-  # Note: Defining dconf settings at the system level requires configuring a user profile database.
-
-  /*
-  programs.dconf.profiles.user.databases = [
-    {
-      settings = {
-        "org/gnome/desktop/a11y/applications" = {
-          screen-keyboard-enabled = true;
-        };
-        #"org/gnome/shell" = {
-        #  favorite-apps = [
-        #    "org.gnome.Settings.desktop"
-        #    "org.gnome.Nautilus.desktop"
-        #  ];
-        #};
-      };
-    }
-  ];
-  */
-  # Explicitly clean out the system-level dconf profile leftover from GNOME
-  programs.dconf.profiles.user.databases = [];
 
   #i18n.inputMethod = {
   #  enable = true;
@@ -60,9 +42,6 @@
   # Enables hardware (orientation) sensor sensing for automatic screen rotation
   hardware.sensor.iio.enable = true;
 
-  # Enable the Maliit Input Method Framework
-  #programs.maliit.enable = true;
-
   # This is the cleanest approach. Nix looks at gnomeExtensions first. If you
   # list improved-osk, it finds it there. If you were to list git, Nix wouldn't
   # find it in gnomeExtensions, so it would fall back to checking pkgs.
@@ -71,39 +50,74 @@
   # The inherit Approach (Alternative)
   environment.systemPackages = with pkgs; [
 
-    # From pkgs
-    #git
-    #curl
-    #gnomeExtensions.improved-osk
-    #gnomeExtensions.keyboard-toggle
-    #gnomeExtensions.al-hijri-date
+    onboard # virtual keyboard package
 
-    # From pkgs.gnomeExtensions
-    #improved-onscreen-keyboard
-    #im-panel-integrated-with-osk
-    #touchup
-    #kmonad-toggle
-    #keyboard-toggle
-
+    # Required specifically to drive input on the desktop screen lock layer
     maliit-keyboard
     maliit-framework
     kdePackages.plasma-keyboard
 
-    #awesome-tiles
+  ];
 
-    #al-hijri-date
-    #better-desktop-zoom
-    #battery-time-with-percentage
+  services.displayManager.enable = true;
 
-    # GNOME Extensions extracted from pkgs.gnomeExtensions
-    /*
-    (with gnomeExtensions; [
-      improved-osk
-      keyboard-toggle
-      al-hijri-date
-    ])
-    */
+  # Force SDDM Wayland and expose the Input Method Modules
+  services.displayManager.sddm = {
+    # Ensure SDDM logs in natively using Wayland protocols
+    wayland.enable = true; #
 
+    # Forcefully spawn Onboard right into the greeter context window
+    setupScript = ''
+      ${pkgs.onboard}/bin/onboard &
+    ''; #
+
+    # Include the required layout libraries directly in the display manager layer
+    extraPackages = with pkgs; [
+      kdePackages.qtvirtualkeyboard #
+      kdePackages.qtwayland
+      kdePackages.qtsvg # Required to render the default visual key assets
+      kdePackages.layer-shell-qt # REQUIRED: Allows SDDM to render OSK layers over Wayland shells
+      kdePackages.plasma-keyboard # Ensures layout engines are bound to sddm shell
+    ];
+
+    settings = {
+
+      /*
+      General = {
+        InputMethod = "qtvirtualkeyboard"; #
+
+        # Instructs the login window shell to integrate cleanly with Wayland overlays
+        #GreeterEnvironment = "QT_WAYLAND_SHELL_INTEGRATION=layer-shell";
+      };
+
+      # FORCE KWIN WAYLAND COMPOSITOR TO RUN THE INTERACTIVE KEYBOARD BACKEND
+      Wayland = {
+        CompositorCommand = "${pkgs.kdePackages.kwin}/bin/kwin_wayland --no-lockscreen --no-global-shortcuts --inputmethod qtvirtualkeyboard --locale1";
+      };
+      */
+
+    };
+  };
+
+  services.displayManager.autoLogin = {
+    enable = true;
+    user = "najib"; # Automatically logs directly into your safe user namespace
+  };
+
+  # CRUCIAL FIX: Inject the layout variables directly into the systemd environment loop
+  systemd.services.display-manager.environment = {
+    QT_IM_MODULE = "qtvirtualkeyboard";
+    QT_VIRTUALKEYBOARD_DESKTOP_DISABLE = "0"; # Forces it to run on standard desktop screens
+  };
+
+  # 7. Reset systemd service environment blocks
+  systemd.services.display-manager.environment = {};
+
+  # Explicitly clean out the system-level dconf profile leftover from GNOME
+  programs.dconf.profiles.user.databases = [];
+
+  users.users.najib.extraGroups = [
+    "input" # This handles the required permissions perfectly
   ];
 
 }
