@@ -680,6 +680,22 @@
               pkgsInput = inputs.nixpkgs-release-26_05; # override
             };
 
+            arang = mkNixos {
+              system = "x86_64-linux";
+              modules = [
+                ./profiles/nixos/hosts/arang/configuration.nix
+                inputs.home-manager.nixosModules.home-manager
+                inputs.hardware.nixosModules.common-cpu-intel
+                inputs.hardware.nixosModules.common-pc-laptop-ssd
+                inputs.stylix.nixosModules.stylix
+                #inputs.disko.nixosModules.disko
+              ];
+              #pkgsInput = inputs.nixpkgs-unstable; # override
+
+              # nixpkgs-release-26_05.url = "github:nixos/nixpkgs/release-26.05";
+              pkgsInput = inputs.nixpkgs-release-26_05; # override
+            };
+
             #nyxora = let
             # Toggle these to true/false before running nixos-rebuild or nix run
             # Only enabled drive will be process
