@@ -28,6 +28,8 @@
   ];
   */
 
+  # XXX: Force-load the kernel module for synthetic user input devices
+  boot.kernelModules = [ "uinput" ];
 
   programs.dconf.enable = true;
   # Note: Defining dconf settings at the system level requires configuring a user profile database.

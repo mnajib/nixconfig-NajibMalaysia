@@ -30,9 +30,9 @@
   #};
 
   # Lock Screen OSK configuration (Maliit framework engine)
-  environment.sessionVariables = {
-    QT_IM_MODULE = "maliit";
-  };
+  #environment.sessionVariables = {
+  #  QT_IM_MODULE = "maliit";
+  #};
 
   #i18n.inputMethod = {
   #  enable = true;
@@ -50,26 +50,27 @@
   # The inherit Approach (Alternative)
   environment.systemPackages = with pkgs; [
 
-    onboard # virtual keyboard package
+    onboard # virtual keyboard package. Custom input map engine with developer modifiers for terminals
 
     # Required specifically to drive input on the desktop screen lock layer
-    maliit-keyboard
-    maliit-framework
+    maliit-keyboard   # Native framework driver for the lock screen layer
+    maliit-framework  # Backend server logic engine
     kdePackages.plasma-keyboard
 
   ];
 
-  services.displayManager.enable = true;
+  #services.displayManager.enable = true;
 
+  /*
   # Force SDDM Wayland and expose the Input Method Modules
   services.displayManager.sddm = {
     # Ensure SDDM logs in natively using Wayland protocols
     wayland.enable = true; #
 
     # Forcefully spawn Onboard right into the greeter context window
-    setupScript = ''
-      ${pkgs.onboard}/bin/onboard &
-    ''; #
+    #setupScript = ''
+    #  ${pkgs.onboard}/bin/onboard &
+    #''; #
 
     # Include the required layout libraries directly in the display manager layer
     extraPackages = with pkgs; [
@@ -81,23 +82,9 @@
     ];
 
     settings = {
-
-      /*
-      General = {
-        InputMethod = "qtvirtualkeyboard"; #
-
-        # Instructs the login window shell to integrate cleanly with Wayland overlays
-        #GreeterEnvironment = "QT_WAYLAND_SHELL_INTEGRATION=layer-shell";
-      };
-
-      # FORCE KWIN WAYLAND COMPOSITOR TO RUN THE INTERACTIVE KEYBOARD BACKEND
-      Wayland = {
-        CompositorCommand = "${pkgs.kdePackages.kwin}/bin/kwin_wayland --no-lockscreen --no-global-shortcuts --inputmethod qtvirtualkeyboard --locale1";
-      };
-      */
-
     };
   };
+  */
 
   services.displayManager.autoLogin = {
     enable = true;
@@ -105,10 +92,10 @@
   };
 
   # CRUCIAL FIX: Inject the layout variables directly into the systemd environment loop
-  systemd.services.display-manager.environment = {
+  /*systemd.services.display-manager.environment = {
     QT_IM_MODULE = "qtvirtualkeyboard";
     QT_VIRTUALKEYBOARD_DESKTOP_DISABLE = "0"; # Forces it to run on standard desktop screens
-  };
+  };*/
 
   # 7. Reset systemd service environment blocks
   systemd.services.display-manager.environment = {};
