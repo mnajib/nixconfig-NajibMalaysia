@@ -1,5 +1,16 @@
-{ config, pkgs, ... }:
 {
+  config, pkgs,
+  lib,
+  inputs, outputs,
+  ...
+}:
+let
+  commonDir = "../../common";
+  hmDir = "../../../home-manager/users";
+  hostName = "sakinah";            # Machine gw/firewall (Dell Inspiron 620s, with with multiple eth)
+  hostId = "6a063836"; # cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
+  stateVersion = "23.11";
+in {
   nix = {
     #package = lib.mkForce pkgs.nixFlakes;
     extraOptions = ''
@@ -8,91 +19,122 @@
     #settings.experimental-features = "nix-command flakes";
   };
 
-  imports = [
-    ./hardware-configuration-sakinah.nix
-    ./bootEFI.nix
-    #./bootBIOS.nix
-    ./thinkpad.nix
-    #<nixos-hardware/lenovo/thinkpad/x220>
-    ./touchpad-scrollTwofinger-TapTrue.nix
+  #
+  # PROBLEM:
+  #   The build failed because a Python library called clevercsv (specifically for Python 3.14) crashed during its pytestCheckPhase.
+  #
+  # TEMPORARY WORKAROUND:
+  #   Since this is an upstream bug with the package's test suite and not an issue with your actual system configuration, the standard Nix workaround is to apply an overlay that tells the builder to skip tests (doCheck = false) for this specific package.
+  #   By adding this, Nix will skip the pytestCheckPhase for clevercsv, successfully build the package, and allow your system compilation to finish.
+  #
+  # XXX: TODO:
+  #   Once a few days pass and the Nixpkgs maintainers patch the test upstream, you can safely remove this overlay.
+  #
+  /*
+  nixpkgs.overlays = [
+    (final: prev: {
+      # Modern NixOS way to override Python package sets globally
+      pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+        (python-final: python-prev: {
+          clevercsv = python-prev.clevercsv.overridePythonAttrs (old: {
+            # Bypass the broken upstream tests
+            doCheck = false;
+          });
+        })
+      ];
+    })
+  ];
+  */
 
-    #./users-anak2.nix
-    ./users-nurnasuha-wheel.nix
-    ./users-naqib-wheel.nix
-    ./users-naim.nix
-    ./users-julia-wheel.nix
+  imports = let
+    fromCommon = name: ./. + "/${toString commonDir}/${name}";
+  in [
+    ./hardware-configuration.nix
+    (fromCommon "configuration.FULL.nix")
+    (fromCommon "users-naqib-wheel.nix")
+    (fromCommon "users-nurnasuha.nix")
+    (fromCommon "users-naim.nix")
+    (fromCommon "users-julia.nix")
+    (fromCommon "nfs-client-automount.nix")
+    #(fromCommon "samba-client.nix")
+    (fromCommon "console-keyboard-dvorak.nix")
+    (fromCommon "keyboard-with-msa.nix")
+    (fromCommon "audio-pipewire.nix")
+    (fromCommon "hardware-printer.nix")
+    (fromCommon "zramSwap.nix")
+    (fromCommon "window-managers.nix")
+    (fromCommon "nix-garbage-collector.nix")
 
     #inputs.home-manager.nixosModules.default # Home Manager module
+    #inputs.home-manager-unstable.nixosModules.default # Home Manager module
 
-    #./hosts.nix
-    #./hosts2.nix
+    #(fromCommon "opengl.nix")
+    (fromCommon "opengl2.nix")
 
-    #./nfs-client.nix
-    ./nfs-client-automount.nix
-
-    ./samba-client.nix
-
-    ./console-keyboard-dvorak.nix
-    #./keyboard-with-msa.nix
-    #./keyboard-kmonad.nix
-
-    ./audio-pipewire.nix
-    #./audio-pulseaudio.nix
-
-    #./synergy-client.nix
-    ./hardware-printer.nix
-    ./hardware-tablet-wacom.nix
-    ./zramSwap.nix
-    ./configuration.FULL.nix
-    #./btrbk.nix
-    ./zfs.nix
-    #./timetracker.nix # look home-manager/time-management.nix
-
-    ./3D.nix
-
-    ./flatpak.nix
-
-    ./xdg.nix
+    (fromCommon "xdg.nix")
     #./xdg-gtk.nix
     #./xdg-kde.nix
 
-    ./typesetting.nix
+    #./gpu-config-wayland.nix
+    ./gpu-config-xorg.nix
 
-    # Games
-    ./openra.nix
-    ./lutris.nix
-    ./steam.nix
+    #(fromCommon "flatpak.nix")
+    #(fromCommon "stylix.nix")
 
-    #./nix-build.nix
-    ./nix-garbage-collector.nix
-    #./teamviewer.nix
-
-    ./stylix.nix
+    #(fromCommon "bluetooth.nix")
   ];
 
-  # Booting
-  boot.loader = {
-    timeout = 100;                     #null;
-    grub = {
-      useOSProber = true;
-      timeoutStyle = "menu";
-
-      #gfsmodeEfi = "1566x768";
-      #gfsmodeBios = "1024x768";
-      memtest86.enable = true;
+  home-manager = let
+    userImport = user: import (./. + "/${hmDir}/${user}/${hostName}");
+  in {
+    backupFileExtension = "backup";
+    extraSpecialArgs = {
+      inherit inputs outputs; # to pass arguments to home.nix
+    };
+    users = {
+      najib = userImport "najib";
+      #root = userImport "root";
+      #julia = userImport "julia";
     };
   };
 
-  # For the value of 'networking.hostID', use the following command:
+  # Booting
+  boot.loader = {
+    timeout = 10; #null;
+    #grub = {
+    #  useOSProber = true;
+    #  timeoutStyle = "menu";
+    #  efiSupport = true;
+    #  #gfsmodeEfi = "1566x768";
+    #  #gfsmodeBios = "1024x768";
+    #  #memtest86.enable = true;
+    #};
+    systemd-boot = {
+      enable = true;
+    };
+    efi = {
+      canTouchEfiVariables = true;
+    };
+  };
+
+  #
+  # NOTE:
+  #
+  #   For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   #
-  # Thinkpad T400 kepong
-  networking.hostId = "6a063836";
-  networking.hostName = "sakinah";
+  networking.hostId = "${hostId}";
+  networking.hostName = "${hostName}";
 
-  nix.settings.trusted-users = [ "root" "najib" "naqib" "nurnasuha" ];
+  nix.settings.trusted-users = [
+    "root" "najib"
+    "naqib"
+  ];
 
   hardware.enableAllFirmware = true;
+
+  #myGpu.driver = "nvidia";
+  myGpu.driver = "nouveau";
 
   hardware.graphics = {
     enable = true;
@@ -100,18 +142,19 @@
     extraPackages = with pkgs; [
       #vaapiIntel # conflic with nixos-hardware config
       libvdpau-va-gl
-      vaapiVdpau
+      libva-vdpau-driver # vaapiVdpau
       mesa #mesa.drivers
     ];
     extraPackages32 = with pkgs.pkgsi686Linux; [
       libva
       #vaapiIntel # conflic with nixos-hardware config
       libvdpau-va-gl
-      vaapiVdpau
+      libva-vdpau-driver # vaapiVdpau
     ];
   };
 
-  #services.fstrim.enable = true;
+  services.fstrim.enable = true;
+  services.fwupd.enable = true;
 
   # XXX:
   networking.useDHCP = false;
@@ -122,7 +165,26 @@
   networking.networkmanager.enable = true;
   programs.nm-applet.enable = true;
 
-  # XXX: Move this configuration to per-host
+  time.timeZone = "Asia/Kuala_Lumpur";
+
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  /*
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "ms_MY.UTF-8";
+    LC_IDENTIFICATION = "ms_MY.UTF-8";
+    LC_MEASUREMENT = "ms_MY.UTF-8";
+    LC_MONETARY = "ms_MY.UTF-8";
+    LC_NAME = "ms_MY.UTF-8";
+    LC_NUMERIC = "ms_MY.UTF-8";
+    LC_PAPER = "ms_MY.UTF-8";
+    LC_TELEPHONE = "ms_MY.UTF-8";
+    LC_TIME = "ms_MY.UTF-8";
+  };
+  */
+
+  # Move this configuration to per-host
   #powerManagement.enable = true;
   #services.upower.enable = true;
   #powerManagement.powertop.enable = true;
@@ -135,6 +197,7 @@
   networking.nftables.enable = true;
   networking.firewall = {
     enable = true;
+    allowPing = true;
     allowedTCPPorts = [
       1110 # NFS cluster
       4045 # NFS lock manager
@@ -146,22 +209,22 @@
     ];
   };
 
-  hardware.trackpoint = {
-    enable = true;
-    device = "TPPS/2 IBM TrackPoint";
-    speed = 97;
-    sensitivity = 130;
-    emulateWheel = true;
-  };
+  #hardware.trackpoint = {
+  #  enable = true;
+  #  device = "TPPS/2 IBM TrackPoint";
+  #  speed = 97;
+  #  sensitivity = 130;
+  #  emulateWheel = true;
+  #};
 
-  services.libinput = {
-    enable = true;
-    touchpad = {
-      disableWhileTyping = true;
-      scrollMethod = "twofinger";
-      tapping = true;
-    };
-  };
+  #services.libinput = {
+  #  enable = true;
+  #  touchpad = {
+  #    disableWhileTyping = true;
+  #    scrollMethod = "twofinger";
+  #    tapping = true;
+  #  };
+  #};
 
   services.displayManager = {
     #enable = true;
@@ -180,6 +243,9 @@
   services.xserver = {
     enable = true;
 
+    layout = "us";
+    xkbVariant = "dvorak";
+
     displayManager = {
       #gdm.enable = true;
       lightdm.enable = true;
@@ -191,34 +257,28 @@
       '';
     };
 
-    #desktopManager.xfce.enable = true;
-    #desktopManager.mate.enable = true;
-    #desktopManager.gnome.enable = true;
+    desktopManager = {
+      #mate.enable = true;
+      gnome.enable = true;
+      #xfce.enable = true;
+    };
 
-    windowManager.jwm.enable = true;
-    windowManager.icewm.enable = true;
-    windowManager.fluxbox.enable = true;
+    windowManager = {
+      jwm.enable = true;
+      icewm.enable = true;
+      fluxbox.enable = true;
+    };
   };
 
   nix.settings.max-jobs = 2;
 
-  #environment.systemPackages = with pkgs; [
-  #environment.systemPackages = [
-    #pkgs.blender
-    #pkgs.sweethome3d.application
-    #pkgs.sweethome3d.textures-editor
-    #pkgs.sweethome3d.furniture-editor
+  environment.systemPackages = with pkgs; [
 
-    #lightlocker
-  #];
+    # To install (globally, instead of per user) home-manager packages
+    inputs.home-manager.packages.${pkgs.system}.default
+    ##inputs.home-manager-unstable.packages.${pkgs.system}.default
 
-  # Home Manager configuration
-  #home-manager = {
-  #  extraSpecialArgs = { inherit inputs; };
-  #  users = {
-  #    "najib" = import ./home.nix;
-  #  };
-  #};
+  ];
 
-  system.stateVersion = "23.11";
+  system.stateVersion = "${stateVersion}";
 }

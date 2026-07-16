@@ -219,7 +219,8 @@
 
   programs.java.enable = true;
 
-  programs.light.enable = true;
+  #programs.light.enable = true;
+  hardware.acpilight.enable = true;
 
   programs.dconf.enable = true;         # for gnome?
 
@@ -415,7 +416,7 @@
 
   #services.locate.enable = true; # default false
   #services.picom.enable = true; #services.compton.enable = true;
-  programs.adb.enable = true;
+  #programs.adb.enable = true;
 
   #services.cron = {
     #enable = true;

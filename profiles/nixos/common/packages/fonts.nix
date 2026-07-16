@@ -88,7 +88,7 @@
       unifont                           # some international languages
       cardo                             # Cardo is a large Unicode font specifically designed for the needs of classicists, Biblical scholars, medievalists, and linguists.
       google-fonts
-      tewi-font
+      #tewi-font  # tewi-font has been removed because it was removed from upstream
       #kochi-substitude-naga10
       anonymousPro
       dejavu_fonts

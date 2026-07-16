@@ -22,7 +22,7 @@
 
   programs.helix.extraPackages = with pkgs; [
     marksman
-    helix-gpt
+    #helix-gpt
     vim-language-server
     haskell-language-server
     bash-language-server

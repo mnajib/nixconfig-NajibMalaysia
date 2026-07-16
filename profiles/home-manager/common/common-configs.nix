@@ -275,7 +275,7 @@ in
   #};
 
   programs.termite = {
-    enable = true;
+    enable = false; # true; # termite has been removed as it was broken and unmaintained upstream
     #font = "${font} 5"; #8"; #9
 
     #foregroundColor = "";
@@ -299,6 +299,8 @@ in
 
   programs.fish = {
     enable = true;
+
+    generateCompletions = false;
 
     shellAliases = {
       aoeu = "setxkbmap us";

@@ -5,7 +5,11 @@
     vlc mpv smplayer
 
     # Recording
-    vokoscreen simplescreenrecorder audio-recorder
+    vokoscreen-ng #vokoscreen
+    simplescreenrecorder
+    #audio-recorder # audio-recorder has been removed as it is unmaintained upstream and broken.
+    gnome-sound-recorder
+    reco
 
     # Graphics
     gimp inkscape
