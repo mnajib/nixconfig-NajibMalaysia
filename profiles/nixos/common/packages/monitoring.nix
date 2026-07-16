@@ -14,7 +14,9 @@
     net-tools
 
     # Misc diagnostics
-    xmlstarlet inxi dmidecode lshw hwinfo neofetch cpufetch
+    xmlstarlet inxi dmidecode lshw hwinfo 
+    hyfetch #neowofetch #neofetch
+    cpufetch
 
     # Journal/logs
     gnome-logs

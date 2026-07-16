@@ -6,7 +6,9 @@
 
     # Disk usage analyzers
     ncdu dua dust duf gdu godu duc
-    baobab k4dirstat qdirstat jdiskreport gnome-disk-utility
+    baobab
+    #k4dirstat # k4dirstat has been removed due to outdated KF5 dependencies.
+    qdirstat jdiskreport gnome-disk-utility
 
     # Duplicate file finders
     jdupes fdupes fclones fclones-gui

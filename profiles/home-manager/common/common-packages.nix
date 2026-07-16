@@ -89,7 +89,7 @@
     arcanechat-tui
 
     # GUI E-mail Client
-    sylpheed
+    claws-mail #sylpheed               # sylpheed has been removed because it is broken and unmaintained.
     #thunderbird
     #mailspring                    # is marked as insecure
     geary

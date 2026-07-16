@@ -8,7 +8,7 @@
     # GUI Player (or with ability to launch player; browser and player and mybe downloader)
     #--------------------------------------------------------------------------
     #smtube # insecure because using unmaintained qtwebkit
-    minitube # watch youtube with tv-like experience
+    #minitube # watch youtube with tv-like experience
     unstable.freetube #freetube # the private youtube client
     headset
     invidious

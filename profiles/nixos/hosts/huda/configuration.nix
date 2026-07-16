@@ -85,7 +85,9 @@ in
     (fromCommon "flatpak.nix")
   ];
 
-  home-manager = {
+  home-manager = let
+    userImport = user: import (./. + "/${hmDir}/${user}/${hostName}");
+  in {
     backupFileExtension = "backup";
     #overwriteBackup = true;
     extraSpecialArgs = { inherit inputs outputs; }; # to pass arguments to home.nix
@@ -93,9 +95,12 @@ in
       #root = import "${hmDir}/root/taufiq";
       #najib = import "${hmDir}/najib/taufiq";
       #root = import (./. + "/${hmDir}/root/taufiq");
-      najib = import (./. + "/${hmDir}/najib/${hostName}");
-      naqib = import (./. + "/${hmDir}/naqib/${hostName}");
-      naim  = import (./. + "/${hmDir}/naim/${hostName}");
+      #najib = import (./. + "/${hmDir}/najib/${hostName}");
+      #naqib = import (./. + "/${hmDir}/naqib/${hostName}");
+      #naim  = import (./. + "/${hmDir}/naim/${hostName}");
+      najib = userImport "najib";
+      naqib = userImport "naqib";
+      naim = userImport "naim";
     }; # End home-manager.users = { ... };
   }; # End home-manager = { ... };
 
