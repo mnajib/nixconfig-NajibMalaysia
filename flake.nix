@@ -568,6 +568,18 @@
 
               modules = modules ++ [
 
+                # Inject the home-manager NixOS module automatically for ALL hosts
+                hmInput.nixosModules.home-manager
+
+                # Configure default settings for home-manager on all hosts
+                {
+                  home-manager = {
+                    useGlobalPkgs = true;
+                    useUserPackages = true;
+                    extraSpecialArgs = { inherit inputs outputs; };
+                  };
+                }
+
                 # Inject base configuration natively via a NixOS module
                 {
                   nixpkgs.overlays = builtins.attrValues self.overlays;
@@ -580,16 +592,23 @@
                   } extraConfig;
                 }
 
-                # global configuration module
-                ({ lib, ... }: {
-                  # 1. Copy physical files ONLY if copyConfig is true
+                # Global configuration module
+                ({ lib, pkgs, ... }: {
+
+                  # INJECT HOME-MANAGER GLOBALLY HERE:
+                  environment.systemPackages = [
+                    inputs.home-manager.packages.${system}.default
+                  ];
+
+                  # Copy physical files ONLY if copyConfig is true
                   environment.etc."current-system-flake" = lib.mkIf copyConfig {
                     source = self;
                   };
 
-                  # 2. ALWAYS embed the exact Git commit revision (zero storage impact)
+                  # ALWAYS embed the exact Git commit revision (zero storage impact)
                   system.configurationRevision = lib.mkIf (self ? rev || self ? dirtyRev)
                     (self.rev or self.dirtyRev);
+
                 })
 
               ];

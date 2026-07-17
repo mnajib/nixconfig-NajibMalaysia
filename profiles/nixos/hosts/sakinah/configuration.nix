@@ -18,6 +18,13 @@ in {
       experimental-features = nix-command flakes
     '';
     #settings.experimental-features = "nix-command flakes";
+
+    settings.trusted-users = [
+      "root" "najib"
+      "naqib"
+      "a" # XXX
+    ];
+
   };
 
   #
@@ -52,6 +59,7 @@ in {
   in [
     ./hardware-configuration.nix
     (fromCommon "configuration.FULL.nix")
+    (fromCommon "users-najib.nix")
     (fromCommon "users-naqib-wheel.nix")
     (fromCommon "users-nurnasuha.nix")
     (fromCommon "users-naim.nix")
@@ -94,9 +102,9 @@ in {
     userImport = user: import (./. + "/${hmDir}/${user}/${hostName}");
   in {
     backupFileExtension = "backup";
-    extraSpecialArgs = {
-      inherit inputs outputs; # to pass arguments to home.nix
-    };
+    #extraSpecialArgs = {
+    #  inherit inputs outputs; # to pass arguments to home.nix
+    #};
     users = {
       najib = userImport "najib";
       #root = userImport "root";
@@ -146,12 +154,6 @@ in {
   #
   networking.hostId = "${hostId}";
   networking.hostName = "${hostName}";
-
-  nix.settings.trusted-users = [
-    "root" "najib"
-    "naqib"
-    "a" # XXX
-  ];
 
   hardware.enableAllFirmware = true;
 
@@ -317,8 +319,8 @@ in {
 
   environment.systemPackages = with pkgs; [
 
-    # To install (globally, instead of per user) home-manager packages
-    inputs.home-manager.packages.${pkgs.system}.default
+    # To install (globally, instead of per user) home-manager packages ('programs.home-manager.enable = true;' in home.nix for each user)
+    #inputs.home-manager.packages.${pkgs.system}.default
     ##inputs.home-manager-unstable.packages.${pkgs.system}.default
 
     telegram-desktop # Telegram client
