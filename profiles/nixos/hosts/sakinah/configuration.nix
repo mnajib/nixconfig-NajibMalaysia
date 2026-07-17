@@ -7,9 +7,9 @@
 let
   commonDir = "../../common";
   hmDir = "../../../home-manager/users";
-  hostName = "sakinah";            # Machine gw/firewall (Dell Inspiron 620s, with with multiple eth)
-  hostId = "6a063836"; # cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
-  stateVersion = "23.11";
+  hostName = "sakinah";                 # Machine gw/firewall (Dell Inspiron 620s, with with multiple eth)
+  hostId = "6a063836";                  # cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
+  stateVersion = "26.05";
 in {
   nix = {
     #package = lib.mkForce pkgs.nixFlakes;
@@ -64,24 +64,29 @@ in {
     (fromCommon "zramSwap.nix")
     (fromCommon "window-managers.nix")
     (fromCommon "nix-garbage-collector.nix")
+    (fromCommon "bluetooth.nix")
+    (fromCommon "flatpak.nix")
+    #(fromCommon "packages/databases.nix")
 
     #inputs.home-manager.nixosModules.default # Home Manager module
     #inputs.home-manager-unstable.nixosModules.default # Home Manager module
 
     #(fromCommon "opengl.nix")
-    (fromCommon "opengl2.nix")
+    #(fromCommon "opengl2.nix")
 
-    (fromCommon "xdg.nix")
+    #(fromCommon "xdg.nix")
     #./xdg-gtk.nix
     #./xdg-kde.nix
 
     #./gpu-config-wayland.nix
-    ./gpu-config-xorg.nix
+    #./gpu-config-xorg.nix
 
     #(fromCommon "flatpak.nix")
     #(fromCommon "stylix.nix")
 
     #(fromCommon "bluetooth.nix")
+
+    ./winboat.nix
   ];
 
   home-manager = let
@@ -117,6 +122,20 @@ in {
     };
   };
 
+  boot.kernelParams = [
+    "zfs.zfs_arc_max=2147483648"          # Limit ZFS cache (ARC) to 2GB to save RAM
+  ];
+
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs.devNodes = "/dev/disk/by-id";  # Helps ZFS find drives reliably
+  services.zfs.autoScrub.enable = true;
+
+  # Ensure both swaps are activated automatically
+  swapDevices = [
+    { device = "/dev/sda2"; }
+    { device = "/dev/sdb2"; }
+  ];
+
   #
   # NOTE:
   #
@@ -129,12 +148,13 @@ in {
   nix.settings.trusted-users = [
     "root" "najib"
     "naqib"
+    "a" # XXX
   ];
 
   hardware.enableAllFirmware = true;
 
   #myGpu.driver = "nvidia";
-  myGpu.driver = "nouveau";
+  #myGpu.driver = "nouveau";
 
   hardware.graphics = {
     enable = true;
@@ -156,7 +176,6 @@ in {
   services.fstrim.enable = true;
   services.fwupd.enable = true;
 
-  # XXX:
   networking.useDHCP = false;
   #networking.interface.enp0s25.useDHCP = true;
   #networking.interface.wlp3s0.useDHCP = true;
@@ -168,21 +187,26 @@ in {
   time.timeZone = "Asia/Kuala_Lumpur";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  /*
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "ms_MY.UTF-8";
-    LC_IDENTIFICATION = "ms_MY.UTF-8";
-    LC_MEASUREMENT = "ms_MY.UTF-8";
-    LC_MONETARY = "ms_MY.UTF-8";
-    LC_NAME = "ms_MY.UTF-8";
-    LC_NUMERIC = "ms_MY.UTF-8";
-    LC_PAPER = "ms_MY.UTF-8";
-    LC_TELEPHONE = "ms_MY.UTF-8";
-    LC_TIME = "ms_MY.UTF-8";
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    inputMethod = {
+      enable = true;
+      enabled = "fcitx5"; # Enforces standard XKB rules system-wide across Wayland/X11 layers
+    };
+    /*
+    extraLocaleSettings = {
+      LC_ADDRESS = "ms_MY.UTF-8";
+      LC_IDENTIFICATION = "ms_MY.UTF-8";
+      LC_MEASUREMENT = "ms_MY.UTF-8";
+      LC_MONETARY = "ms_MY.UTF-8";
+      LC_NAME = "ms_MY.UTF-8";
+      LC_NUMERIC = "ms_MY.UTF-8";
+      LC_PAPER = "ms_MY.UTF-8";
+      LC_TELEPHONE = "ms_MY.UTF-8";
+      LC_TIME = "ms_MY.UTF-8";
+    };
+    */
   };
-  */
 
   # Move this configuration to per-host
   #powerManagement.enable = true;
@@ -194,6 +218,12 @@ in {
   services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
+  services.openssh.enable = true;
+
+  # Copy NixOS configuration file from the resulting system (to?) '/run/current-system/configuration.nix'
+  # But it is not supported with flakes.
+  #system.copySystemConfiguration = true;
+
   networking.nftables.enable = true;
   networking.firewall = {
     enable = true;
@@ -201,7 +231,7 @@ in {
     allowedTCPPorts = [
       1110 # NFS cluster
       4045 # NFS lock manager
-      30000 # minetest
+      # 30000 # minetest
     ];
     allowedUDPPorts = [
       1110 # NFS client
@@ -231,14 +261,16 @@ in {
 
     #sddm = {
     #  enable = true;
-    #  #wayland = true;
+    #  wayland.enable = true;
     #};
 
     defaultSession = "none+xmonad";
     #autoLogin = {};
   };
 
-  #services.desktopManager.plasma6.enable = true;
+  services.desktopManager = {
+    plasma6.enable = true;
+  };
 
   services.xserver = {
     enable = true;
@@ -257,11 +289,11 @@ in {
       '';
     };
 
-    desktopManager = {
-      #mate.enable = true;
-      gnome.enable = true;
-      #xfce.enable = true;
-    };
+    #desktopManager = {
+    #  #mate.enable = true;
+    #  gnome.enable = true;
+    #  #xfce.enable = true;
+    #};
 
     windowManager = {
       jwm.enable = true;
@@ -272,11 +304,26 @@ in {
 
   nix.settings.max-jobs = 2;
 
+  users.users.a = {
+    isNormalUser = true;
+    extraGroups = [
+      "wheel" # Enable 'sudo' for the user.
+    ];
+  };
+
+  #programs.firefox.enable = true;
+
   environment.systemPackages = with pkgs; [
 
     # To install (globally, instead of per user) home-manager packages
     inputs.home-manager.packages.${pkgs.system}.default
     ##inputs.home-manager-unstable.packages.${pkgs.system}.default
+
+    telegram-desktop # Telegram client
+    zapzap whatsie karere # Whatsapp web client
+    miro zathura sioyek meowpdf evince papers # PDF reader
+    xterm sakura # terminal emulator
+    dmenu rofi # menu
 
   ];
 
