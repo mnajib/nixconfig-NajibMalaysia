@@ -1147,7 +1147,7 @@
 
                 # Ensure this line is present here so it builds for the naqib user!
                 #inputs.mc-project.homeModules.minecraft-client
-	      ];
+              ];
             };
 
             "naqib@huda" = mkHome {
