@@ -89,6 +89,7 @@ in
   ++ (builtins.attrValues outputs.homeManagerModules);
   # XXX: TODO: Should be in seperate file packages.nix
 
+  /*
   nixpkgs.overlays = builtins.attrValues outputs.overlays;
 
   nixpkgs.config = {
@@ -101,6 +102,7 @@ in
   #  #firefox.enableAdobeFlash = false;
   #  pulseaudio = true;
   };
+  */
 
   colorscheme = lib.mkDefault colorSchemes.dracula;
   #colorscheme = lib.mkDefault colorSchemes.nord;

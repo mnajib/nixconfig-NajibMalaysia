@@ -26,6 +26,7 @@
       #"fuse"
       "dialout"
       "kvm"
+      "docker"
     ];
 
     #shell = pkgs.zsh; # path/location of the shell program
