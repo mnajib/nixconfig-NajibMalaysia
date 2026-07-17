@@ -11,6 +11,7 @@ let
   hostId = "6a063836";                  # cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   stateVersion = "26.05";
 in {
+
   nix = {
     #package = lib.mkForce pkgs.nixFlakes;
     extraOptions = ''
@@ -100,6 +101,7 @@ in {
       najib = userImport "najib";
       #root = userImport "root";
       #julia = userImport "julia";
+      a = userImport "a";
     };
   };
 
