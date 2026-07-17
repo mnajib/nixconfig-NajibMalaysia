@@ -5,3 +5,5 @@ sudo nixos-rebuild switch --flake .#bawang --target-host najib@bawang --sudo --a
 nh os switch . -H bawang --target-host najib@bawang
 nh os boot . -H khawlah --target-host najib@khawlah
 nh os test . -H khawlah --target-host najib@khawlah
+
+nh os build . -H sakinah --target-host a@192.168.0.195 -- --override-input my-nvim path:/home/najib/src/nvim-config-test --show-trace
