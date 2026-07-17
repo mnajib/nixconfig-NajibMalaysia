@@ -63,17 +63,17 @@
     home-manager.follows = "home-manager-stable";
     #home-manager.follows = home-manager-version;
 
-    home-manager-unstable = {
-      url = "github:nix-community/home-manager/master";
-      #inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-
     home-manager-stable = {
       #url = "github:nix-community/home-manager/release-25.05";
       #url = "github:nix-community/home-manager/release-25.11";
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    home-manager-unstable = {
+      url = "github:nix-community/home-manager/master";
+      #inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     #
@@ -538,6 +538,7 @@
               pkgsInput ? inputs.nixpkgs,
               hmInput ? inputs.home-manager,
               extraConfig ? { },
+              copyConfig ? true,
             }:
             #inputs.nixpkgs.lib.nixosSystem { # <-- Use inputs.nixpkgs
             pkgsInput.lib.nixosSystem {
@@ -545,7 +546,7 @@
               #inputs.nixpkgs-unstable.lib.nixosSystem { # <-- Use inputs.nixpkgs-unstable
               #inherit system modules;
               inherit system; #modules;
-              specialArgs = { inherit inputs outputs hmInput; };
+              specialArgs = { inherit inputs outputs hmInput self; };
 
               # Apply your overlays and config to the pkgs used by NixOS modules
               #pkgs = import inputs.nixpkgs {
@@ -566,6 +567,7 @@
               #};
 
               modules = modules ++ [
+
                 # Inject base configuration natively via a NixOS module
                 {
                   nixpkgs.overlays = builtins.attrValues self.overlays;
@@ -577,6 +579,19 @@
                     xsane.libusb = true;
                   } extraConfig;
                 }
+
+                # global configuration module
+                ({ lib, ... }: {
+                  # 1. Copy physical files ONLY if copyConfig is true
+                  environment.etc."current-system-flake" = lib.mkIf copyConfig {
+                    source = self;
+                  };
+
+                  # 2. ALWAYS embed the exact Git commit revision (zero storage impact)
+                  system.configurationRevision = lib.mkIf (self ? rev || self ? dirtyRev)
+                    (self.rev or self.dirtyRev);
+                })
+
               ];
 
             };
@@ -696,6 +711,8 @@
 
             bawang = mkNixos {
               system = "x86_64-linux";
+              #pkgsInput = inputs.nixpkgs-unstable; # override
+              pkgsInput = inputs.nixpkgs-release-26_05; # override
               modules = [
                 ./profiles/nixos/hosts/bawang/configuration.nix
                 inputs.home-manager.nixosModules.home-manager
@@ -704,14 +721,13 @@
                 inputs.stylix.nixosModules.stylix
                 #inputs.disko.nixosModules.disko
               ];
-              #pkgsInput = inputs.nixpkgs-unstable; # override
-
-              # nixpkgs-release-26_05.url = "github:nixos/nixpkgs/release-26.05";
-              pkgsInput = inputs.nixpkgs-release-26_05; # override
             };
 
             arang = mkNixos {
               system = "x86_64-linux";
+              #pkgsInput = inputs.nixpkgs-unstable; # override
+              #pkgsInput = inputs.nixpkgs-release-26_05; # override
+              #copyConfig = false; # Override to prevents copying the source files to /etc
               modules = [
                 ./profiles/nixos/hosts/arang/configuration.nix
                 inputs.home-manager.nixosModules.home-manager
@@ -720,10 +736,6 @@
                 inputs.stylix.nixosModules.stylix
                 #inputs.disko.nixosModules.disko
               ];
-              #pkgsInput = inputs.nixpkgs-unstable; # override
-
-              # nixpkgs-release-26_05.url = "github:nixos/nixpkgs/release-26.05";
-              pkgsInput = inputs.nixpkgs-release-26_05; # override
             };
 
             #nyxora = let
