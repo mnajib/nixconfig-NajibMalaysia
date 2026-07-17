@@ -540,8 +540,8 @@ in
     usb-modeswitch
     usb-modeswitch-data
 
-    nvtopPackages.full
-    cudatoolkit
+    #nvtopPackages.full
+    #cudatoolkit
     pciutils
   ];
 

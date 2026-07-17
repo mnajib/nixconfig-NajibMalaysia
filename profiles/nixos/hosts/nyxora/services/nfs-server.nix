@@ -56,6 +56,7 @@ in
   fileSystems."/export/nfsshare2" = {
     #device = "/home/nfs/share";
     device = "/mnt/data/nfs/share";
+    fsType = "none";
     options = [
       "bind"
       "x-systemd.automount"
@@ -66,11 +67,13 @@ in
       #"x-systemd.before=local-fs.target"
       "x-systemd.before=nfs-server.service"
     ];
+    depends = [ "/mnt/data" ];
   };
 
   fileSystems."/export/batocera" = {
     #device = "/home/nfs/batocera/userdata";
     device = "/mnt/data/nfs/batocera/userdata";
+    fsType = "none";
     options = [
       "bind"
       #"x-systemd.automount"
@@ -79,11 +82,13 @@ in
       #"xsystemd.after=mnt-data.automount"
       "x-systemd.before=nfs-server.service"
     ];
+    depends = [ "/mnt/data" ];
   };
 
   fileSystems."/export/nixforbatocera" = {
     #device = "/home/nfs/batocera/nix";
     device = "/mnt/data/nfs/batocera/nix";
+    fsType = "none";
     options = [
       "bind"
       "x-systemd.automount"
@@ -91,11 +96,13 @@ in
       #"xsystemd.after=mnt-data.automount"
       "x-systemd.before=nfs-server.service"
     ];
+    depends = [ "/mnt/data" ];
   };
 
   fileSystems."/export/najib" = {
     #device = "/home/najib";
     device = "/mnt/data/najib";
+    fsType = "none";
     options = [
       "bind"
       "x-systemd.automount"
@@ -103,11 +110,13 @@ in
       #"xsystemd.after=mnt-data.automount"
       "x-systemd.before=nfs-server.service"
     ];
+    depends = [ "/mnt/data" ];
   };
 
   fileSystems."/export/julia" = {
     #device = "/home/julia";
     device = "/mnt/data/julia";
+    fsType = "none";
     options = [
       "bind"
       "x-systemd.automount"
@@ -115,11 +124,13 @@ in
       #"xsystemd.after=mnt-data.automount"
       "x-systemd.before=nfs-server.service"
     ];
+    depends = [ "/mnt/data" ];
   };
 
   fileSystems."/export/naqib" = {
     #device = "/home/naqib";
     device = "/mnt/data/naqib";
+    fsType = "none";
     options = [
       "bind"
       "x-systemd.automount"
@@ -127,11 +138,13 @@ in
       #"xsystemd.after=mnt-data.automount"
       "x-systemd.before=nfs-server.service"
     ];
+    depends = [ "/mnt/data" ];
   };
 
   fileSystems."/export/nurnasuha" = {
     #device = "/home/nurnasuha";
     device = "/mnt/data/nurnasuha";
+    fsType = "none";
     options = [
       "bind"
       "x-systemd.automount"
@@ -139,11 +152,13 @@ in
       #"xsystemd.after=mnt-data.automount"
       "x-systemd.before=nfs-server.service"
     ];
+    depends = [ "/mnt/data" ];
   };
 
   fileSystems."/export/naim" = {
     #device = "/home/naim";
     device = "/mnt/data/naim";
+    fsType = "none";
     options = [
       "bind"
       "x-systemd.automount"
@@ -151,6 +166,7 @@ in
       #"xsystemd.after=mnt-data.automount"
       "x-systemd.before=nfs-server.service"
     ];
+    depends = [ "/mnt/data" ];
   };
 
   #----------------------------------------------------------------------------
