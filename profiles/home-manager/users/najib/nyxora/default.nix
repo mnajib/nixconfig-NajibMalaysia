@@ -32,9 +32,11 @@ in
   programs.repo-bootstrap.enable = true;
   programs.repo-bootstrap.basePath = "~/src";
 
+  /*
   nixpkgs.config = {
     allowUnfree = true;
   };
+  */
 
   home.packages = with pkgs; [
     vscode
