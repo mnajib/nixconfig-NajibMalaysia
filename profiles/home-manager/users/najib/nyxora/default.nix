@@ -52,7 +52,21 @@ in
 
   ];
 
+  #programs.neovim = {
+  #  enable = true;
+  #  # Point the module to your custom input
+  #  package = inputs.my-nvim.packages.${pkgs.system}.default;
+  #};
 
+  # This forces your Home Manager bin directory to the start of your $PATH
+  #home.sessionVariables = {
+  #  PATH = "$HOME/.nix-profile/bin:/etc/profiles/per-user/najib/bin:$PATH";
+  #};
+  #
+  # In your home-manager bash/zsh alias definition:
+  home.shellAliases = {
+    nvim = "${inputs.my-nvim.packages.${pkgs.system}.default}/bin/nvim";
+  };
 
   # Optional: Set environment variables to make it your primary system default
   home.sessionVariables = {
