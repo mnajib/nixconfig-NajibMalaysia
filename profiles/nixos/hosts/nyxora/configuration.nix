@@ -10,6 +10,8 @@
 let
   commonDir = "../../common";
   hmDir = "../../../home-manager/users";
+  hostName = "nyxora";
+  hostId = "a070cd92";
   stateVersion = "24.11";
 
   inherit (import ./drives.nix)
@@ -73,18 +75,19 @@ in
     # Disable this; as we can just set custom DNS in NetworkManager
     #./network-dns.nix
 
-    (./. + "/${commonDir}/users-abdullah-wheel.nix")
+    #(./. + "/${commonDir}/users-abdullah-wheel.nix")
+    (fromCommon "users-abdullah-wheel.nix")
     #./users-anak2.nix
     #./users-naqib.nix
     #./users-naqib-wheel.nix
     #./users-nurnasuha-wheel.nix
-    (./. + "/${commonDir}/users-naqib.nix")
-    (./. + "/${commonDir}/users-naim.nix")
-    (./. + "/${commonDir}/users-nurnasuha.nix")
-    (./. + "/${commonDir}/users-julia.nix")
-    #(fromCommon "users-najib.nix")
+    (fromCommon "users-naqib.nix")
+    (fromCommon "users-naim.nix")
+    (fromCommon "users-nurnasuha.nix")
+    (fromCommon "users-julia.nix")
+    (fromCommon "users-najib.nix")
 
-    inputs.home-manager.nixosModules.home-manager
+    #inputs.home-manager.nixosModules.home-manager
 
     #./anbox.nix
     #./virtualbox.nix
@@ -107,7 +110,7 @@ in
     #./nfs-server-customdesktop.nix
     ./services/nfs-server.nix
 
-    (./. + "/${commonDir}/nfs-client-automount.nix")
+    (fromCommon "nfs-client-automount.nix")
     #./nfs-client-automount-games.nix
     #./nfs-client.nix
 
@@ -115,8 +118,8 @@ in
     #./samba-server-nyxora.nix
     #./samba-client.nix
 
-    (./. + "/${commonDir}/console-keyboard-dvorak.nix")
-    #(./. + "/${commonDir}/keyboard-with-msa.nix")
+    (fromCommon "console-keyboard-dvorak.nix")
+    #(fromCommon "keyboard-with-msa.nix")
     #
     ./kanata/keyboard-with-msa.nix
     ./kanata/kanata.nix
@@ -124,15 +127,15 @@ in
     (fromCommon "keyboard-QMK-VIA.nix")
 
     #./audio-pulseaudio.nix
-    (./. + "/${commonDir}/audio-pipewire.nix")
+    (fromCommon "audio-pipewire.nix")
 
     #./synergy-client.nix # barrier
     (fromCommon "deskflow.nix")
 
-    (./. + "/${commonDir}/hardware-printer.nix")
-    #./hardware-tablet-wacom.nix
+    (fromCommon "hardware-printer.nix")
+    #(fromCommon "hardware-tablet-wacom.nix")
 
-    (./. + "/${commonDir}/zramSwap.nix")
+    (fromCommon "zramSwap.nix")
 
     #./btrbk-pull.nix
     #./btrbk-tv.nix # XXX: Temporarily disabled as the HDD is failing.
@@ -153,11 +156,11 @@ in
 
     #./sway.nix
 
-    (./. + "/${commonDir}/nix-garbage-collector.nix")
+    (fromCommon "nix-garbage-collector.nix")
 
     #./timetracker.nix                  # desktop app for time management
 
-    (./. + "/${commonDir}/3D.nix")
+    (fromCommon "3D.nix")
     #./steam.nix
 
     (./. + "/${commonDir}/flatpak.nix")
@@ -187,22 +190,24 @@ in
     ./services/syncthing.nix
   ];
 
-  home-manager = {
-    extraSpecialArgs = { inherit inputs outputs; };
+  home-manager = let
+    userImport = user: import (./. + "/${hmDir}/${user}/${hostName}");
+  in {
+    #extraSpecialArgs = { inherit inputs outputs; };
+    backupFileExtension = "backup";
     users = {
       # Import your home-manager configuration
-      #najib = import ../home-manager/user-najib;
-      #root = import ../home-manager/user-root;
-      najib = import (./. + "/${hmDir}/najib/nyxora");
-      #root = import (./. + "/${hmDir}/root/nyxora");
+      #najib = import ../../../home-manager/users/najib/nyxora/default.nix;
+      #najib = import (./. + "/${hmDir}/najib/nyxora");
+      najib = userImport "najib";
     };
   };
 
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   #
-  networking.hostId = "a070cd92"; #"e8213168";
-  networking.hostName = "nyxora";
+  networking.hostId = "${hostId}"; #a070cd92"; #"e8213168";
+  networking.hostName = "${hostName}"; #nyxora";
 
   networking.useDHCP = false;
   #networking.interfaces.enp7s0.useDHCP = true;
@@ -535,7 +540,7 @@ in
     #android-studio-full
     android-studio
 
-    inputs.home-manager.packages.${pkgs.system}.default # To install (globbally, instead of per user) home-manager packages
+    #inputs.home-manager.packages.${pkgs.system}.default # To install (globbally, instead of per user) home-manager packages
 
     usb-modeswitch
     usb-modeswitch-data
