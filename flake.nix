@@ -224,6 +224,14 @@
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
 
     #
+    # Troubleshooting:
+    #   # Clear out the packages inside your old user-level nix-env profile
+    #   nix-env --profile ~/.nix-profile -e '*'
+    #
+    #   # Remove the legacy symlinks if they remain
+    #   rm -f ~/.nix-profile ~/.home-manager-profile
+    #
+    #
     # cd ~/src/nixconfig-NajibMalaysia
     # nix flake update my-nvim
     # nixos-rebuild switch --flake .
@@ -237,6 +245,7 @@
     # Fallback option layout mirror if needed:
     my-nvim.url = "github:mnajib/nvim-config-test";
     #my-nvim.url = "https://github.com/mnajib/nvim-config-test.git";
+    #my-nvim.inputs.nixpkgs.follows = "nixpkgs";
 
     #
     # 1. Switch to your infrastructure directory and stage the updates
@@ -576,7 +585,7 @@
                   home-manager = {
                     useGlobalPkgs = true;
                     useUserPackages = true;
-                    extraSpecialArgs = { inherit inputs outputs; };
+                    extraSpecialArgs = { inherit inputs outputs hmInput self; };
                   };
                 }
 
@@ -597,7 +606,10 @@
 
                   # INJECT HOME-MANAGER GLOBALLY HERE:
                   environment.systemPackages = [
-                    inputs.home-manager.packages.${system}.default
+
+                    #inputs.home-manager.packages.${system}.default # # <-- Statically locked to inputs.home-manager XXX
+                    hmInput.packages.${system}.default #
+
                   ];
 
                   # Copy physical files ONLY if copyConfig is true
@@ -781,6 +793,12 @@
                 #
                 # NixOS module: Enables and configures Proxmox services (services.proxmox-ve.*)
                 #inputs.proxmox-nixos.nixosModules.proxmox-ve
+
+		# Bind your home-manager configuration to your user here:
+                #{
+                #  home-manager.users.najib = import ./profiles/home-manager/users/najib/nyxora;
+                #}
+
               ];
               #pkgsInput = inputs.nixpkgs-unstable; # override
             };

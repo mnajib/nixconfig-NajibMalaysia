@@ -1,3 +1,4 @@
+# ./profiles/home-manager/users/najib/nyxora/default.nix
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 
@@ -32,6 +33,11 @@ in
   programs.repo-bootstrap.enable = true;
   programs.repo-bootstrap.basePath = "~/src";
 
+  programs.nh = {
+    enable = true;
+    flake = "${config.home.homeDirectory}/src/nixconfig-NajibMalaysia";
+  };
+
   /*
   nixpkgs.config = {
     allowUnfree = true;
@@ -39,12 +45,14 @@ in
   */
 
   home.packages = with pkgs; [
-    vscode
+    #vscode
 
     # Install the compiled output from your external flake directly into your path
     inputs.my-nvim.packages.${pkgs.system}.default
 
   ];
+
+
 
   # Optional: Set environment variables to make it your primary system default
   home.sessionVariables = {
