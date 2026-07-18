@@ -27,26 +27,14 @@
 
   inputs = {
 
-
     #------------------------------------------------------
     # nixpkgs
     #------------------------------------------------------
-
-    #nixpkgs.url            = "github:nixos/nixpkgs/nixos-25.05";
-    #nixpkgs.url      = "github:nixos/nixpkgs/nixos-25.11";
-    #nixpkgs.follows         = "nixpkgs-stable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
-    nixpkgs.follows = "nixpkgs-release"; # Make 'nixpkgs' point to nixpkgs-stable as default.
-    #nixpkgs.follows         = "nixpkgs-unstable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
-    #nixpkgs.url    = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    #nixpkgs.url     = "github:nixos/nixpkgs/release-25.11";
-
     #nixpkgs-nixos.url       = "github:nixos/nixpkgs/nixos-25.05";
     #nixpkgs-stable.url      = "github:nixos/nixpkgs/nixos-25.05";
     #nixpkgs-release.url     = "github:nixos/nixpkgs/release-25.05";
-    #nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
-    #nixpkgs-release.url = "github:nixos/nixpkgs/release-25.11";
-    nixpkgs-release.url = "github:nixos/nixpkgs/release-26.05";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-release.url = "github:nixos/nixpkgs/release-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     #nixpkgs-unstable.url    = "github:NixOS/nixpkgs/nixpkgs-unstable";
     #nixpkgs-master.url      = "github:nixos/nixpkgs/master";
@@ -55,25 +43,30 @@
     #nixpkgs-nonetprob.url = "github:NixOS/nixpkgs/040d0d17f15957e4a08f14abfa3032cd96cc82fe";
     #nixpkgs.follows = "nixpkgs-nonetprob"; # Make 'nixpkgs' point to nixpkgs-stable as default.
 
+    #nixpkgs.url            = "github:nixos/nixpkgs/nixos-25.05";
+    #nixpkgs.url      = "github:nixos/nixpkgs/nixos-25.11";
+    #nixpkgs.follows         = "nixpkgs-stable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
+    nixpkgs.follows = "nixpkgs-release"; # Make 'nixpkgs' point to nixpkgs-stable as default.
+    #nixpkgs.follows         = "nixpkgs-unstable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
+    #nixpkgs.url    = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    #nixpkgs.url     = "github:nixos/nixpkgs/release-25.11";
+    #------------------------------------------------------
 
     #------------------------------------------------------
     # home-manager
     #------------------------------------------------------
-
     home-manager.follows = "home-manager-stable";
     #home-manager.follows = home-manager-version;
 
-    home-manager-stable = {
-      #url = "github:nix-community/home-manager/release-25.05";
-      #url = "github:nix-community/home-manager/release-25.11";
-      url = "github:nix-community/home-manager/release-26.05";
+    home-manager-unstable = {
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    home-manager-unstable = {
-      url = "github:nix-community/home-manager/master";
-      #inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    home-manager-stable = {
+      #url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     #
@@ -97,8 +90,6 @@
     #  url = "github:nix-community/home-manager/release-25.05";
     #  inputs.nixpkgs.follows = "nixpkgs-stable";
     #};
-
-
     #------------------------------------------------------
 
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -224,28 +215,16 @@
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
 
     #
-    # Troubleshooting:
-    #   # Clear out the packages inside your old user-level nix-env profile
-    #   nix-env --profile ~/.nix-profile -e '*'
-    #
-    #   # Remove the legacy symlinks if they remain
-    #   rm -f ~/.nix-profile ~/.home-manager-profile
-    #
-    #
     # cd ~/src/nixconfig-NajibMalaysia
     # nix flake update my-nvim
     # nixos-rebuild switch --flake .
     # nh os switch .
-    #
-    # To test build:
-    #   nh os build . -H sakinah --target-host najib@sakinah -- --show-trace --override-input my-nvim path:/home/najib/src/nvim-config-test
     #
     # Connect to your declarative standalone editor flake repository
     #my-nvim.url = "git+http://git.localdomain/najib/nvim-config-test";
     # Fallback option layout mirror if needed:
     my-nvim.url = "github:mnajib/nvim-config-test";
     #my-nvim.url = "https://github.com/mnajib/nvim-config-test.git";
-    #my-nvim.inputs.nixpkgs.follows = "nixpkgs";
 
     #
     # 1. Switch to your infrastructure directory and stage the updates
@@ -527,13 +506,12 @@
               };
 
               # merge user overrides with default config
-              #finalConfig = pkgsInput.lib.recursiveUpdate baseConfig extraConfig;
+              finalConfig = pkgsInput.lib.recursiveUpdate baseConfig extraConfig;
             in
             import pkgsInput {
               inherit system;
               overlays = builtins.attrValues self.overlays;
-              #config = finalConfig;
-              config = pkgsInput.lib.recursiveUpdate baseConfig extraConfig;
+              config = finalConfig;
             };
 
           #mkNixos = system: modules:
@@ -545,17 +523,14 @@
               system,
               modules,
               pkgsInput ? inputs.nixpkgs,
-              hmInput ? inputs.home-manager,
               extraConfig ? { },
-              copyConfig ? true,
             }:
             #inputs.nixpkgs.lib.nixosSystem { # <-- Use inputs.nixpkgs
             pkgsInput.lib.nixosSystem {
               # <-- Use inputs.nixpkgs
               #inputs.nixpkgs-unstable.lib.nixosSystem { # <-- Use inputs.nixpkgs-unstable
-              #inherit system modules;
-              inherit system; #modules;
-              specialArgs = { inherit inputs outputs hmInput self; };
+              inherit system modules;
+              specialArgs = { inherit inputs outputs; };
 
               # Apply your overlays and config to the pkgs used by NixOS modules
               #pkgs = import inputs.nixpkgs {
@@ -570,62 +545,10 @@
               #    xsane.libusb = true;
               #  };
               #};
-              #
               pkgs = mkPkgsCommon {
                 inherit system pkgsInput self; # system, pkgsInput, and self come from the current mkNixos scope via inherit
                 extraConfig = extraConfig; # explicitly rebinds the outer mkNixos.extraConfig to the inner mkPkgsCommon.extraConfig
               };
-
-              modules = modules ++ [
-
-                # Inject the home-manager NixOS module automatically for ALL hosts
-                hmInput.nixosModules.home-manager
-
-                # Configure default settings for home-manager on all hosts
-                {
-                  home-manager = {
-                    useGlobalPkgs = false; #true;
-                    useUserPackages = true;
-                    extraSpecialArgs = { inherit inputs outputs hmInput self; };
-                  };
-                }
-
-                # Inject base configuration natively via a NixOS module
-                #{
-                #  nixpkgs.overlays = builtins.attrValues self.overlays;
-                #  nixpkgs.config = pkgsInput.lib.recursiveUpdate {
-                #    allowUnfree = true;
-                #    android_sdk.accept_license = true;
-                #    nvidia.acceptLicense = true;
-                #    pulseaudio = true;
-                #    xsane.libusb = true;
-                #  } extraConfig;
-                #}
-
-                # Global configuration module
-                ({ lib, pkgs, ... }: {
-
-                  # INJECT HOME-MANAGER GLOBALLY HERE:
-                  environment.systemPackages = [
-
-                    #inputs.home-manager.packages.${system}.default # # <-- Statically locked to inputs.home-manager XXX
-                    hmInput.packages.${system}.default #
-
-                  ];
-
-                  # Copy physical files ONLY if copyConfig is true
-                  environment.etc."current-system-flake" = lib.mkIf copyConfig {
-                    source = self;
-                  };
-
-                  # ALWAYS embed the exact Git commit revision (zero storage impact)
-                  system.configurationRevision = lib.mkIf (self ? rev || self ? dirtyRev)
-                    (self.rev or self.dirtyRev);
-
-
-                })
-
-              ];
 
             };
 
@@ -645,11 +568,10 @@
             }: # nixpkgs-stable as default
             #inputs.home-manager.lib.homeManagerConfiguration {
             hmInput.lib.homeManagerConfiguration {
-              #pkgs = mkPkgsCommon {
-              #  inherit system pkgsInput self;
-              #  extraConfig = extraConfig;
-              #};
-              pkgs = mkPkgsCommon { inherit system pkgsInput self extraConfig; };
+              pkgs = mkPkgsCommon {
+                inherit system pkgsInput self;
+                extraConfig = extraConfig;
+              };
               inherit modules;
               extraSpecialArgs = { inherit inputs outputs; };
             };
@@ -744,8 +666,6 @@
 
             bawang = mkNixos {
               system = "x86_64-linux";
-              #pkgsInput = inputs.nixpkgs-unstable; # override
-              pkgsInput = inputs.nixpkgs-release-26_05; # override
               modules = [
                 ./profiles/nixos/hosts/bawang/configuration.nix
                 inputs.home-manager.nixosModules.home-manager
@@ -754,13 +674,14 @@
                 inputs.stylix.nixosModules.stylix
                 #inputs.disko.nixosModules.disko
               ];
+              #pkgsInput = inputs.nixpkgs-unstable; # override
+
+              # nixpkgs-release-26_05.url = "github:nixos/nixpkgs/release-26.05";
+              pkgsInput = inputs.nixpkgs-release-26_05; # override
             };
 
             arang = mkNixos {
               system = "x86_64-linux";
-              #pkgsInput = inputs.nixpkgs-unstable; # override
-              #pkgsInput = inputs.nixpkgs-release-26_05; # override
-              #copyConfig = false; # Override to prevents copying the source files to /etc
               modules = [
                 ./profiles/nixos/hosts/arang/configuration.nix
                 inputs.home-manager.nixosModules.home-manager
@@ -769,6 +690,10 @@
                 inputs.stylix.nixosModules.stylix
                 #inputs.disko.nixosModules.disko
               ];
+              #pkgsInput = inputs.nixpkgs-unstable; # override
+
+              # nixpkgs-release-26_05.url = "github:nixos/nixpkgs/release-26.05";
+              pkgsInput = inputs.nixpkgs-release-26_05; # override
             };
 
             #nyxora = let
@@ -795,19 +720,6 @@
                 #
                 # NixOS module: Enables and configures Proxmox services (services.proxmox-ve.*)
                 #inputs.proxmox-nixos.nixosModules.proxmox-ve
-
-                /*
-                # Bind your home-manager configuration to your user here:
-                inputs.home-manager.nixosModules.home-manager
-                #
-                {
-                  home-manager.useGlobalPkgs = true;
-                  home-manager.useUserPackages = true;
-                  home-manager.extraSpecialArgs = { inherit inputs; };
-                  home-manager.users.najib = import ./profiles/home-manager/users/najib/nyxora;
-                }
-                */
-
               ];
               #pkgsInput = inputs.nixpkgs-unstable; # override
             };
@@ -954,28 +866,6 @@
               #  allowBroken = true;
               #  permittedInsecurePackages = [ "openssl-1.1.1w" ];
               #};
-            };
-
-            sakinah = mkNixos {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/nixos/hosts/sakinah/configuration.nix
-                inputs.stylix.nixosModules.stylix
-                inputs.hardware.nixosModules.common-cpu-intel
-
-                #inputs.hardware.nixosModules.common-pc-laptop-ssd
-
-                #inputs.home-manager.nixosModules.home-manager
-                #inputs.home-manager-unstable.nixosModules.home-manager
-              ];
-              #pkgsInput = inputs.nixpkgs-release; # override
-              #pkgsInput = inputs.nixpkgs-unstable; # override
-              #pkgsInput = inputs.nixpkgs-release-26_05; # override
-              #extraConfig = {
-              #  allowBroken = true;
-              #  permittedInsecurePackages = [ "openssl-1.1.1w" ];
-              #};
-              #hmInput = inputs.home-manager-unstable;
             };
 
             sumayah = mkNixos {
@@ -1193,7 +1083,7 @@
 
                 # Ensure this line is present here so it builds for the naqib user!
                 #inputs.mc-project.homeModules.minecraft-client
-              ];
+	      ];
             };
 
             "naqib@huda" = mkHome {

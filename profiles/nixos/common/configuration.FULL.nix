@@ -142,7 +142,7 @@
   time.hardwareClockInLocalTime = true;
   #networking.timeServers = [ "mst.sirim.my" "my.pool.ntp.org" "0.asia.pool.ntp.org" "1.asia.pool.ntp.org" "2.asia.pool.ntp.org" "3.asia.ntp.org" ];
   services.timesyncd = {
-    enable = true;
+    enable = lib.mkDefault true;
     servers = [
       "mst.sirim.my"
       "my.pool.ntp.org"
