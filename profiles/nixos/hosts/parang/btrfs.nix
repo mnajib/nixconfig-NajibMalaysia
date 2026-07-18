@@ -37,7 +37,13 @@ in
   # ---------------------------------------------------------------------------------------
   # btrfs
   # ---------------------------------------------------------------------------------------
-  services.btrfs.autoScrub.enable = true;
+  #services.btrfs.autoScrub = {
+  #services.btrfs.autoScrub = lib.mkIf (!config.virtualisation.qemu.options != []) {
+  #  enable = false; #true;
+  #  fileSystems = lib.mkForce [
+  #    "/home"
+  #  ];
+  #};
 
   # ---------------------------------------------------------------------------------------
   # systemd btrfs

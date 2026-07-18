@@ -3,3 +3,4 @@ result
 *.bak
 profiles/nixos/hosts/sumayah/Minecraft/*.zip
 *.zip
+*.qcow2

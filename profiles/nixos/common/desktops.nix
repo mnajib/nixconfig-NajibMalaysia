@@ -26,7 +26,7 @@
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.displayManager.gdm = {
     enable = false;
-    wayland.enable = false;
+    #wayland.enable = false;
   };
   services.displayManager.sddm = {
     enable = false;

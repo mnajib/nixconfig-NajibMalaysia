@@ -77,6 +77,8 @@ in
       (fromCommon "desktops.nix")
       #(fromCommon "3D.nix")
       (fromCommon "whatsapp.nix")
+
+      ./winboat.nix
     ];
 
   # Test if the module is available
@@ -249,7 +251,7 @@ in
   services.fstrim.enable = true;
   services.smartd.enable = true;
 
-  programs.adb.enable = true;
+  #programs.adb.enable = true;
 
   # Install firefox.
   #programs.firefox.enable = true;

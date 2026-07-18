@@ -82,7 +82,7 @@ in
    };
 
    autoScrub = {
-     enable = true;                  # false is the default.
+     enable = lib.mkForce true;                  # false is the default.
 
      # work
      #interval = "Sun, 02:00";            # "Sun, 02:00" is the default. See systemd.time(7) for formatting.
