@@ -190,6 +190,7 @@ in
     ./services/syncthing.nix
   ];
 
+  /*
   home-manager = let
     userImport = user: import (./. + "/${hmDir}/${user}/${hostName}");
   in {
@@ -202,6 +203,7 @@ in
       najib = userImport "najib";
     };
   };
+  */
 
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done

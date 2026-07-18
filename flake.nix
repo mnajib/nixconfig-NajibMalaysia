@@ -621,6 +621,7 @@
                   system.configurationRevision = lib.mkIf (self ? rev || self ? dirtyRev)
                     (self.rev or self.dirtyRev);
 
+
                 })
 
               ];
@@ -794,10 +795,17 @@
                 # NixOS module: Enables and configures Proxmox services (services.proxmox-ve.*)
                 #inputs.proxmox-nixos.nixosModules.proxmox-ve
 
-		# Bind your home-manager configuration to your user here:
-                #{
-                #  home-manager.users.najib = import ./profiles/home-manager/users/najib/nyxora;
-                #}
+                /*
+                # Bind your home-manager configuration to your user here:
+                inputs.home-manager.nixosModules.home-manager
+                #
+                {
+                  home-manager.useGlobalPkgs = true;
+                  home-manager.useUserPackages = true;
+                  home-manager.extraSpecialArgs = { inherit inputs; };
+                  home-manager.users.najib = import ./profiles/home-manager/users/najib/nyxora;
+                }
+                */
 
               ];
               #pkgsInput = inputs.nixpkgs-unstable; # override
