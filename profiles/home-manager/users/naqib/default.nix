@@ -43,6 +43,7 @@ in
     (fromCommon "repo-bootstrap.nix")
   ];
 
+  /*
   nixpkgs = {
 
     # You can add overlays here
@@ -71,6 +72,7 @@ in
     }; # End nixpkgs.config{};
 
   }; # End nixpkgs{};
+  */
 
   # TODO: Set your username
   home = {

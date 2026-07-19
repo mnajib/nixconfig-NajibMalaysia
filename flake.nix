@@ -595,9 +595,19 @@
                 hmInput.nixosModules.home-manager
 
                 {
-                  nixpkgs.pkgs = mkPkgsCommon { inherit system pkgsInput; };
+
+                  #nixpkgs.pkgs = mkPkgsCommon { inherit system pkgsInput; };
+                  nixpkgs.config = {
+                    allowUnfree = true;
+                    android_sdk.accept_license = true;
+                    nvidia.acceptLicense = true;
+                    pulseaudio = true;
+                    xsane.libusb = true;
+                  };
+                  nixpkgs.overlays = builtins.attrValues self.overlays;
+
                   home-manager = {
-                    useGlobalPkgs = false;
+                    useGlobalPkgs = true; # Reuse system pkgs to save evalution RAM/Time
                     useUserPackages = true;
                     backupFileExtension = "backup";
                     extraSpecialArgs = { inherit inputs outputs hmInput self; };
@@ -612,6 +622,7 @@
                   # Embed Git commit revision
                   system.configurationRevision = pkgsInput.lib.mkIf (self ? rev || self ? dirtyRev)
                     (self.rev or self.dirtyRev);
+
                 }
 
                 /*
@@ -664,6 +675,9 @@
 
             };
 
+          #
+          # Standalone Home Manager Builder (For non-NixOS environments if needed)
+          #
           #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-stable }:
           #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-unstable }: # nixpkgs-unstable as default
           #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-unstable, extraConfig ? {} }: # nixpkgs-unstable as default
@@ -1046,7 +1060,15 @@
 
           }; # End of 'nixosConfigurations = { ... };'
 
+          #--------------------------------------------------
+          # Standalone Home Manager Configurations
+          # NOTE: Cleaned up duplicates. User home spaces are
+          # fully integrated into the hosts above natively.
+          #--------------------------------------------------
           homeConfigurations = {
+
+            /*
+
             # To dry-build a Home Manager configuration for the user 'najib@taufiq':
             #   nix build ".#homeConfigurations.najib@taufiq.activationPackage" --dry-run
             #
@@ -1148,6 +1170,7 @@
             "naim@keira" = mkHome "naim" "keira" {};
             "naim@huda" = mkHome "naim" "huda" {};
 
+            */
 
         }; # End of 'homeConfigurations = { ... };'
 
