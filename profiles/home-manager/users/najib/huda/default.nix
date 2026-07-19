@@ -21,7 +21,7 @@ in
     ../default.nix
 
     #(./. + "/${commonDir}/neovim")
-    (fromCommon "neovim")
+    #(fromCommon "neovim")
 
     #(./. + "/${commonDir}/stylix.nix")
 
@@ -63,6 +63,8 @@ in
     kitty # terminal emulator
     dillo-plus # web browser but without javascript
     chisel # TCP/UDP tunnel over HTTP
+
+    inputs.my-nvim.packages.${pkgs.system}.default
   ];
 
   fonts.fontconfig = {

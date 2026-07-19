@@ -20,7 +20,7 @@ in
     ../default.nix
 
     #(./. + "/${commonDir}/neovim")
-    (fromCommon "neovim")
+    #(fromCommon "neovim")
     #(fromCommon "helix")
 
     #(./. + "/${commonDir}/stylix.nix")
@@ -75,6 +75,8 @@ in
     openscad
     f3d
     qcad
+
+    inputs.my-nvim.packages.${pkgs.system}.default
   ];
 
   fonts.fontconfig = {

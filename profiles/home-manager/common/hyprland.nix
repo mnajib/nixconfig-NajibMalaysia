@@ -49,7 +49,8 @@
     swaylock-effects     # Lock screen
     swayidle             # Idle management
     wofi                 # App launcher
-    pavucontrol helvum   # Audio control
+    pavucontrol   # Audio control
+    crosspipe # helvum   # Audio control
     blueman              # Bluetooth GUI
     lxappearance #qt5ct   # GTK/Qt theming
     #nnn                  # File manager

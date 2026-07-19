@@ -31,7 +31,7 @@ in
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
   in [
     ./hardware-configuration.nix
-    inputs.home-manager.nixosModules.home-manager
+    #inputs.home-manager.nixosModules.home-manager
 
     #./hardware-laptopLenovoThinkpadT410eWasteCyberjaya.nix
     #./hardware-storage-keira-SSD001.nix
@@ -100,9 +100,9 @@ in
   home-manager = let
     userImport = user: import (./. + "/${hmDir}/${user}/${hostName}");
   in {
-    extraSpecialArgs = {
-      inherit inputs outputs;
-    };
+    #extraSpecialArgs = {
+    #  inherit inputs outputs;
+    #};
     users = {
       najib = userImport "najib";
       #root = userImport "root";
@@ -363,7 +363,7 @@ in
 
     #obs-studio
 
-    inputs.home-manager.packages.${pkgs.system}.default
+    #inputs.home-manager.packages.${pkgs.system}.default
   ];
 
   system.stateVersion = "${stateVersion}";

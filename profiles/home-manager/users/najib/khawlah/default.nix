@@ -4,6 +4,7 @@
 #{ lib, config, pkgs, ... }:
 let
   username = "najib";
+  homedir = "/home/najib";
   hostname = "khawlah";
   commonDir = "../../../common";
   stateVersion = "25.05";
@@ -20,7 +21,7 @@ in
     ../default.nix
 
     #(./. + "/${commonDir}/neovim")
-    (fromCommon "neovim")
+    #(fromCommon "neovim")
 
     #(./. + "/${commonDir}/stylix.nix")
 
@@ -44,8 +45,8 @@ in
   programs.repo-bootstrap.enable = true;
   #programs.repo-bootstrap.basePath = "~/Programs";
 
-  home.username = "najib";
-  home.homeDirectory = "/home/najib";
+  home.username = "${username}"; #najib";
+  home.homeDirectory = "${homedir}"; #/home/najib";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   #home.stateVersion = "22.05";
@@ -69,6 +70,8 @@ in
     kitty # terminal emulator
     dillo-plus # web browser but without javascript
     chisel # TCP/UDP tunnel over HTTP
+
+    inputs.my-nvim.packages.${pkgs.system}.default
   ];
 
   fonts.fontconfig = {

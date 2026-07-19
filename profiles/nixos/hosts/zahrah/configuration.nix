@@ -369,7 +369,7 @@ in
     #windowmaker.enable = true;
     twm.enable = true;
     #spectrwm.enable = true;
-    wmderland.enable = true;
+    #wmderland.enable = true;
     #herbstluftwm.enable = true;
 
     #hypr.enable = true;

@@ -63,7 +63,7 @@ in
   #  PATH = "$HOME/.nix-profile/bin:/etc/profiles/per-user/najib/bin:$PATH";
   #};
   #
-  # In your home-manager bash/zsh alias definition:
+  # XXX: In your home-manager bash/zsh alias definition:
   home.shellAliases = {
     nvim = "${inputs.my-nvim.packages.${pkgs.system}.default}/bin/nvim";
   };

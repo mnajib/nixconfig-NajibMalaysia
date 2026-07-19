@@ -105,9 +105,9 @@ in
   home-manager = let
     userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}" );
   in {
-    extraSpecialArgs = { inherit inputs outputs; };
+    #extraSpecialArgs = { inherit inputs outputs; };
     users = {
-      root = userImport "root";
+      #root = userImport "root";
       najib = userImport "najib";
       naqib = userImport "naqib";
     };
@@ -159,7 +159,7 @@ in
     haskellPackages.X11
     haskellPackages.X11-xft
 
-    inputs.home-manager.packages.${pkgs.system}.default
+    #inputs.home-manager.packages.${pkgs.system}.default
 
     wofi
   ];
@@ -338,7 +338,7 @@ in
   systemd.watchdog.rebootTime = "10m";
 
   services.acpid.enable = false; #true;
-  hardware.acpilight.enable = false; #true;
+  hardware.acpilight.enable = lib.mkForce false; #true;
 
   services.thinkfan.enable = true;
   services.thinkfan.levels = [
@@ -439,7 +439,7 @@ in
     #windowmaker.enable = true;
     #twm.enable = true;
     #spectrwm.enable = true;
-    wmderland.enable = true;
+    #wmderland.enable = true;
     #herbstluftwm.enable = true;
 
     #hypr.enable = true;
