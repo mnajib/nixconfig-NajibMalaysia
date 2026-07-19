@@ -79,6 +79,8 @@ in
       (fromCommon "whatsapp.nix")
 
       ./winboat.nix
+      ./tox.nix
+      ./tailscale.nix
     ];
 
   # Test if the module is available
