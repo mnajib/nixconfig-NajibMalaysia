@@ -41,7 +41,7 @@ in
   in [
     #<nixos-hardware/lenovo/thinkpad/t410> # XXX: temporarily disabled because lazy to add nix channel
     ./hardware-configuration.nix
-    inputs.home-manager.nixosModules.home-manager
+    #inputs.home-manager.nixosModules.home-manager
 
     (fromCommon "users-a-wheel.nix")
     (fromCommon "users-najib.nix")
@@ -99,7 +99,7 @@ in
     userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}" );
   in
   {
-    extraSpecialArgs = { inherit inputs outputs; };
+    #extraSpecialArgs = { inherit inputs outputs; };
     users = {
       #root = import (./. + "/${hmDir}/root/raudah");
       #najib = import (./. + "/${hmDir}/najib/raudah");
@@ -111,7 +111,7 @@ in
   };
 
   environment.systemPackages = with pkgs; [
-    inputs.home-manager.packages.${pkgs.system}.default
+    #inputs.home-manager.packages.${pkgs.system}.default
     vim
     bottles
     brave

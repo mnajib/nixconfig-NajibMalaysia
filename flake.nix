@@ -15,12 +15,12 @@
   description = "My NixOS Config";
 
   nixConfig = {
-    #extra-substituters = [
-    #  "https://nix-community.cachix.org"
-    #];
-    #extra-trusted-public-keys = [
-    #  "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-    #];
+    extra-substituters = [
+      "https://nix-community.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
 
     # sudo nixos-rebuild switch --flake .   --option extra-substituters "ssh-ng://192.168.0.21"   --option require-sigs false
   };
@@ -297,18 +297,18 @@
           self,
           pkgs,
           system,
-          inputs,
-          outputs,
+          #inputs,
+          #outputs,
           ...
         }:
-        let
-          inherit (self) outputs;
-          #pkgs = import nixpkgs { inherit system; };
-          #pkgsStable = import nixpkgs-stable { inherit system; };
-          #pkgsUnstable = import nixpkgs-unstable { inherit system; };
-          #pkgsMaster = import nixpkgs-master { inherit system; };
-          #inherit (inputs.nixpkgs.lib) mapAttrs attrValues length unique concatStringsSep filterAttrs count;
-        in
+        #let
+        #  inherit (self) outputs;
+        #  #pkgs = import nixpkgs { inherit system; };
+        #  #pkgsStable = import nixpkgs-stable { inherit system; };
+        #  #pkgsUnstable = import nixpkgs-unstable { inherit system; };
+        #  #pkgsMaster = import nixpkgs-master { inherit system; };
+        #  #inherit (inputs.nixpkgs.lib) mapAttrs attrValues length unique concatStringsSep filterAttrs count;
+        #in
         {
           #------------------------------------------------
           # 3.1 flake-parts.lib.mkFlake.perSystem.packages
@@ -514,10 +514,10 @@
             {
               system,
               pkgsInput,
-              self,
+              #self,
               extraConfig ? { },
             }:
-            let
+            /*let
               baseConfig = {
                 allowUnfree = true;
                 android_sdk.accept_license = true;
@@ -528,27 +528,35 @@
 
               # merge user overrides with default config
               #finalConfig = pkgsInput.lib.recursiveUpdate baseConfig extraConfig;
-            in
+            in */
             import pkgsInput {
               inherit system;
               overlays = builtins.attrValues self.overlays;
               #config = finalConfig;
-              config = pkgsInput.lib.recursiveUpdate baseConfig extraConfig;
+              #config = pkgsInput.lib.recursiveUpdate baseConfig extraConfig;
+              config = pkgsInput.lib.recursiveUpdate {
+                allowUnfree = true;
+                android_sdk.accept_license = true;
+                nvidia.acceptLicense = true;
+                pulseaudio = true;
+                xsane.libusb = true;
+              } extraConfig;
             };
 
           #mkNixos = system: modules:
           #mkNixos = { system, modules, pkgsInput ? inputs.nixpkgs-stable, extraConfig ? {} }:
           #mkNixos = { system, modules, pkgsInput ? inputs.nixpkgs-release, extraConfig ? {} }:
           #mkNixos = { system, modules, pkgsInput ? inputs.nixpkgs-unstable, extraConfig ? {} }:
-          mkNixos =
-            {
-              system,
-              modules,
-              pkgsInput ? inputs.nixpkgs,
-              hmInput ? inputs.home-manager,
-              extraConfig ? { },
-              copyConfig ? true,
-            }:
+          #mkNixos =
+          mkNixos = hostName: {
+            system ? "x86_64-linux",
+            #modules,
+            pkgsInput ? inputs.nixpkgs,
+            hmInput ? inputs.home-manager,
+            #extraConfig ? { },
+            extraModules ? [],
+            copyConfig ? true,
+          }:
             #inputs.nixpkgs.lib.nixosSystem { # <-- Use inputs.nixpkgs
             pkgsInput.lib.nixosSystem {
               # <-- Use inputs.nixpkgs
@@ -571,16 +579,42 @@
               #  };
               #};
               #
-              pkgs = mkPkgsCommon {
-                inherit system pkgsInput self; # system, pkgsInput, and self come from the current mkNixos scope via inherit
-                extraConfig = extraConfig; # explicitly rebinds the outer mkNixos.extraConfig to the inner mkPkgsCommon.extraConfig
-              };
+              #pkgs = mkPkgsCommon {
+              #  inherit system pkgsInput self; # system, pkgsInput, and self come from the current mkNixos scope via inherit
+              #  extraConfig = extraConfig; # explicitly rebinds the outer mkNixos.extraConfig to the inner mkPkgsCommon.extraConfig
+              #};
 
-              modules = modules ++ [
+              #modules = modules ++ [
+              modules = [
 
-                # Inject the home-manager NixOS module automatically for ALL hosts
+                # Auto-resolve the host config path
+                (./. + "/profiles/nixos/hosts/${hostName}/configuration.nix")
+
+                ## Inject the home-manager NixOS module automatically for ALL hosts
+                # Global Home Manager Configuration
                 hmInput.nixosModules.home-manager
 
+                {
+                  nixpkgs.pkgs = mkPkgsCommon { inherit system pkgsInput; };
+                  home-manager = {
+                    useGlobalPkgs = false;
+                    useUserPackages = true;
+                    backupFileExtension = "backup";
+                    extraSpecialArgs = { inherit inputs outputs hmInput self; };
+                  };
+                  environment.systemPackages = [ hmInput.packages.${system}.default ];
+
+                  # Copy physical files ONLY if copyConfig is true
+                  environment.etc."current-system-flake" = pkgsInput.lib.mkIf copyConfig {
+                    source = self;
+                  };
+
+                  # Embed Git commit revision
+                  system.configurationRevision = pkgsInput.lib.mkIf (self ? rev || self ? dirtyRev)
+                    (self.rev or self.dirtyRev);
+                }
+
+                /*
                 # Configure default settings for home-manager on all hosts
                 {
                   home-manager = {
@@ -624,8 +658,9 @@
 
 
                 })
+                */
 
-              ];
+              ] ++ extraModules;
 
             };
 
@@ -635,23 +670,28 @@
           #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-stable, extraConfig ? {} }: # nixpkgs-stable as default
           #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-release, hmInput ? inputs.home-manager-release, extraConfig ? {} }: # nixpkgs-stable as default
           #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-release, hmInput ? inputs.home-manager, extraConfig ? {} }: # nixpkgs-stable as default
-          mkHome =
-            {
-              system,
-              modules,
+          mkHome = userName: hostName: {
+              system ? "x86_64-linux",
+              #modules,
               pkgsInput ? inputs.nixpkgs,
               hmInput ? inputs.home-manager,
-              extraConfig ? { },
-            }: # nixpkgs-stable as default
+              #extraConfig ? { },
+              extraModules ? []
+          }: # nixpkgs-stable as default
             #inputs.home-manager.lib.homeManagerConfiguration {
             hmInput.lib.homeManagerConfiguration {
               #pkgs = mkPkgsCommon {
               #  inherit system pkgsInput self;
               #  extraConfig = extraConfig;
               #};
-              pkgs = mkPkgsCommon { inherit system pkgsInput self extraConfig; };
-              inherit modules;
-              extraSpecialArgs = { inherit inputs outputs; };
+              #pkgs = mkPkgsCommon { inherit system pkgsInput self extraConfig; };
+              pkgs = mkPkgsCommon { inherit system pkgsInput; };
+              #inherit modules;
+              #extraSpecialArgs = { inherit inputs outputs; };
+              extraSpecialArgs = { inherit inputs outputs self; };
+              modules = [
+                (./. + "/profiles/home-manager/users/${userName}/${hostName}")
+              ] ++ extraModules;
             };
 
         in
@@ -692,11 +732,12 @@
             #   nix run nixpkgs#nixos-anywhere -- --flake .#khawlah root@nixos
             #
 
-            khawlah = mkNixos {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/nixos/hosts/khawlah/configuration.nix
-                inputs.home-manager.nixosModules.home-manager
+            khawlah = mkNixos "khawlah" {
+              #system = "x86_64-linux";
+              #modules = [
+              extraModules = [
+                #./profiles/nixos/hosts/khawlah/configuration.nix
+                #inputs.home-manager.nixosModules.home-manager
                 inputs.hardware.nixosModules.lenovo-thinkpad
                 inputs.hardware.nixosModules.common-cpu-intel
                 inputs.hardware.nixosModules.common-pc-laptop-ssd
@@ -715,11 +756,12 @@
             #  inputs.stylix.nixosModules.stylix
             #];
 
-            raudah = mkNixos {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/nixos/hosts/raudah/configuration.nix
-                inputs.home-manager.nixosModules.home-manager
+            raudah = mkNixos "raudah" {
+              #system = "x86_64-linux";
+              #modules = [
+              extraModules = [
+                #./profiles/nixos/hosts/raudah/configuration.nix
+                #inputs.home-manager.nixosModules.home-manager
                 inputs.hardware.nixosModules.lenovo-thinkpad
                 inputs.hardware.nixosModules.common-cpu-intel
                 inputs.hardware.nixosModules.common-pc-laptop-ssd
@@ -729,11 +771,12 @@
               #pkgsInput = inputs.nixpkgs-unstable; # override
             };
 
-            huda = mkNixos {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/nixos/hosts/huda/configuration.nix
-                inputs.home-manager.nixosModules.home-manager
+            huda = mkNixos "huda" {
+              #system = "x86_64-linux";
+              #modules = [
+              extraModules = [
+                #./profiles/nixos/hosts/huda/configuration.nix
+                #inputs.home-manager.nixosModules.home-manager
                 inputs.hardware.nixosModules.common-cpu-intel
                 inputs.hardware.nixosModules.common-pc-laptop-ssd
                 inputs.stylix.nixosModules.stylix
@@ -742,12 +785,13 @@
               #pkgsInput = inputs.nixpkgs-unstable; # override
             };
 
-            bawang = mkNixos {
-              system = "x86_64-linux";
+            bawang = mkNixos "bawang" {
+              #system = "x86_64-linux";
               #pkgsInput = inputs.nixpkgs-unstable; # override
-              pkgsInput = inputs.nixpkgs-release-26_05; # override
-              modules = [
-                ./profiles/nixos/hosts/bawang/configuration.nix
+              #pkgsInput = inputs.nixpkgs-release-26_05; # override
+              #pkgsInput = inputs.nixpkgs-release; # override
+              extraModules = [
+                #./profiles/nixos/hosts/bawang/configuration.nix
                 inputs.home-manager.nixosModules.home-manager
                 inputs.hardware.nixosModules.common-cpu-intel
                 inputs.hardware.nixosModules.common-pc-laptop-ssd
@@ -756,14 +800,14 @@
               ];
             };
 
-            arang = mkNixos {
-              system = "x86_64-linux";
+            arang = mkNixos "arang" {
+              #system = "x86_64-linux";
               #pkgsInput = inputs.nixpkgs-unstable; # override
               #pkgsInput = inputs.nixpkgs-release-26_05; # override
               #copyConfig = false; # Override to prevents copying the source files to /etc
-              modules = [
-                ./profiles/nixos/hosts/arang/configuration.nix
-                inputs.home-manager.nixosModules.home-manager
+              extraModules = [
+                #./profiles/nixos/hosts/arang/configuration.nix
+                #inputs.home-manager.nixosModules.home-manager
                 inputs.hardware.nixosModules.common-cpu-intel
                 inputs.hardware.nixosModules.common-pc-laptop-ssd
                 inputs.stylix.nixosModules.stylix
@@ -778,15 +822,15 @@
             #enableDrive2 = false;
             #enableDrive3 = true;
             #in mkNixos {
-            nyxora = mkNixos {
+            nyxora = mkNixos "nyxora" {
 
-              system = "x86_64-linux";
-              modules = [
+              #system = "x86_64-linux";
+              extraModules = [
                 # To test build
                 #   nixos-rebuild dry-build --flake .#nyxora
                 # To build and apply
                 #   nixos-rebuild switch --flake .#nyxora
-                ./profiles/nixos/hosts/nyxora/configuration.nix
+                #./profiles/nixos/hosts/nyxora/configuration.nix
 
                 inputs.sops-nix.nixosModules.sops
 
@@ -846,10 +890,10 @@
             #}
             #        ];
 
-            customdesktop = mkNixos {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/nixos/hosts/customdesktop/configuration.nix
+            customdesktop = mkNixos "customdesktop" {
+              #system = "x86_64-linux";
+              extraModules = [
+                #./profiles/nixos/hosts/customdesktop/configuration.nix
                 inputs.sops-nix.nixosModules.sops
                 inputs.disko.nixosModules.disko
                 inputs.zfs-snapshot-manager.nixosModules.default
@@ -857,10 +901,10 @@
               #pkgsInput = inputs.nixpkgs-unstable; # override
             };
 
-            durian = mkNixos {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/nixos/hosts/durian/configuration.nix
+            durian = mkNixos "durian" {
+              #system = "x86_64-linux";
+              extraModules = [
+                #./profiles/nixos/hosts/durian/configuration.nix
                 inputs.sops-nix.nixosModules.sops
                 inputs.disko.nixosModules.disko
                 inputs.zfs-snapshot-manager.nixosModules.default
@@ -872,11 +916,11 @@
             #  ./profiles/nixos/hosts/asmak/configuration.nix
             #  inputs.stylix.nixosModules.stylix
             #];
-            asmak = mkNixos {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/nixos/hosts/asmak/configuration.nix
-                inputs.home-manager.nixosModules.home-manager
+            asmak = mkNixos "asmak" {
+              #system = "x86_64-linux";
+              extraModules = [
+                #./profiles/nixos/hosts/asmak/configuration.nix
+                #inputs.home-manager.nixosModules.home-manager
                 inputs.hardware.nixosModules.lenovo-thinkpad
                 inputs.hardware.nixosModules.common-cpu-intel
                 inputs.hardware.nixosModules.common-pc-laptop-ssd
@@ -891,11 +935,11 @@
             ##nix run nixpkgs#nixos-anywhere -- --flake .#generic --generate-hardware-config nixos-generate-config ./hardware-configuration.nix root@nixos
             # nix run nixpkgs#nixos-anywhere -- --flake .#zahrah  --generate-hardware-config nixos-generate-config ./hardware-configuration.nix root@nixos
             #
-            zahrah = mkNixos {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/nixos/hosts/zahrah/configuration.nix
-                inputs.home-manager.nixosModules.home-manager
+            zahrah = mkNixos "zahrah" {
+              #system = "x86_64-linux";
+              extraModules = [
+                #./profiles/nixos/hosts/zahrah/configuration.nix
+                #inputs.home-manager.nixosModules.home-manager
                 inputs.hardware.nixosModules.lenovo-thinkpad
                 inputs.hardware.nixosModules.common-cpu-intel
                 inputs.hardware.nixosModules.common-pc-laptop-ssd
@@ -910,11 +954,11 @@
             };
 
             # nix run nixpkgs#nixos-anywhere -- --flake .#maryam  --generate-hardware-config nixos-generate-config ./hardware-configuration.nix root@nixos
-            maryam = mkNixos {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/nixos/hosts/maryam/configuration.nix
-                inputs.home-manager.nixosModules.home-manager
+            maryam = mkNixos "maryam" {
+              #system = "x86_64-linux";
+              extraModules = [
+                #./profiles/nixos/hosts/maryam/configuration.nix
+                #inputs.home-manager.nixosModules.home-manager
                 inputs.hardware.nixosModules.lenovo-thinkpad
                 inputs.hardware.nixosModules.common-cpu-intel
                 inputs.hardware.nixosModules.common-pc-laptop-ssd
@@ -925,10 +969,10 @@
               #pkgsInput = inputs.nixpkgs-unstable; # override
             };
 
-            manggis = mkNixos {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/nixos/hosts/manggis/configuration.nix
+            manggis = mkNixos "manggis" {
+              #system = "x86_64-linux";
+              extraModules = [
+                #./profiles/nixos/hosts/manggis/configuration.nix
                 inputs.hardware.nixosModules.lenovo-thinkpad-x220
               ];
               #pkgsInput = inputs.nixpkgs-unstable; # override
@@ -940,10 +984,10 @@
             #  { programs.nix-ld.dev.enable = true; }
             #];
 
-            taufiq = mkNixos {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/nixos/hosts/taufiq/configuration.nix
+            taufiq = mkNixos "taufiq" {
+              #system = "x86_64-linux";
+              extraModules = [
+                #./profiles/nixos/hosts/taufiq/configuration.nix
                 inputs.stylix.nixosModules.stylix
                 inputs.hardware.nixosModules.common-cpu-intel
                 inputs.hardware.nixosModules.common-pc-laptop-ssd
@@ -956,10 +1000,10 @@
               #};
             };
 
-            sakinah = mkNixos {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/nixos/hosts/sakinah/configuration.nix
+            sakinah = mkNixos "sakinah" {
+              #system = "x86_64-linux";
+              extraModules = [
+                #./profiles/nixos/hosts/sakinah/configuration.nix
                 inputs.stylix.nixosModules.stylix
                 inputs.hardware.nixosModules.common-cpu-intel
 
@@ -978,49 +1022,23 @@
               #hmInput = inputs.home-manager-unstable;
             };
 
-            sumayah = mkNixos {
-              system = "x86_64-linux";
-              modules = [
-                #self.nixosModules.grafito
-                ./profiles/nixos/hosts/sumayah/configuration.nix
-              ];
-              #pkgsInput = inputs.nixpkgs-release; # override
-              #pkgsInput = inputs.nixpkgs-unstable; # override
-            };
+            # White gaming desktop pc currently being use by Naqib
+            sumayah = mkNixos "sumayah" {};
 
-            laila = mkNixos {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/nixos/hosts/laila/configuration.nix
-              ];
-              #pkgsInput = inputs.nixpkgs-release; # override
-              #pkgsInput = inputs.nixpkgs-unstable; # override
-            };
+            laila = mkNixos "laila" {};
 
             # external USB 2.5" 256GB SSD brand SP
-            sukun = mkNixos {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/nixos/hosts/sukun/configuration.nix
-              ];
-              #pkgsInput = inputs.nixpkgs-release; # override
-              #pkgsInput = inputs.nixpkgs-unstable; # override
-            };
+            sukun = mkNixos "sukun" {};
 
             # nixos on acer laptop
-            parang = mkNixos {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/nixos/hosts/parang/configuration.nix
-              ];
-              #pkgsInput = inputs.nixpkgs-release; # override
-              #pkgsInput = inputs.nixpkgs-unstable; # override
-            };
+            parang = mkNixos "parang" {};
 
-            keira = mkNixos {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/nixos/hosts/keira/configuration.nix
+            # Thinkpad T410 without nvidia
+            keira = mkNixos "keira" {
+              #system = "x86_64-linux";
+              #modules = [
+              extraModules = [
+                #./profiles/nixos/hosts/keira/configuration.nix
                 inputs.hardware.nixosModules.lenovo-thinkpad-t410
               ];
               #pkgsInput = inputs.nixpkgs-unstable; # override
@@ -1051,213 +1069,84 @@
             #-----------------------------------------------------------------------------
             # najib
             #-----------------------------------------------------------------------------
-            #"najib@taufiq" = inputs.home-manager.lib.homeManagerConfiguration {
-            #  pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-            #  extraSpecialArgs = { inherit inputs; };
-            #  modules = [
-            #    ./home-manager/user-najib/host-taufiq
-            #  ];
-            #};
-            #"najib@taufiq" = mkHome "x86_64-linux" [ ./profiles/home-manager/users/najib/taufiq ];
-            "najib@taufiq" = mkHome {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/home-manager/users/najib/taufiq
+            "najib@sumayah" = mkHome "najib" "sumayah" {
+              #system = "x86_64-linux";
+              #modules = [ ./profiles/home-manager/users/najib/sumayah ];
+              #pkgsInputs = inputs.nixpkgs-release;
+              #pkgsInputs = inputs.nixpkgs-unstable;
+            };
+            "najib@taufiq" = mkHome "najib" "taufiq" {};
+            "najib@huda" = mkHome "najib" "huda" {};
+            "najib@bawang" = mkHome "najib" "bawang" {};
+            "najib@maryam" = mkHome "najib" "maryam" {};
+            "najib@customdesktop" = mkHome "najib" "customdesktop" {};
+            "najib@asmak" = mkHome "najib" "asmak" {};
+            "najib@zahrah" = mkHome "najib" "zahrah" {};
+            "najib@khawlah" = mkHome "najib" "khawlah" {};
+            "najib@keira" = mkHome "najib" "keira" {};
+            "najib@nyxora" = mkHome "najib" "nyxora" {
+              #modules = [
+              extraModules = [
+                #./profiles/home-manager/users/najib/nyxora
               ];
               #pkgsInputs = inputs.nixpkgs-release; # override
               #pkgsInputs = inputs.nixpkgs-unstable; # override
             };
-
-            "najib@sumayah" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/najib/sumayah ];
-              #pkgsInputs = inputs.nixpkgs-release; # override
-              #pkgsInputs = inputs.nixpkgs-unstable; # override
-            };
-
-            "najib@huda" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/najib/huda ];
-              #pkgsInputs = inputs.nixpkgs-release; # override
-              #pkgsInputs = inputs.nixpkgs-unstable; # override
-            };
-
-            /*
-            "najib@bawang" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/najib/bawang ];
-              #pkgsInputs = inputs.nixpkgs-release; # override
-              #pkgsInputs = inputs.nixpkgs-unstable; # override
-            };
-            */
-
-            "najib@maryam" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/najib/maryam ];
-            };
-
-            "najib@customdesktop" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/najib/customdesktop ];
-            };
-
-            "najib@asmak" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/najib/asmak ];
-            };
-
-            "najib@zahrah" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/najib/zahrah ];
-            };
-
-            "najib@khawlah" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/najib/khawlah ];
-            };
-
-            "najib@keira" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/najib/keira ];
-            };
-
-            "najib@nyxora" = mkHome {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/home-manager/users/najib/nyxora
-              ];
-              #pkgsInputs = inputs.nixpkgs-release; # override
-              #pkgsInputs = inputs.nixpkgs-unstable; # override
-            };
-
-            "najib@manggis" = mkHome {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/home-manager/users/najib/manggis
-              ];
-            };
-
-            "najib@parang" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/najib/parang ];
-            };
-
-            "najib@raudah" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/najib/raudah ];
-            };
-
+            "najib@manggis" = mkHome "najib" "manggis" {};
+            "najib@parang" = mkHome "najib" "parang" {};
+            "najib@raudah" = mkHome "najib" "raudah" {};
 
             #-----------------------------------------------------------------------------
             # root
             #-----------------------------------------------------------------------------
-            "root@taufiq" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/root/taufiq ];
-              pkgsInputs = inputs.nixpkgs-release; # override
+            "root@taufiq" = mkHome "root" "taufiq" {
+              #pkgsInputs = inputs.nixpkgs-release;
             };
 
             #-----------------------------------------------------------------------------
             # julia
             #-----------------------------------------------------------------------------
-            "julia@manggis" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/julia/manggis ];
-            };
-
-            "julia@keira" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/julia/keira ];
-            };
+            "julia@manggis" = mkHome "julia" "manggis" {};
+            "julia@keira" = mkHome "julia" "keira" {};
 
             #-----------------------------------------------------------------------------
             # nurnasuha
             #-----------------------------------------------------------------------------
-            "nurnasuha@manggis" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/nurnasuha/manggis ];
-            };
-
-            "nurnasuha@asmak" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/nurnasuha/asmak ];
-            };
+            "nurnasuha@manggis" = mkHome "nurnasuha" "manggis" {};
+            "nurnasuha@asmak" = mkHome "nurnasuha" "asmak" {};
 
             #-----------------------------------------------------------------------------
             # naqib
             #-----------------------------------------------------------------------------
-            "naqib@sumayah" = mkHome {
-              system = "x86_64-linux";
-              modules = [
-                ./profiles/home-manager/users/naqib/sumayah
+            "naqib@sumayah" = mkHome "naqib" "sumayah" {
+              #system = "x86_64-linux";
+              extraModules = [
+                #./profiles/home-manager/users/naqib/sumayah
 
                 # Ensure this line is present here so it builds for the naqib user!
                 #inputs.mc-project.homeModules.minecraft-client
               ];
             };
 
-            "naqib@huda" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/naqib/huda ];
+            "naqib@huda" = mkHome  "naqib" "huda" {
+              #system = "x86_64-linux";
+              #modules = [ ./profiles/home-manager/users/naqib/huda ];
             };
 
-            "naqib@laila" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/naqib/laila ];
-            };
-
-            "naqib@sukun" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/naqib/sukun ];
-            };
-
-            "naqib@parang" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/naqib/parang ];
-            };
-
-            "naqib@asmak" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/naqib/asmak ];
-            };
-
-            "naqib@zahrah" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/naqib/zahrah ];
-            };
-
-            "naqib@raudah" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/naqib/raudah ];
-            };
-
-            "naqib@taufiq" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/naqib/taufiq ];
-              #pkgsInputs = inputs.nixpkgs-release; # override
-              #pkgsInputs = inputs.nixpkgs-unstable; # override
-              #pkgsInputs = inputs.nixpkgs-stable; # override
-            };
+            "naqib@laila" = mkHome "naqib" "laila" {};
+            "naqib@sukun" = mkHome "naqib" "sukun" {};
+            "naqib@parang" = mkHome "naqib" "parang" {};
+            "naqib@asmak" = mkHome "naqib" "asmak" {};
+            "naqib@zahrah" = mkHome "naqib" "zahrah" {};
+            "naqib@raudah" = mkHome "naqib" "raudah" {};
+            "naqib@taufiq" = mkHome "naqib" "taufiq" {};
 
             #-----------------------------------------------------------------------------
             # naim
             #-----------------------------------------------------------------------------
-            "naim@manggis" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/naim/manggis ];
-            };
-
-            "naim@keira" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/naim/keira ];
-            };
-
-            "naim@huda" = mkHome {
-              system = "x86_64-linux";
-              modules = [ ./profiles/home-manager/users/naim/huda ];
-              #pkgsInputs = inputs.nixpkgs-release; # override
-              #pkgsInputs = inputs.nixpkgs-unstable; # override
-            };
+            "naim@manggis" = mkHome "naim" "manggis" {};
+            "naim@keira" = mkHome "naim" "keira" {};
+            "naim@huda" = mkHome "naim" "huda" {};
 
 
         }; # End of 'homeConfigurations = { ... };'

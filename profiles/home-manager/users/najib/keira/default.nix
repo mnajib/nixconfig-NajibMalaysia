@@ -14,16 +14,18 @@ in {
   in [
     ../default.nix
 
-    (fromCommon "neovim")
+    #(fromCommon "neovim")
     (fromCommon "repo-bootstrap.nix")
   ];
 
   programs.repo-bootstrap.enable = true;
   programs.repo-bootstrap.basePath = "~/Projects";
 
-  #home.packages = with pkgs; [
-  #  #helix
-  #];
+  home.packages = with pkgs; [
+    #helix
+
+    inputs.my-nvim.packages.${pkgs.system}.default
+  ];
 
   #fonts.fontconfig = {
   #  enable = true;

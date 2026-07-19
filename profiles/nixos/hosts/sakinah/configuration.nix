@@ -101,7 +101,7 @@ in {
   home-manager = let
     userImport = user: import (./. + "/${hmDir}/${user}/${hostName}");
   in {
-    backupFileExtension = "backup";
+    #backupFileExtension = "backup";
     #extraSpecialArgs = {
     #  inherit inputs outputs; # to pass arguments to home.nix
     #};

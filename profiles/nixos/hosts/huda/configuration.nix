@@ -57,7 +57,7 @@ in
     (fromCommon "users-naim.nix")
     (fromCommon "users-nurnasuha.nix")
     (fromCommon "users-julia.nix")
-    inputs.home-manager.nixosModules.home-manager
+    #inputs.home-manager.nixosModules.home-manager
 
     (fromCommon "console-keyboard-dvorak.nix")       # keyboard layout for console environment
     (fromCommon "keyboard-with-msa.nix")             # keyboard layout for graphical environment
@@ -88,9 +88,9 @@ in
   home-manager = let
     userImport = user: import (./. + "/${hmDir}/${user}/${hostName}");
   in {
-    backupFileExtension = "backup";
+    #backupFileExtension = "backup";
     #overwriteBackup = true;
-    extraSpecialArgs = { inherit inputs outputs; }; # to pass arguments to home.nix
+    #extraSpecialArgs = { inherit inputs outputs; }; # to pass arguments to home.nix
     users = {
       #root = import "${hmDir}/root/taufiq";
       #najib = import "${hmDir}/najib/taufiq";
@@ -163,7 +163,7 @@ in
     #blender
     #freecad
 
-    inputs.home-manager.packages.${pkgs.system}.default # To install (globally, instead of per user) home-manager packages
+    #inputs.home-manager.packages.${pkgs.system}.default # To install (globally, instead of per user) home-manager packages
   ];
 
   services.fstrim.enable = true;

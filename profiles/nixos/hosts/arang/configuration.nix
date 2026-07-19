@@ -37,7 +37,7 @@ in
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
   in [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    inputs.home-manager.nixosModules.home-manager
+    #inputs.home-manager.nixosModules.home-manager
     #(fromCommon "deskflow.nix")
 
     ./tablet-gnome.nix

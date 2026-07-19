@@ -21,7 +21,7 @@ in
   in [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./zfs.nix
-    inputs.home-manager.nixosModules.home-manager
+    #inputs.home-manager.nixosModules.home-manager
 
     #./Minecraft/minecraft.nix
     inputs.mc-project.nixosModules.minecraft-server # Inject the server configuration directly
@@ -180,7 +180,7 @@ in
     users = {
       #root = import (./. + "/${hmDir}/root/${hostName}");
       #najib = import (./. + "/${hmDir}/najib/${hostName}");
-      root = userImport "root";
+      #root = userImport "root";
       najib = userImport "najib";
       naqib = userImport "naqib";
     };
@@ -273,7 +273,7 @@ in
 
     #openrgb-with-all-plugins
 
-    inputs.home-manager.packages.${pkgs.system}.default # To install home-manager packages
+    #inputs.home-manager.packages.${pkgs.system}.default # To install home-manager packages
 
     radeontop
   ];

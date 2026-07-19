@@ -44,7 +44,7 @@ in
       #./zfs.nix
       ./btrfs.nix
 
-      inputs.home-manager.nixosModules.home-manager
+      #inputs.home-manager.nixosModules.home-manager
       #./turn-off-rgb.nix
       #./grafito.nix
 
@@ -228,7 +228,7 @@ in
       userImport = user: import (./. + "/${hmDir}/${user}/${hostName}");
     in
     {
-      extraSpecialArgs = { inherit inputs outputs; };
+      #extraSpecialArgs = { inherit inputs outputs; };
       users = {
         #root = userImport "root";
         najib = userImport "najib";
@@ -322,7 +322,7 @@ in
 
     #openrgb-with-all-plugins
 
-    inputs.home-manager.packages.${pkgs.system}.default # To install home-manager packages
+    #inputs.home-manager.packages.${pkgs.system}.default # To install home-manager packages
 
     #radeontop
   ];
