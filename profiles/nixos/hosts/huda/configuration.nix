@@ -155,7 +155,7 @@ in
     gcc
     gparted
     fatresize
-    prismlauncher
+    #prismlauncher
     #flatpak
     #luanti
     #kate
