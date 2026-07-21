@@ -109,7 +109,7 @@ in
     users = {
       #root = userImport "root";
       najib = userImport "najib";
-      naqib = userImport "naqib";
+      #naqib = userImport "naqib";
     };
   };
 
