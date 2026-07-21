@@ -122,12 +122,12 @@ in
   hardware.enableAllFirmware = true;
   hardware.enableRedistributableFirmware = true;
 
-  #boot.kernelPackages = pkgs.linuxKernel.packages.latest;
-  #boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
-  #boot.kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12; # linux_6_11
-  #boot.kernelPackages = pkgs.linuxPackages_6_6;
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
+  ##boot.kernelPackages = pkgs.linuxKernel.packages.latest;
+  ##boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
+  ##boot.kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
+  ##boot.kernelPackages = pkgs.linuxPackages_6_6;
+  ##boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12; # XXX: stable for keira. cuba commented ini pada 2026-07-22
 
   boot.kernelParams = [
     #"nomodeset"
