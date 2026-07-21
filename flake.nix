@@ -1067,8 +1067,6 @@
           #--------------------------------------------------
           homeConfigurations = {
 
-            /*
-
             # To dry-build a Home Manager configuration for the user 'najib@taufiq':
             #   nix build ".#homeConfigurations.najib@taufiq.activationPackage" --dry-run
             #
@@ -1169,8 +1167,6 @@
             "naim@manggis" = mkHome "naim" "manggis" {};
             "naim@keira" = mkHome "naim" "keira" {};
             "naim@huda" = mkHome "naim" "huda" {};
-
-            */
 
         }; # End of 'homeConfigurations = { ... };'
 
