@@ -11,7 +11,6 @@
     ./configuration.DESKTOP_LITE.nix
 
     ./packages/android.nix
-    ./packages/communication.nix
     ./packages/devtools.nix
     ./packages/games.nix
     ./packages/virtualization.nix
