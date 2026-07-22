@@ -17,9 +17,10 @@
     ./packages/filemanagers.nix
     ./packages/fonts.nix
     ./packages/calculators.nix
-    ./packages/office.nix
+    ./packages/office_LITE.nix
     ./packages/csv-tools.nix
     ./packages/drivers.nix
+    ./packages/communication.nix
   ];
 
   programs.java.enable = true;
