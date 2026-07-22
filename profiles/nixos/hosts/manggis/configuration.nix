@@ -40,7 +40,7 @@ in
     ./hardware-configuration.nix
     inputs.home-manager.nixosModules.home-manager
 
-    (fromCommon "configuration.FULL.nix")
+    (fromCommon "configuration.DESKTOP_FULL.nix")
     #(fromCommon "configuration.LESS.nix")
 
     #./bootEFI.nix

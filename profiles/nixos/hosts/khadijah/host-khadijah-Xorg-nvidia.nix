@@ -106,7 +106,7 @@ with lib;
 
   imports = [
     ./hardware-configuration-khadijah.nix
-    ./configuration.FULL.nix
+    ./configuration.DESKTOP_FULL.nix
 
     #./hosts.nix
     #./hosts2.nix

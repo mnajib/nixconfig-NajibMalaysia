@@ -48,7 +48,7 @@ in
       #./turn-off-rgb.nix
       #./grafito.nix
 
-      (fromCommon "configuration.FULL.nix")
+      (fromCommon "configuration.DESKTOP_FULL.nix")
       #(fromCommon "configuration.MIN.nix")
       #(fromCommon "locale.nix")
       #(fromCommon "session.nix")

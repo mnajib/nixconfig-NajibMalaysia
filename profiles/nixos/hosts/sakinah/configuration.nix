@@ -58,7 +58,7 @@ in {
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
   in [
     ./hardware-configuration.nix
-    (fromCommon "configuration.FULL.nix")
+    (fromCommon "configuration.DESKTOP_FULL.nix")
     (fromCommon "users-najib.nix")
     (fromCommon "users-naqib-wheel.nix")
     (fromCommon "users-nurnasuha.nix")

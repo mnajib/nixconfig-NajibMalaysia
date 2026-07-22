@@ -65,7 +65,7 @@
   imports = [
     ./users-najib.nix
     #./garbage-collect.nix
-    ./sqlite.nix
+    #./sqlite.nix
 
     ./home-manager.nix
 
@@ -91,7 +91,7 @@
     ./packages/monitoring.nix
     ./packages/networking.nix
     ./packages/office.nix
-    ./packages/virtualization.nix
+    #./packages/virtualization.nix
     ./packages/calculators.nix
     ./packages/csv-tools.nix
     ./packages/archivers.nix
@@ -214,7 +214,7 @@
 
   programs.java.enable = true;
 
-  programs.light.enable = true;
+  #programs.light.enable = true;
 
   programs.dconf.enable = true;         # for gnome?
 
@@ -388,16 +388,15 @@
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
   hardware.enableAllFirmware = true;
-  services.fwupd = {
-    enable = true;
-  };
+  services.fwupd.enable = true;
 
   networking.nftables.enable = true;
   networking.firewall.enable = true;
   networking.firewall.allowPing = true;
 
   #services.locate.enable = true; # default false
-  programs.adb.enable = true;
+  #services.picom.enable = true; #services.compton.enable = true;
+  #programs.adb.enable = true;
 
   #services.cron = {
     #enable = true;

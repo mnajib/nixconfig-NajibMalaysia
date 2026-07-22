@@ -145,7 +145,7 @@ in
 
     inputs.home-manager.nixosModules.home-manager
 
-    (fromCommon "configuration.FULL.nix")
+    (fromCommon "configuration.DESKTOP_FULL.nix")
     #(fromCommon "remote-builders.nix")
 
     #./bootEFI.nix

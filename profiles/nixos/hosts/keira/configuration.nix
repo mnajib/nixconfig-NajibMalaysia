@@ -38,7 +38,7 @@ in
     #./hardware-storage-keira-SSD002.nix
 
     #./configuration.MIN.nix
-    (fromCommon "configuration.FULL.nix")
+    (fromCommon "configuration.DESKTOP_FULL.nix")
 
     #./bootEFI.nix
     #./bootBIOS.nix

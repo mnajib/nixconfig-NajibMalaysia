@@ -95,8 +95,8 @@ in
 
     inputs.home-manager.nixosModules.home-manager
 
-    #./configuration.FULL.nix
-    (fromCommon "configuration.FULL.nix")
+    #./configuration.DESKTOP_FULL.nix
+    (fromCommon "configuration.DESKTOP_FULL.nix")
 
     # Internal/private network DHCP and DNS server
     #(fromCommon "dnsmasq.nix")

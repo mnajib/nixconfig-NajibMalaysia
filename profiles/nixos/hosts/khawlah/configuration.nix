@@ -70,7 +70,7 @@ in
     (fromCommon "audio-pipewire.nix")
     (fromCommon "hardware-printer.nix")
     (fromCommon "zramSwap.nix")
-    (fromCommon "configuration.FULL.nix")
+    (fromCommon "configuration.DESKTOP_FULL.nix")
     (fromCommon "nix-garbage-collector.nix")
     (fromCommon "flatpak.nix")
     #(fromCommon "opengl.nix")

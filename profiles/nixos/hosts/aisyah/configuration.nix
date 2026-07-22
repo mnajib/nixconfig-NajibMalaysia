@@ -55,7 +55,7 @@
 
 		./typesetting.nix
 
-		./configuration.FULL.nix
+		./configuration.DESKTOP_FULL.nix
     ];
 
     # BIOS

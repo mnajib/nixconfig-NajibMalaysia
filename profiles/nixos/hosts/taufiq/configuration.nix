@@ -128,7 +128,7 @@ in# with lib;
     #./remote-builders.nix
     (fromCommon "remote-builders.nix")
 
-    (fromCommon "configuration.FULL.nix")
+    (fromCommon "configuration.DESKTOP_FULL.nix")
 
     #./hosts.nix
     #./hosts2.nix
