@@ -69,7 +69,7 @@ in
     (fromCommon "hardware-printer.nix")
     (fromCommon "zramSwap.nix")
 
-    (fromCommon "configuration.FULL.nix")
+    (fromCommon "configuration.DESKTOP_FULL.nix")
     (fromCommon "sqlite.nix")
     (fromCommon "packages/base.nix")
 

@@ -32,7 +32,7 @@ in
     #./keyboard-QMK-VIA.nix
     (fromCommon "keyboard-QMK-VIA.nix")
 
-    (fromCommon "configuration.FULL.nix")
+    (fromCommon "configuration.DESKTOP_FULL.nix")
     #(fromCommon "configuration.MIN.nix")
     #(fromCommon "locale.nix")
     #(fromCommon "session.nix")

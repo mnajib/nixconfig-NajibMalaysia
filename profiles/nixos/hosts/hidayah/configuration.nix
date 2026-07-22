@@ -54,7 +54,7 @@ with lib;
 
   imports = [
     ./hardware-configuration-hidayah.nix 	# cheetah.nix
-    ./configuration.FULL.nix
+    ./configuration.DESKTOP_FULL.nix
 
     #./hosts.nix
     #./hosts2.nix

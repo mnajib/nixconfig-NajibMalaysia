@@ -49,7 +49,7 @@ in
     #./roles/stage-2.nix
 
     #(fromCommon "remote-builders.nix")
-    (fromCommon "configuration.FULL.nix") # timezone, locale, ...
+    (fromCommon "configuration.DESKTOP_FULL.nix") # timezone, locale, ...
 
     #(fromCommon "users-a-wheel.nix")
     (fromCommon "users-naqib-wheel.nix")

@@ -34,7 +34,7 @@
 		./zramSwap.nix
 
 		#./configuration.MIN.nix
-		#./configuration.FULL.nix
+		#./configuration.DESKTOP_FULL.nix
 		./configuration.NOGUI.nix
 
 		#./btrbk.nix

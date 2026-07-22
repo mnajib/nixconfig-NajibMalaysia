@@ -63,8 +63,8 @@ in
 
     ./jami.nix
 
-    #(./. + "${commonDir}/configuration.FULL.nix")
-    (fromCommon "configuration.FULL.nix")
+    #(./. + "${commonDir}/configuration.DESKTOP_FULL.nix")
+    (fromCommon "configuration.DESKTOP_FULL.nix")
     #./configuration.SERVER.nix
 
     #./bootEFI.nix

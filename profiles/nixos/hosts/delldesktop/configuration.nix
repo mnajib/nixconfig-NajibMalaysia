@@ -14,7 +14,7 @@
     ./hosts2.nix
     #./hosts.nix
 
-    ./configuration.FULL.nix
+    ./configuration.DESKTOP_FULL.nix
 
     #./bootEFI.nix
     #./bootBIOS.nix

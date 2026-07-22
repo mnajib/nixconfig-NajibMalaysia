@@ -1,3 +1,5 @@
+# profiles/nixos/common/configuration.BASE.nix
+
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
@@ -82,26 +84,26 @@
     #./nh.nix
 
     ./packages/base.nix
-    ./packages/android.nix
-    ./packages/browsers.nix
-    ./packages/communication.nix
-    ./packages/desktop.nix
-    ./packages/devtools.nix
-    ./packages/drivers.nix
-    ./packages/editors.nix
+    #./packages/android.nix
+    #./packages/browsers.nix
+    #./packages/communication.nix
+    #./packages/desktop.nix
+    #./packages/devtools.nix
+    #./packages/drivers.nix
+    #./packages/editors.nix
     ./packages/filesystems.nix
-    ./packages/fonts.nix
-    ./packages/games.nix
-    ./packages/media.nix
+    #./packages/fonts.nix
+    #./packages/games.nix
+    #./packages/media.nix
     ./packages/monitoring.nix
     ./packages/networking.nix
-    ./packages/office.nix
-    ./packages/virtualization.nix
-    ./packages/calculators.nix
-    ./packages/csv-tools.nix
+    #./packages/office.nix
+    #./packages/virtualization.nix
+    #./packages/calculators.nix
+    #./packages/csv-tools.nix
     ./packages/archivers.nix
-    ./packages/filemanagers.nix
-    ./packages/extras.nix
+    #./packages/filemanagers.nix
+    #./packages/extras.nix
   ];
 
   # Ref.:
@@ -217,12 +219,12 @@
 
   #programs.way-cooler.enable = true;
 
-  programs.java.enable = true;
+  #programs.java.enable = true;
 
   #programs.light.enable = true;
-  hardware.acpilight.enable = true;
+  #hardware.acpilight.enable = true;
 
-  programs.dconf.enable = true;         # for gnome?
+  #programs.dconf.enable = true;         # for gnome?
 
   programs.tmux = {
     enable = true;
@@ -325,7 +327,7 @@
 
   #services.clipcat.enable = true;         # clipboard manager daemon
 
-  services.urxvtd.enable = true;          # To use urxvtd, run "urxvtc".
+  #services.urxvtd.enable = true;          # To use urxvtd, run "urxvtc".
 
   #services.lorri.enable = true;          # Under Linux you can set it via your desktop environment's configuration manms need SUID wrappers, can be configured further or are
   # started in user sessions.

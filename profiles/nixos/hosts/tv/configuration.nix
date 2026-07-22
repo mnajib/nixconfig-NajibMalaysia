@@ -43,7 +43,7 @@
 	#./btrbk-tv.nix # XXX: Temporarily disabled as the HDD is failing.
 
 	./hosts2.nix
-	./configuration.FULL.nix
+	./configuration.DESKTOP_FULL.nix
     ];
 
     # For the value of 'networking.hostID', use the following command:

@@ -30,7 +30,7 @@ in
   #nix.settings.max-jobs = 1;
   #nix.settings.cores = 0;
   #
-  # Note: Already define in configuration.FULL.nix file
+  # Note: Already define in configuration.DESKTOP_FULL.nix file
   #
   #nix.daemonCPUSchedPolicy = "idle";
   #nix.daemonIOSchedClass = "idle"; # default "best-effort",
@@ -51,16 +51,18 @@ in
     #(fromCommon "users-naim-wheel.nix")
 
     #(fromCommon "configuration.OBESS.nix") # FULL
-    (fromCommon "configuration.OVERWEIGHT.nix")
+    #(fromCommon "configuration.OVERWEIGHT.nix")
     #(fromCommon "configuration.NORMAL.nix")
     #(fromCommon "configuration.UNDERWEIGHT.nix") # MIN
-    #(fromCommon "locale.nix")
+    (fromCommon "configuration.DESKTOP_LITE.nix")
 
     (fromCommon "thinkpad.nix")
 
     #(fromCommon "nfs-client.nix")
     (fromCommon "nfs-client-automount.nix")
     (fromCommon "samba-client.nix")
+
+    #(fromCommon "locale.nix")
 
     (fromCommon "console-keyboard-dvorak.nix")
     (fromCommon "keyboard-with-msa.nix")
@@ -92,7 +94,8 @@ in
     #(fromCommon "xmonad.nix")
     #(fromCommon "desktops-wayland.nix")
     #(fromCommon "desktops-xorg.nix")
-    (fromCommon "desktops.nix")
+    #(fromCommon "desktops.nix")
+    ./desktop.nix
   ];
 
   home-manager = let
@@ -129,7 +132,7 @@ in
   hardware.enableAllFirmware = true;
   hardware.enableRedistributableFirmware = true;
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages_latest; # XXX: test commented this on 2026-07-22 with nixos version upgrade from 25.11 to 26.05
 
   #
   # NOTES:

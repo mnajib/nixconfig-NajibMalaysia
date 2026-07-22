@@ -60,7 +60,7 @@ in
     (fromCommon "hardware-printer.nix")
     (fromCommon "zramSwap.nix")
     #./hosts2.nix
-    (fromCommon "configuration.FULL.nix")
+    (fromCommon "configuration.DESKTOP_FULL.nix")
     (fromCommon "nix-garbage-collector.nix")
     (fromCommon "flatpak.nix")
     (fromCommon "steam.nix")
@@ -121,7 +121,7 @@ in
   networking.networkmanager.enable = true;
   systemd.services.NetworkManager-wait-online.enable = false;
 
-  #services.xserver.libinput.tapping = pkgs.lib.mkForce true; # Will delete this line, do not need this anymore; instead I have put if-then-else for this in configuration.FULL.nix
+  #services.xserver.libinput.tapping = pkgs.lib.mkForce true; # Will delete this line, do not need this anymore; instead I have put if-then-else for this in configuration.DESKTOP_FULL.nix
 
   networking.nftables.enable = true;
   networking.firewall = {
