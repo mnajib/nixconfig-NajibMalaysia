@@ -5,7 +5,7 @@
   pkgs,
   lib,
   ...
-}:
+}:{
 
   imports = [
     ./configuration.DESKTOP_LITE.nix

@@ -199,7 +199,7 @@ in
   services.fstrim.enable = true;
   services.smartd.enable = true;
 
-  programs.adb.enable = true;
+  #programs.adb.enable = true; # Commented on 2026-07-24 as its no longer has any effect. Just install pkgs.android-tools.
 
   # Install firefox.
   programs.firefox.enable = true;
@@ -228,7 +228,10 @@ in
     ranger
     gnomeExtensions.vitals
     unzip
-    blender-hip
+
+    #blender-hip # error: blender-hip has been removed in favor of setting `config.rocmSupport = true` or using `pkgsRocm.blender`
+    blender
+
     unrar
     p7zip
     tldr
@@ -277,7 +280,7 @@ in
 
     radeontop
   ];
-  
+
   #services.minecraft-server.enable = true;
   #services.minecraft-server.eula = true;
 
@@ -301,11 +304,13 @@ in
       27015 27036
     ];
     allowedUDPPorts = [
+      27015
+      27103
+    ];
+    allowedUDPPortRanges = [
       { from = 8766; to = 8767; }
       { from = 16261; to = 16262; }
-      27015
       { from = 27032; to = 27036; }
-      27103
     ];
   };
 
