@@ -453,7 +453,7 @@ in
     ];
   };
 
-  services.acpid.enable = true;
+  #services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
   #services.logind.extraConfig = "RuntimeDirectorySize=4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001

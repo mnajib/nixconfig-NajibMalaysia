@@ -563,7 +563,7 @@
               #inputs.nixpkgs-unstable.lib.nixosSystem { # <-- Use inputs.nixpkgs-unstable
               #inherit system modules;
               inherit system; #modules;
-              specialArgs = { inherit inputs outputs hmInput self; };
+              specialArgs = { inherit inputs outputs hmInput self; };           # NOTE: ...
 
               # Apply your overlays and config to the pkgs used by NixOS modules
               #pkgs = import inputs.nixpkgs {
@@ -604,7 +604,7 @@
                     pulseaudio = true;
                     xsane.libusb = true;
                   };
-                  nixpkgs.overlays = builtins.attrValues self.overlays;
+                  nixpkgs.overlays = builtins.attrValues self.overlays; # use myOverlays
 
                   home-manager = {
                     useGlobalPkgs = true; # Reuse system pkgs to save evalution RAM/Time
@@ -716,11 +716,11 @@
           #     flake ouputs: overlays
           #--------------------------------------------------
           #overlays = import ./overlays { inherit inputs outputs; };
-          overlays = import ./overlays { inherit inputs; };
+          overlays = import ./overlays { inherit inputs; };                     # myOverlays
 
-          nixosModules = import ./modules/nixos;
+          nixosModules = import ./modules/nixos;                                # myNixosModules
 
-          homeManagerModules = import ./modules/home-manager;
+          homeManagerModules = import ./modules/home-manager;                   # myHomeManagerModules
 
           #templates....
 
