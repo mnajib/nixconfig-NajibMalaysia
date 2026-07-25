@@ -6,7 +6,7 @@
 
   home.packages = with pkgs; [
     mldonkey
-    tribler
+    #unstable.tribler #tribler
     #gnunet
     peergos
     zeronet-conservancy
