@@ -594,16 +594,18 @@
                 # Global Home Manager Configuration
                 hmInput.nixosModules.home-manager
 
-                {
+                # Base module containing flexible defaults
+                ({ lib, ... }: {
 
                   #nixpkgs.pkgs = mkPkgsCommon { inherit system pkgsInput; };
                   nixpkgs.config = {
-                    allowUnfree = true;
-                    android_sdk.accept_license = true;
-                    nvidia.acceptLicense = true;
-                    pulseaudio = true;
-                    xsane.libusb = true;
+                    allowUnfree = lib.mkDefault true;
+                    android_sdk.accept_license = lib.mkDefault true;
+                    nvidia.acceptLicense = lib.mkDefault true;
+                    pulseaudio = lib.mkDefault true;
+                    xsane.libusb = lib.mkDefault true;
                   };
+
                   nixpkgs.overlays = builtins.attrValues self.overlays; # use myOverlays
 
                   home-manager = {
@@ -623,7 +625,7 @@
                   system.configurationRevision = pkgsInput.lib.mkIf (self ? rev || self ? dirtyRev)
                     (self.rev or self.dirtyRev);
 
-                }
+                })
 
                 /*
                 # Configure default settings for home-manager on all hosts
