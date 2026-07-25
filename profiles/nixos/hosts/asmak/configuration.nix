@@ -24,7 +24,11 @@ in
   };
 
   #nixpkgs.config = {
-  #  allowUnfree = true;
+    #allowBroken = true;
+    #permittedInsecurePackages = [
+    #  "openssl-1.1.1w"
+    #];
+  #  allowUnfree = lib.mkForce false;
   #};
 
   imports = let
@@ -79,8 +83,8 @@ in
   home-manager = let
     userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}"  );
   in {
-    backupFileExtension = "backup";
-    extraSpecialArgs = { inherit inputs outputs; };
+    #backupFileExtension = "backup";
+    #extraSpecialArgs = { inherit inputs outputs; };
     users = {
       najib = userImport "najib";
     };

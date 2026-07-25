@@ -25,7 +25,7 @@ in
 
     (fromCommon "p2p.nix")
 
-    (fromCommon "neovim")
+    #(fromCommon "neovim")
     #../../neovim/astronvim.nix
 
     (fromCommon "helix")
@@ -63,12 +63,19 @@ in
   programs.repo-bootstrap.enable = true;
   programs.repo-bootstrap.basePath = "~/src";
 
+  programs.nh = {
+    enable = true;
+    flake = "${config.home.homeDirectory}/src/nixconfig-NajibMalaysia";
+  };
+
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "${stateVersion}"; #"22.05";
 
   fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
-    #...
+
+    inputs.my-nvim.packages.${pkgs.system}.default
+
   ];
 }
