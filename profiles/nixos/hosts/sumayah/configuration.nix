@@ -176,7 +176,7 @@ in
     userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}" );
   in
   {
-    extraSpecialArgs = { inherit inputs outputs; };
+    #extraSpecialArgs = { inherit inputs outputs; };
     users = {
       #root = import (./. + "/${hmDir}/root/${hostName}");
       #najib = import (./. + "/${hmDir}/najib/${hostName}");
@@ -217,10 +217,10 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     tmux
-    neovim
+    #neovim
     mosh
     pulseaudioFull
     pulsemixer
@@ -277,6 +277,8 @@ in
     #openrgb-with-all-plugins
 
     #inputs.home-manager.packages.${pkgs.system}.default # To install home-manager packages
+
+    inputs.my-nvim.packages.${pkgs.system}.default
 
     radeontop
   ];

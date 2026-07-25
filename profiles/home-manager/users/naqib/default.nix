@@ -36,9 +36,9 @@ in
     #./minecraft.nix
 
     (fromCommon "youtube.nix")
-    (fromCommon "evince.nix")
+    #(fromCommon "evince.nix")
     (fromCommon "time-management.nix")
-    (fromCommon "desktop-apps.nix")
+    #(fromCommon "desktop-apps.nix")
 
     (fromCommon "repo-bootstrap.nix")
   ];

@@ -3,7 +3,11 @@
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 
-{ inputs, outputs, lib, config, pkgs, ... }:
+{
+  inputs, outputs, lib, config, pkgs,
+  #my-nvim,
+  ...
+}:
 let
   username = "naqib";
   hostname = "sumayah";
@@ -49,9 +53,15 @@ in
     #neovim # then need to manually install(configure) lazyvim plugin from github
     #lazyvim
     inputs.my-nvim.packages.${pkgs.system}.default
+    #my-nvim
 
     gtk-pipe-viewer # CLI youtube client
   ];
+
+  #programs.neovim = {
+  #  enable = true;
+  #  package = inputs.my-nvim.packages.${pkgs.system}.default;
+  #};
 
   #services.home-manager.extraConfig = ''
   #  programs.lazylvim = {

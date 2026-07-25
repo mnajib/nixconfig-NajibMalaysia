@@ -1142,12 +1142,11 @@
             #-----------------------------------------------------------------------------
             "naqib@sumayah" = mkHome "naqib" "sumayah" {
               #system = "x86_64-linux";
-              extraModules = [
-                #./profiles/home-manager/users/naqib/sumayah
-
-                # Ensure this line is present here so it builds for the naqib user!
-                #inputs.mc-project.homeModules.minecraft-client
-              ];
+              #extraModules = [
+              #  #./profiles/home-manager/users/naqib/sumayah
+              #  # Ensure this line is present here so it builds for the naqib user!
+              #  #inputs.mc-project.homeModules.minecraft-client
+              #];
             };
 
             "naqib@huda" = mkHome  "naqib" "huda" {
