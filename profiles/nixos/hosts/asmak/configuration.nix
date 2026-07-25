@@ -87,6 +87,7 @@ in
     #extraSpecialArgs = { inherit inputs outputs; };
     users = {
       najib = userImport "najib";
+      naqib = userImport "naqib";
     };
   };
 
