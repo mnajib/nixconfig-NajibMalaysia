@@ -343,7 +343,7 @@ in
   #boot.kernelPackages = pkgs.linuxPackages_latest; # test disable this while trying to solve monitor on build-in VGA, DVI, HDMI not detectded in Xorg, but detected in Wayland.
   #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
   #boot.kernelPackages = pkgs.linuxPackages_6_6;
-  boot.kernelPackages = pkgs.linuxPackages_6_12; # Pinned to 6.12 because 6.13+ causes networking issues on this hardware
+  #boot.kernelPackages = pkgs.linuxPackages_6_12; # Pinned to 6.12 because 6.13+ causes networking issues on this hardware. Test disable on 2026-07-25.
 
   boot.kernelParams = [
     ##"i915.modeset=0" "nouveau.modeset=1" # to disable i915 and enable nouveau
@@ -369,6 +369,9 @@ in
     # Increases the timeout for SCSI commands to 60 seconds
     "scsi_mod.scan=async"
 
+    # Disables deep dynamic power management for PCI devices (prevents GPU sleep crashes)
+    "amdgpu.runpm=0"
+
     #
     # sudo ethtool --set-eee eno1 eee off
     #
@@ -377,14 +380,15 @@ in
     # network interface repeatedly transitions between "Up" (connected) and
     # "Down" (disconnected) states.
     #
+    # Sets PCIe power management to performance mode
     "pcie_aspm=off"
   ];
 
-  #boot.extraModulePackages = [
-    #config.boot.kernelPackages.rtl8821cu
-  boot.extraModulePackages = with config.boot.kernelPackages; [
-    #rtl8821cu # now in file tenda-usb-wifi-dongle.nix
-  ];
+  ###boot.extraModulePackages = [
+  ##  #config.boot.kernelPackages.rtl8821cu
+  #boot.extraModulePackages = with config.boot.kernelPackages; [
+  #  #rtl8821cu # now in file tenda-usb-wifi-dongle.nix
+  #];
 
   boot.kernelModules = [
     "kvm-intel"
@@ -453,7 +457,7 @@ in
     ];
   };
 
-  #services.acpid.enable = true;
+  services.acpid.enable = true;
   hardware.acpilight.enable = true;
 
   #services.logind.extraConfig = "RuntimeDirectorySize=4G"; # before this it is 100% full with 1.6G tmpfs /run/user/1001

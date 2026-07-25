@@ -1,3 +1,42 @@
+#
+#
+# NOTE:
+#
+#   PostgreSQL Warnings: Collation Mismatch
+#
+#     WARNING: database "immich" has a collation version mismatch
+#     DETAIL: The database was created using collation version 2.40, but the operating system provides version 2.42.
+#
+#   - Definition: Collation is the set of rules that determines how string data is sorted and compared in a database.
+#   - Impact: This warning indicates GLIBC was updated on your system.
+#
+#   Process to update the collation version for PostgreSQL databases:
+#
+#   1. Access the PostgreSQL Shell as the Superuser
+#      $ sudo -u postgres psql
+#
+#   2. Run the Refresh Commands
+#      postgres=# ALTER DATABASE immich REFRESH COLLATION VERSION;
+#      postgres=# ALTER DATABASE sekolahdb REFRESH COLLATION VERSION;
+#
+#   3. If an object (like an index) relied on the old collation ordering, PostgreSQL may recommend reindexing. For typical text data, refreshing the version is sufficient, but if you want to ensure total index integrity, you can run
+#      postgres=# REINDEX DATABASE immich;
+#      postgres=# REINDEX DATABASE sekolahdb;
+#
+#   4. Exit the PostgreSQL Shell
+#      \q
+#
+#   OR, alternative: One-Liner Execution:
+#
+#   1. If you prefer not to enter the interactive shell, you can run both commands directly from your terminal using sudo:
+#      sudo -u postgres psql -c "ALTER DATABASE immich REFRESH COLLATION VERSION;"
+#      sudo -u postgres psql -c "ALTER DATABASE sekolahdb REFRESH COLLATION VERSION;"
+#
+#   Once executed, check
+#      journalctl -u postgresql
+#   to confirm that the warning messages have stopped.
+#
+
 { lib, pkgs, config, ... }:
 let
   postgresql_port = 5432; # Default: 5432
