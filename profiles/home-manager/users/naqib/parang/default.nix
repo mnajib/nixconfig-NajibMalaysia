@@ -30,8 +30,10 @@ in
   fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
-    neovim # then need to manually install(configure) lazyvim plugin from github
+    #neovim # then need to manually install(configure) lazyvim plugin from github
     #lazyvim
+    inputs.my-nvim.packages.${pkgs.system}.default
+
     gtk-pipe-viewer # CLI youtube client
 
     freecad
