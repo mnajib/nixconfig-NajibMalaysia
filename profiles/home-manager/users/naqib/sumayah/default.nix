@@ -17,7 +17,7 @@ let
 in
 {
   # You can import other home-manager modules here
-  imports = let 
+  imports = let
     fromCommon = name: ./. + "/${toString commonDir}/${name}";
     fromCommonWithParams = name: params: import ( ./. + "/${toString commonDir}/${name}" ) params;
   in [
@@ -36,11 +36,10 @@ in
     #
     # To switch:
     #   cd ~/src/nixconfig-NajibMalaysia
-    #   nix flake update mc-project   
+    #   nix flake update mc-project
     #   nh os switch .
     #
-    #inputs.mc-project.homeModules.minecraft-client
-    #mc-project.homeModules.minecraft-client
+    #inputs.mc-project.homeModules.minecraft-client # XXX: This might having a problem
 
   ];
 
