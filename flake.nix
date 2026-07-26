@@ -257,7 +257,11 @@
     #      git add .
     #
     # 3. To test your system with the local path override flags
-    #      nh os test . -- --override-input mc-project path:/home/naqib/src/minecraft-infra
+    #      nh os build . -- --override-input mc-project path:/home/naqib/src/minecraft-infra
+    #      nh os test  . -- --override-input mc-project path:/home/naqib/src/minecraft-infra
+    #
+    # 4. To get update from upstream repo
+    #      nix flake update mc-project
     #
     #mc-project.url = "git+file:///home/naqib/src/minecraft-infra";
     #mc-project.url = "path:/home/naqib/src/minecraft-infra";
