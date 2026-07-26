@@ -50,6 +50,8 @@ in
     # Install the compiled output from your external flake directly into your path
     inputs.my-nvim.packages.${pkgs.system}.default
 
+    inputs.my-emacs.packages.${pkgs.system}.default
+
   ];
 
   #programs.neovim = {

@@ -247,6 +247,8 @@
     #my-nvim.url = "https://github.com/mnajib/nvim-config-test.git";
     #my-nvim.inputs.nixpkgs.follows = "nixpkgs";
 
+    my-emacs.url = "github:mnajib/emacs-doom-dual-mode";
+
     #
     # 1. Switch to your infrastructure directory and stage the updates
     #      cd ~/src/minecraft-infra
