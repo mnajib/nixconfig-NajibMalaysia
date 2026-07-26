@@ -39,7 +39,7 @@ in
     #   nix flake update mc-project   
     #   nh os switch .
     #
-    inputs.mc-project.homeModules.minecraft-client
+    #inputs.mc-project.homeModules.minecraft-client
     #mc-project.homeModules.minecraft-client
 
   ];
