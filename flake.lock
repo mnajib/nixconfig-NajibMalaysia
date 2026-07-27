@@ -1404,11 +1404,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1785124209,
-        "narHash": "sha256-leAzDAUR7uYq8TmRfpSf5PoVjGkfXqYXKElOqYLtlIY=",
+        "lastModified": 1785136289,
+        "narHash": "sha256-ck+Jv5HXEVZlMKIUi7dF0TuHEZTmjQQ3xTH7NbqPNZk=",
         "owner": "mnajib",
         "repo": "emacs-doom-dual-mode",
-        "rev": "f7bf6dad1c8cf89192c53a2376dfebac8b5fb035",
+        "rev": "96ff44713a6542ae0c2f3581962e00245314b1ec",
         "type": "github"
       },
       "original": {

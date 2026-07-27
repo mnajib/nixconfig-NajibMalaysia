@@ -247,7 +247,27 @@
     #my-nvim.url = "https://github.com/mnajib/nvim-config-test.git";
     #my-nvim.inputs.nixpkgs.follows = "nixpkgs";
 
+
+    #
+    # How to Consume in Home Manager
+    #
+    # 1. Inside your flake.nix:
+    #
+    #   inputs = {
+    #     # my-doom-emacs.url = "path:/path/to/doom-dual-mode";
+    #     # or GitHub URL
+    #     my-emacs.url = "github:mnajib/emacs-doom-dual-mode";
+    #   };
+    #
+    # 2. Inside home.nix:
+    #
+    #   home.packages = [
+    #     #inputs.my-doom-emacs.packages.${system}.default
+    #     inputs.my-emacs.packages.${system}.default
+    #   ];
+    #
     my-emacs.url = "github:mnajib/emacs-doom-dual-mode";
+
 
     #
     # 1. Switch to your infrastructure directory and stage the updates
