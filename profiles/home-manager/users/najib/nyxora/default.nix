@@ -24,6 +24,8 @@ in
   in [
     ../default.nix
 
+    ./my-emacs.nix
+
     #(./. + "/${commonDir}/neovim")
     #(./. + "/${commonDir}/ai.nix")
 
@@ -50,7 +52,7 @@ in
     # Install the compiled output from your external flake directly into your path
     inputs.my-nvim.packages.${pkgs.system}.default
 
-    inputs.my-emacs.packages.${pkgs.system}.default
+    #inputs.my-emacs.packages.${pkgs.system}.default
 
   ];
 
