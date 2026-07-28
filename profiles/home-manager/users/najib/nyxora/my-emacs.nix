@@ -1,8 +1,10 @@
 # profiles/home-manager/users/najib/nyxora/my-emacs.nix
 {
- #config,
  pkgs,
+ lib,
  inputs,
+ outputs,
+ config,
  ...
 }:
 {

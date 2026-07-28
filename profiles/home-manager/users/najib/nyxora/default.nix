@@ -24,7 +24,7 @@ in
   in [
     ../default.nix
 
-    ./my-emacs.nix
+    #./my-emacs.nix
 
     #(./. + "/${commonDir}/neovim")
     #(./. + "/${commonDir}/ai.nix")
@@ -46,6 +46,8 @@ in
   };
   */
 
+  fonts.fontconfig.enable = true;
+
   home.packages = with pkgs; [
     #vscode
 
@@ -53,8 +55,16 @@ in
     inputs.my-nvim.packages.${pkgs.system}.default
 
     #inputs.my-emacs.packages.${pkgs.system}.default
+    nerd-fonts.symbols-only
+    nerd-fonts.jetbrains-mono
+    emacs-all-the-icons-fonts
 
   ];
+
+  #programs.doom-emacs = {
+  #programs.emacs = {
+  #  enable = true;
+  #};
 
   #programs.neovim = {
   #  enable = true;

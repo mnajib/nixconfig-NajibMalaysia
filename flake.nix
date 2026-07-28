@@ -638,7 +638,7 @@
                     useGlobalPkgs = true; # Reuse system pkgs to save evalution RAM/Time
                     useUserPackages = true;
                     backupFileExtension = "backup";
-                    extraSpecialArgs = { inherit inputs outputs hmInput self; };
+                    extraSpecialArgs = { inherit inputs outputs hmInput self; }; # Injects inputs into every home.nix imported by NixOS.
                   };
                   environment.systemPackages = [ hmInput.packages.${system}.default ];
 
@@ -706,6 +706,10 @@
           #
           # Standalone Home Manager Builder (For non-NixOS environments if needed)
           #
+          #   When evaluating a standalone Home Manager profile (for non-NixOS
+          #   hosts or direct user builds), `extraSpecialArgs` is passed
+          #   directly at the top level of `homeManagerConfiguration`:
+          #
           #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-stable }:
           #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-unstable }: # nixpkgs-unstable as default
           #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-unstable, extraConfig ? {} }: # nixpkgs-unstable as default
@@ -722,18 +726,22 @@
           }: # nixpkgs-stable as default
             #inputs.home-manager.lib.homeManagerConfiguration {
             hmInput.lib.homeManagerConfiguration {
+
               #pkgs = mkPkgsCommon {
               #  inherit system pkgsInput self;
               #  extraConfig = extraConfig;
               #};
               #pkgs = mkPkgsCommon { inherit system pkgsInput self extraConfig; };
               pkgs = mkPkgsCommon { inherit system pkgsInput; };
-              #inherit modules;
+
               #extraSpecialArgs = { inherit inputs outputs; };
-              extraSpecialArgs = { inherit inputs outputs self; };
+              extraSpecialArgs = { inherit inputs outputs self; }; # Injects inputs into standalone user profile modules.
+
+              #inherit modules;
               modules = [
                 (./. + "/profiles/home-manager/users/${userName}/${hostName}")
               ] ++ extraModules;
+
             };
 
         in

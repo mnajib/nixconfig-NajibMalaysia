@@ -148,6 +148,9 @@
       nerd-fonts._0xproto
       nerd-fonts.jetbrains-mono
       nerd-fonts.ubuntu
+      nerd-fonts.symbols-only
+
+      emacs-all-the-icons-fonts
 
       jetbrains-mono # An opensource typeface made for developers. suitable for coding
       mononoki # A font for programming and code review

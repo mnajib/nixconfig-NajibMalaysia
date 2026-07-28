@@ -370,7 +370,8 @@ in
     "scsi_mod.scan=async"
 
     # Disables deep dynamic power management for PCI devices (prevents GPU sleep crashes)
-    "amdgpu.runpm=0"
+    # Side effect: screen not blank on idle ???
+    #"amdgpu.runpm=0"
 
     #
     # sudo ethtool --set-eee eno1 eee off
@@ -507,6 +508,16 @@ in
   }; # End services.xserver
   #------------------------------------
 
+  services.desktopManager = {
+    plasma6.enable = true;
+    #budgie.enable = true;
+    #gnome.enable = true;
+    #pantheon.enable = true;
+    #cosmic.enable = true;
+    #lomiri.enable = true;
+  };
+
+
   #services.flatpak.enable = true;
   #xdg.portal.enable = true;
   #xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # OR enable gnome desktopManager
@@ -545,6 +556,11 @@ in
     android-studio
 
     #inputs.home-manager.packages.${pkgs.system}.default # To install (globbally, instead of per user) home-manager packages
+
+    inputs.my-emacs.packages.${pkgs.system}.default
+    nerd-fonts.symbols-only
+    nerd-fonts.jetbrains-mono
+    emacs-all-the-icons-fonts
 
     usb-modeswitch
     usb-modeswitch-data
