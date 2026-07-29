@@ -21,7 +21,8 @@ in
   in [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./zfs.nix
-    #inputs.home-manager.nixosModules.home-manager
+
+    #inputs.home-manager.nixosModules.home-manager # This in now handled by mkNixos in flake.nix
 
     #./Minecraft/minecraft.nix
     inputs.mc-project.nixosModules.minecraft-server # Inject the server configuration directly
@@ -276,9 +277,9 @@ in
 
     #openrgb-with-all-plugins
 
-    #inputs.home-manager.packages.${pkgs.system}.default # To install home-manager packages
+    #inputs.home-manager.packages.${pkgs.system}.default # To install home-manager packages. # This is now handled by mkNixos in flake.nix
 
-    inputs.my-nvim.packages.${pkgs.system}.default
+    #inputs.my-nvim.packages.${pkgs.system}.default # Lets have it handle by home-manager
 
     radeontop
   ];
