@@ -58,6 +58,18 @@
           log1 = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all";
           log2 = "log --pretty=format:'%C(yellow)%h%Cred%d%Creset - %C(cyan)%an %Creset: %s %Cgreen(%cd)' --graph --date=short --all --simplify-by-decoration";
 
+          # Usage:
+          #   git pushall nyxora-staging
+          #pushall = "!f() { branch=\"${1:-HEAD}\"; git push nyxora HEAD:$branch && git push local HEAD:$branch && git push github HEAD:$branch && git push codeberg HEAD:$branch; }; f";
+          #
+          # Usage:
+          #   git pushall HEAD:nyxora-staging
+          #pushall = "!f() { git push nyxora \"$@\" && git push local \"$@\" && git push github \"$@\" && git push codeberg \"$@\"; }; f";
+          #
+          # Usage:
+          #   git pushtomanyrepo HEAD:nyxora-staging nyxora local github codeberg
+          pushtorepos = "!f() { refspec=\"$1\"; shift; for remote in \"$@\"; do git push \"$remote\" \"$refspec\"; done; }; f";
+
           type = "cat-file -t";
           dump = "cat-file -p";
           branchall = "branch -a -vv";
