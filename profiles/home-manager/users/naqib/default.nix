@@ -175,7 +175,17 @@ in
     cudatext #cudatext-gtk
     #sublime4
     netbeans
+
+    inputs.my-nvim.packages.${pkgs.system}.default
+    inputs.my-emacs.packages.${pkgs.system}.default
+    nerd-fonts.symbols-only
+    nerd-fonts.jetbrains-mono
+    emacs-all-the-icons-fonts
+
+    superfile
   ];
+
+  fonts.fontconfig.enable = true;
 
   # Enable home-manager and git
   programs.home-manager.enable = true;

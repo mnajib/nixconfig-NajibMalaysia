@@ -233,7 +233,17 @@ in
     #ventoy-full-gtk
 
     mangayomi # manga, anime, etc. - downloader and reader
+
+    inputs.my-nvim.packages.${pkgs.system}.default
+    inputs.my-emacs.packages.${pkgs.system}.default
+    nerd-fonts.symbols-only
+    nerd-fonts.jetbrains-mono
+    emacs-all-the-icons-fonts
+
+    superfile
   ];
+
+  fonts.fontconfig.enable = true;
 
   # Environment variable t...
   #sessionVariables = {
