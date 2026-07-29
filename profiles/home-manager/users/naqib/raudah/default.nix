@@ -17,7 +17,7 @@ in
 
     #(fromCommon "neovim")
     (fromCommon "repo-bootstrap.nix")
-    (fromCommon "desktop-apps.nix")
+    #(fromCommon "desktop-apps.nix")
   ];
 
   programs.repo-bootstrap.enable = true;

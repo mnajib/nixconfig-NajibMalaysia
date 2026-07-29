@@ -35,7 +35,7 @@ in
     #./system-benchmark.nix
     #./minecraft.nix
 
-    (fromCommon "youtube.nix")
+    #(fromCommon "youtube.nix")
     #(fromCommon "evince.nix")
     (fromCommon "time-management.nix")
     #(fromCommon "desktop-apps.nix")
@@ -215,7 +215,7 @@ in
   #   nixconfig-NajibMalaysia/home-manager/julia-manggis.nix
   #   nixconfig-NajibMalaysia/home-manager/julia-taufiq.nix
 
-  programs.bash.shellAliases = {
-    flatpak = "echo '!!! LOVELY REMINDER !!! Do not wasting your time anymore with flatpak'";
-  };
+  #programs.bash.shellAliases = {
+  #  flatpak = "echo '!!! LOVELY REMINDER !!! Do not wasting your time anymore with flatpak'";
+  #};
 }

@@ -43,7 +43,7 @@ in
     ./hardware-configuration.nix
     #inputs.home-manager.nixosModules.home-manager
 
-    (fromCommon "users-a-wheel.nix")
+    #(fromCommon "users-a-wheel.nix")
     (fromCommon "users-najib.nix")
     (fromCommon "users-julia.nix")
     (fromCommon "users-anak2.nix")
@@ -85,7 +85,7 @@ in
     (fromCommon "jupyter.nix")
 
     (fromCommon "flatpak.nix")
-    (fromCommon "mame.nix")
+    #(fromCommon "mame.nix")
     #(fromCommon "lutris.nix")
     (fromCommon "opengl.nix")
     (fromCommon "xdg.nix")
@@ -109,7 +109,7 @@ in
       #naqib = import (./. + "/${hmDir}/naqib/raudah");
       #root = userImport "root";
       najib = userImport "najib";
-      #naqib = userImport "naqib";
+      naqib = userImport "naqib";
     };
   };
 
