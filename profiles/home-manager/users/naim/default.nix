@@ -165,7 +165,16 @@ in
     #openttd
 
     fluxbox                             # need fbsetroot to set desktop background color
+    kdePackages.ktouch
+    superfile
+    inputs.my-nvim.packages.${pkgs.system}.default
+    inputs.my-emacs.packages.${pkgs.system}.default
+    nerd-fonts.symbols-only
+    nerd-fonts.jetbrains-mono
+    emacs-all-the-icons-fonts
   ];
+
+  fonts.fontconfig.enable = true;
 
   # Enable home-manager and git
   programs.home-manager.enable = true;

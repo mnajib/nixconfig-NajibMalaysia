@@ -568,6 +568,9 @@ in
     #nvtopPackages.full
     #cudatoolkit
     pciutils
+
+    kdePackages.ktouch
+    superfile
   ];
 
   #nixpkgs.config.android_sdk.accept_license = true;

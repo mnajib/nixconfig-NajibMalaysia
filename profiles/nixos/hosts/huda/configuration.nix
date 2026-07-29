@@ -164,6 +164,16 @@ in
     #freecad
 
     #inputs.home-manager.packages.${pkgs.system}.default # To install (globally, instead of per user) home-manager packages
+
+    kdePackages.ktouch
+    superfile
+
+    #inputs.my-nvim.packages.${pkgs.system}.default
+    #inputs.my-emacs.packages.${pkgs.system}.default
+    nerd-fonts.symbols-only
+    nerd-fonts.jetbrains-mono
+    emacs-all-the-icons-fonts
+
   ];
 
   services.fstrim.enable = true;
