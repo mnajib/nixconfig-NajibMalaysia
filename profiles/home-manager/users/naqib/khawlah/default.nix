@@ -25,10 +25,13 @@ in
   #----------------------------------------------------------
 
   home.packages = with pkgs; [
-    neovim # then need to manually install(configure) lazyvim plugin from github
+    #neovim # then need to manually install(configure) lazyvim plugin from github
+    inputs.my-nvim.packages.${pkgs.system}.default
+    inputs.my-emacs.packages.${pkgs.system}.default
 
     gcc
     #clang clang-tools clang-manpages
+    superfile
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

@@ -51,7 +51,7 @@ in
     (fromCommon "thinkpad.nix")
 
     #./users-anak2.nix
-    (fromCommon "users-a-wheel.nix")
+    #(fromCommon "users-a-wheel.nix")
     #(fromCommon "users-abdullah-wheel.nix")
     (fromCommon "users-najib.nix")
     (fromCommon "users-julia.nix")
@@ -109,7 +109,7 @@ in
     users = {
       #root = userImport "root";
       najib = userImport "najib";
-      #naqib = userImport "naqib";
+      naqib = userImport "naqib";
     };
   };
 
@@ -228,9 +228,9 @@ in
 
   services.openssh = {
     enable = true;
-    settings = {
-      PermitRootLogin = "yes";
-    };
+    #settings = {
+    #  PermitRootLogin = "yes";
+    #};
   };
 
   services.fstrim.enable = true;

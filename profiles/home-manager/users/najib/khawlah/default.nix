@@ -72,6 +72,7 @@ in
     chisel # TCP/UDP tunnel over HTTP
 
     inputs.my-nvim.packages.${pkgs.system}.default
+    inputs.my-emacs.packages.${pkgs.system}.default
   ];
 
   fonts.fontconfig = {

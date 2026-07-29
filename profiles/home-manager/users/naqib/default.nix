@@ -159,7 +159,7 @@ in
     nano
     #neovim # plus manually install LazyVim in ~/.config/nvim from git repo. NOTE: Decided to set neovim per user per host configuration
     micro
-    emacs
+    #emacs
     #haskellPackages.yi # marked as broken
 
     #zeroad
