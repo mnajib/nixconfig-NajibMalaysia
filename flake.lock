@@ -1423,11 +1423,11 @@
         "nixvim": "nixvim"
       },
       "locked": {
-        "lastModified": 1785071587,
-        "narHash": "sha256-KKzPg/9Wxf788oZ1FjzHSwo8x8IjtyfTcfU2KuK8Yz8=",
+        "lastModified": 1785338361,
+        "narHash": "sha256-ZPaBPAteGtQK4VS7skfxhbFSBP6+A5A6E/p+52+tjEo=",
         "owner": "mnajib",
         "repo": "nvim-config-test",
-        "rev": "a2a256f348978f6bde1735392e534ead26e97896",
+        "rev": "2ebc5e647adb6754a686efb569420e1916ea3c85",
         "type": "github"
       },
       "original": {
