@@ -582,6 +582,7 @@
             #extraConfig ? { },
             extraModules ? [],
             copyConfig ? true,
+            users ? [ "najib" ], # Accepts a list of users, defaulting to just me
           }:
             #inputs.nixpkgs.lib.nixosSystem { # <-- Use inputs.nixpkgs
             pkgsInput.lib.nixosSystem {
@@ -589,7 +590,11 @@
               #inputs.nixpkgs-unstable.lib.nixosSystem { # <-- Use inputs.nixpkgs-unstable
               #inherit system modules;
               inherit system; #modules;
-              specialArgs = { inherit inputs outputs hmInput self; };           # NOTE: ...
+              #specialArgs = { inherit inputs outputs hmInput self; };           # NOTE: ...
+              specialArgs = {
+                inputs = inputs // { nixpkgs = pkgsInput; }; # FIX THE INPUT LEAK: Mask the default nixpkgs with the active pkgsInput so no modules pull the wrong version.
+                inherit outputs hmInput self;
+              };
 
               # Apply your overlays and config to the pkgs used by NixOS modules
               #pkgs = import inputs.nixpkgs {
@@ -597,52 +602,93 @@
               #  inherit system;
               #  overlays = builtins.attrValues self.overlays;
               #  config = {
-              #    allowUnfree = true;
-              #    android_sdk.accept_license = true;
-              #    nvidia.acceptLicense = true;
-              #    pulseaudio = true;
-              #    xsane.libusb = true;
+              #    allowUnfree = lib.mkDefault true;
+              #    android_sdk.accept_license = lib.mkDefault true;
+              #    nvidia.acceptLicense = lib.mkDefault true;
+              #    pulseaudio = lib.mkDefault true;
+              #    xsane.libusb = lib.mkDefault true;
               #  };
               #};
               #
               #pkgs = mkPkgsCommon {
-              #  inherit system pkgsInput self; # system, pkgsInput, and self come from the current mkNixos scope via inherit
-              #  extraConfig = extraConfig; # explicitly rebinds the outer mkNixos.extraConfig to the inner mkPkgsCommon.extraConfig
+              #  #inherit system pkgsInput self; # system, pkgsInput, and self come from the current mkNixos scope via inherit
+              #  inherit system pkgsInput;
+              #  #extraConfig = extraConfig; # explicitly rebinds the outer mkNixos.extraConfig to the inner mkPkgsCommon.extraConfig
+              #  #extraConfig = extraModules;
               #};
 
               #modules = modules ++ [
               modules = [
 
+                # LOCK THE PACKAGE SET:
+                # Use your DRY mkPkgsCommon helper. By setting nixpkgs.pkgs, NixOS will use THIS exact
+                # evaluation, guaranteeing parity with your standalone Home Manager configs.
+                {
+                  nixpkgs.pkgs = mkPkgsCommon {
+                    inherit system pkgsInput;
+                  };
+                }
+
                 # Auto-resolve the host config path
                 (./. + "/profiles/nixos/hosts/${hostName}/configuration.nix")
+                #
+                #(lib.mkIf
+                #  (builtins.pathExists (./. + "/profiles/nixos/hosts/${hostName}/configuration.nix"))
+                #  (./. + "/profiles/nixos/hosts/${hostName}/configuration.nix")
+                #)
 
                 ## Inject the home-manager NixOS module automatically for ALL hosts
                 # Global Home Manager Configuration
                 hmInput.nixosModules.home-manager
 
-                # Base module containing flexible defaults
-                ({ lib, ... }: {
+                #nixpkgs.pkgs = mkPkgsCommon { inherit system pkgsInput; };
+                #
+                #nixpkgs.config = {
+                #  allowUnfree = lib.mkDefault true;
+                #  android_sdk.accept_license = lib.mkDefault true;
+                #  nvidia.acceptLicense = lib.mkDefault true;
+                #  pulseaudio = lib.mkDefault true;
+                #  xsane.libusb = lib.mkDefault true;
+                #};
+                #nixpkgs.overlays = builtins.attrValues self.overlays; # use myOverlays
 
-                  #nixpkgs.pkgs = mkPkgsCommon { inherit system pkgsInput; };
-                  nixpkgs.config = {
-                    allowUnfree = lib.mkDefault true;
-                    android_sdk.accept_license = lib.mkDefault true;
-                    nvidia.acceptLicense = lib.mkDefault true;
-                    pulseaudio = lib.mkDefault true;
-                    xsane.libusb = lib.mkDefault true;
-                  };
-
-                  nixpkgs.overlays = builtins.attrValues self.overlays; # use myOverlays
-
+                {
                   home-manager = {
                     useGlobalPkgs = true; # Reuse system pkgs to save evalution RAM/Time
                     useUserPackages = true;
                     backupFileExtension = "backup";
-                    extraSpecialArgs = { inherit inputs outputs hmInput self; }; # Injects inputs into every home.nix imported by NixOS.
-                  };
-                  environment.systemPackages = [ hmInput.packages.${system}.default ];
 
+                    # Apply the same patched inputs to Home Manager
+                    #extraSpecialArgs = { inherit inputs outputs hmInput self; }; # Injects inputs into every home.nix imported by NixOS.
+                    extraSpecialArgs = {
+                      inputs = inputs // { nixpkgs = pkgsInput; };
+                      inherit outputs hmInput self;
+                    };
+
+                    # Dynamically generate Home Manager mappings for all provided users
+                    #users = lib.genAttrs users (user:
+                    users = pkgsInput.lib.genAttrs users (user:
+                      let
+                        userPath = ./. + "/profiles/home-manager/users/${user}/${hostName}";
+                      in
+                        # Only import the module if the physical directory exists for this host
+                        #lib.mkIf (builtins.pathExists userPath) (import userPath)
+                        pkgsInput.lib.mkIf (builtins.pathExists userPath) (import userPath)
+                    );
+                  };
+                }
+
+                {
+                  environment.systemPackages = [
+                    hmInput.packages.${system}.default
+
+                    #pkgs.emacs # XXX: test
+                  ];
+                }
+
+                {
                   # Copy physical files ONLY if copyConfig is true
+                  # to /etc/current-system-flake/
                   environment.etc."current-system-flake" = pkgsInput.lib.mkIf copyConfig {
                     source = self;
                   };
@@ -650,54 +696,7 @@
                   # Embed Git commit revision
                   system.configurationRevision = pkgsInput.lib.mkIf (self ? rev || self ? dirtyRev)
                     (self.rev or self.dirtyRev);
-
-                })
-
-                /*
-                # Configure default settings for home-manager on all hosts
-                {
-                  home-manager = {
-                    useGlobalPkgs = false; #true;
-                    useUserPackages = true;
-                    extraSpecialArgs = { inherit inputs outputs hmInput self; };
-                  };
                 }
-
-                # Inject base configuration natively via a NixOS module
-                #{
-                #  nixpkgs.overlays = builtins.attrValues self.overlays;
-                #  nixpkgs.config = pkgsInput.lib.recursiveUpdate {
-                #    allowUnfree = true;
-                #    android_sdk.accept_license = true;
-                #    nvidia.acceptLicense = true;
-                #    pulseaudio = true;
-                #    xsane.libusb = true;
-                #  } extraConfig;
-                #}
-
-                # Global configuration module
-                ({ lib, pkgs, ... }: {
-
-                  # INJECT HOME-MANAGER GLOBALLY HERE:
-                  environment.systemPackages = [
-
-                    #inputs.home-manager.packages.${system}.default # # <-- Statically locked to inputs.home-manager XXX
-                    hmInput.packages.${system}.default #
-
-                  ];
-
-                  # Copy physical files ONLY if copyConfig is true
-                  environment.etc."current-system-flake" = lib.mkIf copyConfig {
-                    source = self;
-                  };
-
-                  # ALWAYS embed the exact Git commit revision (zero storage impact)
-                  system.configurationRevision = lib.mkIf (self ? rev || self ? dirtyRev)
-                    (self.rev or self.dirtyRev);
-
-
-                })
-                */
 
               ] ++ extraModules;
 
@@ -876,6 +875,7 @@
 
               #system = "x86_64-linux";
               extraModules = [
+
                 # To test build
                 #   nixos-rebuild dry-build --flake .#nyxora
                 # To build and apply
@@ -890,17 +890,14 @@
                 # NixOS module: Enables and configures Proxmox services (services.proxmox-ve.*)
                 #inputs.proxmox-nixos.nixosModules.proxmox-ve
 
-                /*
                 # Bind your home-manager configuration to your user here:
-                inputs.home-manager.nixosModules.home-manager
-                #
-                {
-                  home-manager.useGlobalPkgs = true;
-                  home-manager.useUserPackages = true;
-                  home-manager.extraSpecialArgs = { inherit inputs; };
-                  home-manager.users.najib = import ./profiles/home-manager/users/najib/nyxora;
-                }
-                */
+                #inputs.home-manager.nixosModules.home-manager
+                #{
+                #  #home-manager.useGlobalPkgs = true;
+                #  #home-manager.useUserPackages = true;
+                #  #home-manager.extraSpecialArgs = { inherit inputs; };
+                #  home-manager.users.najib = import ./profiles/home-manager/users/najib/nyxora;
+                #}
 
               ];
               #pkgsInput = inputs.nixpkgs-unstable; # override

@@ -1,6 +1,10 @@
 # ./profiles/home-manager/users/najib/nyxora/default.nix
+# I'm considering to rename this file to:
+# ./profiles/home-manager/users/najib/nyxora/home.nix
+#
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
+#
 
 {
   lib, config, pkgs,
@@ -14,6 +18,7 @@ let
   stateVersion = "24.11";
 in
 {
+
   # You can import other home-manager modules here
   imports = let
     # For simple modules (no params)
@@ -32,6 +37,10 @@ in
     (fromCommon "repo-bootstrap.nix")
   ];
 
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
+
   programs.repo-bootstrap.enable = true;
   programs.repo-bootstrap.basePath = "~/src";
 
@@ -40,30 +49,34 @@ in
     flake = "${config.home.homeDirectory}/src/nixconfig-NajibMalaysia";
   };
 
-  /*
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
-  */
-
-  fonts.fontconfig.enable = true;
-
   home.packages = with pkgs; [
     #vscode
 
     # Install the compiled output from your external flake directly into your path
     inputs.my-nvim.packages.${pkgs.system}.default
 
-    #inputs.my-emacs.packages.${pkgs.system}.default
+    inputs.my-emacs.packages.${pkgs.system}.default
+    #emacs
+
+    # fonts needed for doom-emacs
     nerd-fonts.symbols-only
     nerd-fonts.jetbrains-mono
     emacs-all-the-icons-fonts
 
   ];
 
+  fonts.fontconfig.enable = true;
+
   #programs.doom-emacs = {
   #programs.emacs = {
   #  enable = true;
+  #};
+
+  # Use the native Home Manager module to handle the wrapper correctly
+  #programs.emacs = {
+  #  enable = true;
+  #  # Inject your flake's framework-agnostic package here
+  #  package = inputs.my-emacs.packages.${pkgs.system}.default;
   #};
 
   #programs.neovim = {
@@ -78,14 +91,15 @@ in
   #};
   #
   # XXX: In your home-manager bash/zsh alias definition:
-  home.shellAliases = {
-    nvim = "${inputs.my-nvim.packages.${pkgs.system}.default}/bin/nvim";
-  };
+  #home.shellAliases = {
+  #  nvim = "${inputs.my-nvim.packages.${pkgs.system}.default}/bin/nvim";
+  #};
 
   # Optional: Set environment variables to make it your primary system default
-  home.sessionVariables = {
-    EDITOR = "nvim";
-  };
+  #home.sessionVariables = {
+  #  #EDITOR = "nvim";
+  #  NAJIB = "the best"; # XXX: ???
+  #};
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   #home.stateVersion = "22.05";

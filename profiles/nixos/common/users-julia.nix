@@ -8,7 +8,7 @@
 		#cryptHomeLuks =
 		createHome = true;
 		home = "/home/julia";
-		extraGroups = [ "wheel" "networkmanager" "istana46" "audio" "video" "cdrom"  "adbusers" "vboxusers" "scanner" "lp" "systemd-journal" "julia" "naqib" "nurnasuha" "naim" "input" "bluetooth" ];
+		extraGroups = [ "networkmanager" "istana46" "audio" "video" "cdrom"  "adbusers" "vboxusers" "scanner" "lp" "systemd-journal" "julia" "naqib" "nurnasuha" "naim" "input" "bluetooth" ];
 		#openssh.authorizedKeys.keyFiles =
 	};
 }

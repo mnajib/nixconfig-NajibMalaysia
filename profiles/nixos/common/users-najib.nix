@@ -1,8 +1,9 @@
 { pkgs, lib, ... }:
 {
-  users.users.najib = lib.mkForce {
+  #users.users.najib = lib.mkForce { # XXX: Will cause error for home-manager as nixos module
+  users.users.najib = {
     description = "Muhammad Najib Bin Ibrahim";
-    uid = 1001;
+    uid = lib.mkForce 1001;
     isNormalUser = true;
     initialPassword = "password";       # XXX: !!!
     createHome = true;
@@ -33,8 +34,10 @@
     #useDefaultShell = false; # if true, the user's shell will be set to 'users.defaultUserShell'
 
     #packages = with pkgs; [
-    #  firefox nnn ranger git tmux neovim htop direnv
+    #  #firefox nnn ranger git tmux neovim htop direnv
     #  #emacs
+    #  #nano
     #];
+
   };
 }

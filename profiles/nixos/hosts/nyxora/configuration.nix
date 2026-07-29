@@ -30,7 +30,7 @@ in
 
       trusted-users = [
         "root" "najib"
-        "nurnasuha"
+        #"nurnasuha"
         "naqib"
         #"abdullah"
       ];
@@ -76,16 +76,16 @@ in
     #./network-dns.nix
 
     #(./. + "/${commonDir}/users-abdullah-wheel.nix")
-    (fromCommon "users-abdullah-wheel.nix")
     #./users-anak2.nix
     #./users-naqib.nix
     #./users-naqib-wheel.nix
     #./users-nurnasuha-wheel.nix
+    (fromCommon "users-najib.nix")
     (fromCommon "users-naqib.nix")
     (fromCommon "users-naim.nix")
     (fromCommon "users-nurnasuha.nix")
     (fromCommon "users-julia.nix")
-    (fromCommon "users-najib.nix")
+    #(fromCommon "users-abdullah-wheel.nix")
 
     #inputs.home-manager.nixosModules.home-manager
 
@@ -557,7 +557,7 @@ in
 
     #inputs.home-manager.packages.${pkgs.system}.default # To install (globbally, instead of per user) home-manager packages
 
-    inputs.my-emacs.packages.${pkgs.system}.default
+    #inputs.my-emacs.packages.${pkgs.system}.default
     nerd-fonts.symbols-only
     nerd-fonts.jetbrains-mono
     emacs-all-the-icons-fonts
