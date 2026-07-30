@@ -22,7 +22,7 @@ in {
     settings.trusted-users = [
       "root" "najib"
       "naqib"
-      "a" # XXX
+      #"a" # XXX
     ];
 
   };
@@ -107,9 +107,10 @@ in {
     #};
     users = {
       najib = userImport "najib";
+      naqib = userImport "naqib";
       #root = userImport "root";
       #julia = userImport "julia";
-      a = userImport "a";
+      #a = userImport "a";
     };
   };
 
@@ -308,12 +309,12 @@ in {
 
   nix.settings.max-jobs = 2;
 
-  users.users.a = {
-    isNormalUser = true;
-    extraGroups = [
-      "wheel" # Enable 'sudo' for the user.
-    ];
-  };
+  #users.users.a = {
+  #  isNormalUser = true;
+  #  extraGroups = [
+  #    "wheel" # Enable 'sudo' for the user.
+  #  ];
+  #};
 
   #programs.firefox.enable = true;
 

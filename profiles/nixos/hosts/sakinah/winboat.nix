@@ -13,7 +13,13 @@
 
   virtualisation.docker.enable = true;
 
-  users.users.a.extraGroups = [
+  #users.users.a.extraGroups = [
+  #  "wheel" "docker" "kvm" "networkmanager"
+  #];
+  users.users.najib.extraGroups = [
+    "wheel" "docker" "kvm" "networkmanager"
+  ];
+  users.users.naqib.extraGroups = [
     "wheel" "docker" "kvm" "networkmanager"
   ];
 
