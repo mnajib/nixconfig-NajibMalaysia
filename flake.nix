@@ -535,15 +535,20 @@
 
           inherit (self) outputs;
 
+          # Shared helper: the one path expression for a user's home-manager
+          # profile, used by BOTH mkNixos (embedded HM) and mkHome (standalone
+          # HM) so there's exactly one place that defines this convention.
+          homeProfilePath = user: hostName:
+            ./. + "/profiles/home-manager/users/${user}/${hostName}";
+
           # Shared helper to create consistent pkgs set and stays DRY (Don't Repeat Yourself)
           mkPkgsCommon =
             {
               system,
               pkgsInput,
-              #self,
               extraConfig ? { },
             }:
-            /*let
+            let
               baseConfig = {
                 allowUnfree = true;
                 android_sdk.accept_license = true;
@@ -551,73 +556,62 @@
                 pulseaudio = true;
                 xsane.libusb = true;
               };
-
-              # merge user overrides with default config
-              #finalConfig = pkgsInput.lib.recursiveUpdate baseConfig extraConfig;
-            in */
+            in
             import pkgsInput {
               inherit system;
               overlays = builtins.attrValues self.overlays;
-              #config = finalConfig;
-              #config = pkgsInput.lib.recursiveUpdate baseConfig extraConfig;
-              config = pkgsInput.lib.recursiveUpdate {
-                allowUnfree = true;
-                android_sdk.accept_license = true;
-                nvidia.acceptLicense = true;
-                pulseaudio = true;
-                xsane.libusb = true;
-              } extraConfig;
+              config = pkgsInput.lib.recursiveUpdate baseConfig extraConfig;
             };
 
-          #mkNixos = system: modules:
-          #mkNixos = { system, modules, pkgsInput ? inputs.nixpkgs-stable, extraConfig ? {} }:
-          #mkNixos = { system, modules, pkgsInput ? inputs.nixpkgs-release, extraConfig ? {} }:
-          #mkNixos = { system, modules, pkgsInput ? inputs.nixpkgs-unstable, extraConfig ? {} }:
-          #mkNixos =
           mkNixos = hostName: {
             system ? "x86_64-linux",
-            #modules,
             pkgsInput ? inputs.nixpkgs,
             hmInput ? inputs.home-manager,
-            #extraConfig ? { },
-            extraModules ? [],
+            extraModules ? [ ],
             copyConfig ? true,
             users ? [ "najib" ], # Accepts a list of users, defaulting to just me
           }:
-            #inputs.nixpkgs.lib.nixosSystem { # <-- Use inputs.nixpkgs
-            pkgsInput.lib.nixosSystem {
-              # <-- Use inputs.nixpkgs
-              #inputs.nixpkgs-unstable.lib.nixosSystem { # <-- Use inputs.nixpkgs-unstable
-              #inherit system modules;
-              inherit system; #modules;
-              #specialArgs = { inherit inputs outputs hmInput self; };           # NOTE: ...
-              specialArgs = {
-                inputs = inputs // { nixpkgs = pkgsInput; }; # FIX THE INPUT LEAK: Mask the default nixpkgs with the active pkgsInput so no modules pull the wrong version.
+            let
+              lib = pkgsInput.lib;
+
+              # FIX THE INPUT LEAK: mask the default `inputs.nixpkgs` with the
+              # active `pkgsInput` so no module -- NixOS or home-manager --
+              # accidentally pulls a different nixpkgs than the one this host
+              # was actually built with. Defined once, reused in both
+              # specialArgs (NixOS modules) and extraSpecialArgs (HM modules).
+              patchedInputs = inputs // { nixpkgs = pkgsInput; };
+              commonSpecialArgs = {
+                inputs = patchedInputs;
                 inherit outputs hmInput self;
               };
 
-              # Apply your overlays and config to the pkgs used by NixOS modules
-              #pkgs = import inputs.nixpkgs {
-              #pkgs = import pkgsInput {
-              #  inherit system;
-              #  overlays = builtins.attrValues self.overlays;
-              #  config = {
-              #    allowUnfree = lib.mkDefault true;
-              #    android_sdk.accept_license = lib.mkDefault true;
-              #    nvidia.acceptLicense = lib.mkDefault true;
-              #    pulseaudio = lib.mkDefault true;
-              #    xsane.libusb = lib.mkDefault true;
-              #  };
-              #};
-              #
-              #pkgs = mkPkgsCommon {
-              #  #inherit system pkgsInput self; # system, pkgsInput, and self come from the current mkNixos scope via inherit
-              #  inherit system pkgsInput;
-              #  #extraConfig = extraConfig; # explicitly rebinds the outer mkNixos.extraConfig to the inner mkPkgsCommon.extraConfig
-              #  #extraConfig = extraModules;
-              #};
+              # Resolve home-manager profiles UP FRONT, outside the module
+              # system, instead of via `mkIf (pathExists ...) (import ...)`
+              # inside `home-manager.users`. This means a profile dir that
+              # doesn't exist (e.g. because it was never `git add`-ed, so the
+              # flake's git-tracked source can't see it) is reported via
+              # `lib.warn`, not silently dropped.
+              userProfiles =
+                let
+                  resolve = user:
+                    let
+                      path = homeProfilePath user hostName;
+                      exists = builtins.pathExists path;
+                    in
+                      if exists
+                      then { name = user; value = import path; }
+                      else
+                        lib.warn
+                          "mkNixos '${hostName}': no home-manager profile at ${toString path} for user '${user}' (skipped -- check `git add` if the dir exists on disk)"
+                          null;
+                  resolved = map resolve users;
+                in
+                  builtins.listToAttrs (builtins.filter (r: r.value != null) resolved);
+            in
+            pkgsInput.lib.nixosSystem {
+              inherit system;
+              specialArgs = commonSpecialArgs;
 
-              #modules = modules ++ [
               modules = [
 
                 # LOCK THE PACKAGE SET:
@@ -631,26 +625,11 @@
 
                 # Auto-resolve the host config path
                 (./. + "/profiles/nixos/hosts/${hostName}/configuration.nix")
-                #
-                #(lib.mkIf
-                #  (builtins.pathExists (./. + "/profiles/nixos/hosts/${hostName}/configuration.nix"))
-                #  (./. + "/profiles/nixos/hosts/${hostName}/configuration.nix")
-                #)
 
-                ## Inject the home-manager NixOS module automatically for ALL hosts
-                # Global Home Manager Configuration
+                # Inject the home-manager NixOS module automatically for ALL hosts.
+                # NOTE: don't also add this in a host's `extraModules` -- it's
+                # already here, unconditionally, for every host.
                 hmInput.nixosModules.home-manager
-
-                #nixpkgs.pkgs = mkPkgsCommon { inherit system pkgsInput; };
-                #
-                #nixpkgs.config = {
-                #  allowUnfree = lib.mkDefault true;
-                #  android_sdk.accept_license = lib.mkDefault true;
-                #  nvidia.acceptLicense = lib.mkDefault true;
-                #  pulseaudio = lib.mkDefault true;
-                #  xsane.libusb = lib.mkDefault true;
-                #};
-                #nixpkgs.overlays = builtins.attrValues self.overlays; # use myOverlays
 
                 {
                   home-manager = {
@@ -659,42 +638,29 @@
                     backupFileExtension = "backup";
 
                     # Apply the same patched inputs to Home Manager
-                    #extraSpecialArgs = { inherit inputs outputs hmInput self; }; # Injects inputs into every home.nix imported by NixOS.
-                    extraSpecialArgs = {
-                      inputs = inputs // { nixpkgs = pkgsInput; };
-                      inherit outputs hmInput self;
-                    };
+                    extraSpecialArgs = commonSpecialArgs;
 
-                    # Dynamically generate Home Manager mappings for all provided users
-                    #users = lib.genAttrs users (user:
-                    users = pkgsInput.lib.genAttrs users (user:
-                      let
-                        userPath = ./. + "/profiles/home-manager/users/${user}/${hostName}";
-                      in
-                        # Only import the module if the physical directory exists for this host
-                        #lib.mkIf (builtins.pathExists userPath) (import userPath)
-                        pkgsInput.lib.mkIf (builtins.pathExists userPath) (import userPath)
-                    );
+                    # Pre-resolved above (see `userProfiles`): only users
+                    # whose profile dir actually exists get in here.
+                    users = userProfiles;
                   };
                 }
 
                 {
                   environment.systemPackages = [
                     hmInput.packages.${system}.default
-
-                    #pkgs.emacs # XXX: test
                   ];
                 }
 
                 {
                   # Copy physical files ONLY if copyConfig is true
                   # to /etc/current-system-flake/
-                  environment.etc."current-system-flake" = pkgsInput.lib.mkIf copyConfig {
+                  environment.etc."current-system-flake" = lib.mkIf copyConfig {
                     source = self;
                   };
 
                   # Embed Git commit revision
-                  system.configurationRevision = pkgsInput.lib.mkIf (self ? rev || self ? dirtyRev)
+                  system.configurationRevision = lib.mkIf (self ? rev || self ? dirtyRev)
                     (self.rev or self.dirtyRev);
                 }
 
@@ -707,38 +673,30 @@
           #
           #   When evaluating a standalone Home Manager profile (for non-NixOS
           #   hosts or direct user builds), `extraSpecialArgs` is passed
-          #   directly at the top level of `homeManagerConfiguration`:
+          #   directly at the top level of `homeManagerConfiguration`.
           #
-          #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-stable }:
-          #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-unstable }: # nixpkgs-unstable as default
-          #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-unstable, extraConfig ? {} }: # nixpkgs-unstable as default
-          #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-stable, extraConfig ? {} }: # nixpkgs-stable as default
-          #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-release, hmInput ? inputs.home-manager-release, extraConfig ? {} }: # nixpkgs-stable as default
-          #mkHome = { system, modules, pkgsInput ? inputs.nixpkgs-release, hmInput ? inputs.home-manager, extraConfig ? {} }: # nixpkgs-stable as default
+          #   NOTE (opinion, not applied): unlike `mkNixos`, this does NOT
+          #   mask `inputs.nixpkgs` with `pkgsInput`. Today that's harmless
+          #   since your user profiles reference `pkgs` / named inputs like
+          #   `inputs.my-nvim` directly, not `inputs.nixpkgs`. But it means
+          #   mkNixos and mkHome are inconsistent in what `inputs` looks like
+          #   inside a module -- worth deciding on consciously if a shared
+          #   `profiles/home-manager/common/*.nix` module ever reaches for
+          #   `inputs.nixpkgs` directly.
+          #
           mkHome = userName: hostName: {
               system ? "x86_64-linux",
-              #modules,
               pkgsInput ? inputs.nixpkgs,
               hmInput ? inputs.home-manager,
-              #extraConfig ? { },
-              extraModules ? []
-          }: # nixpkgs-stable as default
-            #inputs.home-manager.lib.homeManagerConfiguration {
+              extraModules ? [ ],
+          }:
             hmInput.lib.homeManagerConfiguration {
-
-              #pkgs = mkPkgsCommon {
-              #  inherit system pkgsInput self;
-              #  extraConfig = extraConfig;
-              #};
-              #pkgs = mkPkgsCommon { inherit system pkgsInput self extraConfig; };
               pkgs = mkPkgsCommon { inherit system pkgsInput; };
 
-              #extraSpecialArgs = { inherit inputs outputs; };
               extraSpecialArgs = { inherit inputs outputs self; }; # Injects inputs into standalone user profile modules.
 
-              #inherit modules;
               modules = [
-                (./. + "/profiles/home-manager/users/${userName}/${hostName}")
+                (homeProfilePath userName hostName)
               ] ++ extraModules;
 
             };
@@ -847,6 +805,7 @@
                 inputs.stylix.nixosModules.stylix
                 #inputs.disko.nixosModules.disko
               ];
+              users = [ ];
             };
 
             arang = mkNixos "arang" {
