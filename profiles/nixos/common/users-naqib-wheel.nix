@@ -17,5 +17,5 @@
     ];
   };
 
-  nix.settings.trusted-users = [ "naqib" ];
+  #nix.settings.trusted-users = [ "naqib" ];
 }

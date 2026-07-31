@@ -63,7 +63,7 @@ in
     #dillo-plus # web browser but without javascript
     chisel # TCP/UDP tunnel over HTTP
 
-    inputs.my-nvim.packages.${pkgs.system}.default # my neovim config from external flake
+    #inputs.my-nvim.packages.${pkgs.system}.default # my neovim config from external flake
   ];
 
   fonts.fontconfig = {

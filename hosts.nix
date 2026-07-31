@@ -355,6 +355,10 @@
               #  permittedInsecurePackages = [ "openssl-1.1.1w" ];
               #};
               #hmInput = inputs.home-manager-unstable;
+              users = [
+                "najib"
+                "naqib"
+              ];
             };
 
             # White gaming desktop pc currently being use by Naqib
@@ -379,6 +383,10 @@
                 inputs.hardware.nixosModules.lenovo-thinkpad-t410
               ];
               #pkgsInput = inputs.nixpkgs-unstable; # override
+              users = [
+                "najib"
+                "naqib"
+              ];
             };
 
   }; # End of 'nixosConfigurations = { ... };'

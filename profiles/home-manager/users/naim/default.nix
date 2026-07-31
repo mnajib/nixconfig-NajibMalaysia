@@ -157,7 +157,7 @@ in
     #nnn
     nano
     #neovim
-    emacs
+    #emacs
 
     #zeroad
     #luanti #minetest

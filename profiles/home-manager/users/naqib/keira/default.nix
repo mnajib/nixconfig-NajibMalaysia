@@ -1,14 +1,18 @@
-# profiles/home-manager/users/naim/huda/default.nix
+# profiles/home-manager/users/naqib/sumayah/default.nix
 #
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 
-{ inputs, outputs, lib, config, pkgs, ... }:
+{
+  inputs, outputs, lib, config, pkgs,
+  #my-nvim,
+  ...
+}:
 let
-  username = "naim";
-  hostname = "huda";
+  username = "naqib";
+  hostname = "keira";
   commonDir = "../../../common";
-  stateVersion = "25.05"; #"25.11"
+  stateVersion = "25.05";
   #lazyvim = pkgs.lazygit.lazylvimPackages.lazylvim;
 in
 {
@@ -35,28 +39,28 @@ in
     #   nix flake update mc-project
     #   nh os switch .
     #
-    #inputs.mc-project.homeModules.minecraft-client # TODO: Need to fix the upstream project
-    #mc-project.homeModules.minecraft-client
+    #inputs.mc-project.homeModules.minecraft-client # XXX: This might having a problem
 
   ];
 
-  #programs.repo-bootstrap.enable = true;
-  programs.repo-bootstrap.basePath = lib.mkForce "~/src";
+  programs.repo-bootstrap.enable = true;
+  programs.repo-bootstrap.basePath = "~/src";
 
   fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
     #neovim # then need to manually install(configure) lazyvim plugin from github
     #lazyvim
-    #gtk-pipe-viewer # CLI youtube client
-    vscode
+    #inputs.my-nvim.packages.${pkgs.system}.default
+    #my-nvim
 
-    inputs.my-nvim.packages.${pkgs.system}.default
+    #gtk-pipe-viewer # CLI youtube client
   ];
 
-  home.sessionVariables = {
-    EDITOR = "nvim";
-  };
+  #programs.neovim = {
+  #  enable = true;
+  #  package = inputs.my-nvim.packages.${pkgs.system}.default;
+  #};
 
   #services.home-manager.extraConfig = ''
   #  programs.lazylvim = {

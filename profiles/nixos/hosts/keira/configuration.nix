@@ -97,18 +97,18 @@ in
   #   journalctl -e --unit home-manager-najib.service --follow
   #   journalctl -e --unit home-manager-root.service --follow
   #
-  home-manager = let
-    userImport = user: import (./. + "/${hmDir}/${user}/${hostName}");
-  in {
-    #extraSpecialArgs = {
-    #  inherit inputs outputs;
-    #};
-    users = {
-      najib = userImport "najib";
-      #root = userImport "root";
-      #julia = userImport "julia";
-    };
-  };
+  #home-manager = let
+  #  userImport = user: import (./. + "/${hmDir}/${user}/${hostName}");
+  #in {
+  #  #extraSpecialArgs = {
+  #  #  inherit inputs outputs;
+  #  #};
+  #  users = {
+  #    najib = userImport "najib";
+  #    #root = userImport "root";
+  #    #julia = userImport "julia";
+  #  };
+  #};
 
   # For Thinkpad T410
   #imports = [

@@ -39,7 +39,7 @@ in
     #   nix flake update mc-project
     #   nh os switch .
     #
-    inputs.mc-project.homeModules.minecraft-client # XXX: This might having a problem
+    #inputs.mc-project.homeModules.minecraft-client # XXX: This might having a problem. Yes, this is the problem, TODO: need to fix this!
 
   ];
 
