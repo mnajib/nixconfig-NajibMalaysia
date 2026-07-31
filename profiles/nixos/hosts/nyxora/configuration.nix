@@ -570,7 +570,7 @@ in
     pciutils
 
     kdePackages.ktouch
-    superfile
+    #superfile
   ];
 
   #nixpkgs.config.android_sdk.accept_license = true;

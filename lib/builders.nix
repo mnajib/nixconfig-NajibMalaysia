@@ -31,6 +31,9 @@ let
   homeProfilePath = user: hostName:
     ../profiles/home-manager/users/${user}/${hostName};
 
+  hostProfilePath = hostName:
+    ../profiles/nixos/hosts/${hostName}/configuration.nix;
+
   # Shared helper to create a consistent pkgs set and stay DRY (Don't Repeat Yourself)
   mkPkgsCommon =
     {
@@ -60,7 +63,7 @@ let
     hmInput ? inputs.home-manager,
     extraModules ? [ ],
     copyConfig ? true,
-    users ? [ "najib" ], # Accepts a list of users, defaulting to just me
+    users ? [ ], #[ "najib" ], # Accepts a list of users, defaulting to just me
   }:
     let
       lib = pkgsInput.lib;
@@ -82,6 +85,7 @@ let
       # (e.g. because it was never `git add`-ed, so the flake's
       # git-tracked source can't see it) is reported via `lib.warn`, not
       # silently dropped.
+      /*
       userProfiles =
         let
           resolve = user:
@@ -98,6 +102,7 @@ let
           resolved = map resolve users;
         in
           builtins.listToAttrs (builtins.filter (r: r.value != null) resolved);
+      */
     in
     lib.nixosSystem {
       inherit system;
@@ -117,6 +122,7 @@ let
         # Auto-resolve the host config path
         # NOTE: `../` here, same reason as `homeProfilePath` above.
         (../profiles/nixos/hosts/${hostName}/configuration.nix)
+        #(../profiles/nixos/hosts/sumayah/configuration.nix) # XXX: test debug
 
         # Inject the home-manager NixOS module automatically for ALL hosts.
         # NOTE: don't also add this in a host's `extraModules` -- it's
@@ -124,7 +130,11 @@ let
         hmInput.nixosModules.home-manager
 
         {
-          home-manager = {
+          home-manager = #let
+            #userImport = user: import (./. + "/${hmDir}/${user}/${hostName}");
+            #userImport = user: import ( homeProfilePath user hostName );
+          #in
+          {
             useGlobalPkgs = true; # Reuse system pkgs to save evalution RAM/Time
             useUserPackages = true;
             backupFileExtension = "backup";
@@ -134,7 +144,28 @@ let
 
             # Pre-resolved above (see `userProfiles`): only users
             # whose profile dir actually exists get in here.
-            users = userProfiles;
+            #
+            #users = userProfiles;
+            #
+            #users = pkgsInput.lib.genAttrs users (user:
+            #  let
+            #    userPath = ./. + "../profiles/home-manager/users/${user}/${hostName}";
+            #  in
+            #    pkgsInput.lib.mkIf (builtins.pathExists userPath) (import userPath)
+            #    #import userPath
+            #);
+            #
+            #users = {
+            #  najib = userImport "najib";
+            #  naqib = userImport "naqib";
+            #};
+            #
+            # STATUS: TESTED, WORKING GOOD
+            users = {
+              najib = import (homeProfilePath "najib" hostName);
+              naqib = import (homeProfilePath "naqib" hostName);
+            };
+
           };
         }
 

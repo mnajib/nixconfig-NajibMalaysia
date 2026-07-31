@@ -3,7 +3,7 @@
   users.users.naqib = {
   #users.users.naqib = lib.mkForce {
     description = "Muhammad Naqib Bin Muhammad Najib";
-    uid = 1003;
+    uid = lib.mkForce 1003;
     isNormalUser = true;
     #initialPassword = "password";
     createHome = true;

@@ -75,7 +75,7 @@ in
 
   home.packages = with pkgs; [
 
-    inputs.my-nvim.packages.${pkgs.system}.default
+    #inputs.my-nvim.packages.${pkgs.system}.default
 
   ];
 }

@@ -218,6 +218,10 @@
               ];
               #pkgsInput = inputs.nixpkgs-release; # override
               #pkgsInput = inputs.nixpkgs-unstable; # override
+              users = [
+                "najib"
+                #"naqib"
+              ];
             };
 
             #
@@ -312,7 +316,9 @@
             };
 
             # White gaming desktop pc currently being use by Naqib
-            sumayah = mkNixos "sumayah" {};
+            sumayah = mkNixos "sumayah" {
+              users = [ "najib" "naqib" ];
+            };
 
             laila = mkNixos "laila" {};
 

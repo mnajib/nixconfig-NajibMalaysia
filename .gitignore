@@ -4,3 +4,4 @@ result
 profiles/nixos/hosts/sumayah/Minecraft/*.zip
 *.zip
 *.qcow2
+tmp/

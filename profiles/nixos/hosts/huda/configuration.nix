@@ -166,7 +166,7 @@ in
     #inputs.home-manager.packages.${pkgs.system}.default # To install (globally, instead of per user) home-manager packages
 
     kdePackages.ktouch
-    superfile
+    #superfile
 
     #inputs.my-nvim.packages.${pkgs.system}.default
     #inputs.my-emacs.packages.${pkgs.system}.default

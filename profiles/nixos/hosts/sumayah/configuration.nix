@@ -40,7 +40,7 @@ in
 
     (fromCommon "console-keyboard-dvorak.nix")
     (fromCommon "keyboard-with-msa.nix")
-    (fromCommon "users-a-wheel.nix")
+    #(fromCommon "users-a-wheel.nix")
     (fromCommon "users-naqib-wheel.nix")
     (fromCommon "users-najib.nix")
     (fromCommon "users-julia.nix")

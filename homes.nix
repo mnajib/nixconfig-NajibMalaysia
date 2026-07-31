@@ -32,6 +32,15 @@
             # To apply
             #   home-manager switch --flake .
             #
+            # To list generations
+            #   home-manager generations
+            #
+            # To delete generation specific
+            #   ...
+            #
+            # To uninstall home-manager (and also delete all generations)
+            #   home-manager uninstall
+            #
             # The flake-native way to dry-run a Home Manager build is nix build
             # ".#homeConfigurations.<user>@<host>.activationPackage" --dry-run
             # which we've discussed. To actually build and activate, you'd use

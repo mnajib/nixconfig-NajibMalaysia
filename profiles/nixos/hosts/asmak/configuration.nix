@@ -80,23 +80,23 @@ in
     #inputs.home-manager.nixosModules.home-manager # tak perlu load di sini, dah load di flake.nix
   ];
 
-  home-manager = let
-    userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}"  );
-  in {
-    #backupFileExtension = "backup";
-    #extraSpecialArgs = { inherit inputs outputs; };
-    users = {
-      najib = userImport "najib";
-      naqib = userImport "naqib";
-    };
-  };
+  #home-manager = let
+  #  userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}"  );
+  #in {
+  #  #backupFileExtension = "backup";
+  #  #extraSpecialArgs = { inherit inputs outputs; };
+  #  users = {
+  #    najib = userImport "najib";
+  #    naqib = userImport "naqib";
+  #  };
+  #};
 
-  users.users.root = {
-    initialPassword = "root123";
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINiCR5IGdvop8gCL/wdEIoZsKzLJU1jiPPhjA1UbDVrt najib@sumayah"
-    ];
-  };
+  #users.users.root = {
+  #  initialPassword = "root123";
+  #  openssh.authorizedKeys.keys = [
+  #    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINiCR5IGdvop8gCL/wdEIoZsKzLJU1jiPPhjA1UbDVrt najib@sumayah"
+  #  ];
+  #};
 
   environment.systemPackages = with pkgs; [
     gparted
@@ -111,7 +111,7 @@ in
     foot
     libnotify
 
-    inputs.home-manager.packages.${pkgs.system}.default
+    #inputs.home-manager.packages.${pkgs.system}.default
   ];
 
   # For the value of 'networking.hostID', use the following command:
