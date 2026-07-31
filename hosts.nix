@@ -8,7 +8,10 @@
 #
 # `inputs`, `mkNixos` are passed in from flake.nix's `flake = let
 # ... in { ... }` scope.
-{ inputs, mkNixos }:
+{
+  inputs,
+  mkNixos
+}:
 {
   nixosConfigurations = {
             # NOTE:
@@ -37,6 +40,10 @@
               ];
               #pkgsInput = inputs.nixpkgs-release; # override
               #pkgsInput = inputs.nixpkgs-unstable; # override
+              users = [
+                "najib"
+                "naqib"
+              ];
             };
 
             #khadijah = mkNixos "x86_64-linux" [
@@ -88,7 +95,23 @@
                 inputs.stylix.nixosModules.stylix
                 #inputs.disko.nixosModules.disko
               ];
-              users = [ ];
+
+              #
+              # To test:
+              #   nix eval .#nixosConfigurations.bawang.config.home-manager.users --apply builtins.attrNames   # patut [ ]
+              #
+              users = [ ]; # Zero need for 'lib.mkForce [ ]'.
+              #
+              # NOTE: mkForce, mkOverride, dan mkDefault hanya relevan untuk
+              # opsyen modul NixOS atau modul home-manager (benda yang anda
+              # set melalui services.x.y, home-manager.users.<nama>, dsb. —
+              # yang boleh ditakrif oleh banyak modul serentak). Untuk
+              # parameter fungsi biasa macam system, pkgsInput, hmInput,
+              # extraModules, copyConfig, users dalam mkNixos — hanya tulis
+              # nilai terus, sebab tiada sistem keutamaan (priority) yang perlu
+              # dilawan.
+              #
+
             };
 
             arang = mkNixos "arang" {
@@ -218,10 +241,29 @@
               ];
               #pkgsInput = inputs.nixpkgs-release; # override
               #pkgsInput = inputs.nixpkgs-unstable; # override
+
+              #
+              #------------------------
+              # NOTE:
+              #
+              # For:
+              #   users = [
+              #     "najib"
+              #     "naqib"
+              #   ];
+              #
+              # Run test:
+              #   nix eval .#nixosConfigurations.asmak.config.home-manager.users --apply builtins.attrNames
+              #
+              # Result output:
+              # [ "najib" "naqib" ]
+              #------------------------
+              #
               users = [
                 "najib"
-                #"naqib"
+                "naqib"
               ];
+
             };
 
             #

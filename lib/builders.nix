@@ -63,7 +63,10 @@ let
     hmInput ? inputs.home-manager,
     extraModules ? [ ],
     copyConfig ? true,
-    users ? [ ], #[ "najib" ], # Accepts a list of users, defaulting to just me
+
+    users ? [ "najib" ], # Accepts a list of users. Empty by default -- a host
+    #users ? [ ], # Accepts a list of users. Empty by default. A host with no `users = [...]` override gets NO home-manager users at all, rather than silently defaultingto najib.
+
   }:
     let
       lib = pkgsInput.lib;
@@ -85,7 +88,23 @@ let
       # (e.g. because it was never `git add`-ed, so the flake's
       # git-tracked source can't see it) is reported via `lib.warn`, not
       # silently dropped.
-      /*
+      #
+      #--------------------------------
+      # NOTE:
+      #
+      # For:
+      #   users = [
+      #     "najib"
+      #     "naqib"
+      #   ];
+      #
+      # Run test:
+      #   nix eval .#nixosConfigurations.asmak.config.home-manager.users --apply builtins.attrNames
+      #
+      # Result output:
+      # [ "najib" "naqib" ]
+      #--------------------------------
+      #
       userProfiles =
         let
           resolve = user:
@@ -102,7 +121,7 @@ let
           resolved = map resolve users;
         in
           builtins.listToAttrs (builtins.filter (r: r.value != null) resolved);
-      */
+
     in
     lib.nixosSystem {
       inherit system;
@@ -121,8 +140,7 @@ let
 
         # Auto-resolve the host config path
         # NOTE: `../` here, same reason as `homeProfilePath` above.
-        (../profiles/nixos/hosts/${hostName}/configuration.nix)
-        #(../profiles/nixos/hosts/sumayah/configuration.nix) # XXX: test debug
+        (hostProfilePath hostName)
 
         # Inject the home-manager NixOS module automatically for ALL hosts.
         # NOTE: don't also add this in a host's `extraModules` -- it's
@@ -130,11 +148,7 @@ let
         hmInput.nixosModules.home-manager
 
         {
-          home-manager = #let
-            #userImport = user: import (./. + "/${hmDir}/${user}/${hostName}");
-            #userImport = user: import ( homeProfilePath user hostName );
-          #in
-          {
+          home-manager = {
             useGlobalPkgs = true; # Reuse system pkgs to save evalution RAM/Time
             useUserPackages = true;
             backupFileExtension = "backup";
@@ -144,28 +158,7 @@ let
 
             # Pre-resolved above (see `userProfiles`): only users
             # whose profile dir actually exists get in here.
-            #
-            #users = userProfiles;
-            #
-            #users = pkgsInput.lib.genAttrs users (user:
-            #  let
-            #    userPath = ./. + "../profiles/home-manager/users/${user}/${hostName}";
-            #  in
-            #    pkgsInput.lib.mkIf (builtins.pathExists userPath) (import userPath)
-            #    #import userPath
-            #);
-            #
-            #users = {
-            #  najib = userImport "najib";
-            #  naqib = userImport "naqib";
-            #};
-            #
-            # STATUS: TESTED, WORKING GOOD
-            users = {
-              najib = import (homeProfilePath "najib" hostName);
-              naqib = import (homeProfilePath "naqib" hostName);
-            };
-
+            users = userProfiles;
           };
         }
 
