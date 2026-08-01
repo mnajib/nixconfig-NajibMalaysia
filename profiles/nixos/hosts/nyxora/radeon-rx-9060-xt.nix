@@ -26,7 +26,7 @@ in
   services.xserver.videoDrivers = [ "amdgpu" ];
 
   # XXX: Explicitly set a modern kernel version that supports both RDNA4 and OpenZFS
-  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_6_12;
+  #boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_6_12;
 
   #  Force early Kernel Mode Setting (KMS) for the AMD driver
   boot.initrd.kernelModules = [ "amdgpu" ];

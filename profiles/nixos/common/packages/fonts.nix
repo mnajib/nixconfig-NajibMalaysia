@@ -118,7 +118,7 @@
       vista-fonts                        # Some TrueType fonts from Microsoft Windows Vista (Calibri, Cambria, Candara, Consolas, Constantia, Corbel)
 
       carlito                           # A sans-serif font, metric-compatible with Microsoft Calibri
-      wineWowPackages.fonts             # Microsoft replacement fonts by the Wine project
+      wineWow64Packages.fonts             # Microsoft replacement fonts by the Wine project
 
       amiri
       scheherazade-new
