@@ -196,7 +196,7 @@ in
   #boot.kernelPackages = pkgs.linuxPackages_5_4;
   #boot.kernelPackages = pkgs.linuxPackages_4_19;
   #boot.kernelPackages = pkgs.linuxPackages_6_6; # long time used by asmak until 2025-12
-  boot.kernelPackages = pkgs.linuxPackages_6_12; # long time used by asmak until 2025-12
+  #boot.kernelPackages = pkgs.linuxPackages_6_12; # long time used by asmak until 2025-12. XXX: Commented on 2026-08-01 T2356.
 
   # Tuning other ZFS parameters: To tune other attributes of ARC, L2ARC or of ZFS itself via runtime modprobe config, add this to your NixOS configuration (keys and values are examples only!):
   #boot.extraModprobeConfig = ''
