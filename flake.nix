@@ -32,13 +32,14 @@
     # nixpkgs
     #------------------------------------------------------
 
-    #nixpkgs.url            = "github:nixos/nixpkgs/nixos-25.05";
+    #nixpkgs.url      = "github:nixos/nixpkgs/nixos-25.05";
     #nixpkgs.url      = "github:nixos/nixpkgs/nixos-25.11";
-    #nixpkgs.follows         = "nixpkgs-stable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
-    nixpkgs.follows = "nixpkgs-release"; # Make 'nixpkgs' point to nixpkgs-stable as default.
-    #nixpkgs.follows         = "nixpkgs-unstable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
-    #nixpkgs.url    = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    #nixpkgs.url     = "github:nixos/nixpkgs/release-25.11";
+    #nixpkgs.follows  = "nixpkgs-stable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
+    #nixpkgs.follows  = "nixpkgs-unstable"; # Make 'nixpkgs' point to nixpkgs-stable as default.
+    #nixpkgs.url      = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    #nixpkgs.url      = "github:nixos/nixpkgs/release-25.11";
+    #nixpkgs.url      = "github:nixos/nixpkgs/release-26.05";
+    nixpkgs.follows   = "nixpkgs-release"; # Make 'nixpkgs' point to nixpkgs-stable as default.
 
     #nixpkgs-nixos.url       = "github:nixos/nixpkgs/nixos-25.05";
     #nixpkgs-stable.url      = "github:nixos/nixpkgs/nixos-25.05";
@@ -344,13 +345,20 @@
           #         packages.${system}....
           #------------------------------------------------
           packages = {
+
             default = pkgs.hello;
 
-            # To use:
+            # To use this mangayomi:
             #   nix shell .#mangayomi
             #   nix run .#mangayomi
             mangayomi = pkgs.mangayomi;
+
           };
+          #
+          #packages = (import ./packages { inherit pkgs; }) // {
+          #  default = pkgs.hello;
+          #  #mangayomi = pkgs.mangayomi;
+          #};
 
           #------------------------------------------------
           # 3.2 flake-parts.lib.mkFlake.perSystem.devShells

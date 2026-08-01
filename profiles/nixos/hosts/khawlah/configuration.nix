@@ -14,6 +14,14 @@ let
   commonDir = "../../common";
   hmDir = "../../../home-manager/users";
   stateVersion = "25.05";
+
+  #myPackages = import ../../packages { inherit pkgs; };
+  # ^ adjust relative path to wherever packages/ actually sits from this
+  #   host's configuration.nix -- e.g. if hosts.nix builds hosts from
+  #   profiles/nixos/hosts/<name>/configuration.nix, this is probably
+  #   ../../../../packages or similar. Check with your existing
+  #   `homeProfilePath` helper in lib/builders.nix for the right depth.
+
 in
 {
   nix = {
@@ -100,6 +108,8 @@ in
     (fromCommon "deskflow.nix")
 
     (fromCommon "bluetooth.nix")
+
+    ./wayland-niri.nix
   ];
 
   home-manager = let
@@ -141,7 +151,57 @@ in
     mesa
   ];
 
+  #
+  #------------------------------------
+  # Old:
+  #------------------------------------
+  #environment.systemPackages = with pkgs; [
+  #  vim
+  #  wget
+  #  htop
+  #];
+  #
+  #------------------------------------
+  # New:
+  #------------------------------------
+  #environment.systemPackages =
+  #  builtins.attrValues (import ./packages { inherit pkgs; })
+  #  ++ (with pkgs; [
+  #    vim
+  #    wget
+  #    htop
+  #  ]);
+  #------------------------------------
+  #
+  #------------------------------------
+  # Newer:
+  #------------------------------------
+  #{ pkgs, ... }:
+  #let
+  #  myPackages = import ../../packages { inherit pkgs; };
+  #  # ^ adjust relative path to wherever packages/ actually sits from this
+  #  #   host's configuration.nix -- e.g. if hosts.nix builds hosts from
+  #  #   profiles/nixos/hosts/<name>/configuration.nix, this is probably
+  #  #   ../../../../packages or similar. Check with your existing
+  #  #   `homeProfilePath` helper in lib/builders.nix for the right depth.
+  #in
+  #{
+  #  environment.systemPackages =
+  #    (with myPackages; [
+  #      orilla-run
+  #      # service-scheduler   # uncomment when this host wants it too
+  #    ])
+  #    ++ (with pkgs; [
+  #      vim
+  #      wget
+  #      htop
+  #    ]);
+  #}
+  #------------------------------------
+  #
   environment.systemPackages = with pkgs; [
+  #environment.systemPackages = builtins.attrValues (import ./packages { inherit pkgs; }) ++ (with pkgs; [
+
     radeontop # T400 zahrah have GPU: AMD ATI Mobility Radeon HD 3450/3470 (RV620/M83). May need to choose 'discrete graphic' in BIOS.
     clinfo
     gpu-viewer
@@ -163,6 +223,7 @@ in
 
     wofi
   ];
+  #]);
 
   #services.xserver.videoDrivers = [ "radeon" ];
 
