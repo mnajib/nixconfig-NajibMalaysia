@@ -1,0 +1,14 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 28,
+    "modules-center": ["custom/waktusolat"],
+
+    "custom/waktusolat": {
+        "format": "{}",
+        "return-type": "json",
+        "interval": 2,
+        "exec": "$HOME/.config/waybar/scripts/waktusolat.sh",
+        "escape": false
+    }
+}
