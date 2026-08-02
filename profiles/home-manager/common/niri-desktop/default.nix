@@ -14,6 +14,10 @@
     executable = true;
   };
 
+  xdg.configFile."niri/config.kdl" = {
+    source = ./config.kdl;
+  };
+
   home.packages = with pkgs; [
     niri
     waybar
@@ -26,5 +30,8 @@
     #sunsetr
     #hyprlax
   ];
+
+  programs.waybar.enable = true;
+  programs.fuzzel.enable = true;
 
 }

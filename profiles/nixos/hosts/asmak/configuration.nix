@@ -76,6 +76,7 @@ in
     (fromCommon "desktops-wayland.nix")
     (fromCommon "bluetooth.nix")
     #(fromCommon "remote-builders.nix")
+    (fromCommon "desktops/niri")
 
     #inputs.home-manager.nixosModules.home-manager # tak perlu load di sini, dah load di flake.nix
   ];

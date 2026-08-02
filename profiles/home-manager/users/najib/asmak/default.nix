@@ -36,6 +36,8 @@ in
     #(fromCommonWithParams "repo-bootstrap.nix" { basePath = "~/src"; })
     #(fromCommonWithParams "repo-bootstrap.nix" { basePath = "src"; })
     (fromCommon "repo-bootstrap.nix")
+
+    (fromCommon "niri-desktop")
   ];
 
   # !!! This will overrides the whole 'programs.repo-bootstrap config imported from 'common/repo-bootstrap.nix' !!!
