@@ -6,7 +6,7 @@
 { inputs, outputs, lib, config, pkgs, ... }:
 let
   username = "naim";
-  hostname = "huda";
+  hostname = "sakinah";
   commonDir = "../../../common";
   stateVersion = "25.05"; #"25.11"
   #lazyvim = pkgs.lazygit.lazylvimPackages.lazylvim;
@@ -37,6 +37,8 @@ in
     #
     #inputs.mc-project.homeModules.minecraft-client # TODO: Need to fix the upstream project
     #mc-project.homeModules.minecraft-client
+
+    (fromCommon "niri-desktop")
 
   ];
 

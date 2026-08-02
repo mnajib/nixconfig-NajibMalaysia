@@ -95,7 +95,9 @@ in {
 
     #(fromCommon "bluetooth.nix")
 
-    ./winboat.nix
+    #./winboat.nix # commented because it use insecure package electron-40.10.5
+
+    (fromCommon "desktops/niri")
   ];
 
   home-manager = let

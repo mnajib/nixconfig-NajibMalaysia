@@ -18,7 +18,7 @@
     libreoffice
     miro zathura sioyek meowpdf evince papers
 
-    winboat libvirt docker freerdp
+    # winboat libvirt docker freerdp # commented because winboat use unsecure electron version package
 
     pciutils
 

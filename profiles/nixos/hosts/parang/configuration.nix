@@ -79,7 +79,7 @@ in
       #(fromCommon "3D.nix")
       (fromCommon "whatsapp.nix")
 
-      ./winboat.nix
+      #./winboat.nix # commented because currently wiboat using unsecure electron version package
       ./tox.nix
       ./tailscale.nix
     ];

@@ -109,7 +109,9 @@ in
 
     (fromCommon "bluetooth.nix")
 
-    ./wayland-niri.nix
+    #./wayland-niri.nix
+    (fromCommon "desktops/niri")
+
   ];
 
   home-manager = let

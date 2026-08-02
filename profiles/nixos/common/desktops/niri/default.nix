@@ -13,6 +13,12 @@
   # 2. Enable and configure Niri compositor on NixOS
   programs.niri.enable = true;
 
+
+  /*
+  #-----------------------------------------------------------------------------
+  # Home Manager
+  #-----------------------------------------------------------------------------
+
   # 3. Configure Waybar instances and automatically deploy config/script files via XDG/Home-Manager or Nix mechanisms
   # (If you use Home Manager, adapt the xdg.configFile paths below into your home.nix)
   #xdg.configFile."waybar/config-top.jsonc".text = builtins.toJSON {
@@ -58,6 +64,9 @@
     source = ./waybar/scripts/waktusolat.sh; # Place waktusolat.sh in the same directory as this nix file
     executable = true;
   };
+
+  #-----------------------------------------------------------------------------
+  */
 
   # 5. Configure Niri startup behavior inside its KDL definition or via a managed file block
   # Alternatively, place this block in your ~/.config/niri/config.kdl:
