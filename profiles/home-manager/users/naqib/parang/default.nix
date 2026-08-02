@@ -22,6 +22,7 @@ in
 
     #(fromCommon "wayland-wm")
     #(fromCommon "wayland-desktop.nix")
+    (fromCommon "niri-desktop")
   ];
 
   programs.repo-bootstrap.enable = true;

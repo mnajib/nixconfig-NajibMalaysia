@@ -7,7 +7,7 @@
     "custom/waktusolat": {
         "format": "{}",
         "return-type": "json",
-        "interval": 2,
+        "interval": 1, // 2,
         "exec": "$HOME/.config/waybar/scripts/waktusolat.sh",
         "escape": false
     }

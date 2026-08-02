@@ -78,6 +78,7 @@ in
       (fromCommon "desktops.nix")
       #(fromCommon "3D.nix")
       (fromCommon "whatsapp.nix")
+      (fromCommon "desktops/niri")
 
       #./winboat.nix # commented because currently wiboat using unsecure electron version package
       ./tox.nix
@@ -115,7 +116,7 @@ in
     allowDiscards = true;
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_latest; # need disable this because marked broken with zfs
+  #boot.kernelPackages = pkgs.linuxPackages_latest; # need disable this because marked broken with zfs. # Commented in 2026-08-02 T1140.
   boot.supportedFilesystems = [
     "ext4"
     "btrfs"

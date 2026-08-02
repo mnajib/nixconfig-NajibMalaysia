@@ -127,6 +127,7 @@
                 inputs.stylix.nixosModules.stylix
                 #inputs.disko.nixosModules.disko
               ];
+              users = [ ];
             };
 
             #nyxora = let
@@ -363,7 +364,10 @@
 
             # White gaming desktop pc currently being use by Naqib
             sumayah = mkNixos "sumayah" {
-              users = [ "najib" "naqib" ];
+              users = [
+                "najib"
+                "naqib"
+              ];
             };
 
             laila = mkNixos "laila" {};
@@ -372,7 +376,12 @@
             sukun = mkNixos "sukun" {};
 
             # nixos on acer laptop
-            parang = mkNixos "parang" {};
+            parang = mkNixos "parang" {
+              users = [
+                "najib"
+                "naqib"
+              ];
+            };
 
             # Thinkpad T410 without nvidia
             keira = mkNixos "keira" {

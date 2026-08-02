@@ -86,7 +86,7 @@ in
     #libreoffice
     clamav                              # scan anti-virus ?
     mindustry                           # game
-    luanti #minetest                            # game
+    #luanti #minetest                            # game
 
     #audacity
     #shotcut

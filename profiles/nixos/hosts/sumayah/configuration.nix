@@ -173,19 +173,19 @@ in
   #  ];
   #};
 
-  home-manager = let
-    userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}" );
-  in
-  {
-    #extraSpecialArgs = { inherit inputs outputs; };
-    users = {
-      #root = import (./. + "/${hmDir}/root/${hostName}");
-      #najib = import (./. + "/${hmDir}/najib/${hostName}");
-      #root = userImport "root";
-      najib = userImport "najib";
-      naqib = userImport "naqib";
-    };
-  };
+  #home-manager = let
+  #  userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}" );
+  #in
+  #{
+  #  #extraSpecialArgs = { inherit inputs outputs; };
+  #  users = {
+  #    #root = import (./. + "/${hmDir}/root/${hostName}");
+  #    #najib = import (./. + "/${hmDir}/najib/${hostName}");
+  #    #root = userImport "root";
+  #    najib = userImport "najib";
+  #    naqib = userImport "naqib";
+  #  };
+  #};
 
   nix.settings.trusted-users = [ "root" "najib" "naqib" ];
   nix.extraOptions = ''
@@ -252,7 +252,7 @@ in
 
     qbittorrent
     bottles
-    zeroad-unwrapped
+    #zeroad-unwrapped
     pkgs.unstable.luanti # luanti #minetest
 
     firefox
@@ -260,11 +260,11 @@ in
     varia
     git
 
-    input-leap
+    #input-leap
     #barrier
 
     #libreoffice
-    popcorntime
+    #popcorntime
 
     telegram-desktop
     kchat # kde app
