@@ -188,6 +188,8 @@ in
 
     #./syncthing.nix
     ./services/syncthing.nix
+
+    (fromCommon "packages/gis.nix")
   ];
 
   home-manager = let
