@@ -269,6 +269,10 @@
     #
     my-emacs.url = "github:mnajib/emacs-doom-dual-mode";
 
+    # To test your system with the local path override flags
+    #  nh os build . -- --override-input waktusolat path:/home/najib/src/waktusolat-NajibMalaysia
+    #  nh os test . -- --override-input waktusolat path:/home/najib/src/waktusolat-NajibMalaysia
+    waktusolat.url = "github:mnajib/waktusolat-NajibMalaysia";
 
     #
     # 1. Switch to your infrastructure directory and stage the updates

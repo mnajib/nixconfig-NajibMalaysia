@@ -149,6 +149,7 @@ in
     ./services/refine.nix
     ./services/immich.nix
     ./services/tailscale.nix
+    ./services/waktusolat-aggregator.nix
 
     #./hosts2.nix
 
