@@ -38,6 +38,8 @@ in
     #inputs.mc-project.homeModules.minecraft-client # TODO: Need to fix the upstream project
     #mc-project.homeModules.minecraft-client
 
+    (fromCommon "niri-desktop")
+
   ];
 
   #programs.repo-bootstrap.enable = true;

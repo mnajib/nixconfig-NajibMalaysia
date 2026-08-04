@@ -50,6 +50,8 @@ in
 
     #(fromCommon "remote-builders.nix")
     (fromCommon "configuration.DESKTOP_FULL.nix") # timezone, locale, ...
+    (fromCommon "packages/media.nix")
+    ./waktusolat.nix
 
     #(fromCommon "users-a-wheel.nix")
     (fromCommon "users-naqib-wheel.nix")
@@ -79,6 +81,7 @@ in
     ./desktops-wayland.nix
     #(fromCommon "hyprland.nix")
     #(fromCommon "stylix.nix")
+    (fromCommon "desktops/niri")
 
     #(fromCommon "bluetooth.nix")
     #(fromCommon "packages/databases.nix")
