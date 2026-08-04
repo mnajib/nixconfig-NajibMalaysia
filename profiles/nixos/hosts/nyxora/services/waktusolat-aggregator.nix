@@ -11,6 +11,8 @@
 let
   # Convenience reference to packages built by the waktusolat flake
   waktusolatPkgs = inputs.waktusolat.packages.${pkgs.system};
+
+  networkPort = 8089;
 in
 {
   # 1. Import the Aggregator module (origin node for your LAN)
@@ -22,7 +24,8 @@ in
   services.waktusolatAggregator = {
     enable = true;
     zones = [ "SGR01" ];
-    port = 8089;
+    #port = 8089;
+    port = networkPort;
     dataDir = "/var/lib/waktusolat";
     logLevel = "INFO";
   };
@@ -51,4 +54,9 @@ in
     WAKTUSOLAT_ZONE = "SGR01";
 
   };
+
+  networking.firewall.allowedTCPPorts = [
+    networkPort
+  ];
+
 }

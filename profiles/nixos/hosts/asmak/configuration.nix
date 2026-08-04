@@ -64,10 +64,13 @@ in
     (fromCommon "hardware-printer.nix")
     (fromCommon "zramSwap.nix")
     #./hosts2.nix
-    (fromCommon "configuration.DESKTOP_FULL.nix")
+
+    #(fromCommon "configuration.DESKTOP_FULL.nix")
+    (fromCommon "configuration.DESKTOP_LITE.nix")
+
     (fromCommon "nix-garbage-collector.nix")
     (fromCommon "flatpak.nix")
-    (fromCommon "steam.nix")
+    #(fromCommon "steam.nix")
     (fromCommon "xdg.nix")
     (fromCommon "opengl_with_vaapiIntel.nix")
     #(fromCommon "stylix.nix")
