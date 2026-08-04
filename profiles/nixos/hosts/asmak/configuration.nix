@@ -82,6 +82,9 @@ in
     (fromCommon "desktops/niri")
 
     #inputs.home-manager.nixosModules.home-manager # tak perlu load di sini, dah load di flake.nix
+
+    ./waktusolat.nix
+
   ];
 
   #home-manager = let
