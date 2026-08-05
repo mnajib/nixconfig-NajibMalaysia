@@ -112,8 +112,8 @@ input {
 // https://niri-wm.github.io/niri/Configuration:-Layout
 layout {
     // Set gaps around windows in logical pixels.
-    //gaps 16
-    gaps 8
+    gaps 16
+    //gaps 2
 
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
@@ -140,7 +140,8 @@ layout {
     // preset-window-heights { }
 
     // You can change the default width of the new windows.
-    default-column-width { proportion 0.5; }
+    //default-column-width { proportion 0.5; }
+    default-column-width { proportion 1.0; }
     // If you leave the brackets empty, the windows themselves will decide their initial width.
     // default-column-width {}
 
@@ -162,6 +163,7 @@ layout {
 
         // How many logical pixels the ring extends out from the windows.
         width 4
+        //width 1
 
         // Colors can be set in a variety of ways:
         // - CSS named colors: "red"
@@ -200,6 +202,7 @@ layout {
         off
 
         width 4
+        //width 1
         active-color "#ffc87f"
         inactive-color "#505050"
 
@@ -276,9 +279,13 @@ spawn-at-startup "waybar" "-c" "/home/najib/.config/waybar/config-bottom.jsonc"
 
 // timeout 300: After 5 minutes (300 seconds) of inactivity, swayidle triggers Niri's internal command to put the displays into standby. The screens will go completely black.
 // resume: The moment you touch your keyboard or mouse, Niri instantly wakes the monitors back up to your active session without asking for a password.
-spawn-at-startup "swayidle" "-w" \
-    "timeout 300 'niri msg action power-off-monitors'" \
-    "resume 'niri msg action power-on-monitors'"
+//spawn-at-startup "swayidle" "-w" \
+//    "timeout 300 'niri msg action power-off-monitors'" \
+//    "resume 'niri msg action power-on-monitors'"
+
+spawn-at-startup "dbus-update-activation-environment" "--systemd" "NIRI_SOCKET" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
+spawn-at-startup "swayidle" "-w" "timeout" "300" "niri msg action power-off-monitors" "resume" "niri msg action power-on-monitors"
+//spawn-at-startup "swayidle" "-w" "timeout" "60" "niri msg action power-off-monitors" "resume" "niri msg action power-on-monitors"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"

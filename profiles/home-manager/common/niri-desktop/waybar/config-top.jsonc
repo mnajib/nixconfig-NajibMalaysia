@@ -1,13 +1,17 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 28,
+    //"height": 18,
+    //"height": 24,
+    //"height": 31,
+    "spacing": 4,
     "modules-center": ["custom/waktusolat"],
 
     "custom/waktusolat": {
         "format": "{}",
         "return-type": "json",
-        "interval": 1, // 2,
+        //"interval": 2,
+        "interval": 1, // 1 second, need for blinking text
         "exec": "$HOME/.config/waybar/scripts/waktusolat.sh",
         "escape": false
     }
