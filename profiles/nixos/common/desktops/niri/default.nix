@@ -8,6 +8,8 @@
     swayidle
     jq
     bash
+
+    #noctalia-shell
   ];
 
   # 2. Enable and configure Niri compositor on NixOS

@@ -112,6 +112,8 @@ in
     #./wayland-niri.nix
     (fromCommon "desktops/niri")
 
+    (fromCommon "waktusolat.nix")
+
   ];
 
   home-manager = let

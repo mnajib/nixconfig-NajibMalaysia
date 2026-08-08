@@ -83,7 +83,8 @@ in
 
     #inputs.home-manager.nixosModules.home-manager # tak perlu load di sini, dah load di flake.nix
 
-    ./waktusolat.nix
+    #./waktusolat.nix
+    (fromCommon "waktusolat.nix")
 
   ];
 

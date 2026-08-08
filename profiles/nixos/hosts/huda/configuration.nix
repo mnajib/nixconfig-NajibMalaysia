@@ -51,7 +51,9 @@ in
     #(fromCommon "remote-builders.nix")
     (fromCommon "configuration.DESKTOP_FULL.nix") # timezone, locale, ...
     (fromCommon "packages/media.nix")
-    ./waktusolat.nix
+
+    #./waktusolat.nix
+    #(fromCommon "waktusolat.nix")
 
     #(fromCommon "users-a-wheel.nix")
     (fromCommon "users-naqib-wheel.nix")

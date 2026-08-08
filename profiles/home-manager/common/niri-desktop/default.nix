@@ -29,6 +29,7 @@
     #niriswitcher
     #sunsetr
     #hyprlax
+    #noctalia-shell
   ];
 
   programs.waybar.enable = true;

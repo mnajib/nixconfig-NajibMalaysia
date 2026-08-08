@@ -84,6 +84,7 @@ in
     (fromCommon "nix-garbage-collector.nix")
 
     (fromCommon "monitoring-tools.nix")
+    (fromCommon "packages/media.nix")
 
     (fromCommon "flatpak.nix")
     (fromCommon "xdg.nix")
