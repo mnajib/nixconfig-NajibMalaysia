@@ -601,24 +601,6 @@
         "type": "github"
       }
     },
-    "flake-utils_4": {
-      "inputs": {
-        "systems": "systems_11"
-      },
-      "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
     "flakey-profile": {
       "locked": {
         "lastModified": 1712898590,
@@ -781,6 +763,27 @@
         "owner": "nix-community",
         "repo": "home-manager",
         "rev": "ebc87daabc8d3f595e9a8b67107eaaa8115ad582",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "home-manager_3": {
+      "inputs": {
+        "nixpkgs": [
+          "waktusolat",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1786031233,
+        "narHash": "sha256-TIDlLTLI1/pB7IqgjzcKQjpODQsZE2oII4XGG9B6KjI=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "7834e82588860aaf780cec1366524456a70898d7",
         "type": "github"
       },
       "original": {
@@ -2258,21 +2261,6 @@
         "type": "github"
       }
     },
-    "systems_11": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
     "systems_2": {
       "locked": {
         "lastModified": 1689347949,
@@ -2493,15 +2481,15 @@
     },
     "waktusolat": {
       "inputs": {
-        "flake-utils": "flake-utils_3",
+        "home-manager": "home-manager_3",
         "nixpkgs": "nixpkgs_9"
       },
       "locked": {
-        "lastModified": 1785828777,
-        "narHash": "sha256-74DC6ZNExFk8GopSDcqHYuMpTIFdnz1OY4NnjmburkQ=",
+        "lastModified": 1786362078,
+        "narHash": "sha256-1+cifg+SqIbYMyafevTinJ5ymHf26TvzkYsqpbQgAOg=",
         "owner": "mnajib",
         "repo": "waktusolat-NajibMalaysia",
-        "rev": "24e0dab42a7dec45ac9a82b341fe48161ef4866c",
+        "rev": "95bcc1881adbd794d8976c7c7c8f45a248282769",
         "type": "github"
       },
       "original": {
@@ -2607,7 +2595,7 @@
     },
     "zfs-snapshot-manager": {
       "inputs": {
-        "flake-utils": "flake-utils_4",
+        "flake-utils": "flake-utils_3",
         "nixpkgs": "nixpkgs_10"
       },
       "locked": {
