@@ -69,6 +69,7 @@
           # Usage:
           #   git pushtomanyrepo HEAD:nyxora-staging nyxora local github codeberg
           pushtorepos = "!f() { refspec=\"$1\"; shift; for remote in \"$@\"; do git push \"$remote\" \"$refspec\"; done; }; f";
+          push2repos  = "!f() { refspec=\"$1\"; shift; for remote in \"$@\"; do git push \"$remote\" \"$refspec\"; done; }; f";
 
           type = "cat-file -t";
           dump = "cat-file -p";
