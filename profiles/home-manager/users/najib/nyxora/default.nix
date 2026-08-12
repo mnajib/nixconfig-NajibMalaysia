@@ -35,6 +35,7 @@ in
     #(./. + "/${commonDir}/ai.nix")
 
     (fromCommon "repo-bootstrap.nix")
+    (fromCommon "niri-desktop")
   ];
 
   nixpkgs.config = {
