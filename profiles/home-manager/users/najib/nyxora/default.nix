@@ -64,6 +64,7 @@ in
     nerd-fonts.jetbrains-mono
     emacs-all-the-icons-fonts
 
+    unstable.netwatch
   ];
 
   fonts.fontconfig.enable = true;
