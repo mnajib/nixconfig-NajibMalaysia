@@ -2485,11 +2485,11 @@
         "nixpkgs": "nixpkgs_9"
       },
       "locked": {
-        "lastModified": 1786719280,
-        "narHash": "sha256-uTNnh6XmnO2ay5YZ/3gzjiy4YmkNn5MIfM9AmmCvb3Y=",
+        "lastModified": 1786799062,
+        "narHash": "sha256-7qY6aVJLljwc3jpXNgCz0aENyXuJtP51IiGn+Dmyj98=",
         "owner": "mnajib",
         "repo": "waktusolat-NajibMalaysia",
-        "rev": "8ab850ec4084bbfef7179ef2fc37b44483682f2f",
+        "rev": "ebeff09e41116537bd110a1ac8dc2c32f2255b85",
         "type": "github"
       },
       "original": {
