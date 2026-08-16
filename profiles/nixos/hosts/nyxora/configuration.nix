@@ -22,6 +22,36 @@ let
     ;
 in
 {
+
+  # =========================================================================
+  # QEMU Virtual Machine Variant Configuration
+  # =========================================================================
+  virtualisation.vmVariant = {
+    # Increase RAM and CPU cores for the VM (adjust as needed)
+    virtualisation.memorySize = 2048; # 2GB RAM
+    virtualisation.cores = 2;       # 2 CPU cores
+
+    # Forward host port 2222 to guest port 22 (SSH)
+    virtualisation.forwardPorts = [
+      {
+        from = "host";
+        host.port = 2222;
+        guest.port = 22;
+      }
+    ];
+
+    # Temporarily add an initial password for testing access via console/SSH
+    #users.users.najib.initialPassword = "password";
+
+    imports = [
+      ./services/nextcloud.nix
+    ];
+
+    networking.hostName = lib.mkForce "nyxora-vm";
+
+  };
+  # =========================================================================
+
   nix = {
     #package = pkgs.nixFlakes;
 
@@ -94,9 +124,6 @@ in
 
     #./typesetting.nix
 
-    # /var/lib/nextcloud/config/config.php
-    #./nextcloud.nix  # OpenSSL 1.1 is marked as unsecured
-
     # System health monitoring
     #./netdata.nix
 
@@ -106,9 +133,6 @@ in
     #./zfs.nix
     #(./. + "/${commonDir}/zfs-nyxora.nix")
     ./zfs.nix
-
-    #./nfs-server-customdesktop.nix
-    ./services/nfs-server.nix
 
     (fromCommon "nfs-client-automount.nix")
     #./nfs-client-automount-games.nix
@@ -140,6 +164,7 @@ in
     #./btrbk-pull.nix
     #./btrbk-tv.nix # XXX: Temporarily disabled as the HDD is failing.
 
+    ./services/nfs-server.nix
     ./services/bind.nix
     ./services/nginx.nix
     ./services/forgejo.nix
@@ -150,6 +175,8 @@ in
     ./services/immich.nix
     ./services/tailscale.nix
     ./services/waktusolat-aggregator.nix
+    ./services/syncthing.nix
+    #./services/nextcloud.nix
 
     #./hosts2.nix
 
@@ -186,9 +213,6 @@ in
     (fromCommon "window-managers.nix")
     (fromCommon "qemu.nix")
     (fromCommon "bluetooth.nix")
-
-    #./syncthing.nix
-    ./services/syncthing.nix
 
     (fromCommon "packages/gis.nix")
   ];

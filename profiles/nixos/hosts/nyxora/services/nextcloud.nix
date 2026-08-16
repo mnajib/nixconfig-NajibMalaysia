@@ -1,56 +1,50 @@
 { config, pkgs, lib, ... }:
 
 let
-  # Local paths
-  zfsDatasetPath = "/mnt/zfs-nextcloud";
-  nextcloudDataDir = "/var/lib/nextcloud/data";
+
+  #nextcloudDataDir = "/var/lib/nextcloud";        # Default
+  #nextcloudDataDir = "/var/lib/nextcloud/data";  # Primary app data
+  nextcloudDataDir = "/MyTank/services/nextcloud";        # Default
+
+  #externalNfsMount = "/mnt/nfs-shared";           # External NFS payload
+  #externalNfsMount = "/mnt/nfsshare2";           # External NFS payload
+
 in
 {
   # ---------------------------------------------------------------------------
-  # 1. Local ZFS & Filesystem Configuration
+  # 1. Primary Data Storage (ZFS)
   # ---------------------------------------------------------------------------
   boot.supportedFilesystems = [ "zfs" "nfs" ];
 
-  # Local ZFS Dataset Mount Point
+  # Local ZFS Dataset for Nextcloud's core application data
   # Replace 'rpool/data/nextcloud' with your actual pool/dataset path
-  fileSystems."${zfsDatasetPath}" = {
-    device = "rpool/data/nextcloud";
+  fileSystems."${nextcloudDataDir}" = {
+    #device = "rpool/data/nextcloud";
+    device = "MyTank/services/nextcloud";
     fsType = "zfs";
     options = [ "noatime" ];
   };
 
   # ---------------------------------------------------------------------------
-  # 2. Local NFS Server Configuration
+  # 2. Existing External NFS Mount
   # ---------------------------------------------------------------------------
-  services.nfs.server = {
-    enable = true;
-    # Export ZFS dataset strictly to loopback (127.0.0.1)
-    exports = ''
-      ${zfsDatasetPath} 127.0.0.1(rw,sync,no_subtree_check,no_root_squash)
-    '';
-  };
+  # Mount the external NFS share to the NixOS host
+  #fileSystems."${externalNfsMount}" = {
+  #  device = "nfs.localdomain:/nfsshare2";
+  #  fsType = "nfs";
+  #  options = [
+  #    "nfsvers=4.2"
+  #    "rw"
+  #    "hard"
+  #    "intr"
+  #    "noatime"
+  #    "x-systemd.automount"
+  #    "x-systemd.idle-timeout=60"
+  #  ];
+  #};
 
   # ---------------------------------------------------------------------------
-  # 3. Local Loopback NFS Mount Configuration
-  # ---------------------------------------------------------------------------
-  fileSystems."${nextcloudDataDir}" = {
-    device = "127.0.0.1:${zfsDatasetPath}";
-    fsType = "nfs";
-    options = [
-      "nfsvers=4.2"
-      "rw"
-      "hard"
-      "intr"
-      "noatime"
-      "x-systemd.automount"
-      "x-systemd.idle-timeout=60"
-      "x-systemd.requires=nfs-server.service"
-      "x-systemd.after=nfs-server.service"
-    ];
-  };
-
-  # ---------------------------------------------------------------------------
-  # 4. Database (PostgreSQL)
+  # 3. Database (PostgreSQL)
   # ---------------------------------------------------------------------------
   services.postgresql = {
     enable = true;
@@ -64,17 +58,25 @@ in
   };
 
   # ---------------------------------------------------------------------------
-  # 5. Nextcloud Service Configuration
+  # 4. Nextcloud Service Configuration
   # ---------------------------------------------------------------------------
   environment.etc."nextcloud-admin-pass".text = "ChangeMeNow123!";
 
   services.nextcloud = {
     enable = true;
-    package = pkgs.nextcloud30;
-    hostName = "nextcloud.local";
-    
-    # Nextcloud data points to the loopback NFS mount
-    dataDir = nextcloudDataDir;
+    #package = pkgs.nextcloud30;
+    package = pkgs.nextcloud34;
+    hostName = "nextcloud.localdomain";
+
+    # Point Nextcloud core data to the ZFS dataset
+    #dataDir = nextcloudDataDir;
+    home = nextcloudDataDir;
+
+    # Declaratively enable the External Storage application
+    #extraAppsEnable = true;
+    #extraApps = {
+    #  inherit (config.services.nextcloud.package.packages.apps) files_external;
+    #};
 
     config = {
       dbtype = "pgsql";
@@ -94,34 +96,41 @@ in
   };
 
   # ---------------------------------------------------------------------------
-  # 6. Systemd Ordering and Service Dependencies
+  # 5. Systemd Ordering and Service Dependencies
   # ---------------------------------------------------------------------------
-  # Explicitly order NFS server startup after local ZFS mounts
-  systemd.services.nfs-server = {
-    after = [ "mnt-zfs\\x2dnextcloud.mount" ];
-    requires = [ "mnt-zfs\\x2dnextcloud.mount" ];
-  };
-
-  # Ensure Nextcloud waits for local loopback NFS mount
+  # Ensure Nextcloud setup waits for both ZFS and NFS mounts
   systemd.services.nextcloud-setup = {
-    requires = [ "var-lib-nextcloud-data.mount" ];
-    after = [ "var-lib-nextcloud-data.mount" "postgresql.service" ];
+    #requires = [ "var-lib-nextcloud-data.mount" "mnt-nfs\\x2dshared.mount" ];
+    #after = [ "var-lib-nextcloud-data.mount" "mnt-nfs\\x2dshared.mount" "postgresql.service" ];
+    #
+    #requires = [ "var-lib-nextcloud-data.mount" "mnt-nfsshare2.mount" ];
+    #after = [ "var-lib-nextcloud-data.mount" "mnt-nfsshare2.mount" "postgresql.service" ];
+    #
+    requires = [ "MyTank-services-nextcloud.mount" "mnt-nfsshare2.mount" ];
+    after = [ "MyTank-services-nextcloud.mount" "mnt-nfsshare2.mount" "postgresql.service" ];
   };
 
+  # Ensure PHP-FPM waits for both mounts before serving requests
   systemd.services.phpfpm-nextcloud = {
-    requires = [ "var-lib-nextcloud-data.mount" ];
-    after = [ "var-lib-nextcloud-data.mount" ];
+    #requires = [ "var-lib-nextcloud-data.mount" "mnt-nfs\\x2dshared.mount" ];
+    #after = [ "var-lib-nextcloud-data.mount" "mnt-nfs\\x2dshared.mount" ];
+    #
+    #requires = [ "var-lib-nextcloud-data.mount" "mnt-nfsshare2.mount" ];
+    #after = [ "var-lib-nextcloud-data.mount" "mnt-nfsshare2.mount" ];
+    #
+    requires = [ "MyTank-services-nextcloud.mount" "mnt-nfsshare2.mount" ];
+    after = [ "MyTank-services-nextcloud.mount" "mnt-nfsshare2.mount" "postgresql.service" ];
   };
 
   # ---------------------------------------------------------------------------
-  # 7. Web Server (Nginx)
+  # 6. Web Server (Nginx)
   # ---------------------------------------------------------------------------
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
-    virtualHosts."nextcloud.local" = {
-      forceSSL = false;
+    virtualHosts."nextcloud.localdomain" = {
+      forceSSL = false; # Remember to update this if you configure HTTPS
     };
   };
 }
