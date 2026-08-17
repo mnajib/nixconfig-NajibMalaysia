@@ -102,7 +102,7 @@
 
     #------------------------------------------------------
 
-    flake-parts.url = "github:hercules-ci/flake-parts";
+    # flake-parts.url = "github:hercules-ci/flake-parts";
 
     disko = {
       url = "github:nix-community/disko";
@@ -113,7 +113,7 @@
     };
 
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-1.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-1.tar.gz"; # XXX:
       inputs.nixpkgs.follows = "nixpkgs";
       #inputs.nixpkgs.follows = "nixpkgs-stable";
       #inputs.nixpkgs.follows = "nixpkgs-release";
@@ -300,308 +300,82 @@
   }; # End of 'inputs = { ... };'
 
   outputs =
-    inputs@{ flake-parts, self, ... }:
-    #outputs = top@{ flake-parts, self, ... }:
-    #outputs = top@inputs@{ flake-parts, self, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; } {
-
-      #------------------------------------------------------------------------
-      # 1. flake-parts.lib.mkFlake.imports
-      #------------------------------------------------------------------------
-      imports = [
-        #inputs.stylix.flakeModule
-        #inputs.hyprland.flakeModule
-      ];
-
-      #------------------------------------------------------------------------
-      # 2. flake-parts.lib.mkFlake.systems
-      #------------------------------------------------------------------------
-      systems = [
+    inputs@{ self, nixpkgs, ... }:
+    let
+      supportedSystems = [
         "x86_64-linux"
         "aarch64-linux"
       ];
 
+      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+
+      inherit (self) outputs;
+
+      # Builder functions (mkPkgsCommon, mkNixos, mkHome, homeProfilePath)
+      # live in lib/builders.nix -- kept out of flake.nix so this file
+      # stays focused on wiring (inputs -> outputs: which host uses
+      # which builder, with which overrides) rather than builder
+      # internals. See that file for what each one does.
+      inherit (import ./lib/builders.nix { inherit inputs self; })
+        homeProfilePath
+        mkPkgsCommon
+        mkNixos
+        mkHome
+        ;
+
+    in
+    {
       #------------------------------------------------------------------------
-      # 3. flake-parts.lib.mkFlake.perSystem
+      # 3. perSystem outputs (via forAllSystems)
       #------------------------------------------------------------------------
-      perSystem =
-        {
-          config,
-          self,
-          pkgs,
-          system,
-          #inputs,
-          #outputs,
-          ...
-        }:
-        #let
-        #  inherit (self) outputs;
-        #  #pkgs = import nixpkgs { inherit system; };
-        #  #pkgsStable = import nixpkgs-stable { inherit system; };
-        #  #pkgsUnstable = import nixpkgs-unstable { inherit system; };
-        #  #pkgsMaster = import nixpkgs-master { inherit system; };
-        #  #inherit (inputs.nixpkgs.lib) mapAttrs attrValues length unique concatStringsSep filterAttrs count;
-        #in
-        {
-          #------------------------------------------------
-          # 3.1 flake-parts.lib.mkFlake.perSystem.packages
-          #       will help generate flake output:
-          #         packages.${system}.default
-          #         packages.${system}.mangayomi
-          #         packages.${system}....
-          #------------------------------------------------
-          packages = {
 
-            default = pkgs.hello;
-
-            # To use this mangayomi:
-            #   nix shell .#mangayomi
-            #   nix run .#mangayomi
-            mangayomi = pkgs.mangayomi;
-
-          };
-          #
-          #packages = (import ./packages { inherit pkgs; }) // {
-          #  default = pkgs.hello;
-          #  #mangayomi = pkgs.mangayomi;
-          #};
-
-          #------------------------------------------------
-          # 3.2 flake-parts.lib.mkFlake.perSystem.devShells
-          #       will help generate flake output:
-          #         devShells.${system}.default
-          #         devShells.${system}....
-          #------------------------------------------------
-          devShells.default = import ./shell.nix { inherit pkgs; };
-
-          #------------------------------------------------
-          # 3.3 flake-parts.lib.mkFlake.perSystem.formatter
-          #       will help generate flake output:
-          #         formatter.${system}...
-          #------------------------------------------------
-          formatter = pkgs.alejandra;
-
-          #------------------------------------------------
-          # 3.4 flake-parts.lib.mkFlake.perSystem.checks
-          #       will help generate
-          #         ???
-          #------------------------------------------------
-
-          #checks.hostIdUniqueness =
-          #  let
-          #    lib = inputs.nixpkgs.lib;
-          #    #hostIds = lib.mapAttrs (_: h: h.config.networking.hostId or null) top.nixosConfigurations;
-          #    hostIds = lib.mapAttrs (_: h: h.config.networking.hostId or null) self.nixosConfigurations;
-          #    missingHosts = lib.attrNames (lib.filterAttrs (_: v: v == null) hostIds);
-          #    dupes = lib.filterAttrs (_: hs: lib.length hs > 1)
-          #      (lib.mapAttrs (id: _: lib.attrValues (lib.filterAttrs (_: v: v == id) hostIds)) hostIds);
-          #  in
-          #  pkgs.runCommand "check-hostId-uniqueness" { } ''
-          #    if [ -n "${lib.concatStringsSep " " missingHosts}" ]; then
-          #      echo "Missing hostId in: ${lib.concatStringsSep " " missingHosts}"
-          #      exit 1
-          #    fi
-          #    if [ -n "${lib.concatStringsSep " " (lib.attrValues dupes)}" ]; then
-          #      echo "Duplicate hostIds: ${lib.concatStringsSep " " (lib.attrValues dupes)}"
-          #      exit 1
-          #    fi
-          #    touch $out
-          #  '';
-
-          #------------------------------------------------
-          # 3.5 flake-parts.lib.mkFlake.perSystem.apps
-          #       will help generate
-          #         flake.${system}.apps
-          #------------------------------------------------
-
-          #         #
-          #         # Usage:
-          #         #
-          #         #   To Dry-run with only drive3
-          #         #     nix run .#disko-nyxora-dry -- --enableDrive3
-          #         #
-          #         #   Dry-run with drive2 and drive3
-          #         #     nix run .#disko-nyxora-dry -- --enableDrive2 --enableDrive3
-          #         #
-          #         #   Dry-run with all (3) drives
-          #         #     nix run .#disko-nyxora-dry -- --enableDrive1 --enableDrive2 --enableDrive3
-          #         #   or
-          #         #     nix run .#disko-nyxora-dry
-          #         #
-          #         apps.disko-nyxora-dry = {
-          #           type = "app";
-          #           program = toString (pkgs.writeShellScript "disko-nyxora-dry" ''
-          #             ${pkgs.nixos-install-tools}/bin/disko \
-          #               --dry-run \
-          #               --mode disko \
-          #               --devices "$(${pkgs.nix}/bin/nix eval --raw .#nixosConfigurations.nyxora.config.disko.devices)"
-          #           '');
-          #         }; # End apps.disko-nyxora-dry = { ... };
-
-          #         apps.disko-nyxora-dry2 = {
-          #           type = "app";
-          #           program = toString (pkgs.writeShellScript "disko-nyxora-dry2" ''
-          #             set -e
-
-          #             enableDrive1=false
-          #             enableDrive2=false
-          #             enableDrive3=false
-          #             anyFlag=false
-
-          #             # Parse CLI args
-          #             while [[ $# -gt 0 ]]; do
-          #               case "$1" in
-          #                 --enableDrive1) enableDrive1=true; anyFlag=true ;;
-          #                 --enableDrive2) enableDrive2=true; anyFlag=true ;;
-          #                 --enableDrive3) enableDrive3=true; anyFlag=true ;;
-          #                 *) echo "Unknown option: $1" >&2; exit 1 ;;
-          #               esac
-          #               shift
-          #             done
-
-          #             # If no flags given, enable all drives
-          #             if [[ "$anyFlag" == "false" ]]; then
-          #               enableDrive1=true
-          #               enableDrive2=true
-          #               enableDrive3=true
-          #             fi
-
-          #             # Run disko in dry-run mode with selected drives
-          #             nix run ".#nixosConfigurations.nyxora.config.system.build.diskoScript" -- \
-          #               --arg devices "(
-          #                 import ./profiles/nixos/hosts/nyxora/disko/default.nix {
-          #                   lib = import <nixpkgs/lib>;
-          #                   enableDrive1 = ''${enableDrive1};
-          #                   enableDrive2 = ''${enableDrive2};
-          #                   enableDrive3 = ''${enableDrive3};
-          #                 }
-          #               )" \
-          #               --dry-run
-          #           '');
-          #         }; # End apps.disko-nyxora-dry2 = { ... };
-
-          #         apps.disko-nyxora-dry3 = {
-          #           type = "app";
-          #           program = toString (pkgs.writeShellScript "disko-nyxora-dry3" ''
-          #             set -euo pipefail
-
-          #             enableDrive1=false
-          #             enableDrive2=false
-          #             enableDrive3=false
-          #             anyFlag=false
-
-          #             # Parse CLI args
-          #             while [[ $# -gt 0 ]]; do
-          #               case "$1" in
-          #                 --enableDrive1) enableDrive1=true; anyFlag=true ;;
-          #                 --enableDrive2) enableDrive2=true; anyFlag=true ;;
-          #                 --enableDrive3) enableDrive3=true; anyFlag=true ;;
-          #                 *) echo "Unknown option: $1" >&2; exit 1 ;;
-          #               esac
-          #               shift
-          #             done
-
-          #             # If no flags given, enable all drives
-          #             if [[ "$anyFlag" == "false" ]]; then
-          #               enableDrive1=true
-          #               enableDrive2=true
-          #               enableDrive3=true
-          #             fi
-
-          #             # Convert bash bools to Nix bools
-          #             nixBool() {
-          #               if [[ "$1" == "true" ]]; then
-          #                 echo "true"
-          #               else
-          #                 echo "false"
-          #               fi
-          #             }
-
-          #             #diskoTarget=$(
-          #             #  nix eval --raw .#nixosConfigurations.nyxora.config.system.build \
-          #             #    | grep -q diskoScript && echo diskoScript || echo disko
-          #             #)
-
-          #             #nix run ".#nixosConfigurations.nyxora.config.system.build.$diskoTarget" -- \
-          #             nix run ".#nixosConfigurations.nyxora.config.system.build.diskoScript" -- \
-          #               --arg devices "(
-          #                   import ./profiles/nixos/hosts/nyxora/disko/default.nix {
-          #                     lib = import ${pkgs.path + "/lib"};
-          #                     enableDrive1 = $(nixBool "$enableDrive1");
-          #                     enableDrive2 = $(nixBool "$enableDrive2");
-          #                     enableDrive3 = $(nixBool "$enableDrive3");
-          #                   }
-          #               )" \
-          #               --dry-run
-          #           '');
-          #         }; # End apps.disko-nyxora-dry3 = { ... };
-
-        }; # End perSystem = {}: let .. in { ... };
-
-      #------------------------------------------------------------------------
-      # 4. flake-parts.lib.mkFlake.flake
-      #------------------------------------------------------------------------
-      # Put your original flake attributes here.
-      # Most probably flake-parts not help anything in here, only do "pass-through".
-      #
-      flake =
+      packages = forAllSystems (system:
         let
-
-          inherit (self) outputs;
-
-          # Builder functions (mkPkgsCommon, mkNixos, mkHome, homeProfilePath)
-          # live in lib/builders.nix -- kept out of flake.nix so this file
-          # stays focused on wiring (inputs -> outputs: which host uses
-          # which builder, with which overrides) rather than builder
-          # internals. See that file for what each one does.
-          inherit (import ./lib/builders.nix { inherit inputs self; })
-            homeProfilePath
-            mkPkgsCommon
-            mkNixos
-            mkHome
-            ;
-
+          pkgs = import nixpkgs { inherit system; };
         in
         {
-          #--------------------------------------------------
-          # flake-parts.lib.mkFlake.flake.overlays
-          #   will pass as
-          #     flake ouputs: overlays
-          #--------------------------------------------------
-          #overlays = import ./overlays { inherit inputs outputs; };
-          overlays = import ./overlays { inherit inputs; };                     # myOverlays
+          default = pkgs.hello;
 
-          nixosModules = import ./modules/nixos;                                # myNixosModules
+          # To use this mangayomi:
+          #   nix shell .#mangayomi
+          #   nix run .#mangayomi
+          mangayomi = pkgs.mangayomi;
+        }
+      );
 
-          homeManagerModules = import ./modules/home-manager;                   # myHomeManagerModules
+      devShells = forAllSystems (system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        {
+          default = import ./shell.nix { inherit pkgs; };
+        }
+      );
 
-          #templates....
+      formatter = forAllSystems (system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        pkgs.alejandra
+      );
 
-          #pkgsRelease = inputs.nixpkgs-release;
-          #pkgsStable   = inputs.nixpkgs-stable;
-          #pkgsUnstable   = inputs.nixpkgs-unstable;
+      #------------------------------------------------------------------------
+      # 4. Global flake outputs
+      #------------------------------------------------------------------------
 
-          #--------------------------------------------------
-          # flake-parts.lib.mkFlake.flake.nixosConfigurations
-          # flake-parts.lib.mkFlake.flake.homeConfigurations
-          #   will pass as
-          #     flake ouputs: nixosConfigurations, homeConfigurations
-          #
-          # Per-host system entries live in hosts.nix; standalone
-          # per-user home-manager entries live in homes.nix. Split because
-          # they're edited for different reasons (machine vs person) --
-          # see either file's header comment for details. This is just
-          # the wiring.
-          #--------------------------------------------------
-          inherit (import ./hosts.nix { inherit inputs mkNixos; })
-            nixosConfigurations
-            ;
+      overlays = import ./overlays { inherit inputs; };                     # myOverlays
 
-          inherit (import ./homes.nix { inherit inputs mkHome; })
-            homeConfigurations
-            ;
+      nixosModules = import ./modules/nixos;                                # myNixosModules
 
+      homeManagerModules = import ./modules/home-manager;                   # myHomeManagerModules
 
-      }; # End of 'flake = let ... in { ... };'
-    }; # End of 'flake-parts.lib.mkFlake { inherit inputs; } { ... };
+      inherit (import ./hosts.nix { inherit inputs mkNixos; })
+        nixosConfigurations
+        ;
+
+      inherit (import ./homes.nix { inherit inputs mkHome; })
+        homeConfigurations
+        ;
+
+    }; # End of 'outputs = ...'
 }
