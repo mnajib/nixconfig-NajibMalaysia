@@ -57,6 +57,8 @@ in
     (fromCommon "xdg.nix")
     (fromCommon "window-managers.nix")
     (fromCommon "desktops-xorg.nix")
+    (fromCommon "desktops/niri")
+    (fromCommon "waktusolat.nix")
     #(fromCommon "3D.nix")
     (fromCommon "whatsapp.nix")
   ];

@@ -52,9 +52,6 @@ in
     (fromCommon "configuration.DESKTOP_FULL.nix") # timezone, locale, ...
     (fromCommon "packages/media.nix")
 
-    #./waktusolat.nix
-    #(fromCommon "waktusolat.nix")
-
     #(fromCommon "users-a-wheel.nix")
     (fromCommon "users-naqib-wheel.nix")
     #(fromCommon "users-naqib.nix")
@@ -84,6 +81,9 @@ in
     #(fromCommon "hyprland.nix")
     #(fromCommon "stylix.nix")
     (fromCommon "desktops/niri")
+
+    #./waktusolat.nix
+    (fromCommon "waktusolat.nix")
 
     #(fromCommon "bluetooth.nix")
     #(fromCommon "packages/databases.nix")

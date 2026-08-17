@@ -98,6 +98,7 @@ in {
     #./winboat.nix # commented because it use insecure package electron-40.10.5
 
     (fromCommon "desktops/niri")
+    (fromCommon "waktusolat.nix")
   ];
 
   home-manager = let

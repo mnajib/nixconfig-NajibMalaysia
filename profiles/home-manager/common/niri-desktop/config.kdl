@@ -274,8 +274,10 @@ layout {
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
 //spawn-at-startup "waybar"
-spawn-at-startup "waybar" "-c" "/home/najib/.config/waybar/config-top.jsonc"
-spawn-at-startup "waybar" "-c" "/home/najib/.config/waybar/config-bottom.jsonc"
+//spawn-at-startup "waybar" "-c" "/home/naim/.config/waybar/config-top.jsonc" // not work
+//spawn-at-startup "waybar" "-c" "home/naim/.config/waybar/config-bottom.jsonc" // not work
+spawn-sh-at-startup "waybar -c $HOME/.config/waybar/config-top.jsonc"
+spawn-sh-at-startup "waybar -c $HOME/.config/waybar/config-bottom.jsonc"
 
 // timeout 300: After 5 minutes (300 seconds) of inactivity, swayidle triggers Niri's internal command to put the displays into standby. The screens will go completely black.
 // resume: The moment you touch your keyboard or mouse, Niri instantly wakes the monitors back up to your active session without asking for a password.

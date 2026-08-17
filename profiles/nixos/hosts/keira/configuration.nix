@@ -79,6 +79,8 @@ in
 
     #(fromCommon "xmonad.nix")
     (fromCommon "window-managers.nix")
+    #(fromCommon "desktop/niri")
+    (fromCommon "waktusolat.nix")
 
     (fromCommon "btrbk-keira.nix")
     (fromCommon "nix-garbage-collector.nix")

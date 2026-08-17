@@ -79,6 +79,7 @@ in
       #(fromCommon "3D.nix")
       (fromCommon "whatsapp.nix")
       (fromCommon "desktops/niri")
+      (fromCommon "waktusolat.nix")
 
       #./winboat.nix # commented because currently wiboat using unsecure electron version package
       ./tox.nix

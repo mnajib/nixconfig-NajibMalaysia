@@ -295,6 +295,8 @@
     #mc-project.url = "git+http://git.localdomain/naqib/minecraft-infra";
     mc-project.url = "github:NaqibNajib/minecraft-infra";
 
+    niri.url = "github:sodiboo/niri-flake";
+
   }; # End of 'inputs = { ... };'
 
   outputs =

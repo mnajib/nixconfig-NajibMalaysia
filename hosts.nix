@@ -359,6 +359,7 @@
               users = [
                 "najib"
                 "naqib"
+                "naim"
               ];
             };
 
