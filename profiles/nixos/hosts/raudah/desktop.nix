@@ -27,14 +27,14 @@ in {
     generateScript = true;
   };
   services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.displayManager.gdm = {
-    enable = false;
-    #wayland.enable = false;
-  };
-  services.displayManager.sddm = {
-    enable = false;
-    wayland.enable = false;
-  };
+  #services.xserver.displayManager.gdm = {
+  #  enable = false;
+  #  #wayland.enable = false;
+  #};
+  #services.displayManager.sddm = {
+  #  enable = false;
+  #  wayland.enable = false;
+  #};
 
   services.xserver.desktopManager.lxqt.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;

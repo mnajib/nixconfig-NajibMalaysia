@@ -96,7 +96,7 @@ in
     #(fromCommon "desktops-xorg.nix")
     #(fromCommon "desktops.nix")
     ./desktop.nix
-    #(fromCommon "desktops/niri")
+    (fromCommon "desktops/niri")
     (fromCommon "waktusolat.nix")
   ];
 
