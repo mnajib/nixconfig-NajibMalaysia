@@ -40,6 +40,11 @@
     # Extra commands that should be added to .zshrc
     #initExtra = ''
     initContent = ''
+      # Disable sharing history across active shell sessions
+      unsetopt SHARE_HISTORY
+      unsetopt INC_APPEND_HISTORY
+      unsetopt INC_APPEND_HISTORY_TIME
+
       # Enable prompt expansion
       setopt PROMPT_SUBST
 

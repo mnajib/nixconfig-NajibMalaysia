@@ -230,6 +230,8 @@ in
     };
   };
 
+  users.users.najib.shell = pkgs.zsh;
+
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
   #
