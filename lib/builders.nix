@@ -21,6 +21,8 @@
 let
   inherit (self) outputs;
 
+  # Shared helper for file path discovery
+  #
   # Shared helper: the one path expression for a user's home-manager
   # profile, used by BOTH mkNixos (embedded HM) and mkHome (standalone HM)
   # so there's exactly one place that defines this convention.
@@ -71,6 +73,14 @@ let
     let
       lib = pkgsInput.lib;
 
+      # TYPE SAFETY ASSERTIONS (Solves Trade-off #3)
+      assertHostName = lib.assertMsg (builtins.isString hostName)
+        "mkNixos Error: 'hostName' must be a string, got ${builtins.typeOf hostName}.";
+      assertSystem = lib.assertMsg (builtins.isString system)
+        "mkNixos Error: 'system' for host '${toString hostName}' must be a string.";
+      assertUsers = lib.assertMsg (builtins.isList users)
+        "mkNixos Error: 'users' for host '${toString hostName}' must be a list of user strings.";
+
       # FIX THE INPUT LEAK: mask the default `inputs.nixpkgs` with the
       # active `pkgsInput` so no module -- NixOS or home-manager --
       # accidentally pulls a different nixpkgs than the one this host
@@ -82,6 +92,7 @@ let
         inherit outputs hmInput self;
       };
 
+      # Resolve home-manager profiles up front with warnings for uncommitted paths
       # Resolve home-manager profiles UP FRONT, outside the module system,
       # instead of via `mkIf (pathExists ...) (import ...)` inside
       # `home-manager.users`. This means a profile dir that doesn't exist
@@ -112,23 +123,27 @@ let
               path = homeProfilePath user hostName;
               exists = builtins.pathExists path;
             in
-              if exists
-              then { name = user; value = import path; }
-              else
-                lib.warn
-                  "mkNixos '${hostName}': no home-manager profile at ${toString path} for user '${user}' (skipped -- check `git add` if the dir exists on disk)"
-                  null;
+            if exists
+            then { name = user; value = import path; }
+            else
+              lib.warn
+                "mkNixos '${hostName}': no home-manager profile at ${toString path} for user '${user}' (skipped -- check `git add` if the dir exists on disk)"
+                null;
           resolved = map resolve users;
         in
           builtins.listToAttrs (builtins.filter (r: r.value != null) resolved);
 
     in
+    assert assertHostName;
+    assert assertSystem;
+    assert assertUsers;
     lib.nixosSystem {
       inherit system;
       specialArgs = commonSpecialArgs;
 
       modules = [
 
+        # Lock package set across NixOS and Home Manager
         # LOCK THE PACKAGE SET:
         # Use your DRY mkPkgsCommon helper. By setting nixpkgs.pkgs, NixOS will use THIS exact
         # evaluation, guaranteeing parity with your standalone Home Manager configs.
@@ -138,10 +153,11 @@ let
           };
         }
 
-        # Auto-resolve the host config path
+        # Auto-resolve the host configuration path
         # NOTE: `../` here, same reason as `homeProfilePath` above.
         (hostProfilePath hostName)
 
+        # Inject Home Manager module
         # Inject the home-manager NixOS module automatically for ALL hosts.
         # NOTE: don't also add this in a host's `extraModules` -- it's
         # already here, unconditionally, for every host.
@@ -205,6 +221,24 @@ let
       hmInput ? inputs.home-manager,
       extraModules ? [ ],
   }:
+    let
+      lib = pkgsInput.lib;
+
+      # TYPE SAFETY ASSERTIONS (Solves Trade-off #3)
+      assertUser = lib.assertMsg (builtins.isString userName)
+        "mkHome Error: 'userName' must be a string, got ${builtins.typeOf userName}.";
+      assertHost = lib.assertMsg (builtins.isString hostName)
+        "mkHome Error: 'hostName' must be a string, got ${builtins.typeOf hostName}.";
+
+      # Input masking parity with mkNixos
+      patchedInputs = inputs // { nixpkgs = pkgsInput; };
+      commonSpecialArgs = {
+        inputs = patchedInputs;
+        inherit outputs self;
+      };
+    in
+    assert assertUser;
+    assert assertHost;
     hmInput.lib.homeManagerConfiguration {
       pkgs = mkPkgsCommon { inherit system pkgsInput; };
 
@@ -218,5 +252,5 @@ let
 
 in
 {
-  inherit homeProfilePath mkPkgsCommon mkNixos mkHome;
+  inherit homeProfilePath hostProfilePath mkPkgsCommon mkNixos mkHome;
 }
