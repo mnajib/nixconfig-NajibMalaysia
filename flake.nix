@@ -104,7 +104,11 @@
     # System Utilities & Infrastructure
     #------------------------------------------------------
 
-    # flake-parts.url = "github:hercules-ci/flake-parts";
+    # Flake Framework
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
 
     disko = {
       url = "github:nix-community/disko";
@@ -301,104 +305,158 @@
 
   }; # End of 'inputs = { ... };'
 
-  outputs =
-    inputs@{ self, nixpkgs, ... }:
-    let
-      supportedSystems = [
+#  outputs =
+#    inputs@{ self, nixpkgs, ... }:
+#    let
+#      supportedSystems = [
+#        "x86_64-linux"
+#        "aarch64-linux"
+#      ];
+#
+#      #forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+#
+#      # ONE-TIME HARNESS HELPER (Solves Trade-off #1 and Trade-off #4)
+#      # Automatically instantiates pkgs for per-system outputs
+#      eachSystem = f: nixpkgs.lib.genAttrs supportedSystems (system:
+#        f (import nixpkgs {
+#          inherit system;
+#          config.allowUnfree = true;
+#        })
+#      );
+#
+#      #inherit (self) outputs;
+#
+#      # Builder functions (mkPkgsCommon, mkNixos, mkHome, homeProfilePath)
+#      # live in lib/builders.nix -- kept out of flake.nix so this file
+#      # stays focused on wiring (inputs -> outputs: which host uses
+#      # which builder, with which overrides) rather than builder
+#      # internals. See that file for what each one does.
+#      inherit (import ./lib/builders.nix { inherit inputs self; })
+#        hostProfilePath
+#        homeProfilePath
+#        mkPkgsCommon
+#        mkNixos
+#        mkHome
+#        ;
+#
+#    in
+#    {
+#      #------------------------------------------------------------------------
+#      # 1. Per-System Flake Outputs (Clean & Boilerplate-Free)
+#      #------------------------------------------------------------------------
+#
+#      #packages = forAllSystems (system:
+#      #  let
+#      #    pkgs = import nixpkgs { inherit system; };
+#      #  in
+#      #  {
+#      #    default = pkgs.hello;
+#      #
+#      #    # To use this mangayomi:
+#      #    #   nix shell .#mangayomi
+#      #    #   nix run .#mangayomi
+#      #    mangayomi = pkgs.mangayomi;
+#      #  }
+#      #);
+#
+#      packages = eachSystem (pkgs: {
+#        default = pkgs.hello;
+#        mangayomi = pkgs.mangayomi;
+#      });
+#
+#      #devShells = forAllSystems (system:
+#      #  let
+#      #    pkgs = import nixpkgs { inherit system; };
+#      #  in
+#      #  {
+#      #    default = import ./shell.nix { inherit pkgs; };
+#      #  }
+#      #);
+#
+#      devShells = eachSystem (pkgs: {
+#        default = import ./shell.nix { inherit pkgs; };
+#      });
+#
+#      #formatter = forAllSystems (system:
+#      #  let
+#      #    pkgs = import nixpkgs { inherit system; };
+#      #  in
+#      #  pkgs.alejandra
+#      #);
+#
+#      formatter = eachSystem (pkgs: pkgs.alejandra);
+#
+#      #------------------------------------------------------------------------
+#      # 2. Global Flake Outputs & Delegated Wiring
+#      #------------------------------------------------------------------------
+#
+#      overlays = import ./overlays { inherit inputs; };                     # myOverlays
+#
+#      nixosModules = import ./modules/nixos;                                # myNixosModules
+#
+#      homeManagerModules = import ./modules/home-manager;                   # myHomeManagerModules
+#
+#      inherit (import ./hosts.nix { inherit inputs mkNixos; })
+#        nixosConfigurations
+#        ;
+#
+#      inherit (import ./homes.nix { inherit inputs mkHome; })
+#        homeConfigurations
+#        ;
+#
+#    }; # End of 'outputs = ...'
+
+    outputs = inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
         "x86_64-linux"
         "aarch64-linux"
       ];
 
-      #forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+      # SOLVES TRADE-OFF #1: Third-Party flakeModule Imports
+      imports = [
+        # Example: inputs.treefmt-nix.flakeModule
+      ];
 
-      # ONE-TIME HARNESS HELPER (Solves Trade-off #1 and Trade-off #4)
-      # Automatically instantiates pkgs for per-system outputs
-      eachSystem = f: nixpkgs.lib.genAttrs supportedSystems (system:
-        f (import nixpkgs {
+      # SOLVES TRADE-OFF #4: Clean, System-Aware Outputs Scope
+      perSystem = { pkgs, system, inputs', ... }: {
+        # Configure unfree packages cleanly per system
+        _module.args.pkgs = import inputs.nixpkgs {
           inherit system;
           config.allowUnfree = true;
-        })
-      );
+        };
 
-      #inherit (self) outputs;
+        packages = {
+          default = pkgs.hello;
+          mangayomi = pkgs.mangayomi;
+        };
 
-      # Builder functions (mkPkgsCommon, mkNixos, mkHome, homeProfilePath)
-      # live in lib/builders.nix -- kept out of flake.nix so this file
-      # stays focused on wiring (inputs -> outputs: which host uses
-      # which builder, with which overrides) rather than builder
-      # internals. See that file for what each one does.
-      inherit (import ./lib/builders.nix { inherit inputs self; })
-        hostProfilePath
-        homeProfilePath
-        mkPkgsCommon
-        mkNixos
-        mkHome
-        ;
+        devShells = {
+          default = import ./shell.nix { inherit pkgs; };
+        };
 
-    in
-    {
-      #------------------------------------------------------------------------
-      # 1. Per-System Flake Outputs (Clean & Boilerplate-Free)
-      #------------------------------------------------------------------------
+        formatter = pkgs.alejandra;
+      };
 
-      #packages = forAllSystems (system:
-      #  let
-      #    pkgs = import nixpkgs { inherit system; };
-      #  in
-      #  {
-      #    default = pkgs.hello;
-      #
-      #    # To use this mangayomi:
-      #    #   nix shell .#mangayomi
-      #    #   nix run .#mangayomi
-      #    mangayomi = pkgs.mangayomi;
-      #  }
-      #);
+      # Top-Level Flake Outputs (NixOS & Home Manager Systems)
+      flake = let
+        self = inputs.self;
 
-      packages = eachSystem (pkgs: {
-        default = pkgs.hello;
-        mangayomi = pkgs.mangayomi;
-      });
+        # Uses your existing lib/builders.nix unchanged
+        inherit (import ./lib/builders.nix { inherit inputs self; })
+          mkNixos
+          mkHome;
+      in {
+        overlays = import ./overlays { inherit inputs; };
+        nixosModules = import ./modules/nixos;
+        homeManagerModules = import ./modules/home-manager;
 
-      #devShells = forAllSystems (system:
-      #  let
-      #    pkgs = import nixpkgs { inherit system; };
-      #  in
-      #  {
-      #    default = import ./shell.nix { inherit pkgs; };
-      #  }
-      #);
+        inherit (import ./hosts.nix { inherit inputs mkNixos; })
+          nixosConfigurations;
 
-      devShells = eachSystem (pkgs: {
-        default = import ./shell.nix { inherit pkgs; };
-      });
+        inherit (import ./homes.nix { inherit inputs mkHome; })
+          homeConfigurations;
+      };
+    }; # End of outputs = ...
 
-      #formatter = forAllSystems (system:
-      #  let
-      #    pkgs = import nixpkgs { inherit system; };
-      #  in
-      #  pkgs.alejandra
-      #);
-
-      formatter = eachSystem (pkgs: pkgs.alejandra);
-
-      #------------------------------------------------------------------------
-      # 2. Global Flake Outputs & Delegated Wiring
-      #------------------------------------------------------------------------
-
-      overlays = import ./overlays { inherit inputs; };                     # myOverlays
-
-      nixosModules = import ./modules/nixos;                                # myNixosModules
-
-      homeManagerModules = import ./modules/home-manager;                   # myHomeManagerModules
-
-      inherit (import ./hosts.nix { inherit inputs mkNixos; })
-        nixosConfigurations
-        ;
-
-      inherit (import ./homes.nix { inherit inputs mkHome; })
-        homeConfigurations
-        ;
-
-    }; # End of 'outputs = ...'
 }

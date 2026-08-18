@@ -242,7 +242,8 @@ let
     hmInput.lib.homeManagerConfiguration {
       pkgs = mkPkgsCommon { inherit system pkgsInput; };
 
-      extraSpecialArgs = { inherit inputs outputs self; }; # Injects inputs into standalone user profile modules.
+      #extraSpecialArgs = { inherit inputs outputs self; }; # Injects inputs into standalone user profile modules.
+      extraSpecialArgs = commonSpecialArgs;
 
       modules = [
         (homeProfilePath userName hostName)
