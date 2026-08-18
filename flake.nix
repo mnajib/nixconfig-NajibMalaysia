@@ -101,6 +101,8 @@
 
 
     #------------------------------------------------------
+    # System Utilities & Infrastructure
+    #------------------------------------------------------
 
     # flake-parts.url = "github:hercules-ci/flake-parts";
 
@@ -307,9 +309,18 @@
         "aarch64-linux"
       ];
 
-      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+      #forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
 
-      inherit (self) outputs;
+      # ONE-TIME HARNESS HELPER (Solves Trade-off #1 and Trade-off #4)
+      # Automatically instantiates pkgs for per-system outputs
+      eachSystem = f: nixpkgs.lib.genAttrs supportedSystems (system:
+        f (import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        })
+      );
+
+      #inherit (self) outputs;
 
       # Builder functions (mkPkgsCommon, mkNixos, mkHome, homeProfilePath)
       # live in lib/builders.nix -- kept out of flake.nix so this file
@@ -317,6 +328,7 @@
       # which builder, with which overrides) rather than builder
       # internals. See that file for what each one does.
       inherit (import ./lib/builders.nix { inherit inputs self; })
+        hostProfilePath
         homeProfilePath
         mkPkgsCommon
         mkNixos
@@ -326,41 +338,52 @@
     in
     {
       #------------------------------------------------------------------------
-      # 3. perSystem outputs (via forAllSystems)
+      # 1. Per-System Flake Outputs (Clean & Boilerplate-Free)
       #------------------------------------------------------------------------
 
-      packages = forAllSystems (system:
-        let
-          pkgs = import nixpkgs { inherit system; };
-        in
-        {
-          default = pkgs.hello;
+      #packages = forAllSystems (system:
+      #  let
+      #    pkgs = import nixpkgs { inherit system; };
+      #  in
+      #  {
+      #    default = pkgs.hello;
+      #
+      #    # To use this mangayomi:
+      #    #   nix shell .#mangayomi
+      #    #   nix run .#mangayomi
+      #    mangayomi = pkgs.mangayomi;
+      #  }
+      #);
 
-          # To use this mangayomi:
-          #   nix shell .#mangayomi
-          #   nix run .#mangayomi
-          mangayomi = pkgs.mangayomi;
-        }
-      );
+      packages = eachSystem (pkgs: {
+        default = pkgs.hello;
+        mangayomi = pkgs.mangayomi;
+      });
 
-      devShells = forAllSystems (system:
-        let
-          pkgs = import nixpkgs { inherit system; };
-        in
-        {
-          default = import ./shell.nix { inherit pkgs; };
-        }
-      );
+      #devShells = forAllSystems (system:
+      #  let
+      #    pkgs = import nixpkgs { inherit system; };
+      #  in
+      #  {
+      #    default = import ./shell.nix { inherit pkgs; };
+      #  }
+      #);
 
-      formatter = forAllSystems (system:
-        let
-          pkgs = import nixpkgs { inherit system; };
-        in
-        pkgs.alejandra
-      );
+      devShells = eachSystem (pkgs: {
+        default = import ./shell.nix { inherit pkgs; };
+      });
+
+      #formatter = forAllSystems (system:
+      #  let
+      #    pkgs = import nixpkgs { inherit system; };
+      #  in
+      #  pkgs.alejandra
+      #);
+
+      formatter = eachSystem (pkgs: pkgs.alejandra);
 
       #------------------------------------------------------------------------
-      # 4. Global flake outputs
+      # 2. Global Flake Outputs & Delegated Wiring
       #------------------------------------------------------------------------
 
       overlays = import ./overlays { inherit inputs; };                     # myOverlays
