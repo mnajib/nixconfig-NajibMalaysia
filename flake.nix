@@ -426,6 +426,10 @@
           config.allowUnfree = true;
         };
 
+        # Defines binaries or packages that your repository publishes or exports.
+        # Run via:
+        # - `nix run github:mnajib/my-repo#my-app`
+        # - `nix run .#my-app`
         packages = {
           default = pkgs.hello;
           mangayomi = pkgs.mangayomi;
