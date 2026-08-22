@@ -79,7 +79,7 @@ in
 
     #(fromCommon "xmonad.nix")
     (fromCommon "window-managers.nix")
-    #(fromCommon "desktop/niri")
+    (fromCommon "desktops/niri")
     (fromCommon "waktusolat.nix")
 
     (fromCommon "btrbk-keira.nix")
@@ -367,6 +367,9 @@ in
     #obs-studio
 
     #inputs.home-manager.packages.${pkgs.system}.default
+
+    thunderbird
+    #unstable.thunderbird
   ];
 
   system.stateVersion = "${stateVersion}";
