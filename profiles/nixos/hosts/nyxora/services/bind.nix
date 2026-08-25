@@ -162,6 +162,31 @@ in
     # Authoritative zone for localdomain
     zones = {
 
+      # Standard localhost forward zone
+      "localhost" = {
+        master = true;
+        file = pkgs.writeText "zone-localhost" ''
+          $ORIGIN localhost.
+          $TTL 1h
+          @ IN SOA localhost. root.localhost. ( 1 3h 1h 1w 1h )
+          @ IN NS  localhost.
+          @ IN A   127.0.0.1
+          @ IN AAAA ::1
+        '';
+      };
+
+      # Standard localhost reverse zone
+      "127.in-addr.arpa" = {
+        master = true;
+        file = pkgs.writeText "zone-127" ''
+          $ORIGIN 127.in-addr.arpa.
+          $TTL 1h
+          @ IN SOA localhost. root.localhost. ( 1 3h 1h 1w 1h )
+          @ IN NS  localhost.
+          1 IN PTR localhost.
+        '';
+      };
+
       #"localdomain" = {
       #  master = true;
       #  file = pkgs.writeText "zone-localdomain" ''
@@ -211,11 +236,11 @@ in
       };
 
       # Injecting the game override zone block here
-      "racenet.dirtgame.com" = {
-        master = true;
-        file = dirtForeverZone;
-        slaves = [ "192.168.0.0/24" "localhost" ];
-      };
+      #"racenet.dirtgame.com" = {
+      #  master = true;
+      #  file = dirtForeverZone;
+      #  slaves = [ "192.168.0.0/24" "localhost" ];
+      #};
 
     };
 
