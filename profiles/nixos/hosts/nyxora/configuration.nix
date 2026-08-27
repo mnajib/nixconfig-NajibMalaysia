@@ -171,6 +171,7 @@ in
     ./services/postgresql.nix
     #./services/pgadmin.nix
     ./services/postgrest.nix
+    ./services/mariadb.nix
     #./services/refine.nix              # ???
     ./services/immich.nix
     ./services/tailscale.nix
