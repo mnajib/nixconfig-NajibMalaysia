@@ -23,9 +23,9 @@
     enable = true;
     generateScript = true;
   };
-  services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.displayManager.lightdm.enable = false;
   services.xserver.displayManager.gdm = {
-    enable = false;
+    enable = true;
     #wayland.enable = false;
   };
   services.displayManager.sddm = {
@@ -64,9 +64,9 @@
   #
   # To tell NixOS which one should win.
   # If you use GNOME more often, use seahorse/ssh-askpass (better GNOME integration, works with gnome-keyring).
-  programs.ssh.askPassword = lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
+  #programs.ssh.askPassword = lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
   # OR, If you use Plasma more often, use ksshaskpass.
-  #programs.ssh.askPassword = lib.mkForce "${pkgs.ksshaskpass}/bin/ksshaskpass";
+  programs.ssh.askPassword = lib.mkForce "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass";
   # OR, If you want a neutral option that works in either environment, you can use x11-ssh-askpass instead of GNOME/KDE’s:
   #programs.ssh.askPassword = lib.mkForce "${pkgs.x11_ssh_askpass}/bin/x11-ssh-askpass";
 

@@ -2,7 +2,9 @@
 {
   environment.systemPackages = with pkgs; [
     # Process/system monitors
-    htop glances nload zenith bmon btop
+    htop
+    #glances
+    nload zenith bmon btop
     atop gotop wavemon iotop nethogs
     sysstat # performance monitoring tools (sar, iostat, pidstat)
 

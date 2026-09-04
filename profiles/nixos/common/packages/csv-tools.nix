@@ -15,7 +15,7 @@
     csvquote
     xlsx2csv
     xan   # xsv
-    clevercsv
+    #clevercsv
     graph-cli
     zsv
     textql

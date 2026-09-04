@@ -5,7 +5,7 @@
     pcmanfm
     worker
     enlightenment.ephoto
-    gtkimageview
+    #gtkimageview # 'gtkimageview' has been removed, as it depended on GTK 2.
     gthumb
     eog
     mc
