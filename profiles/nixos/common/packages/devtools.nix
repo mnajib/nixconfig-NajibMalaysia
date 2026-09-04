@@ -9,7 +9,9 @@
     devenv
 
     # Languages
-    lua python3Minimal
+    lua
+    python3Minimal
+    python313Packages.pip
     nixd
 
     # Build tools

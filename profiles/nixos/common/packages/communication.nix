@@ -3,7 +3,8 @@
   environment.systemPackages = with pkgs; [
     # Messaging
     telegram-desktop ayugram-desktop signal-desktop
-    hexchat discord discord-ptb
+    #hexchat # 'hexchat' has been removed due to being archived upstream and relying on gtk2.
+    discord discord-ptb
 
     # Secure/alt messengers
     simplex-chat-desktop

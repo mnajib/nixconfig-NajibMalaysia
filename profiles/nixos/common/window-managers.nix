@@ -36,7 +36,7 @@ in
     trayer
 
     feh
-    nitrogen
+    #nitrogen # 'nitrogen' has been removed as it depended on the deprecated gtk2 via gtkmm2
 
     dmenu
     rofi

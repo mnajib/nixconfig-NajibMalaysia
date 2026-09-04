@@ -709,7 +709,7 @@
     #planner <-- removed from nixpkgs
     #gqview # 'gqview' has been removed due to lack of maintenance upstream and depending on gtk2. Consider using 'gthumb' instead
     enlightenment.ephoto
-    gtkimageview
+    #gtkimageview
     gthumb
     eog                           # Gnome image viewer
 

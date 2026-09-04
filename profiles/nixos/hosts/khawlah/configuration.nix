@@ -93,6 +93,11 @@ in
     #(fromCommon "desktop-wayland.nix")
     (fromCommon "desktops.nix")
     (fromCommon "hyprland.nix")
+    #./wayland-niri.nix
+    (fromCommon "desktops/niri")
+    (fromCommon "waktusolat.nix")
+    ./lightweight-wayland-desktop.nix
+    #./labwc-noctalia.nix
 
     #(fromCommon "nfs-client.nix")
     (fromCommon "nfs-client-automount.nix")
@@ -108,11 +113,6 @@ in
     (fromCommon "deskflow.nix")
 
     (fromCommon "bluetooth.nix")
-
-    #./wayland-niri.nix
-    (fromCommon "desktops/niri")
-
-    (fromCommon "waktusolat.nix")
 
   ];
 

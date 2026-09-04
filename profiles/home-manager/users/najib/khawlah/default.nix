@@ -39,7 +39,8 @@ in
 
     (fromCommon "desktop-apps.nix")
 
-    ./hyprland.nix
+    #./hyprland.nix
+    ./labwc-noctalia.nix
   ];
 
   programs.repo-bootstrap.enable = true;
