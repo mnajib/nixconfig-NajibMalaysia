@@ -22,6 +22,8 @@ in
     ./hardware-configuration.nix
     ./zfs.nix
 
+    ./mariadb-service.nix
+
     #inputs.home-manager.nixosModules.home-manager # This in now handled by mkNixos in flake.nix
 
     #./Minecraft/minecraft.nix
