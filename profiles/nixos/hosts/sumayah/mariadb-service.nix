@@ -36,6 +36,7 @@ let
   '';
 
   appScript = ''
+    CREATE DATABASE IF NOT EXISTS app_db;
     CREATE USER IF NOT EXISTS 'app_user'@'127.0.0.1' IDENTIFIED BY 'app_password';
     CREATE USER IF NOT EXISTS 'app_user'@'localhost' IDENTIFIED BY 'app_password';
     ALTER USER 'app_user'@'127.0.0.1' IDENTIFIED BY 'app_password';
@@ -43,12 +44,21 @@ let
     GRANT ALL PRIVILEGES ON car_service_db.* TO 'app_user'@'127.0.0.1';
     GRANT ALL PRIVILEGES ON car_service_db.* TO 'app_user'@'localhost';
 
+    CREATE DATABASE IF NOT EXISTS app2_db;
     CREATE USER IF NOT EXISTS 'app2_user'@'127.0.0.1' IDENTIFIED BY 'app2_password';
     CREATE USER IF NOT EXISTS 'app2_user'@'localhost' IDENTIFIED BY 'app2_password';
     ALTER USER 'app2_user'@'127.0.0.1' IDENTIFIED BY 'app2_password';
     ALTER USER 'app2_user'@'localhost' IDENTIFIED BY 'app2_password';
     GRANT ALL PRIVILEGES ON car_service_db.* TO 'app2_user'@'127.0.0.1';
     GRANT ALL PRIVILEGES ON car_service_db.* TO 'app2_user'@'localhost';
+
+    CREATE DATABASE IF NOT EXISTS app3_db;
+    CREATE USER IF NOT EXISTS 'app3_user'@'127.0.0.1' IDENTIFIED BY 'app3_password';
+    CREATE USER IF NOT EXISTS 'app3_user'@'localhost' IDENTIFIED BY 'app3_password';
+    ALTER USER 'app3_user'@'127.0.0.1' IDENTIFIED BY 'app3_password';
+    ALTER USER 'app3_user'@'localhost' IDENTIFIED BY 'app3_password';
+    GRANT ALL PRIVILEGES ON car_service_db.* TO 'app3_user'@'127.0.0.1';
+    GRANT ALL PRIVILEGES ON car_service_db.* TO 'app3_user'@'localhost';
   '';
 
   # 1. Generate the SQL file dynamically in the Nix store
@@ -64,19 +74,19 @@ in
   # ---------------------------------------------------------------------------
   # Systemd Boot Override: Prevent Auto-Start on System Activation
   # ---------------------------------------------------------------------------
-  systemd.services = {
-    #nginx.wantedBy = lib.mkForce [ ];
-    #postgresql.wantedBy = lib.mkForce [ ];
-
-    # Systemd Boot Override: Prevent Auto-Start on System Activation
-    #
-    # To start the service
-    #   sudo systemctl start mysql
-    mysql.wantedBy = lib.mkForce [ ];
-
-    #"phpfpm-app1".wantedBy = lib.mkForce [ ];
-    #"phpfpm-app2".wantedBy = lib.mkForce [ ];
-  };
+  #systemd.services = {
+  #  #nginx.wantedBy = lib.mkForce [ ];
+  #  #postgresql.wantedBy = lib.mkForce [ ];
+  #
+  #  # Systemd Boot Override: Prevent Auto-Start on System Activation
+  #  #
+  #  # To start the service
+  #  #   sudo systemctl start mysql
+  #  mysql.wantedBy = lib.mkForce [ ];
+  #
+  #  #"phpfpm-app1".wantedBy = lib.mkForce [ ];
+  #  #"phpfpm-app2".wantedBy = lib.mkForce [ ];
+  #};
 
   #
   # To test

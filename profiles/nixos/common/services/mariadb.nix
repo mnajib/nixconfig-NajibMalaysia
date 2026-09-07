@@ -15,7 +15,7 @@
 let
   # --- Toggle Switches ---
   enableRootSetup = true;
-  enableAppSetup = true;
+  enableAppSetup = false;
 
   # --- Script Blocks ---
 
@@ -36,6 +36,7 @@ let
   '';
 
   appScript = ''
+    CREATE DATABASE IF NOT EXISTS app_db;
     CREATE USER IF NOT EXISTS 'app_user'@'127.0.0.1' IDENTIFIED BY 'app_password';
     CREATE USER IF NOT EXISTS 'app_user'@'localhost' IDENTIFIED BY 'app_password';
     ALTER USER 'app_user'@'127.0.0.1' IDENTIFIED BY 'app_password';
@@ -43,12 +44,21 @@ let
     GRANT ALL PRIVILEGES ON car_service_db.* TO 'app_user'@'127.0.0.1';
     GRANT ALL PRIVILEGES ON car_service_db.* TO 'app_user'@'localhost';
 
+    CREATE DATABASE IF NOT EXISTS app2_db;
     CREATE USER IF NOT EXISTS 'app2_user'@'127.0.0.1' IDENTIFIED BY 'app2_password';
     CREATE USER IF NOT EXISTS 'app2_user'@'localhost' IDENTIFIED BY 'app2_password';
     ALTER USER 'app2_user'@'127.0.0.1' IDENTIFIED BY 'app2_password';
     ALTER USER 'app2_user'@'localhost' IDENTIFIED BY 'app2_password';
     GRANT ALL PRIVILEGES ON car_service_db.* TO 'app2_user'@'127.0.0.1';
     GRANT ALL PRIVILEGES ON car_service_db.* TO 'app2_user'@'localhost';
+
+    CREATE DATABASE IF NOT EXISTS app3_db;
+    CREATE USER IF NOT EXISTS 'app3_user'@'127.0.0.1' IDENTIFIED BY 'app3_password';
+    CREATE USER IF NOT EXISTS 'app3_user'@'localhost' IDENTIFIED BY 'app3_password';
+    ALTER USER 'app3_user'@'127.0.0.1' IDENTIFIED BY 'app3_password';
+    ALTER USER 'app3_user'@'localhost' IDENTIFIED BY 'app3_password';
+    GRANT ALL PRIVILEGES ON car_service_db.* TO 'app3_user'@'127.0.0.1';
+    GRANT ALL PRIVILEGES ON car_service_db.* TO 'app3_user'@'localhost';
   '';
 
   # 1. Generate the SQL file dynamically in the Nix store
@@ -94,49 +104,55 @@ in
     initialScript = pkgs.writeText "mariadb-init.sql" ''
       ${lib.optionalString enableRootSetup rootScript}
       ${lib.optionalString enableAppSetup appScript}
-
       FLUSH PRIVILEGES;
     '';
 
     #initialDatabases = [];
 
-    ensureDatabases = [
-      "car_service_db"
-      "car_service_app2_db"
-      "car_service_app3_db"
-    ];
+    #ensureDatabases = [
+    #  "car_service_db"
+    #  "car_service_app2_db"
+    #  "car_service_app3_db"
+    #];
 
-    ensureUsers = [
+    #ensureUsers = [
+    #
+    #  {
+    #    name = "app_user";
+    #    #password = "app_password";
+    #    ensurePermissions = {
+    #      "car_service_db.*" = "ALL PRIVILEGES";
+    #    };
+    #  }
+    #
+    #  {
+    #    name = "app2_user";
+    #    #password = "app2_password";
+    #    ensurePermissions = {
+    #      "car_service_app2_db.*" = "ALL PRIVILEGES";
+    #    };
+    #  }
+    #
+    #  {
+    #    name = "app3_user";
+    #    #password = "app3_password";
+    #    ensurePermissions = {
+    #      "car_service_app3_db.*" = "ALL PRIVILEGES";
+    #    };
+    #  }
+    #
+    #];
 
-      {
-        name = "app_user";
-        #password = "app_password";
-        ensurePermissions = {
-          "car_service_db.*" = "ALL PRIVILEGES";
-        };
-      }
-
-      {
-        name = "app2_user";
-        #password = "app2_password";
-        ensurePermissions = {
-          "car_service_app2_db.*" = "ALL PRIVILEGES";
-        };
-      }
-
-      {
-        name = "app3_user";
-        #password = "app3_password";
-        ensurePermissions = {
-          "car_service_app3_db.*" = "ALL PRIVILEGES";
-        };
-      }
-
-    ];
   }; # End services.mysql = { ... };
 
   # 2. Hook into systemd to execute the script every time the service starts
   systemd.services.mysql.postStart = lib.mkAfter ''
+    # Wait until MariaDB is ready to accept connections
+    echo "Waiting for MariaDB to start..."
+    while ! ${pkgs.mariadb_114}/bin/mariadb-admin ping --silent; do
+      sleep 1
+    done
+
     # Feed the dynamically generated SQL file directly into MariaDB
     ${pkgs.mariadb_114}/bin/mariadb -u root < ${alwaysRunScript}
   '';
