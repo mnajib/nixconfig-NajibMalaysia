@@ -271,7 +271,7 @@ in
     #popcorntime
 
     telegram-desktop
-    kchat # kde app
+    #kchat # kde app
     hexchat # IRC client
     #fluffychat # matrix client. Marked as insecure package.
     #deltachat-desktop # email-base IM
