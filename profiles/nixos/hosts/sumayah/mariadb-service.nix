@@ -15,7 +15,7 @@
 let
   # --- Toggle Switches ---
   enableRootSetup = true;
-  enableAppSetup = true;
+  enableAppSetup = false;
 
   # --- Script Blocks ---
 
@@ -54,7 +54,7 @@ let
   # 1. Generate the SQL file dynamically in the Nix store
   alwaysRunScript = pkgs.writeText "mariadb-always-run.sql" ''
     ${lib.optionalString enableRootSetup rootScript}
-    -- ${lib.optionalString enableAppSetup appScript}
+    ${lib.optionalString enableAppSetup appScript}
     FLUSH PRIVILEGES;
   '';
 
@@ -110,7 +110,7 @@ in
     #
     initialScript = pkgs.writeText "mariadb-init.sql" ''
       ${lib.optionalString enableRootSetup rootScript}
-      -- ${lib.optionalString enableAppSetup appScript}
+      ${lib.optionalString enableAppSetup appScript}
       FLUSH PRIVILEGES;
     '';
 
@@ -154,8 +154,14 @@ in
 
   # 2. Hook into systemd to execute the script every time the service starts
   systemd.services.mysql.postStart = lib.mkAfter ''
+    # Wait until MariaDB is ready to accept connections
+    echo "Waiting for MariaDB to start..."
+    while ! ${pkgs.mariadb_114}/bin/mariadb-admin ping --silent; do
+      sleep 1
+    done
+
     # Feed the dynamically generated SQL file directly into MariaDB
-    ${pkgs.mariadb_114}/bin/mariadb -u root < ${alwaysRunScript}
+    #${pkgs.mariadb_114}/bin/mariadb -u root < ${alwaysRunScript}
   '';
 
 }
