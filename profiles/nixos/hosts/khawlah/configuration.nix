@@ -116,16 +116,18 @@ in
 
   ];
 
-  home-manager = let
-    userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}" );
-  in {
-    #extraSpecialArgs = { inherit inputs outputs; };
-    users = {
-      #root = userImport "root";
-      najib = userImport "najib";
-      naqib = userImport "naqib";
-    };
-  };
+  # Commented here as now I'm decided to configure it in hosts.nix
+  #
+  #home-manager = let
+  #  userImport = user: import ( ./. + "/${hmDir}/${user}/${hostName}" );
+  #in {
+  #  #extraSpecialArgs = { inherit inputs outputs; };
+  #  users = {
+  #    #root = userImport "root";
+  #    najib = userImport "najib";
+  #    naqib = userImport "naqib";
+  #  };
+  #};
 
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done

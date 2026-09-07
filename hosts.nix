@@ -28,7 +28,13 @@
 
             khawlah = mkNixos "khawlah" {
               #system = "x86_64-linux";
-              pkgsInput = inputs.nixpkgs-unstable; # override
+
+              pkgsInput = inputs.nixpkgs-stable; # override
+              hmInput = inputs.home-manager-stable;
+              #
+              #pkgsInput = inputs.nixpkgs-unstable; # override
+              #hmInput = inputs.home-manager-unstable;
+
               #modules = [
               extraModules = [
                 #./profiles/nixos/hosts/khawlah/configuration.nix
