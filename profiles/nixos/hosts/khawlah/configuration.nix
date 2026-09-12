@@ -270,7 +270,8 @@ in
       "ata_generic" #"iscsi"
     ];
     kernelModules = [
-      "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid" "zfs"
+      "btrfs" "ext4" "xfs" "vfat" "dm-crypt" "dm-snapshot" "dm-raid"
+      "zfs"
       #"ntfs"
       "kvm-intel"
       "msr" # (Model Specific Register), a kernel module to write voltage changes. Required by undervolt service.
