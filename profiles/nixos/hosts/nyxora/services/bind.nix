@@ -30,6 +30,7 @@ let
     git                 = "192.168.0.11";
     git2                = "192.168.0.10";
     pgadmin             = "192.168.0.11";
+    phpmyadmin          = "192.168.0.11";
     sijilberhenti       = "192.168.0.11";
     nfs                 = "192.168.0.11"; # "192.168.0.10"; # Migrate from host durian to nyxora
     immich              = "192.168.0.11";
