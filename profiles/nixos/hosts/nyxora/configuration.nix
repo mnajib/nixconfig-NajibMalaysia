@@ -174,6 +174,7 @@ in
 
     #./services/mariadb.nix
     (fromCommon "services/mariadb.nix")
+    ./services/phpmyadmin.nix
 
     #./services/refine.nix              # ???
     ./services/immich.nix
@@ -206,11 +207,11 @@ in
     #./xdg.nix
     #./opengl.nix
 
-    #./tabby.nix # self-hosted AI coding assistant
-    #(fromCommon "ai.nix")
-    #./services/ai.nix
-    #./services/ai-nvidia.nix
-    ./services/ai-radeon.nix
+    ##./tabby.nix # self-hosted AI coding assistant
+    ##(fromCommon "ai.nix")
+    ##./services/ai.nix
+    ##./services/ai-nvidia.nix
+    #./services/ai-radeon.nix
 
     #./tenda-usb-wifi-dongle.nix
 
