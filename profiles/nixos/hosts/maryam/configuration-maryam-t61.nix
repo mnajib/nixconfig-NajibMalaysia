@@ -95,7 +95,7 @@ in
     #./barrier.nix
 
     (fromCommon "bluetooth.nix")
-    (fromCommon "remote-builders.nix")
+    #(fromCommon "remote-builders.nix")
     #(fromCommon "zfs.nix")
   ];
 
