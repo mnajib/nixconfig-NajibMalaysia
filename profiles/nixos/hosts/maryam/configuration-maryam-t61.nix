@@ -53,7 +53,7 @@ in
     (fromCommon "thinkpad.nix")
 
     #./users-anak2.nix
-    (fromCommon "users-a-wheel.nix")
+    #(fromCommon "users-a-wheel.nix")
     #(fromCommon "users-abdullah-wheel.nix")
     (fromCommon "users-najib.nix")
     (fromCommon "users-julia.nix")
@@ -411,9 +411,14 @@ in
 
   services.xserver.enable = true;
 
-  #services.xserver.displayManager = {
-  #  lightdm.enable = true;
+  #services.displayManager = {
+  #  #gdm.enable = true;
+  #  plasma-login-manager.enable = true;
   #};
+
+  services.xserver.displayManager = {
+    lightdm.enable = true;
+  };
 
   services.xserver.desktopManager = {
     #gnome.enable = lib.mkForce true;
@@ -543,18 +548,18 @@ in
     mtr.enable = true;
 
     gnupg.agent = {
-      enable = true;
+      enable = false; #true;
       enableSSHSupport = true;
     };
 
     virt-manager.enable = true;
 
-    steam = {
-      enable = true;
-      gamescopeSession.enable = true;
-      remotePlay.openFirewall = true;
-      dedicatedServer.openFirewall = true;
-    };
+    #steam = {
+    #  enable = true;
+    #  gamescopeSession.enable = true;
+    #  remotePlay.openFirewall = true;
+    #  dedicatedServer.openFirewall = true;
+    #};
 
     thunar = {
       enable = true;
