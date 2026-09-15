@@ -32,7 +32,7 @@ in
     #xorg.libX11
     #xorg.libXrandr
 
-    polybar
+    #polybar
     trayer
 
     feh
