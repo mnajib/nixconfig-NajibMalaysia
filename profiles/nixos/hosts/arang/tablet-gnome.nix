@@ -3,6 +3,39 @@
   pkgs,
   ...
 }:
+let
+
+  myGnomeExtensionPackages = with pkgs.gnomeExtensions; [
+    #improved-onscreen-keyboard
+    im-panel-integrated-with-osk
+    keyboard-toggle
+    #kmonad-toggle
+    gjs-osk
+
+    touchup
+    #touch-x
+
+    al-hijri-date
+
+    awesome-tiles
+    forge
+    gtile
+    paperwm
+    mosaic
+
+    ordo
+    zen
+    argos
+    cmud
+    tophat
+    apps
+    timer
+    blocker
+    copyous
+    net-speed
+  ];
+
+in
 {
 
 
@@ -29,7 +62,10 @@
   */
 
   # XXX: Force-load the kernel module for synthetic user input devices
-  boot.kernelModules = [ "uinput" ];
+  boot.kernelModules = [
+    "uinput"
+    "iio_st_accel" # Depending on tablet's accelerometer chip (e.g., STMicroelectronics)
+  ];
 
   programs.dconf.enable = true;
   # Note: Defining dconf settings at the system level requires configuring a user profile database.
@@ -61,40 +97,15 @@
   # This is the cleanest approach. Nix looks at gnomeExtensions first. If you
   # list improved-osk, it finds it there. If you were to list git, Nix wouldn't
   # find it in gnomeExtensions, so it would fall back to checking pkgs.
-  environment.systemPackages = with pkgs; with gnomeExtensions; [
+  #environment.systemPackages = with pkgs; with gnomeExtensions; [
   #
   # The inherit Approach (Alternative)
-  #environment.systemPackages = with pkgs; [
-
-    # From pkgs
+  environment.systemPackages = with pkgs; [
     #git
     #curl
-    #gnomeExtensions.improved-osk
-    #gnomeExtensions.keyboard-toggle
-    #gnomeExtensions.al-hijri-date
 
-    # From pkgs.gnomeExtensions
-    #improved-onscreen-keyboard
-    #im-panel-integrated-with-osk
-    touchup
-    kmonad-toggle
-    keyboard-toggle
-
-    awesome-tiles
-
-    al-hijri-date
-    #better-desktop-zoom
-    #battery-time-with-percentage
-
-    # GNOME Extensions extracted from pkgs.gnomeExtensions
-    /*
-    (with gnomeExtensions; [
-      improved-osk
-      keyboard-toggle
-      al-hijri-date
-    ])
-    */
-
-  ];
+    iio-sensor-proxy # Utility tools for debugging sensor data
+    onboard
+  ] ++ myGnomeExtensionPackages;
 
 }
