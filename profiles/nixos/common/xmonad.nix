@@ -25,6 +25,8 @@
     xorg.libX11
     xorg.libXrandr
 
+    scrot
+
     #
     # Example inside your NixOS/Home-Manager configuration
     #xmonad = xmonad-with-packages.override {

@@ -25,6 +25,8 @@
 
     #fwupd
     #fwupd-efi
+
+    scrot
   ];
 }
 
