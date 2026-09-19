@@ -33,7 +33,8 @@ in
     ./hardware-configuration.nix
     #inputs.home-manager.nixosModules.home-manager
     (fromCommon "deskflow.nix")
-    ./tablet.nix
+    #./tablet-gnome.nix
+    (fromCommon "tablet-gnome.nix")
     ./syncthing.nix
   ];
 

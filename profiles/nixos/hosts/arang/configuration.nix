@@ -40,8 +40,9 @@ in
     #inputs.home-manager.nixosModules.home-manager
     #(fromCommon "deskflow.nix")
 
-    ./tablet-gnome.nix
+    #./tablet-gnome.nix
     #./tablet-plasma.nix
+    (fromCommon "tablet-gnome.nix")
 
     ./syncthing.nix
     ./waydroid.nix
