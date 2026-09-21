@@ -95,10 +95,10 @@
   # cause:
   #   the error arises because two modules (for LXQt and Plasma 6) are each defining programs.gnupg.agent.pinentryPackage, leading to a collision.
   # To solve:
-  programs.gnupg.agent = {
-    enable = true;
-    pinentryPackage = lib.mkForce pkgs.pinentry-qt;
-  };
+  #programs.gnupg.agent = {
+  #  enable = true;
+  #  pinentryPackage = lib.mkForce pkgs.pinentry-qt;
+  #};
 
 }
 

@@ -37,6 +37,9 @@ in
     #(fromCommon "youtube.nix")
     #(fromCommon "time-management.nix")
     (fromCommon "repo-bootstrap.nix")
+    (fromCommon "niri-desktop")
+    (fromCommon "git.nix")
+    #(fromCommon "alacritty.nix")
   ]
   #++ (builtins.attrValues outputs.homeManagerModules)
   ;

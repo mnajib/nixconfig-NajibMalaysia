@@ -51,12 +51,28 @@ in
     awesome = {
       enable = true;
     };
-    jwm.enable = true;
     icewm.enable = true;
+    jwm.enable = true;
     fluxbox.enable = true;
+    windowmaker.enable = true;
     notion.enable = true;
     herbstluftwm.enable = true;
     bspwm.enable = true;                # A tiling window manager based on binary space partitioning
+    openbox.enable = true;
+    berry.enable = true;
+    pekwm.enable = true;
+    ratpoison.enable = true;
+    tinywm.enable = true;
+    smallwm.enable = true;
+    mlvwm.enable = true;
+    leftwm.enable = true;
+    i3.enable = true;
+    fvwm3.enable = true;
+    twm.enable = true;
+    spectrwm.enable = true;
+    sawfish.enable = true;
+    clfswm.enable = true;
+    "2bwm".enable = true;
   };
 
 }

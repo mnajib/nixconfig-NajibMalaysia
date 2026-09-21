@@ -25,7 +25,7 @@ in
 
     (fromCommon "p2p.nix")
 
-    (fromCommon "neovim")
+    #(fromCommon "neovim")
     #../../neovim/astronvim.nix
 
     (fromCommon "helix")
@@ -36,6 +36,7 @@ in
     #(fromCommonWithParams "repo-bootstrap.nix" { basePath = "~/src"; })
     #(fromCommonWithParams "repo-bootstrap.nix" { basePath = "src"; })
     (fromCommon "repo-bootstrap.nix")
+    (fromCommon "niri-desktop")
   ];
 
   # !!! This will overrides the whole 'programs.repo-bootstrap config imported from 'common/repo-bootstrap.nix' !!!
@@ -69,6 +70,10 @@ in
   fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
-    #...
+    inputs.my-nvim.packages.${pkgs.system}.default
+    inputs.my-emacs.packages.${pkgs.system}.default
+    nerd-fonts.symbols-only
+    nerd-fonts.jetbrains-mono
+    emacs-all-the-icons-fonts
   ];
 }

@@ -95,6 +95,13 @@
                 #inputs.disko.nixosModules.disko
               ];
               #pkgsInput = inputs.nixpkgs-unstable; # override
+              users = [
+                "najib"
+                #"julia"
+                "naqib"
+                "naim"
+                #"nurnasuha"
+              ];
             };
 
             bawang = mkNixos "bawang" {

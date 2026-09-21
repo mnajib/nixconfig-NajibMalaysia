@@ -81,7 +81,9 @@ in
     (fromCommon "window-managers.nix")
     #(fromCommon "xmonad.nix")
     #(fromCommon "desktops-xorg.nix")
-    #(fromCommon "desktops-wayland.nix")
+    (fromCommon "desktops-wayland.nix")
+    (fromCommon "desktops/niri")
+    (fromCommon "waktusolat.nix")
 
     (fromCommon "nfs-client.nix")
     #./nfs-client-automount.nix
@@ -548,7 +550,7 @@ in
     mtr.enable = true;
 
     gnupg.agent = {
-      enable = false; #true;
+      enable = lib.mkDefault false; #true;
       enableSSHSupport = true;
     };
 

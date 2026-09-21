@@ -54,6 +54,10 @@ in
     vscode
 
     inputs.my-nvim.packages.${pkgs.system}.default
+    inputs.my-emacs.packages.${pkgs.system}.default
+    nerd-fonts.symbols-only
+    nerd-fonts.jetbrains-mono
+    emacs-all-the-icons-fonts
   ];
 
   home.sessionVariables = {

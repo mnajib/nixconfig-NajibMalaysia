@@ -25,7 +25,7 @@ in
       trusted-users = [
         "root" "najib"
         "naqib"
-        #"naim"
+        "naim"
         #"abdullah"
         #"a"
       ];
@@ -51,6 +51,8 @@ in
     #(fromCommon "remote-builders.nix")
     (fromCommon "configuration.DESKTOP_FULL.nix") # timezone, locale, ...
     (fromCommon "packages/media.nix")
+    (fromCommon "packages/base.nix")
+    (fromCommon "nix-garbage-collector.nix")
 
     #(fromCommon "users-a-wheel.nix")
     (fromCommon "users-naqib-wheel.nix")
@@ -76,8 +78,8 @@ in
     #(fromCommon "xdg.nix")
     (fromCommon "window-managers.nix")
     #(fromCommon "desktops.nix")
-    #(fromCommon "desktops-wayland.nix")
-    ./desktops-wayland.nix
+    (fromCommon "desktops-wayland.nix")
+    #./desktops-wayland.nix
     #(fromCommon "hyprland.nix")
     #(fromCommon "stylix.nix")
     (fromCommon "desktops/niri")
@@ -183,6 +185,8 @@ in
 
   services.fstrim.enable = true;
 
+  services.flatpak.enable = true;
+
   #boot.kernelPackages = pkgs.linuxPackages_latest;
   #boot.kernelParams = [
   #  #"i915.modeset=0" "nouveau.modeset=1"                                        # to disable i915 and enable nouveau
@@ -209,11 +213,10 @@ in
   # High-DPI console
   #console.font = lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
 
-  #services.xserver = {
-  #  enable = true;
-  #  #displayManager.gdm.enable = true;
-  #  #desktopManager.gnome.enable = true;
-  #};
+  services.xserver = {
+    enable = true;
+    displayManager.lightdm.enable = true;
+  };
 
   /*services.displayManager = {
     enable = true;
