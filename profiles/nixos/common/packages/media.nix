@@ -20,6 +20,7 @@
 
     # Screenshot tools
     scrot maim gnome-screenshot
+    ksnip
 
     # Annotation & notes
     gromit-mpx xournalpp rnote pdftk pdfarranger

@@ -180,6 +180,7 @@ in
     dig
 
     arandr
+    ksnip
 
     zigfetch
     fastfetch
