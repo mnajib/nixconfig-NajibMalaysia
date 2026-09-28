@@ -56,6 +56,14 @@
     #nixpkgs-nonetprob.url = "github:NixOS/nixpkgs/040d0d17f15957e4a08f14abfa3032cd96cc82fe";
     #nixpkgs.follows = "nixpkgs-nonetprob"; # Make 'nixpkgs' point to nixpkgs-stable as default.
 
+    #------------------------------------------------------
+    # nixbsd
+    #------------------------------------------------------
+    nixbsd = {
+      #url = "github:nixbsd/nixbsd";
+      url = "github:nixos-bsd/nixbsd";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     #------------------------------------------------------
     # home-manager
@@ -411,6 +419,7 @@
       systems = [
         "x86_64-linux"
         "aarch64-linux"
+        "x86_64-freebsd"
       ];
 
       # SOLVES TRADE-OFF #1: Third-Party flakeModule Imports
@@ -449,14 +458,16 @@
         # Uses your existing lib/builders.nix unchanged
         inherit (import ./lib/builders.nix { inherit inputs self; })
           mkNixos
+          mkNixbsd
           mkHome;
       in {
         overlays = import ./overlays { inherit inputs; };
         nixosModules = import ./modules/nixos;
         homeManagerModules = import ./modules/home-manager;
 
-        inherit (import ./hosts.nix { inherit inputs mkNixos; })
-          nixosConfigurations;
+        inherit (import ./hosts.nix { inherit inputs mkNixos mkNixbsd; })
+          nixosConfigurations
+          nixbsdConfigurations;
 
         inherit (import ./homes.nix { inherit inputs mkHome; })
           homeConfigurations;

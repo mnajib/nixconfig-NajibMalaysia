@@ -10,9 +10,12 @@
 # ... in { ... }` scope.
 {
   inputs,
-  mkNixos
+  mkNixos,
+  mkNixbsd
 }:
 {
+
+  # NixOS hosts declarations
   nixosConfigurations = {
             # NOTE:
             # To test / dry-build nixos for host 'khawlah':
@@ -422,4 +425,24 @@
             };
 
   }; # End of 'nixosConfigurations = { ... };'
+
+
+  # NixBSD hosts declarations
+  nixbsdConfigurations = {
+
+    # I plan to test this config on Thinkpad R61/T61
+    #
+    # To run build
+    #   nix build .#nixbsdConfigurations.mynixbsd.config.system.build.toplevel
+    #
+    mynixbsd = mkNixbsd "mynixbsd" {
+      system = "x86_64-freebsd";
+      extraModules = [
+        inputs.disko.nixosModules.disko
+      ];
+    };
+
+  };
+
+
 }

@@ -201,6 +201,35 @@ let
     };
 
   #
+  # NixBSD Host Builder
+  #
+  # To run build
+  #   nix build .#nixbsdConfigurations.mynixbsd.config.system.build.toplevel
+  # #or
+  # #  nh build .#nixbsdConfigurations.mynixbsd.config.system.build.toplevel
+  #
+  mkNixbsd = hostName: {
+    system ? "x86_64-freebsd",
+    pkgsInput ? inputs.nixpkgs,
+    extraModules ? [ ],
+  }:
+    let
+      lib = pkgsInput.lib;
+      patchedInputs = inputs // { nixpkgs = pkgsInput; };
+      commonSpecialArgs = {
+        inputs = patchedInputs;
+        inherit outputs self;
+      };
+    in
+    inputs.nixbsd.lib.nixbsdSystem {
+      inherit system;
+      specialArgs = commonSpecialArgs;
+      modules = [
+        (hostProfilePath hostName)
+      ] ++ extraModules;
+    };
+
+  #
   # Standalone Home Manager Builder (For non-NixOS environments if needed)
   #
   #   When evaluating a standalone Home Manager profile (for non-NixOS
@@ -253,5 +282,5 @@ let
 
 in
 {
-  inherit homeProfilePath hostProfilePath mkPkgsCommon mkNixos mkHome;
+  inherit homeProfilePath hostProfilePath mkPkgsCommon mkNixos mkNixbsd mkHome;
 }
