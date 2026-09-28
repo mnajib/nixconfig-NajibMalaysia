@@ -111,6 +111,8 @@ in
     }; # End home-manager.users = { ... };
   }; # End home-manager = { ... };
 
+  users.users.naim.extraGroups = [ "wheel" ];
+
   networking.hostName = "${hostName}";
   # For the value of 'networking.hostID', use the following command:
   #     cksum /etc/machine-id | while read c rest; do printf "%x" $c; done
@@ -167,8 +169,9 @@ in
     #luanti
     #kate
     #kitty
+
     #blender
-    #freecad
+    freecad
 
     #inputs.home-manager.packages.${pkgs.system}.default # To install (globally, instead of per user) home-manager packages
 
@@ -186,6 +189,7 @@ in
   services.fstrim.enable = true;
 
   services.flatpak.enable = true;
+  programs.appimage.enable = true;
 
   #boot.kernelPackages = pkgs.linuxPackages_latest;
   #boot.kernelParams = [
