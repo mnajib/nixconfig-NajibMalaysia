@@ -3,13 +3,12 @@
 {
   # 1. Ensure required packages are globally available or handled via your profile
   environment.systemPackages = with pkgs; [
-    waybar
     niri
     swayidle
     jq
     bash
-
-    #noctalia-shell
+    waybar
+    noctalia-shell
   ];
 
   # 2. Enable and configure Niri compositor on NixOS
