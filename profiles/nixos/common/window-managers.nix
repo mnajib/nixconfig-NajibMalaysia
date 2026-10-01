@@ -70,7 +70,7 @@ in
     fvwm3.enable = true;
     twm.enable = true;
     spectrwm.enable = true;
-    sawfish.enable = true;
+    #sawfish.enable = true; # The services.xserver.windowManager.sawfish module and the corresponding package have been removed from Nixpkgs because they depended on the deprecated GTK2 engine.
     clfswm.enable = true;
     "2bwm".enable = true;
   };

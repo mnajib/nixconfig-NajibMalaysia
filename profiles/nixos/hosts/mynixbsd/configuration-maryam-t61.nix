@@ -460,7 +460,7 @@ in
 
     clfswm.enable = true;
     #stumpwm.enable = true;
-    sawfish.enable = true;
+    #sawfish.enable = true;
     #exwm.enable = true;
 
     "2bwm".enable = true;
