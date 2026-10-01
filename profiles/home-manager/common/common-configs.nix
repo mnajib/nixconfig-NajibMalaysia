@@ -209,6 +209,14 @@ in
     #};
   };
 
+  # home.nix
+  programs.mpv = {
+    enable = true;
+    scripts = [
+      pkgs.mpvScripts.sponsorblock
+    ];
+  };
+
   programs.qutebrowser = {
     enable = true;
     settings = {
@@ -222,6 +230,14 @@ in
         };
       };
       #tabs.tabs_are_windows = true;
+    };
+    keyBindings = {
+      normal = {
+        # Press 'M' to open the current page in mpv
+        "M" = "spawn mpv {url}";
+        # Press ',m' to select a YouTube link on screen and open it in mpv
+        ",m" = "hint links spawn mpv {hint-url}";
+      };
     };
     #colors = {
     #  # Becomes either 'dark' or 'light', based on your colors!

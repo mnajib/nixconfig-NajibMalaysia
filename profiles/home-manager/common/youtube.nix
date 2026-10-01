@@ -45,7 +45,7 @@
     #--------------------------------------------------------------------------
     #ytcast
     #video2midi
-    mpv # media player needed by youtube-tui
+    #mpv # media player needed by youtube-tui
     smplayer # media player needed by smtube
 
     #ueberzug # alternative for w3mimgdisplay; optional for ytfzf

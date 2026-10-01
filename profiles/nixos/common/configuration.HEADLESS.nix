@@ -224,7 +224,8 @@
         	pciutils
 		usbutils
 		#xbrightness            # 'xbrightness' has been removed as it is unmaintained
-		pstree broot
+                broot
+		#pstree
 		psmisc
 
 		xorg.xdpyinfo
@@ -396,7 +397,7 @@
 		#---------------------------------------------------------------
 		
 		vlc
-		mpv-with-scripts
+		#mpv-with-scripts
 		smplayer
 
 		#---------------------------------------------------------------
@@ -491,8 +492,6 @@
 		binutils-unwrapped
                 pciutils
 		usbutils
-                pstree broot
-                psmisc
 
 		lm_sensors
 

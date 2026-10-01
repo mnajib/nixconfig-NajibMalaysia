@@ -3,7 +3,9 @@
   environment.systemPackages = with pkgs; [
     # Core CLI utilities
     wget curl killall file lsof tree
-    pstree broot psmisc
+    #pstree
+    psmisc
+    broot
 
     # Shell/session tools
     tmux screen zellij dtach byobu

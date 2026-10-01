@@ -75,7 +75,9 @@
 
     # GUI Web Browser
     #firefox
-    qutebrowser
+    qutebrowser yt-dlp
+    #mpv
+    #mpvScripts.sponsorblock
     #brave                          #unstable.brave # web browser
 
     # TUI E-mail Client

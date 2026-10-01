@@ -419,8 +419,9 @@
     pciutils
     usbutils
     #xbrightness                        'xbrightness' has been removed as it is unmaintained
-    pstree broot
-    psmisc
+    broot
+    #pstree
+    psmisc # psmisc include pstree
 
     xorg.xdpyinfo
     glxinfo
@@ -951,8 +952,6 @@
     binutils-unwrapped
     pciutils
     usbutils
-    pstree broot
-    psmisc
 
     lm_sensors
 
