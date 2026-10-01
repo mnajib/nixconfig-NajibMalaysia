@@ -141,9 +141,15 @@ in
       #"lo"
       #"eno1"
       "any" # Default
+      #"127.0.0.1"
+      #"192.168.0.11"
     ];
 
-    listenOnPort = 53; # Default: 53
+    #listenOnPort = 53; # Default: 53
+    #
+    # Shift BIND port to 5353 so Blocky can take port 53
+    listenOnPort = 5353;
+
     ipv4Only = true;
 
     cacheNetworks = [
