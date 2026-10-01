@@ -1,0 +1,21 @@
+// ==UserScript==
+// @name         Auto Skip YouTube Ads
+// @namespace    http://tampermonkey.net/
+// @version      1.0
+// @match        https://www.youtube.com/*
+// @grant        none
+// @run-at       document-start
+// ==/UserScript==
+
+const observer = new MutationObserver(() => {
+  const skipButton = document.querySelector('.ytp-ad-skip-button, .ytp-ad-skip-button-modern');
+  if (skipButton) skipButton.click();
+
+  const adVideo = document.querySelector('video');
+  const adPreview = document.querySelector('.ad-interrupting');
+  if (adPreview && adVideo) {
+    adVideo.currentTime = adVideo.duration || 999;
+  }
+});
+
+observer.observe(document.body, { childList: true, subtree: true });
