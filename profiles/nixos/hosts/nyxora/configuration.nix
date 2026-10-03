@@ -484,12 +484,13 @@ in
     allowedTCPPorts = [
       1110  # NFS cluster
       4045  # NFS lock manager
-
       22 # SSH
+      33369 # simplex-chat
     ];
     allowedUDPPorts = [
       1110  # NFS client
       4045  # NFS lock manager
+      33369 # simplex-chat
     ];
   };
 
