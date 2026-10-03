@@ -169,8 +169,10 @@ in
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.lightdm.enable = lib.mkForce false;
   services.xserver.displayManager.sddm.enable = lib.mkForce true;
-  services.xserver.desktopManager.plasma6.enable = lib.mkForce true;
+
   services.displayManager.defaultSession = "none+xmonad";
+
+  services.xserver.desktopManager.plasma6.enable = lib.mkForce true;
 
   #services.flatpak.enable = true;
 
