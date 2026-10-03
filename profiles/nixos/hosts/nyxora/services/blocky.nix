@@ -8,6 +8,12 @@
 #   sudo fuser 5353/udp
 #   sudo fuser 53/tcp
 #
+# NOTE on allowlists:
+#   A list group that has ONLY allowlists puts Blocky into "ALLOWLIST ONLY"
+#   mode (everything not on the list is blocked). To avoid this, allowlist
+#   entries live in the SAME group as a denylist (here: "ads"), so they
+#   act as exceptions instead of a whitelist-only gate.
+#
 
 { pkgs, ... }:
 
@@ -46,6 +52,23 @@
 
       # Automated Denylist configuration
       blocking = {
+        allowlists = {
+
+          # Exceptions for the "ads" group (same group name as the ads denylist,
+          # so Blocky does NOT enter allowlist-only mode)
+          ads = [
+            # Community allowlist
+            "https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt"
+
+            # Yandex captcha: inline domain definitions
+            "yastatic.net"
+            "yandex.ru"
+            "yandex.com"
+            "smartcaptcha.yandexcloud.net"
+          ];
+
+        };
+
         denylists = {
 
           ads = [
@@ -57,16 +80,35 @@
             "https://blocklistproject.github.io/Lists/porn.txt"
           ];
 
-        };
-        clientGroupsBlock = {
-          default = [ "ads" ];
-          kids-ipad = ["ads" "adult"];
+          # Optional regex to drop suspicious TLDs generating background spam
+          #suspicious_tlds = [
+          #  "regex:.*\\.cfd$"
+          #  "regex:.*\\.qpon$"
+          #];
+
         };
 
-        # In-memory dynamic refresh configuration
-        refreshPeriod = "4h";     # Automatically re-download lists every 4 hours
-        downloadTimeout = "4m";   # Fallback timeout per list
-        downloadAttempts = 3;     # Retries before using cached list
+        # Define custom groups by mapping client keys directly to list groups
+        clientGroupsBlock = {
+          default = [
+            "ads"
+            #"suspicious_tlds"
+          ];
+          "192.168.0.13,192.168.0.19,192.168.0.18" = [
+            "ads"
+            "adult"
+          ];
+        };
+
+        # List loading configuration (replaces the deprecated top-level
+        # blocking.refreshPeriod / downloadTimeout / downloadAttempts)
+        loading = {
+          refreshPeriod = "4h";     # Automatically re-download lists every 4 hours
+          downloads = {
+            timeout = "4m";         # Fallback timeout per list
+            attempts = 3;           # Retries before using cached list
+          };
+        };
       };
 
       # Caching & performance tuning

@@ -174,7 +174,7 @@ in
     #pragtical
     cudatext #cudatext-gtk
     #sublime4
-    netbeans
+    #netbeans
 
     inputs.my-nvim.packages.${pkgs.system}.default
     inputs.my-emacs.packages.${pkgs.system}.default

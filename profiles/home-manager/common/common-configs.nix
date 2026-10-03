@@ -1,4 +1,5 @@
-
+# ./profiles/home-manager/common/common-configs.nix
+#
 # TODO:
 #   This file will be rename from common.nix to common-configs.nix
 #   Packages will be separated into common-packages.nix
@@ -212,13 +213,40 @@ in
   # home.nix
   programs.mpv = {
     enable = true;
+
     scripts = [
       pkgs.mpvScripts.sponsorblock
     ];
+
+    # ─── Had resolusi YouTube (dan laman lain yang melalui yt-dlp) ───
+    # config : pilihan home-manager, ditulis ke ~/.config/mpv/mpv.conf
+    # Tukar 1080 kepada 720 / 1440 untuk had lain.
+    # Padam komen "ytdl-format" untuk mematikan had.
+    config = {
+      #ytdl-format = "bestvideo[height<=?1080]+bestaudio/best[height<=?1080]"; # sangkut-sangkut bila play dengan X230
+      #ytdl-format = "bestvideo[height<=?720]+bestaudio/best[height<=?720]"; # ok bila play dengan X230
+      #ytdl-format = "bestvideo[height<=?1080][vcodec!^=av01]+bestaudio/best[height<=?1080][vcodec!^=av01]/bestvideo[height<=?1080]+bestaudio/best[height<=?1080]"; # sangkut untuk X230
+
+      # Penyahkodan perkakasan. Dayakan hanya jika ujian menunjukkan hwdec "no".
+      # "auto-safe" = guna hanya kaedah yang dianggap stabil.
+      #hwdec = "auto-safe";
+
+      #---------------------------------
+      # for X230
+      #---------------------------------
+      ytdl-format = "bestvideo[height<=?1080][fps<=?30][vcodec^=avc1]+bestaudio/bestvideo[height<=?1080][fps<=?30][vcodec!^=av01]+bestaudio/best[height<=?1080]";
+      # vaapi = ask the Intel GPU to decode. Comment out to turn off.
+      hwdec = "vaapi";
+    };
+
   };
 
   programs.qutebrowser = {
     enable = true;
+
+    # Uncomment if you want :set results saved in autoconfig.yml to be loaded
+    #loadAutoconfig = true;
+
     settings = {
       colors = {
         hints = {
@@ -233,10 +261,16 @@ in
     };
     keyBindings = {
       normal = {
-        # Press 'M' to open the current page in mpv
+
+        # Press 'M' to open the current page in mpv (guna lalai mpv.conf = 720p)
         "M" = "spawn mpv {url}";
+
+        # Press ',M' to open the current page in mpv at 1080p H.264 30fps
+        ",M" = "spawn mpv --ytdl-format='bestvideo[height<=?1080][fps<=?30][vcodec^=avc1]+bestaudio' {url}";
+
         # Press ',m' to select a YouTube link on screen and open it in mpv
         ",m" = "hint links spawn mpv {hint-url}";
+
       };
     };
     #colors = {
@@ -247,6 +281,21 @@ in
     #};
 
     #extraConfig = builtins.readFile ./src/.config/nvim/init.vim;
+
+     # ─── Selected-script blocker ──────────────────────────────────────
+    # Code lives in ./qutebrowser/qbcfg (linked by xdg.configFile below).
+    # Comment out the last two Python lines to disable the blocker.
+    extraConfig = ''
+      # sys : Python stdlib; sys.path = folders Python imports from
+      import sys
+      sys.path.insert(0, str(config.configdir))
+
+      # Single source of truth for the rules location (writable, NOT in Nix store)
+      RULES_FILE = config.configdir / "data" / "blocked-scripts.txt"
+
+      from qbcfg import blocker
+      blocker.setup(config, RULES_FILE)
+    '';
 
       #c.colors.webpage.darkmode.grayscale.images = 0.35
       #c.content.user_stylesheets = '~/.config/qutebrowser/stylesheet/mydarkmodefix.css'
@@ -260,7 +309,9 @@ in
     #  c.colors.webpage.darkmode.policy.images = 'never'
     #  c.content.notifications.enabled = False
     #'';
+
   };
+
   #home.file.".config/qutebrowser/stylesheet/mydarkmodefix.css" = {
   #home.file."mydarkmodefix.css" = {
   home.file.".config/qutebrowser" = {
@@ -278,6 +329,23 @@ in
     #target = ".config/qutebrowser/stylesheet/"; # Path to target file relative to HOME
   };
   #xresources.extraConfig = builtins.readFile ./src/.Xresources;
+
+    # ─── Selected-script blocker: Python modules (explicit list, no scanning) ───
+  # xdg.configFile : home-manager option, links files into ~/.config/
+  # Comment out a line to disable that module.
+  # Rules file is NOT here on purpose: data/blocked-scripts.txt must stay writable.
+  #xdg.configFile = let
+  #  fromQbDir = p: "../src/.config/qutebrowser/${p}";
+  #in {
+  #  "qutebrowser/qbcfg/__init__.py".source           = (fromQbDir "qbcfg/__init__.py");
+  #  "qutebrowser/qbcfg/blocker/__init__.py".source   = (fromQbDir "qbcfg/blocker/__init__.py");
+  #  "qutebrowser/qbcfg/blocker/state.py".source      = (fromQbDir "qbcfg/blocker/state.py");
+  #  "qutebrowser/qbcfg/blocker/rules.py".source      = (fromQbDir "qbcfg/blocker/rules.py");
+  #  "qutebrowser/qbcfg/blocker/report.py".source     = (fromQbDir "qbcfg/blocker/report.py");
+  #  "qutebrowser/qbcfg/blocker/rulesfile.py".source  = (fromQbDir "qbcfg/blocker/rulesfile.py");
+  #  "qutebrowser/qbcfg/blocker/intercept.py".source  = (fromQbDir "qbcfg/blocker/intercept.py");
+  #  "qutebrowser/qbcfg/blocker/commands.py".source   = (fromQbDir "qbcfg/blocker/commands.py");
+  #};
 
   # XXX: error: Package ‘urxvt-theme-switch-unstable-2014-12-21’ in /nix/store/yfzmnk75f009yb7b542kf4r7qaqq9kid-source/pkgs/applications/terminal-emulators/rxvt-unicode-plugins/urxvt-theme-switch/default.nix:27 has an unfree license (‘cc-by-nc-30’), refusing to evaluate.
   #programs.urxvt = {

@@ -57,6 +57,7 @@ in
     #(fromCommon "remote-builders.nix")
 
     (fromCommon "thinkpad.nix")
+    ./thinkpad-x230.nix
 
     #./users-anak2.nix
     #(fromCommon "users-a-wheel.nix")
@@ -153,9 +154,16 @@ in
 
   hardware.enableAllFirmware = true;
 
-  hardware.graphics.extraPackages = with pkgs; [
-    mesa
-  ];
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      mesa
+      intel-vaapi-driver
+    ];
+  };
+
+  # Force the i965 driver. Remove if vainfo works without it.
+  environment.sessionVariables.LIBVA_DRIVER_NAME = "i965";
 
   #
   #------------------------------------

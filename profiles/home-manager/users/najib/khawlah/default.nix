@@ -41,6 +41,7 @@ in
 
     #./hyprland.nix
     ./labwc-noctalia.nix
+    ./qutebrowser.nix
   ];
 
   programs.repo-bootstrap.enable = true;
