@@ -11,6 +11,8 @@ let
   #   dhcpd is configured to give dynamic ip in range from 192.168.0.100 to 192.168.0.200.
   #
 
+  bindPort = 5353;
+
   # To get current IP for dirtforever.net:
   #   dig +short dirtforever.net
   #   37.27.53.115
@@ -148,7 +150,8 @@ in
     #listenOnPort = 53; # Default: 53
     #
     # Shift BIND port to 5353 so Blocky can take port 53
-    listenOnPort = 5353;
+    #listenOnPort = 5353;
+    listenOnPort = bindPort;
 
     ipv4Only = true;
 
@@ -283,10 +286,12 @@ in
   #networking.nameservers = [ "192.168.1.1" ];
 
   networking.firewall.allowedTCPPorts = [
-    53
+    # 53
+    bindPort
   ];
   networking.firewall.allowedUDPPorts = [
-    53
+    # 53
+    bindPort
   ];
 
 }

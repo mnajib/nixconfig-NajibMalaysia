@@ -14,15 +14,35 @@
 #   entries live in the SAME group as a denylist (here: "ads"), so they
 #   act as exceptions instead of a whitelist-only gate.
 #
+# NOTE on upstream:
+#   External queries go to the local Unbound recursive resolver
+#   (./unbound.nix, 127.0.0.1:5335), not to Cloudflare/Google.
+#
 
 { pkgs, ... }:
-
+let
+  blockyPort = 53;
+in
 {
+  # Start Blocky after Unbound so the upstream and the list downloads work at boot
+  systemd.services.blocky = {
+    after = [ "unbound.service" ];
+    wants = [ "unbound.service" ];
+  };
+
   services.blocky = {
     enable = true;
     settings = {
+
+      #
+      # NOTE:
+      #   To check the ports are free:
+      #     sudo ss -tulpn | grep -E ':5335|:5353'
+      #
+
       # Listen on standard DNS port across all interfaces
-      ports.dns = 53;
+      #ports.dns = 53;
+      ports.dns = blockyPort;
 
       # Direct local zone resolution queries to BIND running on port 5353
       conditional = {
@@ -32,22 +52,27 @@
         };
       };
 
-      # Encrypted upstream resolvers (DNS-over-TLS / DoT) for external domains
+      # External domains: local recursive resolver (Unbound), no third party
       upstreams = {
         groups = {
           default = [
-            "https://one.one.one.one/dns-query" # Using Cloudflare's DNS over HTTPS server for resolving queries.
-            "tcp-tls:1.1.1.1:853"
-            "tcp-tls:1.0.0.1:853"
-            "tcp-tls:8.8.8.8:853"
+            "127.0.0.1:5335"
+            # Previous forwarders, kept for easy rollback (comment/uncomment):
+            #"https://one.one.one.one/dns-query"
+            #"tcp-tls:1.1.1.1:853"
+            #"tcp-tls:1.0.0.1:853"
+            #"tcp-tls:8.8.8.8:853"
           ];
         };
       };
 
-      # For initially solving DoH/DoT Requests when no system Resolver is available.
+      # Used by Blocky itself to resolve hostnames (e.g. list download URLs).
+      # Points at Unbound so no third party sees these lookups either.
       bootstrapDns = {
-        upstream = "https://one.one.one.one/dns-query";
-        ips = [ "1.1.1.1" "1.0.0.1" ];
+        upstream = "127.0.0.1:5335";
+        # Previous bootstrap, for rollback:
+        #upstream = "https://one.one.one.one/dns-query";
+        #ips = [ "1.1.1.1" "1.0.0.1" ];
       };
 
       # Automated Denylist configuration
@@ -124,4 +149,14 @@
       ports.http = 8053;
     };
   };
+
+  networking.firewall.allowedTCPPorts = [
+    # 53
+    blockyPort
+  ];
+  networking.firewall.allowedUDPPorts = [
+    # 53
+    blockyPort
+  ];
+
 }
