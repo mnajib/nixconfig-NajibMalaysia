@@ -99,6 +99,11 @@ in
           ads = [
             "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
             "https://adaway.org/hosts.txt"
+
+            # Add wildcard/domain-based blocklist:
+            "https://pkg.adblockradio.com/orign/easylist.txt"
+            # Or explicit regex for ad networks:
+            "regex:.*doubleclick\\.net$"
           ];
 
           adult = [
