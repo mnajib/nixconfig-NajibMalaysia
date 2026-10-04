@@ -167,6 +167,7 @@ in
     ./services/nfs-server.nix
     ./services/bind.nix
     ./services/blocky.nix
+    ./services/blocky-hl.nix
     ./services/unbound.nix
     ./services/nginx.nix
     ./services/forgejo.nix

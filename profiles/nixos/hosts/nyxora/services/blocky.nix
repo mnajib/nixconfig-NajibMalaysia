@@ -164,4 +164,8 @@ in
     blockyPort
   ];
 
+  #programs.bash.shellAliases = {
+  #  blocky-hl = "journalctl -u blocky -f | grep --line-buffered queryLog | sed -u -E -e 's/(question_name=)([^ ]+)/\\1\\x1b[1;93m\\2\\x1b[0m/' -e 's/(response_type=BLOCKED)/\\x1b[31m\\1\\x1b[0m/' -e 's/(response_type=CACHED)/\\x1b[36m\\1\\x1b[0m/'";
+  #};
+
 }
