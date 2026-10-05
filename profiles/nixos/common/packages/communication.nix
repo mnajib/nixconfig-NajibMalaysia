@@ -8,7 +8,8 @@
 
     # Secure/alt messengers
     simplex-chat-desktop
-    #session-desktop
+    session-desktop
+    #nheko # Commented because use 'olm' package that marked ...
     jami
     briar-desktop
 
