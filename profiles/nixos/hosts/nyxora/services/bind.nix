@@ -37,6 +37,8 @@ let
     nfs                 = "192.168.0.11"; # "192.168.0.10"; # Migrate from host durian to nyxora
     immich              = "192.168.0.11";
     nextcloud           = "192.168.0.11";
+    aria2               = "192.168.0.11";
+    www                 = "192.168.0.11";
 
     # Better use ssh tunnel, rather than nginx
     #

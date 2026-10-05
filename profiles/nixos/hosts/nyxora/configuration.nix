@@ -174,6 +174,8 @@ in
     ./services/postgresql.nix
     #./services/pgadmin.nix
     ./services/postgrest.nix
+    ./services/aria2.nix
+    ./services/homepage.nix
 
     #./services/mariadb.nix
     (fromCommon "services/mariadb.nix")

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Services Dashboard</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+    }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    header {
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+    h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2.25rem;
+      color: var(--accent);
+    }
+    p {
+      color: var(--text-muted);
+      margin: 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 1000px;
+    }
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+    }
+    .card h2 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.25rem;
+      color: var(--text-main);
+    }
+    .card p {
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Local Network Hub</h1>
+    <p>Internal Services & Applications Directory (Haskell Powered)</p>
+  </header>
+  <main class="grid">
+
+    <a class="card" href="http://aria2.localdomain">
+      <h2>Aria2 / AriaNg</h2>
+      <p>Download manager web interface and RPC control panel.</p>
+    </a>
+
+    <a class="card" href="http://immich.localdomain">
+      <h2>Immich</h2>
+      <p>Photo/media manager.</p>
+    </a>
+
+    <a class="card" href="http://printer.localdomain">
+      <h2>Printer</h2>
+      <p>HP Wireless Printer</p>
+    </a>
+
+    <a class="card" href="http://api.localdomain">
+      <h2>API</h2>
+      <p>Test API</p>
+    </a>
+
+    <a class="card" href="http://git.localdomain">
+      <h2>Git</h2>
+      <p>Git Repo using Forgejo</p>
+    </a>
+
+    <a class="card" href="http://phpmyadmin.localdomain">
+      <h2>PHPMyAdmin</h2>
+      <p>MySQL Web Client</p>
+    </a>
+
+  </main>
+</body>
+</html>
