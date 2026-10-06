@@ -46,4 +46,10 @@ in
       };
     };
   };
+
+  networking.firewall = {
+    allowedTCPPorts = [ 80 ];
+    allowedUDPPorts = [ 80 ];
+  };
+
 }

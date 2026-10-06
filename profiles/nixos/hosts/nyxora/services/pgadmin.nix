@@ -1,3 +1,11 @@
+# ./profiles/nixos/hosts/nyxora/services/pgadmin.nix
+#
+# NOTE:
+#   ss -xln | grep -E "nextcloud|pgadmin|php"
+#   ss -xln | grep -E ":5050"
+#   sudo systemctl status phpfpm-nextcloud.service
+#
+
 { lib, pkgs, config, ... }:
 let
   postgresql_port = 5432; # Default: 5432
@@ -10,7 +18,7 @@ let
   # To login pgadmin web interfacea (http://nyxora:5050)
   pgadmin_port = 5050; # Default 5050
   pgadmin_user = "mnajib@gmail.com";
-  pgadmin_password = "thisismysecurepassword";
+  pgadmin_password = "thisismysecurepassword"; # XXX
 in
 {
 
@@ -113,5 +121,7 @@ in
       '';
     };
   };
+
+  networking.hosts."127.0.0.1" = [ "pgadmin.localdomain" ];
 
 }

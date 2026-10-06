@@ -133,4 +133,7 @@ in
       forceSSL = false; # Remember to update this if you configure HTTPS
     };
   };
+
+  networking.hosts."127.0.0.1" = [ "nextcloud.localdomain" ];
+
 }

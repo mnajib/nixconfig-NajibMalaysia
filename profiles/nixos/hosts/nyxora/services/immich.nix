@@ -64,6 +64,8 @@ let
   # immich web interface URL
   externalUrl = "http://${domain}";
 
+  immichPort = 2283;
+
 in {
   # 2. Filesystem Persistence
   # Ensure the bind mount for the legacy archive is defined
@@ -113,7 +115,8 @@ in {
     enable = true;
     #host = "0.0.0.0"; # Accessibility for family devices
     host = "127.0.0.1"; # Listen locally since Nginx is the public face
-    port = 2283;
+    #port = 2283;
+    port = immichPort;
     openFirewall = true;
 
     # Core data location mapped to your ZFS state dataset
@@ -138,7 +141,8 @@ in {
   #services.nginx.virtualHosts."${domain}" = {
     addSSL = false; # Set to true if set up Let's Encrypt later
     locations."/" = {
-      proxyPass = "http://127.0.0.1:2283";
+      #proxyPass = "http://127.0.0.1:2283";
+      proxyPass = "http://127.0.0.1:${toString immichPort}";
       proxyWebsockets = true; # Critical for real-time updates
 
       #proxyPass = "http://unix:/run/immich/immich.sock";

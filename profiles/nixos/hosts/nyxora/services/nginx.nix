@@ -1,4 +1,6 @@
-{ config, ... }:
+# profiles/nixos/hosts/nyxora/services/nginx.nix
+
+{ config, pkgs, ... }:
 
 {
   services.nginx = {
@@ -10,6 +12,15 @@
     recommendedTlsSettings = true;
 
     clientMaxBodySize = "50m";
+
+    # Catch-all default server block to prevent accidental routing to PostgREST
+    virtualHosts."default" = {
+      default = true;
+      rejectSSL = true;
+      extraConfig = ''
+        return 404;
+      '';
+    };
   };
 
   networking.firewall.allowedTCPPorts = [
@@ -20,4 +31,3 @@
     443 # HTTP/3 (QUIC). HTTP/3 Need SSL/TLS
   ];
 }
-

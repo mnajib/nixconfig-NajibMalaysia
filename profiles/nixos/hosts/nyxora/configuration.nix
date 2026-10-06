@@ -171,14 +171,17 @@ in
     ./services/unbound.nix
     ./services/nginx.nix
     ./services/forgejo.nix
-    ./services/postgresql.nix
-    #./services/pgadmin.nix
-    ./services/postgrest.nix
+
     ./services/aria2.nix
     ./services/homepage.nix
 
-    #./services/mariadb.nix
-    (fromCommon "services/mariadb.nix")
+    ./services/postgresql.nix
+    ./services/postgrest.nix
+    #./services/pgadmin.nix
+    #./services/adminer.nix
+
+    #(fromCommon "services/mariadb.nix")
+    ./services/mariadb.nix # MySQL
     ./services/phpmyadmin.nix
 
     #./services/refine.nix              # ???
