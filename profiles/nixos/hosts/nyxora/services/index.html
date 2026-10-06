@@ -1,9 +1,11 @@
+<!-- File: profiles/nixos/hosts/nyxora/services/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Local Services Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='2' width='20' height='8' rx='2'/><rect x='2' y='14' width='20' height='8' rx='2'/><line x1='6' y1='6' x2='6.01' y2='6'/><line x1='6' y1='18' x2='6.01' y2='18'/></svg>">
   <style>
     :root {
       --bg-color: #0f172a;
@@ -18,95 +20,295 @@
       background-color: var(--bg-color);
       color: var(--text-main);
       margin: 0;
-      padding: 2rem;
+      padding: 2.5rem 1.5rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
+      box-sizing: border-box;
     }
     header {
       margin-bottom: 2.5rem;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .header-logo {
+      width: 56px;
+      height: 56px;
+      color: var(--accent);
+      background: rgba(56, 189, 248, 0.1);
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
     }
     h1 {
-      margin: 0 0 0.5rem 0;
+      margin: 0;
       font-size: 2.25rem;
-      color: var(--accent);
+      color: var(--text-main);
+      letter-spacing: -0.025em;
     }
-    p {
+    header p {
       color: var(--text-muted);
       margin: 0;
+      font-size: 0.95rem;
     }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
       width: 100%;
-      max-width: 1000px;
+      max-width: 1040px;
     }
     .card {
       background-color: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.5rem;
+      border-radius: 12px;
+      padding: 1.25rem;
       text-decoration: none;
       color: inherit;
-      transition: transform 0.15s ease, border-color 0.15s ease;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     }
     .card:hover {
-      transform: translateY(-3px);
+      transform: translateY(-2px);
       border-color: var(--accent);
+      box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.3);
+    }
+    /* Styles for disabled cards */
+    .card-disabled {
+      opacity: 0.45;
+      pointer-events: none;
+      cursor: not-allowed;
+      filter: grayscale(0.6);
+    }
+    .card-disabled:hover {
+      transform: none;
+      border-color: var(--border);
+      box-shadow: none;
+    }
+    .card-icon {
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      color: var(--accent);
+      background: rgba(56, 189, 248, 0.08);
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .card-content {
+      display: flex;
+      flex-direction: column;
     }
     .card h2 {
-      margin: 0 0 0.5rem 0;
-      font-size: 1.25rem;
+      margin: 0 0 0.35rem 0;
+      font-size: 1.1rem;
+      font-weight: 600;
       color: var(--text-main);
     }
     .card p {
-      font-size: 0.875rem;
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Local Network Hub</h1>
-    <p>Internal Services & Applications Directory (Haskell Powered)</p>
+    <svg class="header-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="2" width="20" height="8" rx="2"/>
+      <rect x="2" y="14" width="20" height="8" rx="2"/>
+      <line x1="6" y1="6" x2="6.01" y2="6"/>
+      <line x1="6" y1="18" x2="6.01" y2="18"/>
+      <line x1="12" y1="10" x2="12" y2="14"/>
+    </svg>
+    <div>
+      <h1>Local Network Hub</h1>
+      <p>Internal Services & Applications Directory (Haskell Powered)</p>
+    </div>
   </header>
   <main class="grid">
 
-    <a class="card" href="http://aria2.localdomain">
-      <h2>Aria2 / AriaNg</h2>
-      <p>Download manager web interface and RPC control panel.</p>
+    <a class="card" href="http://gw.localdomain">
+      <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="8" rx="2"/>
+        <line x1="6" y1="6" x2="6.01" y2="6"/>
+        <line x1="10" y1="6" x2="10.01" y2="6"/>
+        <path d="M12 10v12"/>
+        <path d="M12 18H5"/>
+        <path d="M12 15h7"/>
+      </svg>
+      <div class="card-content">
+        <h2>Gateway Router</h2>
+        <p>OPNsense network gateway control panel.</p>
+      </div>
+    </a>
+
+    <a class="card" href="http://nextcloud.localdomain">
+      <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17.5 19 20 16.5 17.5 14"/>
+        <path d="M20 16.5H10"/>
+        <path d="M6.5 5 4 7.5 6.5 10"/>
+        <path d="M4 7.5h10"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+      <div class="card-content">
+        <h2>Nextcloud</h2>
+        <p>Self-hosted cloud storage and productivity suite.</p>
+      </div>
     </a>
 
     <a class="card" href="http://immich.localdomain">
-      <h2>Immich</h2>
-      <p>Photo/media manager.</p>
+      <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <polyline points="21 15 16 10 5 21"/>
+      </svg>
+      <div class="card-content">
+        <h2>Immich</h2>
+        <p>Photo/media manager.</p>
+      </div>
     </a>
 
-    <a class="card" href="http://printer.localdomain">
-      <h2>Printer</h2>
-      <p>HP Wireless Printer</p>
-    </a>
-
-    <a class="card" href="http://api.localdomain">
-      <h2>API</h2>
-      <p>Test API</p>
+    <a class="card" href="http://aria2.localdomain">
+      <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      <div class="card-content">
+        <h2>Aria2 / AriaNg</h2>
+        <p>Download manager web interface and RPC control panel.</p>
+      </div>
     </a>
 
     <a class="card" href="http://git.localdomain">
-      <h2>Git</h2>
-      <p>Git Repo using Forgejo</p>
-    </a>
-
-    <a class="card" href="http://phpmyadmin.localdomain">
-      <h2>PHPMyAdmin</h2>
-      <p>MySQL Web Client</p>
+      <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="6" y1="3" x2="6" y2="15"/>
+        <circle cx="18" cy="6" r="3"/>
+        <circle cx="6" cy="18" r="3"/>
+        <path d="M18 9a9 9 0 0 1-9 9"/>
+      </svg>
+      <div class="card-content">
+        <h2>Git</h2>
+        <p>Git Repo using Forgejo</p>
+      </div>
     </a>
 
     <a class="card" href="http://pgadmin.localdomain">
-      <h2>PgAdmin</h2>
-      <p>PostgreSQL Web Client</p>
+      <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="8" rx="2"/>
+        <rect x="2" y="14" width="20" height="8" rx="2"/>
+        <line x1="6" y1="6" x2="6.01" y2="6"/>
+        <line x1="6" y1="18" x2="6.01" y2="18"/>
+      </svg>
+      <div class="card-content">
+        <h2>PgAdmin</h2>
+        <p>PostgreSQL Web Client</p>
+      </div>
+    </a>
+
+    <a class="card" href="http://phpmyadmin.localdomain">
+      <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="12" cy="5" rx="9" ry="3"/>
+        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+      </svg>
+      <div class="card-content">
+        <h2>PHPMyAdmin</h2>
+        <p>MySQL Web Client</p>
+      </div>
+    </a>
+
+    <!-- Sijil Berhenti: Disabled -->
+    <a class="card card-disabled" tabindex="-1" aria-disabled="true">
+      <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+        <polyline points="10 9 9 9 8 9"/>
+      </svg>
+      <div class="card-content">
+        <h2>Sijil Berhenti</h2>
+        <p>School leaving certificate database application.</p>
+      </div>
+    </a>
+
+    <a class="card" href="http://devsijilberhenti.localdomain">
+      <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+      </svg>
+      <div class="card-content">
+        <h2>Dev Sijil Berhenti</h2>
+        <p>Development instance for Sijil Berhenti application.</p>
+      </div>
+    </a>
+
+    <!-- Refine DevTools: Disabled -->
+    <a class="card card-disabled" tabindex="-1" aria-disabled="true">
+      <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+        <polyline points="2 17 12 22 22 17"/>
+        <polyline points="2 12 12 17 22 12"/>
+      </svg>
+      <div class="card-content">
+        <h2>Refine DevTools</h2>
+        <p>Development tools and testing framework dashboard.</p>
+      </div>
+    </a>
+
+    <a class="card" href="http://nfs.localdomain">
+      <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+        <line x1="12" y1="11" x2="12" y2="17"/>
+        <line x1="9" y1="14" x2="15" y2="14"/>
+      </svg>
+      <div class="card-content">
+        <h2>NFS Storage</h2>
+        <p>Network file system shares and storage endpoints.</p>
+      </div>
+    </a>
+
+    <a class="card" href="http://printer.localdomain">
+      <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 6 2 18 2 18 9"/>
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+        <rect x="6" y="14" width="12" height="8"/>
+      </svg>
+      <div class="card-content">
+        <h2>Printer</h2>
+        <p>HP Wireless Printer</p>
+      </div>
+    </a>
+
+    <a class="card" href="http://api.localdomain">
+      <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="16 18 22 12 16 6"/>
+        <polyline points="8 6 2 12 8 18"/>
+      </svg>
+      <div class="card-content">
+        <h2>API</h2>
+        <p>Test API</p>
+      </div>
+    </a>
+
+    <!-- NS1 DNS Name Server: Disabled -->
+    <a class="card card-disabled" tabindex="-1" aria-disabled="true">
+      <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="2" y1="12" x2="22" y2="12"/>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+      </svg>
+      <div class="card-content">
+        <h2>DNS Name Server</h2>
+        <p>Authoritative BIND DNS server status endpoint.</p>
+      </div>
     </a>
 
   </main>
