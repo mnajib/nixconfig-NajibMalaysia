@@ -143,15 +143,13 @@ let
 
       modules = [
 
-        # Lock package set across NixOS and Home Manager
-        # LOCK THE PACKAGE SET:
-        # Use your DRY mkPkgsCommon helper. By setting nixpkgs.pkgs, NixOS will use THIS exact
-        # evaluation, guaranteeing parity with your standalone Home Manager configs.
-        {
-          nixpkgs.pkgs = mkPkgsCommon {
-            inherit system pkgsInput;
-          };
-        }
+        # Lock package set across NixOS and Home Manager ONLY for native x86_64 builds
+        # to prevent assertion errors with cross-compiled board hardware modules (e.g., nixos-hardware).
+      ] ++ lib.optional (system == "x86_64-linux") {        # The package lock is only added if the target architecture is explicitly x86_64-linux. For any other architecture (such as armv7l-linux for the Raspberry Pi 2), this block is skipped entirely.
+        nixpkgs.pkgs = mkPkgsCommon {
+          inherit system pkgsInput;
+        };
+      } ++ [
 
         # Auto-resolve the host configuration path
         # NOTE: `../` here, same reason as `homeProfilePath` above.

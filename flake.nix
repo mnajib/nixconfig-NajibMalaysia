@@ -134,7 +134,7 @@
       #inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
-    hardware.url = "github:NixOS/nixos-hardware/master";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     #nixvim = {
     #  url = "github:nix-community/nixvim";
@@ -420,6 +420,7 @@
         "x86_64-linux"
         "aarch64-linux"
         "x86_64-freebsd"
+        "armv7l-linux"
       ];
 
       # SOLVES TRADE-OFF #1: Third-Party flakeModule Imports

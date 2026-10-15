@@ -45,6 +45,9 @@ in
     enable = true;
     extraPackages = with pkgs; [
       rocmPackages.clr.icd  # Installs the AMD Common Language Runtime OpenCL driver
+      rocmPackages.clr
+      rocmPackages.hipblas
+      rocmPackages.rocminfo
     ];
   };
 

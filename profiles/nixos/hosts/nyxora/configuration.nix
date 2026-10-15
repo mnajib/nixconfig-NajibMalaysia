@@ -65,6 +65,14 @@ in
         #"abdullah"
       ];
 
+      system-features = [
+        "benchmark"
+        "big-parallel"
+        "kvm"
+        "nixos-test"
+        "gccarch-armv7-a"  # <--- Add this feature so nyxora can build ARMv7 derivations
+      ];
+
     }; # End nix.settings = { ... };
 
     extraOptions = ''
@@ -452,6 +460,13 @@ in
     #"bcachefs"
     "ntfs"
     "dm-crypt" "dm-snapshot" "dm-raid"
+  ];
+
+  # Allows nyxora to execute ARM binaries via QEMU user-mode emulation
+  # binfmt emulation
+  boot.binfmt.emulatedSystems = [
+    "armv7l-linux"
+    "aarch64-linux"
   ];
 
   #--------------------------------------------------------
