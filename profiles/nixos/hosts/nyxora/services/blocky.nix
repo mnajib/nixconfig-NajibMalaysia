@@ -18,6 +18,12 @@
 #   External queries go to the local Unbound recursive resolver
 #   (./unbound.nix, 127.0.0.1:5335), not to Cloudflare/Google.
 #
+# NOTE on caching of internal names (localdomain):
+#   Blocky has no per-domain cache exclusion (as far as the docs show), so the
+#   lever is global: caching.cacheTimeNegative. With the default (30m), an
+#   NXDOMAIN for a local name that did not exist yet (before its record was
+#   added to BIND) stayed cached; only "systemctl restart blocky" cleared it.
+#
 
 { pkgs, ... }:
 let
@@ -146,6 +152,16 @@ in
         minTime = "5m";
         maxTime = "24h";
         prefetching = true;       # Auto-refresh frequently queried domains
+
+        # How long an NXDOMAIN ("does not exist") is remembered.
+        # Short, so a newly added local record (e.g. printer3.localdomain)
+        # is visible within about a minute without restarting Blocky.
+        cacheTimeNegative = "1m";
+        # Previous behaviour (Blocky default), for rollback (comment/uncomment):
+        #cacheTimeNegative = "30m";
+        # Disable negative caching entirely (untested here: the docs say -1,
+        # but I am not sure if the Nix value should be a number or a string):
+        #cacheTimeNegative = -1;
       };
 
       # Optional Prometheus metrics for monitoring (e.g., via Grafana)

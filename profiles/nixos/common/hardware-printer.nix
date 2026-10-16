@@ -1,4 +1,11 @@
 { pkgs, config, ... }:
+
+let
+
+  # Single source of truth: every name the CUPS web UI should answer to.
+  #cupsServerAliases = [ "printer2.localdomain" ];
+
+in
 {
 
   environment.systemPackages = with pkgs; [
@@ -9,16 +16,23 @@
   services.printing = {
     enable = true;
     listenAddresses = [
-      #"*:631"
-      "0.0.0.0:631"
+      "*:631"                           # Listen on all interfaces, not only localhost
+      #"0.0.0.0:631"
+      #"*:443"                           # Listen on all interfaces, not only localhost
     ];
-    allowFrom = [ "all" ];
+    allowFrom = [
+      "all"
+      #"@LOCAL"                         # Accept requests from the local subnet(s), not only localhost
+    ];
     browsing = true;
     defaultShared = true;
     #defaultShared = false;
     openFirewall = true;
     #browsed.enable = true;
     drivers = with pkgs; [
+      foomatic-filters
+      #epson-inkjet-printer-escpr
+
       gutenprint # Drivers for many different printers from many different vendors.
       #gutenprintBin # Additional, binary-only drivers for some printers.
 
@@ -42,16 +56,25 @@
     #    Allow all
     ###  </Location>
     #'';
+    #
+    #extraConf = ''
+    #  # require TLS for authenticated requests (admin login).
+    #  DefaultEncryption Required
+    #
+    #  # Accept our hostname(s) in the browser Host: header
+    #  ServerAlias ${builtins.concatStringsSep " " cupsServerAliases}
+    #'';
 
   };
 
   # Enable Avahi Service: Use Avahi to broadcast the printer as a zero-conf service on the network. This step is crucial for AirPrint compatibility.
+  # Fact: Avahi enables automatic network printer and scanner discovery (AirPrint / IPP Everywhere)
   services.avahi = {
     enable = true;
     nssmdns4 = true;
     ipv4 = true;
     ipv6 = false;
-    openFirewall = true;
+    openFirewall = true; # UDP 5353 ?
     publish = {
       enable = true;
       userServices = true;
@@ -102,22 +125,37 @@
   #  ensureDefaultPrinter = "Dell_1250c";
   #};
 
+  # Fact: SANE handles USB and network document scanner sharing
   hardware.sane = {
     enable = true;
     openFirewall = true;
     extraBackends = with pkgs; [
       hplipWithPlugin
       sane-airscan
+      sane-backends
     ];
   };
+
+  # Optional: share the scanner over LAN (uncomment to enable; test it first)
+  #services.saned = {
+  #  enable = true;
+  #  extraConfig = ''
+  #    192.168.1.0/24
+  #  '';
+  #};
 
   services.system-config-printer.enable = true;
   programs.system-config-printer.enable = true;
 
   # Configure Firewall Rules: Ensure that the firewall allows traffic on port 631, which is used by the CUPS printing server.
   networking.firewall = {
-    allowedTCPPorts = [ 631 ];
-    allowedUDPPorts = [ 631 ];
+    allowedTCPPorts = [
+      631 # CUPS
+      6566 # SANE
+    ];
+    allowedUDPPorts = [
+      631 # CUPS
+    ];
   };
 
 }
