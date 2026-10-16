@@ -69,8 +69,8 @@ in
 
     #./synergy-client.nix # <-- replace with barrier
 
-    #(fromCommon "hardware-printer.nix")
-    ./services/print-scan-server.nix
+    (fromCommon "hardware-printer.nix")
+    #./services/print-scan-server.nix
 
     #(fromCommon "hardware-tablet-wacom.nix")
     #(fromCommon "hardware-tablet-digimend.nix")

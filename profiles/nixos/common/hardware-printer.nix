@@ -16,8 +16,8 @@ in
   services.printing = {
     enable = true;
     listenAddresses = [
-      "*:631"                           # Listen on all interfaces, not only localhost
-      #"0.0.0.0:631"
+      #"*:631"                           # Listen on all interfaces, not only localhost
+      "0.0.0.0:631" # ipv4 only
       #"*:443"                           # Listen on all interfaces, not only localhost
     ];
     allowFrom = [

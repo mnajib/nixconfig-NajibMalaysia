@@ -19,7 +19,8 @@ in
   ];
 
   services.printing.listenAddresses = [
-    "*:443"                             # Listen on all interfaces, not only localhost
+    #"*:443"                             # Listen on all interfaces, not only localhost
+    "0.0.0.0:443"                             # Listen on all interfaces, not only localhost. ipv4 only
   ];
 
   services.printing.extraConf = ''
