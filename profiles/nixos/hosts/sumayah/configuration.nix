@@ -27,7 +27,7 @@ in
     #inputs.home-manager.nixosModules.home-manager # This in now handled by mkNixos in flake.nix
 
     #./Minecraft/minecraft.nix
-    inputs.mc-project.nixosModules.minecraft-server # Inject the server configuration directly
+    #inputs.mc-project.nixosModules.minecraft-server # Inject the server configuration directly
 
     ./turn-off-rgb.nix
     #./grafito.nix
@@ -286,6 +286,7 @@ in
     #inputs.my-nvim.packages.${pkgs.system}.default # Lets have it handle by home-manager
 
     radeontop
+    amdgpu_top
   ];
 
   #services.minecraft-server.enable = true;
