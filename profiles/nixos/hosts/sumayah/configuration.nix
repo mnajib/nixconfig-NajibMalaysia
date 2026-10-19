@@ -61,6 +61,7 @@ in
     (fromCommon "desktops-xorg.nix")
     (fromCommon "desktops/niri")
     (fromCommon "waktusolat.nix")
+    (fromCommon "deskflow.nix")
     #(fromCommon "3D.nix")
     (fromCommon "whatsapp.nix")
   ];
