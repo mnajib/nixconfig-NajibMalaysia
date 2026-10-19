@@ -183,6 +183,7 @@ let
         }
 
         {
+
           # Copy physical files ONLY if copyConfig is true
           # to /etc/current-system-flake/
           environment.etc."current-system-flake" = lib.mkIf copyConfig {
@@ -192,6 +193,11 @@ let
           # Embed Git commit revision
           system.configurationRevision = lib.mkIf (self ? rev || self ? dirtyRev)
             (self.rev or self.dirtyRev);
+
+          # Populate /etc/nixos-revision for your git-of-boot.sh and git-of-gen.sh scripts
+          system.nixos.revision = lib.mkIf (self ? rev || self ? dirtyRev)
+            (self.rev or self.dirtyRev);
+
         }
 
       ] ++ extraModules;

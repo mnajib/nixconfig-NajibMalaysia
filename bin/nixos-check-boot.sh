@@ -1,5 +1,43 @@
 #!/usr/bin/env bash
+# File: bin/nixos-check-boot.sh
+
 set -euo pipefail
+
+# --- SELF-DOCUMENTATION BLOCK ---
+show_help() {
+    cat << EOF
+================================================================================
+ TOOL NAME: nixos-check-boot.sh
+================================================================================
+1. WHAT IT IS:
+   - Layman Term: A health checker that tells you if your NixOS system
+     is fully running on the latest built software or if it is stuck on an
+     older version.
+   - Technical Definition: Compares the store paths of /run/booted-system
+     against /run/current-system and /nix/var/nix/profiles/system to detect
+     pending reboots.
+
+2. HOW TO USE IT:
+   Run the tool directly from your repository root or PATH:
+   $ bin/nixos-check-boot.sh
+
+3. USER GUIDES:
+   - For Casual Users: Quickly see if you need to restart your computer after
+     running a system update.
+   - For System Administrators: Inspect exact store path hashes and generation
+     sync states across multi-host NixOS environments.
+
+================================================================================
+EOF
+}
+
+# Check for help flags
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+    show_help
+    exit 0
+fi
+# --- END OF DOCUMENTATION BLOCK ---
+
 
 BOOTED_SYS=$(readlink -f /run/booted-system)
 CURRENT_SYS=$(readlink -f /run/current-system)
