@@ -51,7 +51,7 @@ in
     #(fromCommon "users-anak2.nix")
 
     (fromCommon "nfs-client-automount.nix")
-    (fromCommon "samba-client.nix")
+    #(fromCommon "samba-client.nix")
     (fromCommon "zramSwap.nix")
     (fromCommon "nix-garbage-collector.nix")
     (fromCommon "flatpak.nix")
